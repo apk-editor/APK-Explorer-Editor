@@ -1,0 +1,5 @@
+/build
+/release
+/src/main/assets
+/src/main/gen
+*.jks

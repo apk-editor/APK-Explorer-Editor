@@ -1,0 +1,64 @@
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top|center_vertical"
+        android:background="@color/colorBlack"
+        android:paddingBottom="5dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="5dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical" >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/app_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorAccent"
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:gravity="start" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/search_word"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="?attr/colorAccent"
+                android:textColor="@color/colorWhite"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="50dp"
+                android:hint="@string/search"
+                android:visibility="gone"
+                android:gravity="center"
+                android:maxLines="1" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/search_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end|center_vertical"
+            android:src="@drawable/ic_search"
+            android:background="@null"
+            android:tint="@color/colorBlue" />
+    </FrameLayout>
+
+    <include layout="@layout/progress_layout" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

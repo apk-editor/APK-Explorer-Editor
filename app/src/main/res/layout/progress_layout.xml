@@ -1,0 +1,20 @@
+<LinearLayout
+    android:id="@+id/progress_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:visibility="gone" >
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressBackgroundTint="?attr/colorAccent"
+        android:background="@color/colorBlack"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp" />
+</LinearLayout>

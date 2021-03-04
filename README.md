@@ -1,8 +1,19 @@
-# APK Explorer & Editor
+# APK Explorer & Editor (AEE)
 
 ![AEE](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png?raw=true)
 
 ### APK Explorer & Editor, an open-source tool to explore the contents of an installed APK, is strictly made with an aim to inspect an installed APK file.
+
+## How-To-Use
+AEE currently supports the following tasks
+* Explore an installed application and navigate through its contents (single click).
+* Save/export individual resource files such as icon, graphics, text files, etc.
+* Very basic editing, only on text files at this moment.
+* Delete resources (likely dangerous).
+* Create signed APK's/App Bundles after the above-mentioned processes.
+* Resign APK's/bundles with AEE custom key (long click).
+* Install exported & resigned Split APK's
+* Share an exported & resigned APK (long click).
 
 ## Donations
 If you like to appreciate my work, please consider supporting the development in some way. Maintaining this project take a lot of time in my life. So, each and every support from the android community will be hugely appreciated.
@@ -17,7 +28,7 @@ If you like to appreciate my work, please consider supporting the development in
 
 ## License
 
-    Copyright (C) 2021-2022 sunilpaulmathew <apkeditor@protonmail.com>
+    Copyright (C) 2021-2022 APK Explorer & Editor <apkeditor@protonmail.com>
 
     APK Explorer & Editor (AEE) is a free softwares: you can redistribute it and/or
     modify it under the terms of the GNU General Public License as published by the

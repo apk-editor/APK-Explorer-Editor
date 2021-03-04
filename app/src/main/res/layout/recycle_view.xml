@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="start|center_vertical"
+    android:orientation="horizontal"
+    android:longClickable="true"
+    app:cardCornerRadius="10dp"
+    android:layout_margin="5dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    android:layout_gravity="center_vertical"
+                    android:scaleType="fitCenter"
+                    android:layout_marginEnd="10dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical"
+                            android:baselineAligned="false">
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:focusable="false"
+                                    android:textSize="17sp" />
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/description"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:focusable="false" />
+                        </LinearLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" >
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/version"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="100dp"
+                                    android:layout_gravity="start"
+                                    android:visibility="gone"
+                                    android:textStyle="bold"
+                                    android:maxLines="1" />
+
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/size"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:visibility="gone" />
+                        </FrameLayout>
+                </LinearLayout>
+        </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
