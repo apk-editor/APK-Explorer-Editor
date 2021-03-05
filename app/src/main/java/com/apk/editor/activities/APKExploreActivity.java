@@ -2,7 +2,6 @@ package com.apk.editor.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -36,7 +35,7 @@ import java.util.Objects;
 public class APKExploreActivity extends AppCompatActivity {
 
     private List<String> mData = new ArrayList<>();
-    private MaterialTextView mError, mTitle;
+    private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
     private RecycleViewAPKExplorerAdapter mRecycleViewAdapter;
 
@@ -49,7 +48,7 @@ public class APKExploreActivity extends AppCompatActivity {
         AppCompatImageButton mBack = findViewById(R.id.back);
         AppCompatImageButton mSave = findViewById(R.id.save);
         mTitle = findViewById(R.id.title);
-        mError = findViewById(R.id.error_status);
+        MaterialTextView mError = findViewById(R.id.error_status);
         mRecyclerView = findViewById(R.id.recycler_view);
 
         mTitle.setText(AppData.getAppName(APKExplorer.mAppID, this));
@@ -72,20 +71,16 @@ public class APKExploreActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, APKExplorer.getSpanCount(this)));
 
-        if (APKEditorUtils.exist(getCacheDir().getPath() + "/" + APKExplorer.mAppID)) {
-            try {
-                mRecycleViewAdapter = new RecycleViewAPKExplorerAdapter(getData());
-                mRecyclerView.setAdapter(mRecycleViewAdapter);
-            } catch (NullPointerException ignored) {
-                mRecyclerView.setVisibility(View.GONE);
-                mError.setText(getString(R.string.explore_error_status, AppData.getAppName(APKExplorer.mAppID, this)));
-                mError.setVisibility(View.VISIBLE);
-            }
-        } else {
-            loadUI(this);
+        try {
+            mRecycleViewAdapter = new RecycleViewAPKExplorerAdapter(getData());
+            mRecyclerView.setAdapter(mRecycleViewAdapter);
+        } catch (NullPointerException ignored) {
+            mRecyclerView.setVisibility(View.GONE);
+            mError.setText(getString(R.string.explore_error_status, AppData.getAppName(APKExplorer.mAppID, this)));
+            mError.setVisibility(View.VISIBLE);
         }
 
-        RecycleViewAPKExplorerAdapter.setOnItemClickListener((position, v) -> {
+        mRecycleViewAdapter.setOnItemClickListener((position, v) -> {
             if (new File(mData.get(position)).isDirectory()) {
                 APKExplorer.mPath = mData.get(position);
                 reload(this);
@@ -140,45 +135,6 @@ public class APKExploreActivity extends AppCompatActivity {
             APKExplorer.mPath = APKExplorer.mPath + File.separator;
         }
         return new File(APKExplorer.mPath).listFiles();
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private void loadUI(Activity activity) {
-        new AsyncTask<Void, Void, Void>() {
-            private ProgressDialog mProgressDialog;
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                mProgressDialog = new ProgressDialog(activity);
-                mProgressDialog.setMessage(getString(R.string.exploring, AppData.getAppName(APKExplorer.mAppID, activity)));
-                mProgressDialog.setCancelable(false);
-                mProgressDialog.show();
-                APKEditorUtils.mkdir(getCacheDir().getPath() + "/" + APKExplorer.mAppID);
-            }
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                APKEditorUtils.unzip(AppData.getSourceDir(APKExplorer.mAppID, activity), getCacheDir().getPath() + "/" + APKExplorer.mAppID);
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                try {
-                    mProgressDialog.dismiss();
-                } catch (IllegalArgumentException ignored) {
-                }
-                try {
-                    mRecycleViewAdapter = new RecycleViewAPKExplorerAdapter(getData());
-                    mRecyclerView.setAdapter(mRecycleViewAdapter);
-                } catch (NullPointerException ignored) {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mError.setText(getString(R.string.explore_error_status, AppData.getAppName(APKExplorer.mAppID, activity)));
-                    mError.setVisibility(View.VISIBLE);
-                }
-            }
-        }.execute();
     }
 
     @SuppressLint("StaticFieldLeak")

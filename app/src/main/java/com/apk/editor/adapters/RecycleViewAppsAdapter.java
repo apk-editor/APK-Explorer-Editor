@@ -11,7 +11,6 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
-import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.activities.ImageViewActivity;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
@@ -105,9 +104,7 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
 
         @Override
         public void onClick(View view) {
-            APKExplorer.mAppID = data.get(getAdapterPosition());
-            Intent explorer = new Intent(view.getContext(), APKExploreActivity.class);
-            view.getContext().startActivity(explorer);
+            APKExplorer.exploreAPK(data.get(getAdapterPosition()), view.getContext());
         }
     }
 

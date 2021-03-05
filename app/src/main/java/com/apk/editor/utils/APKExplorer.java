@@ -1,12 +1,19 @@
 package com.apk.editor.utils;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
+
+import com.apk.editor.R;
+import com.apk.editor.activities.APKExploreActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,6 +76,41 @@ public class APKExplorer {
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
         return bitmap;
+    }
+
+    public static void exploreAPK(String packageName, Context context) {
+        new AsyncTask<Void, Void, Void>() {
+            private ProgressDialog mProgressDialog;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                APKExplorer.mAppID = packageName;
+                APKExplorer.mPath = context.getCacheDir().getPath() + "/" + packageName;
+                mProgressDialog = new ProgressDialog(context);
+                mProgressDialog.setMessage(context.getString(R.string.exploring, AppData.getAppName(packageName, context)));
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+            }
+            @Override
+            protected Void doInBackground(Void... voids) {
+                if (!APKEditorUtils.exist(APKExplorer.mPath)) {
+                    APKEditorUtils.mkdir(APKExplorer.mPath);
+                    APKEditorUtils.unzip(AppData.getSourceDir(packageName, context), context.getCacheDir().getPath()
+                            + "/" + packageName);
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                try {
+                    mProgressDialog.dismiss();
+                } catch (IllegalArgumentException ignored) {
+                }
+                Intent explorer = new Intent(context, APKExploreActivity.class);
+                context.startActivity(explorer);
+            }
+        }.execute();
     }
 
 }

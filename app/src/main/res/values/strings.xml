@@ -45,7 +45,7 @@
     <string name="signature_error_summary">%s with a different signature is already installed in your device! Please remove it first to install this version.</string>
     <string name="size">Size: %s</string>
     <string name="source_code">Source Code</string>
-    <string name="source_code_summary">Checkout Source of AEE</string>
+    <string name="source_code_summary">Checkout the source code of AEE</string>
     <string name="split_apk_installer">AEE Split APK Installer</string>
     <string name="support_group">Support Group</string>
     <string name="support_group_summary">Join AEE support group</string>

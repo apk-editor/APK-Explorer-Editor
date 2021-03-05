@@ -93,7 +93,7 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
         }
     }
 
-    public static void setOnItemClickListener(ClickListener clickListener) {
+    public void setOnItemClickListener(ClickListener clickListener) {
         RecycleViewAPKExplorerAdapter.clickListener = clickListener;
     }
 
