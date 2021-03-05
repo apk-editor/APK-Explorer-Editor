@@ -1,64 +1,6 @@
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<FrameLayout
+    android:id="@+id/fragment_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical">
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBlack"
-        android:gravity="center_vertical"
-        android:padding="10dp" >
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/back"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:background="@color/colorBlack"
-            android:tint="?attr/colorAccent"
-            android:layout_gravity="center|start"
-            android:gravity="center_vertical"
-            android:src="@drawable/ic_back" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:textColor="?attr/colorAccent"
-            android:textIsSelectable="true"
-            android:textSize="20sp" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/save"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:background="@color/colorBlack"
-            android:tint="?attr/colorAccent"
-            android:layout_gravity="center|end"
-            android:gravity="center_vertical"
-            android:src="@drawable/ic_save" />
-    </FrameLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/error_status"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="50dp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:textColor="?attr/colorAccent"
-        android:textIsSelectable="true"
-        android:visibility="gone"
-        android:textSize="17sp" />
-</LinearLayout>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+</FrameLayout>
