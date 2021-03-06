@@ -52,7 +52,12 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
         try {
             if (new File(data.get(position)).isDirectory()) {
                 holder.mAppIcon.setImageDrawable(APKData.getAppIcon(data.get(position) + "/base.apk", holder.mAppName.getContext()));
-                holder.mAppName.setText(new File(data.get(position)).getName());
+                if (APKData.mSearchText != null && new File(data.get(position)).getName().toLowerCase().contains(APKData.mSearchText)) {
+                    holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().toLowerCase().replace(APKData.mSearchText,
+                            "<b><i><font color=\"" + Color.RED + "\">" + APKData.mSearchText + "</font></i></b>")));
+                } else {
+                    holder.mAppName.setText(new File(data.get(position)).getName());
+                }
                 holder.mVersion.setText(holder.mAppName.getContext().getString(R.string.version, APKData.getVersionName(data.get(position) + "/base.apk", holder.mAppName.getContext())));
                 holder.mCard.setOnClickListener(v -> {
                     if (!SignatureCheck.isPackageInstalled(APKData.getAppID(data.get(position) + "/base.apk", holder.mAppName.getContext()).toString(),

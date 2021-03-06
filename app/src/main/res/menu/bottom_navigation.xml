@@ -6,6 +6,10 @@
         android:icon="@drawable/ic_apps"
         android:title="@string/apps" />
     <item
+        android:id="@+id/nav_projects"
+        android:icon="@drawable/ic_projects"
+        android:title="@string/projects" />
+    <item
         android:id="@+id/nav_apks"
         android:icon="@drawable/ic_android"
         android:title="@string/apks" />

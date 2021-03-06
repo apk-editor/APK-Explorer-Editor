@@ -26,7 +26,11 @@ public class APKData {
         mData.clear();
         for (File mFile : getAPKList(context)) {
             if (mFile.exists() && mFile.isDirectory() && APKEditorUtils.exist(mFile.toString() + "/base.apk")) {
-                mData.add(mFile.getAbsolutePath());
+                if (mSearchText == null) {
+                    mData.add(mFile.getAbsolutePath());
+                } else if (mFile.getAbsolutePath().toLowerCase().contains(mSearchText.toLowerCase())) {
+                    mData.add(mFile.getAbsolutePath());
+                }
             }
             if (mFile.exists() && mFile.getName().endsWith(".apk")) {
                 if (mSearchText == null) {
@@ -116,28 +120,36 @@ public class APKData {
             protected void onPreExecute() {
                 super.onPreExecute();
                 mProgressDialog = new ProgressDialog(activity);
-                mProgressDialog.setMessage(activity.getString(R.string.preparing_apk, AppData.getAppName(APKExplorer.mAppID, activity)));
+                mProgressDialog.setMessage(activity.getString(R.string.preparing_apk, (APKExplorer.mAppID != null ? APKExplorer.mAppID :
+                        new File(APKExplorer.mPath).getName())));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
             }
 
             @Override
             protected Void doInBackground(Void... voids) {
-                APKEditorUtils.zip(new File(activity.getCacheDir().getPath() + "/" + APKExplorer.mAppID), new File(Objects.requireNonNull(
-                        activity.getExternalFilesDir("")).toString() + "/" + APKExplorer.mAppID + ".apk"));
-                if (APKData.isAppBundle(AppData.getSourceDir(APKExplorer.mAppID, activity))) {
-                    File mParent = new File(activity.getExternalFilesDir("") + "/" + APKExplorer.mAppID);
-                    mParent.mkdirs();
-                    for (String mSplits : splitApks(AppData.getSourceDir(APKExplorer.mAppID, activity))) {
-                        if (!new File(mSplits).getName().equals("base.apk")) {
-                            signApks(new File(mSplits), new File(mParent.toString() + "/" + new File(mSplits).getName()), activity);
+                if (APKExplorer.mAppID != null) {
+                    APKEditorUtils.zip(new File(activity.getCacheDir().getPath() + "/" + APKExplorer.mAppID), new File(Objects.requireNonNull(
+                            activity.getExternalFilesDir("")).toString() + "/" + APKExplorer.mAppID + ".apk"));
+                    if (APKData.isAppBundle(AppData.getSourceDir(APKExplorer.mAppID, activity))) {
+                        File mParent = new File(activity.getExternalFilesDir("") + "/" + APKExplorer.mAppID);
+                        mParent.mkdirs();
+                        for (String mSplits : splitApks(AppData.getSourceDir(APKExplorer.mAppID, activity))) {
+                            if (!new File(mSplits).getName().equals("base.apk")) {
+                                signApks(new File(mSplits), new File(mParent.toString() + "/" + new File(mSplits).getName()), activity);
+                            }
                         }
+                        signApks(new File(Objects.requireNonNull(activity.getExternalFilesDir("")).toString() + "/" + APKExplorer.mAppID + ".apk"),
+                                new File(mParent.toString() + "/base.apk"), activity);
+                    } else {
+                        signApks(new File(Objects.requireNonNull(activity.getExternalFilesDir("")).toString() + "/" + APKExplorer.mAppID + ".apk"),
+                                new File(activity.getExternalFilesDir("") + "/" + APKExplorer.mAppID + "_signed.apk"), activity);
                     }
-                    signApks(new File(Objects.requireNonNull(activity.getExternalFilesDir("")).toString() + "/" + APKExplorer.mAppID + ".apk"),
-                            new File(mParent.toString() + "/base.apk"), activity);
                 } else {
-                    signApks(new File(Objects.requireNonNull(activity.getExternalFilesDir("")).toString() + "/" + APKExplorer.mAppID + ".apk"),
-                            new File(activity.getExternalFilesDir("") + "/" + APKExplorer.mAppID + "_signed.apk"), activity);
+                    APKEditorUtils.zip(new File(activity.getCacheDir().getPath() + "/" + new File(APKExplorer.mPath).getName()),
+                            new File(Objects.requireNonNull(activity.getExternalFilesDir("")).toString() + "/" + new File(APKExplorer.mPath).getName() + ".apk"));
+                    signApks(new File(Objects.requireNonNull(activity.getExternalFilesDir("")).toString() + "/" + new File(APKExplorer.mPath).getName() + ".apk"),
+                            new File(activity.getExternalFilesDir("") + "/" + new File(APKExplorer.mPath).getName() + "_signed.apk"), activity);
                 }
                 return null;
             }
@@ -145,7 +157,8 @@ public class APKData {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                APKEditorUtils.delete(Objects.requireNonNull(activity.getExternalFilesDir("")).toString() + "/" + APKExplorer.mAppID + ".apk");
+                APKEditorUtils.delete(Objects.requireNonNull(activity.getExternalFilesDir("")).toString() + "/" + (APKExplorer.mAppID != null ?
+                        APKExplorer.mAppID : new File(APKExplorer.mPath).getName()) + ".apk");
                 try {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {

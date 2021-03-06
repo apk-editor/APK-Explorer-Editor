@@ -26,14 +26,15 @@
     <string name="installing">Installing %s…</string>
     <string name="invite_friends">Invite Friends</string>
     <string name="invite_friends_Summary">Invite your friends to try AEE</string>
+    <string name="last_modified">Last Modified: %s</string>
     <string name="open_as_text">Open as text</string>
     <string name="preparing_apk">Preparing %s APK…</string>
     <string name="press_back">Press Back Button Again to close APK Explorer!</string>
+    <string name="projects">Projects</string>
     <string name="replace">Replace</string>
     <string name="replace_question">Replace %s with</string>
-    <string name="retain">Retain</string>
-    <string name="retain_question">Retain changes for future?</string>
     <string name="save">Save</string>
+    <string name="save_projects_question">Save changes as a project?</string>
     <string name="save_question">Save changes made on this file?</string>
     <string name="save_apk_message">Do you want to prepare a signed APK with the current modifications?</string>
     <string name="sdcard">SDCard</string>

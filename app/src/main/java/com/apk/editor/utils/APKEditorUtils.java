@@ -28,9 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -168,12 +165,12 @@ public class APKEditorUtils {
 
     static void zip(File path, File zip) {
         try {
-            if (path.isDirectory()) {
-                List<File> mFiles = new ArrayList<>();
-                Collections.addAll(mFiles, Objects.requireNonNull(path.listFiles()));
-                new ZipFile(zip).addFiles(mFiles);
-            } else {
-                new ZipFile(zip).addFile(path);
+            for (File mFile : Objects.requireNonNull(path.listFiles())) {
+                if (mFile.isDirectory()) {
+                    new ZipFile(zip).addFolder(mFile);
+                } else {
+                    new ZipFile(zip).addFile(mFile);
+                }
             }
         } catch (ZipException ignored) {}
     }

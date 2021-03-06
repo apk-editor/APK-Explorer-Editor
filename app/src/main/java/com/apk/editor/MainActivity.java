@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import com.apk.editor.fragments.APKsFragment;
 import com.apk.editor.fragments.AboutFragment;
 import com.apk.editor.fragments.ApplicationsFragment;
+import com.apk.editor.fragments.ProjectsFragment;
 import com.apk.editor.utils.APKEditorUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -56,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case R.id.nav_apps:
                 selectedFragment = new ApplicationsFragment();
+                break;
+            case R.id.nav_projects:
+                selectedFragment = new ProjectsFragment();
                 break;
             case R.id.nav_apks:
                 selectedFragment = new APKsFragment();

@@ -57,6 +57,15 @@ public class AppData {
         return Objects.requireNonNull(getAppInfo(packageName, context)).sourceDir;
     }
 
+    public static boolean isAppInstalled(String packageName, Context context) {
+        try {
+            getPackageManager(context).getApplicationInfo(packageName, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException ignored) {
+            return false;
+        }
+    }
+
     public static String getAPKSize(String path) {
         long size = new File(path).length() / 1024;
         long decimal = (size - 1024) / 1024;

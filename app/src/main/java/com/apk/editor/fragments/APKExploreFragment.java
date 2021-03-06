@@ -52,7 +52,7 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
         MaterialTextView mError = mRootView.findViewById(R.id.error_status);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
-        mTitle.setText(AppData.getAppName(APKExplorer.mAppID, requireActivity()));
+        mTitle.setText(APKExplorer.mAppID != null ? AppData.getAppName(APKExplorer.mAppID, requireActivity()) : new File(APKExplorer.mPath).getName());
 
         mBack.setOnClickListener(v -> retainDialog());
 
@@ -102,7 +102,7 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (APKExplorer.mPath.equals(requireActivity().getCacheDir().getPath() + "/" + APKExplorer.mAppID + File.separator)) {
+                if (Objects.requireNonNull(new File(APKExplorer.mPath).getParentFile()).getPath().equals(requireActivity().getCacheDir().getPath())) {
                     retainDialog();
                 } else {
                     APKExplorer.mPath = Objects.requireNonNull(new File(APKExplorer.mPath).getParentFile()).getPath();
@@ -116,12 +116,15 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
 
     private void retainDialog() {
         new MaterialAlertDialogBuilder(requireActivity())
-                .setMessage(R.string.retain_question)
-                .setNegativeButton(getString(R.string.delete), (dialog, id) -> {
-                    APKEditorUtils.delete(requireActivity().getCacheDir().getPath() + "/" + APKExplorer.mAppID);
+                .setMessage(R.string.save_projects_question)
+                .setNeutralButton(getString(R.string.delete), (dialog, id) -> {
+                    APKEditorUtils.delete(requireActivity().getCacheDir().getPath() + "/" + (APKExplorer.mAppID != null ?
+                            APKExplorer.mAppID : new File(APKExplorer.mPath).getName()));
                     requireActivity().finish();
                 })
-                .setPositiveButton(getString(R.string.retain), (dialog, id) -> {
+                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
+                })
+                .setPositiveButton(getString(R.string.save), (dialog, id) -> {
                     requireActivity().finish();
                 }).show();
     }
@@ -148,12 +151,6 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
     }
 
     private File[] getFilesList() {
-        if (APKExplorer.mPath == null) {
-            APKExplorer.mPath = requireActivity().getCacheDir().getPath() + "/" + APKExplorer.mAppID;
-        }
-        if (!APKExplorer.mPath.endsWith(File.separator)) {
-            APKExplorer.mPath = APKExplorer.mPath + File.separator;
-        }
         return new File(APKExplorer.mPath).listFiles();
     }
 
@@ -169,7 +166,8 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                mTitle.setText(APKExplorer.mPath.equals(requireActivity().getCacheDir().getPath() + "/" + APKExplorer.mAppID + File.separator) ? AppData.getAppName(APKExplorer.mAppID, activity)
+                mTitle.setText(APKExplorer.mPath.equals(requireActivity().getCacheDir().getPath() + "/" + (APKExplorer.mAppID != null ?
+                        APKExplorer.mAppID : new File(APKExplorer.mPath).getName()) + File.separator) ? AppData.getAppName(APKExplorer.mAppID, activity)
                         : new File(APKExplorer.mPath).getName());
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
             }
