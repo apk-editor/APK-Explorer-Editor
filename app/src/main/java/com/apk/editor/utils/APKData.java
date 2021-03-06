@@ -9,16 +9,10 @@ import android.os.AsyncTask;
 import com.apk.editor.R;
 import com.apk.editor.apksigner.ApkSigner;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -95,42 +89,6 @@ public class APKData {
         return new File(context.getFilesDir(), "signing");
     }
 
-    private static void zip(File path, File zip) {
-        try {
-            ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zip));
-            zip(zipOutputStream, path, path.getPath().length());
-            zipOutputStream.close();
-        } catch (Exception ignored) {
-        }
-    }
-
-    private static void zip(ZipOutputStream out, File folder, int basePathLength) throws IOException {
-        final int BUFFER = 2048;
-        File[] mFileList = folder.listFiles();
-        BufferedInputStream origin;
-        if (mFileList == null) return;
-        for (File mFile : mFileList) {
-            if (mFile.isDirectory()) {
-                zip(out, mFile, basePathLength);
-            } else {
-                byte[] data = new byte[BUFFER];
-                String mFilePath = mFile.getPath();
-                String mRelativePath = mFilePath.substring(basePathLength + 1);
-                FileInputStream fileInputStream = new FileInputStream(mFilePath);
-                origin = new BufferedInputStream(fileInputStream, BUFFER);
-                ZipEntry zipEntry = new ZipEntry(mRelativePath);
-                zipEntry.setTime(mFile.lastModified());
-                out.putNextEntry(zipEntry);
-                int count;
-                while ((count = origin.read(data, 0, BUFFER)) != -1) {
-                    out.write(data, 0, count);
-                }
-                origin.close();
-                out.closeEntry();
-            }
-        }
-    }
-
     public static String getParentFile(String path) {
         return Objects.requireNonNull(new File(path).getParentFile()).toString();
     }
@@ -165,7 +123,7 @@ public class APKData {
 
             @Override
             protected Void doInBackground(Void... voids) {
-                APKData.zip(new File(activity.getCacheDir().getPath() + "/" + APKExplorer.mAppID), new File(Objects.requireNonNull(
+                APKEditorUtils.zip(new File(activity.getCacheDir().getPath() + "/" + APKExplorer.mAppID), new File(Objects.requireNonNull(
                         activity.getExternalFilesDir("")).toString() + "/" + APKExplorer.mAppID + ".apk"));
                 if (APKData.isAppBundle(AppData.getSourceDir(APKExplorer.mAppID, activity))) {
                     File mParent = new File(activity.getExternalFilesDir("") + "/" + APKExplorer.mAppID);
