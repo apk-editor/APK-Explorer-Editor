@@ -3,35 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-    android:gravity="center"
     android:layout_margin="10dp" >
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/icon"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:scaleType="fitCenter"
             android:layout_gravity="center_vertical"
+            android:tint="?attr/colorAccent"
+            android:scaleType="fitCenter"
             android:background="@null" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="45dp"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="50dp"
+            android:gravity="start"
             android:focusable="false"
             android:textStyle="bold"
             android:textSize="17sp" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/settings"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_settings"
-            android:layout_gravity="center_vertical|end"
-            android:tint="?attr/colorAccent"
-            android:background="@null" />
 </FrameLayout>

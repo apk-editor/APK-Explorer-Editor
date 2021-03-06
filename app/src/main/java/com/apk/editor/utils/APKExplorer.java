@@ -25,7 +25,7 @@ import java.io.OutputStream;
  */
 public class APKExplorer {
 
-    public static String mAppID, mPath = null;;
+    public static String mAppID, mPath = null, mFilePath = null, mFileToReplace = null;
 
     public static boolean isTextFile(String path) {
         return path.endsWith(".txt") || path.endsWith(".xml") || path.endsWith(".json") || path.endsWith(".properties")

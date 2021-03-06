@@ -1,15 +1,22 @@
 package com.apk.editor.adapters;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
+import com.apk.editor.activities.FilePickerActivity;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -44,7 +51,7 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
         if (new File(data.get(position)).isDirectory()) {
             holder.mIcon.setImageDrawable(holder.mTitle.getContext().getResources().getDrawable(R.drawable.ic_folder));
             holder.mIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mTitle.getContext()));
-            holder.mDelete.setVisibility(View.GONE);
+            holder.mSettings.setVisibility(View.GONE);
         } else if (APKExplorer.isImageFile(data.get(position))) {
             if (APKExplorer.getIconFromPath(data.get(position)) != null) {
                 holder.mIcon.setImageURI(APKExplorer.getIconFromPath(data.get(position)));
@@ -57,16 +64,37 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
                     .getResources().getColor(R.color.colorWhite) : holder.mIcon.getContext().getResources().getColor(R.color.colorBlack));
         }
         holder.mTitle.setText(new File(data.get(position)).getName());
-        holder.mDelete.setOnClickListener(v -> {
-            new MaterialAlertDialogBuilder(holder.mDelete.getContext())
-                    .setMessage(holder.mDelete.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))
-                    .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                    })
-                    .setPositiveButton(R.string.delete, (dialog, id) -> {
-                        APKEditorUtils.delete(data.get(position));
-                        data.remove(position);
-                        notifyDataSetChanged();
-                    }).show();
+        holder.mSettings.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(holder.mSettings.getContext(), v);
+            Menu menu = popupMenu.getMenu();
+            menu.add(Menu.NONE, 0, Menu.NONE, R.string.delete);
+            menu.add(Menu.NONE, 1, Menu.NONE, R.string.replace);
+            popupMenu.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case 0:
+                        new MaterialAlertDialogBuilder(holder.mSettings.getContext())
+                                .setMessage(holder.mSettings.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))
+                                .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                                })
+                                .setPositiveButton(R.string.delete, (dialog, id) -> {
+                                    APKEditorUtils.delete(data.get(position));
+                                    data.remove(position);
+                                    notifyDataSetChanged();
+                                }).show();
+                        break;
+                    case 1:
+                        if (APKEditorUtils.isWritePermissionGranted(holder.mSettings.getContext())) {
+                            APKExplorer.mFileToReplace = data.get(position);
+                            Intent filePicker = new Intent(holder.mSettings.getContext(), FilePickerActivity.class);
+                            holder.mSettings.getContext().startActivity(filePicker);
+                        } else {
+                            ActivityCompat.requestPermissions((Activity) holder.mSettings.getContext(), new String[] {
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+                        }
+                        break;}
+                return false;
+            });
+            popupMenu.show();
         });
     }
 
@@ -76,14 +104,14 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private AppCompatImageButton mIcon, mDelete;
+        private AppCompatImageButton mIcon, mSettings;
         private MaterialTextView mTitle;
 
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
             this.mIcon = view.findViewById(R.id.icon);
-            this.mDelete = view.findViewById(R.id.delete);
+            this.mSettings = view.findViewById(R.id.settings);
             this.mTitle = view.findViewById(R.id.title);
         }
 

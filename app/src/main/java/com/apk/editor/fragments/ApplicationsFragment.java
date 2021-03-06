@@ -54,7 +54,7 @@ public class ApplicationsFragment extends Fragment {
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        mAppTitle.setText(getString(R.string.apps));
+        mAppTitle.setText(getString(R.string.apps_installed));
 
         mSearchButton.setOnClickListener(v -> {
             if (mSearchWord.getVisibility() == View.VISIBLE) {
