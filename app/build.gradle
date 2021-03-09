@@ -9,8 +9,8 @@ android {
         applicationId "com.apk.editor"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 3
-        versionName "beta-v0.3"
+        versionCode 4
+        versionName "beta-v0.4"
         vectorDrawables.useSupportLibrary = true
         testFunctionalTest = false
         testHandleProfiling = false
