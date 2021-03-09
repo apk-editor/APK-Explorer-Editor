@@ -163,6 +163,7 @@ public class APKData {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
                 }
+                activity.finish();
             }
         }.execute();
     }

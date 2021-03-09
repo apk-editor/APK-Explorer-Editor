@@ -36,7 +36,7 @@
     <string name="replace">Replace</string>
     <string name="replace_question">Replace %s with</string>
     <string name="save">Save</string>
-    <string name="save_projects_question">Save changes as a project?</string>
+    <string name="save_projects_question">Save project for future use?</string>
     <string name="save_question">Save changes made on this file?</string>
     <string name="save_apk_message">Do you want to prepare a signed APK with the current modifications?</string>
     <string name="sdcard">SDCard</string>
