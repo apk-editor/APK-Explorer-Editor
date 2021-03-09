@@ -41,8 +41,8 @@ public class AboutFragment extends Fragment {
         mData.add(new RecycleViewItem(getString(R.string.app_name), getString(R.string.version, BuildConfig.VERSION_NAME), getResources().getDrawable(R.mipmap.ic_launcher), null));
         mData.add(new RecycleViewItem(getString(R.string.source_code), getString(R.string.source_code_summary), getResources().getDrawable(R.drawable.ic_github), "https://github.com/apk-editor/APK-Explorer-Editor"));
         mData.add(new RecycleViewItem(getString(R.string.support_group), getString(R.string.support_group_summary), getResources().getDrawable(R.drawable.ic_support), "https://t.me/apkexplorer"));
-        mData.add(new RecycleViewItem(getString(R.string.donations), getString(R.string.donations_summary), getResources().getDrawable(R.drawable.ic_donate), "https://www.paypal.me/menacherry/"));
         mData.add(new RecycleViewItem(getString(R.string.invite_friends), getString(R.string.invite_friends_Summary), getResources().getDrawable(R.drawable.ic_share), null));
+        mData.add(new RecycleViewItem(getString(R.string.donations), getString(R.string.donations_summary), getResources().getDrawable(R.drawable.ic_donate), "https://www.paypal.me/menacherry/"));
 
         RecyclerView mRecyclerView = mRootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), APKEditorUtils.getOrientation(requireActivity()) == Configuration.ORIENTATION_LANDSCAPE ? 3 : 2));
