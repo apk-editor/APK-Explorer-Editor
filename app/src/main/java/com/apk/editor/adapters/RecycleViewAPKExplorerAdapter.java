@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -98,13 +99,26 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
                                 }).show();
                         break;
                     case 2:
-                        if (APKEditorUtils.isWritePermissionGranted(holder.mSettings.getContext())) {
+                        if (!APKEditorUtils.isWritePermissionGranted(holder.mSettings.getContext())) {
+                            ActivityCompat.requestPermissions((Activity) holder.mSettings.getContext(), new String[]{
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                        } else if (Build.VERSION.SDK_INT >= 29 && !APKEditorUtils.getBoolean("storage_message", false, holder.mSettings.getContext())) {
+                            new MaterialAlertDialogBuilder(holder.mSettings.getContext())
+                                    .setIcon(R.mipmap.ic_launcher)
+                                    .setTitle(R.string.app_name)
+                                    .setCancelable(false)
+                                    .setMessage(holder.mSettings.getContext().getString(R.string.external_storage_permission_message) +
+                                            "\n\nadb shell appops set --uid com.apk.editor MANAGE_EXTERNAL_STORAGE allow")
+                                    .setPositiveButton(holder.mSettings.getContext().getString(R.string.got_it), (dialog1, id1) -> {
+                                        APKEditorUtils.saveBoolean("storage_message", true, holder.mSettings.getContext());
+                                        APKExplorer.mFileToReplace = data.get(position);
+                                        Intent filePicker = new Intent(holder.mSettings.getContext(), FilePickerActivity.class);
+                                        holder.mSettings.getContext().startActivity(filePicker);
+                                    }).show();
+                        } else {
                             APKExplorer.mFileToReplace = data.get(position);
                             Intent filePicker = new Intent(holder.mSettings.getContext(), FilePickerActivity.class);
                             holder.mSettings.getContext().startActivity(filePicker);
-                        } else {
-                            ActivityCompat.requestPermissions((Activity) holder.mSettings.getContext(), new String[] {
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
                         }
                         break;
                 }

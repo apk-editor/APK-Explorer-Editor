@@ -20,6 +20,8 @@
     <string name="export_complete_message">The selected resource is successfully exported into \'%s\'!</string>
     <string name="exploring">Exploring %s…</string>
     <string name="explore_error_status">Failed to explore %s!</string>
+    <string name="external_storage_permission_message">Please Note: Latest Android (R or newer) versions requires \'MANAGE_EXTERNAL_STORAGE\' permission to be granted to get access to files on external storage. Hence, to get this feature working on devices running Android R or newer, please execute the following command from an ADB shell.</string>
+    <string name="got_it">Got It</string>
     <string name="install">Install</string>
     <string name="install_question">Install %s?</string>
     <string name="installation_result">Installation completed! Result: %s</string>
