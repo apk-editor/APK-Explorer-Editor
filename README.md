@@ -33,7 +33,8 @@ AEE currently supports the following tasks
 
 ## Credits
 * [Grarak](https://github.com/Grarak/) - Kernel Adiutor
-* [Aefyr](https://github.com/Aefyr) - PseudoApkSigner library
+* [Aefyr](https://github.com/Aefyr) - PseudoApkSigner
+* [Hsiafan](https://github.com/hsiafan/) - APK parser
 * [Gospel Gilbert](https://t.me/gilgreat0295) - App Icon
 
 ## Donations

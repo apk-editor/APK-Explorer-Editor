@@ -67,7 +67,11 @@ public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleView
             holder.mTotalSize.setText(holder.mAppName.getContext().getString(R.string.last_modified, DateFormat.getDateTimeInstance()
                     .format(new File(data.get(position)).lastModified())));
             holder.mCard.setOnClickListener(v -> {
-                APKExplorer.mAppID = null;
+                if (AppData.isAppInstalled(data.get(position).replace(holder.mCard.getContext().getCacheDir().getPath() + "/",""), holder.mCard.getContext())) {
+                    APKExplorer.mAppID = data.get(position).replace(holder.mCard.getContext().getCacheDir().getPath() + "/","");
+                } else {
+                    APKExplorer.mAppID = null;
+                }
                 APKExplorer.mPath = data.get(position);
                 Intent explorer = new Intent(holder.mCard.getContext(), APKExploreActivity.class);
                 holder.mCard.getContext().startActivity(explorer);

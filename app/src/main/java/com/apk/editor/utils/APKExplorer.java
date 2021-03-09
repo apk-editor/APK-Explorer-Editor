@@ -15,6 +15,8 @@ import android.os.AsyncTask;
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
 
+import net.dongliu.apk.parser.ApkFile;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -39,6 +41,16 @@ public class APKExplorer {
 
     public static int getSpanCount(Activity activity) {
         return APKEditorUtils.getOrientation(activity) == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1;
+    }
+
+    public static String readXMLFromAPK(String apk, String path) {
+        try (ApkFile apkFile = new ApkFile(new File(apk))) {
+            String xnkData = apkFile.transBinaryXml(path);
+            apkFile.close();
+            return xnkData;
+        } catch (IOException ignored) {
+        }
+        return null;
     }
 
     public static Uri getIconFromPath(String path) {

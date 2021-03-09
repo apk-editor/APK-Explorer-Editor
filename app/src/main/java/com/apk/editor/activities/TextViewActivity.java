@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.AppData;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -38,7 +39,12 @@ public class TextViewActivity extends AppCompatActivity {
 
         assert path != null;
         mTitle.setText(new File(path).getName());
-        mText.setText(APKEditorUtils.read(path));
+        if (APKExplorer.mAppID != null && path.endsWith(".xml")) {
+            mText.setText(APKExplorer.readXMLFromAPK(AppData.getSourceDir(APKExplorer.mAppID, this), path.replace(
+                    getCacheDir().getPath() + "/" + APKExplorer.mAppID + "/", "")));
+        } else {
+            mText.setText(APKEditorUtils.read(path));
+        }
 
         mExport.setOnClickListener(v -> new MaterialAlertDialogBuilder(this)
                 .setMessage(R.string.export_question)
