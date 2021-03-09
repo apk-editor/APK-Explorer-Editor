@@ -44,7 +44,7 @@
     <string name="share_summary">APK Explorer &amp; Editor (AEE) %s can be obtained from GitHub: https://github.com/apk-editor/APK-Explorer-Editor/releases</string>
     <string name="share_with">Share with</string>
     <string name="sign">Sign</string>
-    <string name="sign_question">Export and resign %s?</string>
+    <string name="sign_question">Export and resign %s with AEE custom key?</string>
     <string name="signature_error">Signature doesn\'t match!</string>
     <string name="signature_error_summary">%s with a different signature is already installed in your device! Please remove it first to install this version.</string>
     <string name="signing">Signing %s…</string>
@@ -54,7 +54,7 @@
     <string name="split_apk_installer">AEE Split APK Installer</string>
     <string name="support_group">Support Group</string>
     <string name="support_group_summary">Join AEE support group</string>
-    <string name="unknown_file_message">\'%s\' is an unknown file format for AEE. Try open as text?</string>
+    <string name="unknown_file_message">AEE doesn\'t handle \'%s\' at this moment. If you know this file format, you may export this file into device storage and try editing using a supported third-party application. Alternately, you may try to open it as a text file?</string>
     <string name="version">Version: %s</string>
     <string name="warning_message">Welcome to APK Explorer &amp; Editor, a powerful tool to explore the contents of an installed APK!\n\nImportant\nAPK Explorer &amp; Editor is strictly made with good intentions. By clicking the \'Accept\' button, you are agreeing to the developer to not use this tool for any kind of illegal or inappropriate activities.</string>
 </resources>

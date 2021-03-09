@@ -68,7 +68,8 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
             PopupMenu popupMenu = new PopupMenu(holder.mSettings.getContext(), v);
             Menu menu = popupMenu.getMenu();
             menu.add(Menu.NONE, 0, Menu.NONE, R.string.delete);
-            menu.add(Menu.NONE, 1, Menu.NONE, R.string.replace);
+            menu.add(Menu.NONE, 1, Menu.NONE, R.string.export);
+            menu.add(Menu.NONE, 2, Menu.NONE, R.string.replace);
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case 0:
@@ -83,6 +84,20 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
                                 }).show();
                         break;
                     case 1:
+                        new MaterialAlertDialogBuilder(holder.mSettings.getContext())
+                                .setMessage(R.string.export_question)
+                                .setNegativeButton(holder.mSettings.getContext().getString(R.string.cancel), (dialog, id) -> {
+                                })
+                                .setPositiveButton(holder.mSettings.getContext().getString(R.string.export), (dialog, id) -> {
+                                    APKEditorUtils.mkdir(holder.mSettings.getContext().getExternalFilesDir("") + "/" + APKExplorer.mAppID);
+                                    APKEditorUtils.copy(data.get(position), holder.mSettings.getContext().getExternalFilesDir("") + "/" + APKExplorer.mAppID + "/" + new File(data.get(position)).getName());
+                                    new MaterialAlertDialogBuilder(holder.mSettings.getContext())
+                                            .setMessage(holder.mSettings.getContext().getString(R.string.export_complete_message, holder.mSettings.getContext().getExternalFilesDir("") + "/" + APKExplorer.mAppID))
+                                            .setPositiveButton(holder.mSettings.getContext().getString(R.string.cancel), (dialog1, id1) -> {
+                                            }).show();
+                                }).show();
+                        break;
+                    case 2:
                         if (APKEditorUtils.isWritePermissionGranted(holder.mSettings.getContext())) {
                             APKExplorer.mFileToReplace = data.get(position);
                             Intent filePicker = new Intent(holder.mSettings.getContext(), FilePickerActivity.class);
@@ -91,7 +106,8 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
                             ActivityCompat.requestPermissions((Activity) holder.mSettings.getContext(), new String[] {
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
                         }
-                        break;}
+                        break;
+                }
                 return false;
             });
             popupMenu.show();

@@ -88,10 +88,19 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
                 startActivity(textView);
             } else {
                 new MaterialAlertDialogBuilder(requireActivity())
+                        .setTitle(R.string.app_name)
                         .setMessage(getString(R.string.unknown_file_message, new File(mData.get(position)).getName()))
-                        .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
+                        .setNeutralButton(getString(R.string.cancel), (dialog, id) -> {
                         })
-                        .setPositiveButton(getString(R.string.open_as_text), (dialog, id) -> {
+                        .setNegativeButton(getString(R.string.export), (dialog, id) -> {
+                            APKEditorUtils.mkdir(requireActivity().getExternalFilesDir("") + "/" + APKExplorer.mAppID);
+                            APKEditorUtils.copy(mData.get(position), requireActivity().getExternalFilesDir("") + "/" + APKExplorer.mAppID + "/" + new File(mData.get(position)).getName());
+                            new MaterialAlertDialogBuilder(requireActivity())
+                                    .setMessage(getString(R.string.export_complete_message, requireActivity().getExternalFilesDir("") + "/" + APKExplorer.mAppID))
+                                    .setPositiveButton(getString(R.string.cancel), (dialog2, id2) -> {
+                                    }).show();
+                        })
+                        .setPositiveButton(getString(R.string.open_as_text), (dialog1, id1) -> {
                             Intent textView = new Intent(requireActivity(), TextViewActivity.class);
                             textView.putExtra(TextViewActivity.PATH_INTENT, mData.get(position));
                             startActivity(textView);
