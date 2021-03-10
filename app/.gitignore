@@ -1,5 +1,7 @@
 /build
 /release
+/full
+/play
 /src/full/assets
 /src/main/gen
 *.jks

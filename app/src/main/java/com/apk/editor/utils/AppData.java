@@ -19,14 +19,24 @@ public class AppData {
     public static String mSearchText;
 
     public static List<String> getData(Context context) {
+        boolean mAppType;
         mData.clear();
         List<ApplicationInfo> packages = getPackageManager(context).getInstalledApplications(PackageManager.GET_META_DATA);
         for (ApplicationInfo packageInfo: packages) {
-            if (mSearchText == null) {
-                mData.add(packageInfo.packageName);
-            } else if (getPackageManager(context).getApplicationLabel(packageInfo).toString().toLowerCase().contains(mSearchText.toLowerCase())
-                    || packageInfo.packageName.toLowerCase().contains(mSearchText.toLowerCase())) {
-                mData.add(packageInfo.packageName);
+            if (APKEditorUtils.getString("appTypes", "all", context).equals("system")) {
+                mAppType = (packageInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
+            } else if (APKEditorUtils.getString("appTypes", "all", context).equals("user")) {
+                mAppType = (packageInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0;
+            } else {
+                mAppType = true;
+            }
+            if (mAppType) {
+                if (mSearchText == null) {
+                    mData.add(packageInfo.packageName);
+                } else if (getPackageManager(context).getApplicationLabel(packageInfo).toString().toLowerCase().contains(mSearchText.toLowerCase())
+                        || packageInfo.packageName.toLowerCase().contains(mSearchText.toLowerCase())) {
+                    mData.add(packageInfo.packageName);
+                }
             }
         }
         return mData;

@@ -1,6 +1,7 @@
 <resources>
     <string name="about">About</string>
     <string name="accept">Accept</string>
+    <string name="all">All</string>
     <string name="apks">APK\'s</string>
     <string name="app_name_short">AEE</string>
     <string name="apps">Apps</string>
@@ -56,10 +57,12 @@
     <string name="split_apk_installer">AEE Split APK Installer</string>
     <string name="support_group">Support Group</string>
     <string name="support_group_summary">Join AEE support group</string>
+    <string name="system">System</string>
     <string name="translate">Translate</string>
     <string name="unknown_file_message">AEE doesn\'t handle \'%s\' at this moment. If you know this file format, you may export this file into device storage and try editing using a supported third-party application. Alternately, you may try to open it as a text file?</string>
     <string name="unsupported_file">Unsupported file</string>
     <string name="unsupported_file_arsc">You\'re selected \'resources.arsc\', which is unfortunately impossible for AEE to read.\n\nWhat is resources.arsc?\nresources.arsc is a binary resource file containing the configuration-specific values of an application, such as integers, booleans and strings, as well as references to more complex resources, like UI layouts.\n\nHow to read resources.arsc?\nTools such as Apktool or Android Asset Packaging Tool (AAPT) shall be used to print out the contents of resources.arsc into human-readable format.</string>
     <string name="unsupported_file_dex">You\'re selected a \'DEX\' (.dex) file, which is unfortunately impossible for AEE to read.\n\nWhat is a DEX file?\nA Dex file has code that is ultimately executed by the Android Runtime. Every APK\'s should have a \'classes.dex\' file, which references any classes or methods used within an app. Essentially, any Activity, Object, or Fragment used within the code base will be transformed into bytes within a Dex file that can be run as an Android app.\n\nHow to read a DEX file?\nA DEX file shall be converted to \'jar\' format and later into \'Java\' file using tools such as \'dex2jar\' and \'JD-GUI\'.</string>
+    <string name="user">User</string>
     <string name="version">Version: %s</string>
 </resources>

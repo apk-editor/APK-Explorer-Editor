@@ -1,8 +1,8 @@
-<LinearLayout
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -54,6 +54,17 @@
             android:background="@null"
             android:tint="@color/colorBlue" />
     </FrameLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlack"
+        app:tabSelectedTextColor="?attr/colorAccent"
+        app:tabTextColor="@color/colorWhite"
+        android:visibility="gone"
+        app:tabGravity="fill"
+        app:tabMode="fixed" />
 
     <include layout="@layout/progress_layout" />
 
