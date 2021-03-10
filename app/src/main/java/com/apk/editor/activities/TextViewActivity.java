@@ -1,6 +1,7 @@
 package com.apk.editor.activities;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -67,6 +68,10 @@ public class TextViewActivity extends AppCompatActivity {
                         APKEditorUtils.create(Objects.requireNonNull(mText.getText()).toString(), path);
                         finish();
                     }).show());
+
+        if (APKEditorUtils.isFullVersion(this)) {
+            mSave.setVisibility(View.VISIBLE);
+        }
 
         mBack.setOnClickListener(v -> finish());
     }

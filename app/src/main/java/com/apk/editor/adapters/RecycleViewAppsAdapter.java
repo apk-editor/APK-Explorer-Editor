@@ -70,14 +70,16 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
             }
             holder.mSize.setVisibility(View.VISIBLE);
             holder.mVersion.setVisibility(View.VISIBLE);
-            holder.mCard.setOnLongClickListener(v -> {
-                new MaterialAlertDialogBuilder(holder.mCard.getContext())
-                        .setMessage(holder.mCard.getContext().getString(R.string.sign_question, AppData.getAppName(data.get(position), holder.mAppName.getContext())))
-                        .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                        })
-                        .setPositiveButton(R.string.sign, (dialog, id) -> APKData.signAPK(data.get(position), holder.mCard.getContext())).show();
-                return false;
-            });
+            if (APKEditorUtils.isFullVersion(holder.mCard.getContext())) {
+                holder.mCard.setOnLongClickListener(v -> {
+                    new MaterialAlertDialogBuilder(holder.mCard.getContext())
+                            .setMessage(holder.mCard.getContext().getString(R.string.sign_question, AppData.getAppName(data.get(position), holder.mAppName.getContext())))
+                            .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                            })
+                            .setPositiveButton(R.string.sign, (dialog, id) -> APKData.signAPK(data.get(position), holder.mCard.getContext())).show();
+                    return false;
+                });
+            }
         } catch (NullPointerException ignored) {}
     }
 

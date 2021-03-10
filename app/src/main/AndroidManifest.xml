@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.apk.editor" >
+    package="com.apk.editor">
 
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:requestLegacyExternalStorage="true"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:supportsRtl="true"
-        tools:targetApi="q">
+        android:supportsRtl="true" >
 
         <activity android:name=".MainActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
@@ -30,21 +24,9 @@
         </activity>
 
         <activity android:name=".activities.APKExploreActivity" />
+        <activity android:name=".activities.CreditsActivity" />
         <activity android:name=".activities.FilePickerActivity" />
         <activity android:name=".activities.ImageViewActivity" />
-        <activity android:name=".activities.InstallerActivity" />
         <activity android:name=".activities.TextViewActivity" />
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.apk.editor.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
-        </provider>
-
-        <service android:name=".services.InstallerService" />
     </application>
 </manifest>

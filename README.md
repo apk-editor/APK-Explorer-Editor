@@ -12,12 +12,12 @@
 
 ## How-To-Use
 AEE currently supports the following tasks
-* Explore an installed application and navigate through its contents (single click).
-* Save/export individual resource files such as icon, graphics, text files, etc.
+* Explore an installed application and navigate through its contents.
+* Save/export individual resource files such as icon, fonts, graphics, binary XML files, etc to device storage.
 * Very basic editing, only on text files at this moment.
-* Delete resources (likely dangerous).
+* Delete or replaces resources.
 * Create signed APK's/App Bundles after the above-mentioned processes.
-* Resign APK's/bundles with AEE custom key (long click).
+* Resign APK's/bundles with AEE custom key).
 * Install exported & resigned Split APK's
 * Share an exported & resigned APK (long click).
 
@@ -33,16 +33,11 @@ AEE currently supports the following tasks
 
 ## Credits
 * [Grarak](https://github.com/Grarak/) - Kernel Adiutor
-* [Aefyr](https://github.com/Aefyr) - PseudoApkSigner
+* [Aefyr](https://github.com/Aefyr) - PseudoApkSigner & SAI
 * [Hsiafan](https://github.com/hsiafan/) - APK parser
+* [Srikanth Reddy Lingala](https://github.com/srikanth-lingala) - zip4j
+* [nkalra0123](https://github.com/nkalra0123/) - Split App Share & Install
 * [Gospel Gilbert](https://t.me/gilgreat0295) - App Icon
-
-## Donations
-If you like to appreciate my work, please consider supporting the development in some way. Maintaining this project take a lot of time in my life. So, each and every support from the android community will be hugely appreciated.
-
-[<img src="https://raw.githubusercontent.com/SmartPack/SmartPack.github.io/master/asset/pic005.png"
-     alt=""
-     height="80">](https://www.paypal.me/menacherry/)
 
 ## License
 

@@ -41,7 +41,8 @@
             android:tint="?attr/colorAccent"
             android:layout_gravity="center|end"
             android:gravity="center_vertical"
-            android:src="@drawable/ic_save" />
+            android:src="@drawable/ic_save"
+            android:visibility="gone" />
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView

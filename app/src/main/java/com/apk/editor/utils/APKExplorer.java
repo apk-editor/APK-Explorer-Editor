@@ -32,7 +32,7 @@ public class APKExplorer {
     public static boolean isTextFile(String path) {
         return path.endsWith(".txt") || path.endsWith(".xml") || path.endsWith(".json") || path.endsWith(".properties")
                 || path.endsWith(".version") || path.endsWith(".sh") || path.endsWith(".MF") || path.endsWith(".SF")
-                || path.endsWith(".RSA") || path.endsWith(".html");
+                || path.endsWith(".html");
     }
 
     public static boolean isImageFile(String path) {
@@ -45,9 +45,9 @@ public class APKExplorer {
 
     public static String readXMLFromAPK(String apk, String path) {
         try (ApkFile apkFile = new ApkFile(new File(apk))) {
-            String xnkData = apkFile.transBinaryXml(path);
+            String xmlData = apkFile.transBinaryXml(path);
             apkFile.close();
-            return xnkData;
+            return xmlData;
         } catch (IOException ignored) {
         }
         return null;

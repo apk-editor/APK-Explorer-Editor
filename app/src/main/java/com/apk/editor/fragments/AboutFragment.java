@@ -1,7 +1,6 @@
 package com.apk.editor.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,7 +41,10 @@ public class AboutFragment extends Fragment {
         mData.add(new RecycleViewItem(getString(R.string.source_code), getString(R.string.source_code_summary), getResources().getDrawable(R.drawable.ic_github), "https://github.com/apk-editor/APK-Explorer-Editor"));
         mData.add(new RecycleViewItem(getString(R.string.support_group), getString(R.string.support_group_summary), getResources().getDrawable(R.drawable.ic_support), "https://t.me/apkexplorer"));
         mData.add(new RecycleViewItem(getString(R.string.invite_friends), getString(R.string.invite_friends_Summary), getResources().getDrawable(R.drawable.ic_share), null));
-        mData.add(new RecycleViewItem(getString(R.string.donations), getString(R.string.donations_summary), getResources().getDrawable(R.drawable.ic_donate), "https://www.paypal.me/menacherry/"));
+        mData.add(new RecycleViewItem(getString(R.string.credits), getString(R.string.credits_summary), getResources().getDrawable(R.drawable.ic_credits), null));
+        if (APKEditorUtils.isFullVersion(requireActivity())) {
+            mData.add(new RecycleViewItem(getString(R.string.donations), getString(R.string.donations_summary), getResources().getDrawable(R.drawable.ic_donate), "https://www.paypal.me/menacherry/"));
+        }
 
         RecyclerView mRecyclerView = mRootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), APKEditorUtils.getOrientation(requireActivity()) == Configuration.ORIENTATION_LANDSCAPE ? 3 : 2));

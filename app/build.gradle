@@ -6,7 +6,6 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.apk.editor"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 4
@@ -23,6 +22,18 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "release"
+    productFlavors {
+        play {
+            applicationId "com.apk.explorer"
+            dimension "release"
+        }
+        full {
+            applicationId "com.apk.editor"
+            dimension "release"
         }
     }
 

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
+import com.apk.editor.activities.CreditsActivity;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.RecycleViewItem;
 import com.google.android.material.textview.MaterialTextView;
@@ -62,6 +63,9 @@ public class RecycleViewAboutAdapter extends RecyclerView.Adapter<RecycleViewAbo
                 Uri uri = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null);
                 settings.setData(uri);
                 holder.mRVLayout.getContext().startActivity(settings);
+            } else if (position == 4) {
+                Intent credits = new Intent(holder.mRVLayout.getContext(), CreditsActivity.class);
+                holder.mRVLayout.getContext().startActivity(credits);
             } else {
                 Intent share_app = new Intent();
                 share_app.setAction(Intent.ACTION_SEND);

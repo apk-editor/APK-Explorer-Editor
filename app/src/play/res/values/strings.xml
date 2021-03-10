@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name" translatable="false">APK Explorer</string>
+    <string name="about_summary">APK Explorer (AEE), an open-source tool to explore the contents of an installed APK, is strictly made with an aim to inspect installed APK\'s.</string>
+    <string name="share_summary">APK Explorer (AEE) %s can be obtained from Google Play: https://play.google.com/store/apps/details?id=com.apk.explorer</string>
+    <string name="warning_message">Welcome to APK Explorer, a powerful tool to explore the contents of an installed APK!\n\nImportant\nAPK Explorer is strictly made with good intentions. By clicking the \'Accept\' button, you are agreeing to the developer to not use this tool for any kind of illegal or inappropriate activities.</string>
+</resources>

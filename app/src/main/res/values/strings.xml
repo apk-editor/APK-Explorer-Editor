@@ -1,8 +1,5 @@
 <resources>
-    <string name="app_name">APK Explorer &amp; Editor</string>
-
     <string name="about">About</string>
-    <string name="about_summary">APK Explorer &amp; Editor, an open-source tool to explore the contents of an installed APK, is strictly made with an aim to inspect installed APK\'s.</string>
     <string name="accept">Accept</string>
     <string name="apks">APK\'s</string>
     <string name="app_name_short">AEE</string>
@@ -10,6 +7,10 @@
     <string name="apps_exported">Exported APK\'s</string>
     <string name="apps_installed">Installed Apps</string>
     <string name="cancel">Cancel</string>
+    <string name="credits">Credits</string>
+    <string name="credits_message">Want to see your name here? Then, please help me to translate this application!</string>
+    <string name="credits_summary">Credits to contributors</string>
+    <string name="copyright">Copyright: © %s</string>
     <string name="delete">Delete</string>
     <string name="delete_question">Delete %s?</string>
     <string name="dismiss">Dismiss</string>
@@ -43,7 +44,6 @@
     <string name="search">Search…</string>
     <string name="share">Share</string>
     <string name="share_message">Share %s?</string>
-    <string name="share_summary">APK Explorer &amp; Editor (AEE) %s can be obtained from GitHub: https://github.com/apk-editor/APK-Explorer-Editor/releases</string>
     <string name="share_with">Share with</string>
     <string name="sign">Sign</string>
     <string name="sign_question">Export and resign %s with AEE custom key?</string>
@@ -56,7 +56,10 @@
     <string name="split_apk_installer">AEE Split APK Installer</string>
     <string name="support_group">Support Group</string>
     <string name="support_group_summary">Join AEE support group</string>
+    <string name="translate">Translate</string>
     <string name="unknown_file_message">AEE doesn\'t handle \'%s\' at this moment. If you know this file format, you may export this file into device storage and try editing using a supported third-party application. Alternately, you may try to open it as a text file?</string>
+    <string name="unsupported_file">Unsupported file</string>
+    <string name="unsupported_file_arsc">You\'re selected \'resources.arsc\', which is unfortunately impossible for AEE to read.\n\nWhat is resources.arsc?\nresources.arsc is a binary resource file containing the configuration-specific values of an application, such as integers, booleans and strings, as well as references to more complex resources, like UI layouts.\n\nHow to read resources.arsc?\nTools such as Apktool or Android Asset Packaging Tool (AAPT) shall be used to print out the contents of resources.arsc into human-readable format.</string>
+    <string name="unsupported_file_dex">You\'re selected a \'DEX\' (.dex) file, which is unfortunately impossible for AEE to read.\n\nWhat is a DEX file?\nA Dex file has code that is ultimately executed by the Android Runtime. Every APK\'s should have a \'classes.dex\' file, which references any classes or methods used within an app. Essentially, any Activity, Object, or Fragment used within the code base will be transformed into bytes within a Dex file that can be run as an Android app.\n\nHow to read a DEX file?\nA DEX file shall be converted to \'jar\' format and later into \'Java\' file using tools such as \'dex2jar\' and \'JD-GUI\'.</string>
     <string name="version">Version: %s</string>
-    <string name="warning_message">Welcome to APK Explorer &amp; Editor, a powerful tool to explore the contents of an installed APK!\n\nImportant\nAPK Explorer &amp; Editor is strictly made with good intentions. By clicking the \'Accept\' button, you are agreeing to the developer to not use this tool for any kind of illegal or inappropriate activities.</string>
 </resources>

@@ -47,6 +47,10 @@ public class APKEditorUtils {
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES;
     }
 
+    public static boolean isFullVersion(Context context) {
+        return context.getPackageName().equals("com.apk.editor");
+    }
+
     public static int getOrientation(Activity activity) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInMultiWindowMode() ?
                 Configuration.ORIENTATION_PORTRAIT : activity.getResources().getConfiguration().orientation;

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +32,6 @@ public class FilePickerActivity extends AppCompatActivity {
 
     private AsyncTask<Void, Void, List<String>> mLoader;
     private Handler mHandler = new Handler();
-    private LinearLayout mProgressLayout;
     private List<String> mData = new ArrayList<>();
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
@@ -47,7 +45,6 @@ public class FilePickerActivity extends AppCompatActivity {
         AppCompatImageButton mBack = findViewById(R.id.back);
         mTitle = findViewById(R.id.title);
         mRecyclerView = findViewById(R.id.recycler_view);
-        mProgressLayout = findViewById(R.id.progress_layout);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, APKExplorer.getSpanCount(this)));
         mRecycleViewAdapter = new RecycleViewFilePickerAdapter(getData());
         mRecyclerView.setAdapter(mRecycleViewAdapter);

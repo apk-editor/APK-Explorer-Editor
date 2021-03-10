@@ -68,9 +68,13 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
         holder.mSettings.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(holder.mSettings.getContext(), v);
             Menu menu = popupMenu.getMenu();
-            menu.add(Menu.NONE, 0, Menu.NONE, R.string.delete);
+            if (APKEditorUtils.isFullVersion(holder.mSettings.getContext())) {
+                menu.add(Menu.NONE, 0, Menu.NONE, R.string.delete);
+            }
             menu.add(Menu.NONE, 1, Menu.NONE, R.string.export);
-            menu.add(Menu.NONE, 2, Menu.NONE, R.string.replace);
+            if (APKEditorUtils.isFullVersion(holder.mSettings.getContext())) {
+                menu.add(Menu.NONE, 2, Menu.NONE, R.string.replace);
+            }
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case 0:

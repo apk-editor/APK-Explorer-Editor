@@ -63,6 +63,10 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
                 .setPositiveButton(getString(R.string.save), (dialog, id) -> APKData.prepareSignedAPK(requireActivity()))
                 .show());
 
+        if (APKEditorUtils.isFullVersion(requireActivity())) {
+            mSave.setVisibility(View.VISIBLE);
+        }
+
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), APKExplorer.getSpanCount(requireActivity())));
 
         try {
@@ -86,8 +90,17 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
                 Intent textView = new Intent(requireActivity(), TextViewActivity.class);
                 textView.putExtra(TextViewActivity.PATH_INTENT, mData.get(position));
                 startActivity(textView);
+            } else if (mData.get(position).endsWith(".dex") || mData.get(position).endsWith("resources.arsc")) {
+                new MaterialAlertDialogBuilder(requireActivity())
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setTitle(R.string.unsupported_file)
+                        .setMessage(getString(mData.get(position).endsWith("resources.arsc") ? R.string.unsupported_file_arsc
+                                :R.string.unsupported_file_dex))
+                        .setPositiveButton(getString(R.string.cancel), (dialog, id) -> {
+                        }).show();
             } else {
                 new MaterialAlertDialogBuilder(requireActivity())
+                        .setIcon(R.mipmap.ic_launcher)
                         .setTitle(R.string.app_name)
                         .setMessage(getString(R.string.unknown_file_message, new File(mData.get(position)).getName()))
                         .setNeutralButton(getString(R.string.cancel), (dialog, id) -> {
