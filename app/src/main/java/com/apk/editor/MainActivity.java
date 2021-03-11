@@ -1,10 +1,12 @@
 package com.apk.editor;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.apk.editor.activities.DocumentationActivity;
 import com.apk.editor.fragments.ApplicationsFragment;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.BottomNavView;
@@ -42,9 +44,10 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .setPositiveButton(getString(R.string.accept), (dialog, id) -> {
                         APKEditorUtils.saveBoolean("welcome_message", true, this);
+                        Intent documentation = new Intent(this, DocumentationActivity.class);
+                        startActivity(documentation);
                     }).show();
         }
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener

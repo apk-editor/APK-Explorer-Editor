@@ -17,9 +17,9 @@ AEE currently supports the following tasks
 * Very basic editing, only on text files at this moment.
 * Delete or replaces resources.
 * Create signed APK's/App Bundles after the above-mentioned processes.
-* Resign APK's/bundles with AEE custom key).
+* Resign APK's/bundles with AEE custom key.
 * Install exported & resigned Split APK's
-* Share an exported & resigned APK (long click).
+* Share an exported & resigned APK.
 
 ## Download
 [<img src="https://i.ibb.co/q0mdc4Z/get-it-on-github.png"
@@ -36,8 +36,11 @@ AEE currently supports the following tasks
 * [Aefyr](https://github.com/Aefyr) - PseudoApkSigner & SAI
 * [Hsiafan](https://github.com/hsiafan/) - APK parser
 * [Srikanth Reddy Lingala](https://github.com/srikanth-lingala) - zip4j
-* [nkalra0123](https://github.com/nkalra0123/) - Split App Share & Install
+* [Nitin Kalra](https://github.com/nkalra0123/) - Split App Share & Install
 * [Gospel Gilbert](https://t.me/gilgreat0295) - App Icon
+
+## Translations
+Please help me to translate this application via [POEditor](https://poeditor.com/join/project?hash=QztabxONOp). You may also translate after downloading the original language string available [here](app/src/main/res/values/strings.xml).
 
 ## License
 

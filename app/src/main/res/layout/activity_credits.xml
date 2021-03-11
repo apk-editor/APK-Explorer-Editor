@@ -24,7 +24,6 @@
                     android:layout_marginEnd="10dp" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
@@ -32,6 +31,7 @@
                     android:layout_marginStart="30dp"
                     android:textColor="?attr/colorAccent"
                     android:text="@string/credits"
+                    android:textStyle="bold"
                     android:textSize="18sp"
                     android:padding="10dp" />
         </FrameLayout>
@@ -44,7 +44,6 @@
             android:gravity="center" >
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/app_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@mipmap/ic_launcher_round"

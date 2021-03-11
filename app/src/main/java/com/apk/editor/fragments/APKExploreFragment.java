@@ -1,5 +1,6 @@
 package com.apk.editor.fragments;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +25,7 @@ import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.Projects;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -106,10 +109,16 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
                         .setNeutralButton(getString(R.string.cancel), (dialog, id) -> {
                         })
                         .setNegativeButton(getString(R.string.export), (dialog, id) -> {
-                            APKEditorUtils.mkdir(requireActivity().getExternalFilesDir("") + "/" + APKExplorer.mAppID);
-                            APKEditorUtils.copy(mData.get(position), requireActivity().getExternalFilesDir("") + "/" + APKExplorer.mAppID + "/" + new File(mData.get(position)).getName());
+                            if (!APKEditorUtils.isWritePermissionGranted(requireActivity())) {
+                                ActivityCompat.requestPermissions(requireActivity(), new String[] {
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                                APKEditorUtils.snackbar(requireActivity().findViewById(android.R.id.content), getString(R.string.permission_denied_message));
+                                return;
+                            }
+                            APKEditorUtils.mkdir(Projects.getExportPath() + "/" + APKExplorer.mAppID);
+                            APKEditorUtils.copy(mData.get(position), Projects.getExportPath() + "/" + APKExplorer.mAppID + "/" + new File(mData.get(position)).getName());
                             new MaterialAlertDialogBuilder(requireActivity())
-                                    .setMessage(getString(R.string.export_complete_message, requireActivity().getExternalFilesDir("") + "/" + APKExplorer.mAppID))
+                                    .setMessage(getString(R.string.export_complete_message, Projects.getExportPath() + "/" + APKExplorer.mAppID))
                                     .setPositiveButton(getString(R.string.cancel), (dialog2, id2) -> {
                                     }).show();
                         })

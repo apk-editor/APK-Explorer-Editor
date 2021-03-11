@@ -15,6 +15,8 @@
     <string name="delete">Delete</string>
     <string name="delete_question">Delete %s?</string>
     <string name="dismiss">Dismiss</string>
+    <string name="documentation">Documentation</string>
+    <string name="documentation_summary">Check out AEE documentation</string>
     <string name="donations">Donations</string>
     <string name="donations_summary">Support the development of AEE</string>
     <string name="export">Export</string>
@@ -22,8 +24,6 @@
     <string name="export_complete_message">The selected resource is successfully exported into \'%s\'!</string>
     <string name="exploring">Exploring %s…</string>
     <string name="explore_error_status">Failed to explore %s!</string>
-    <string name="external_storage_permission_message">Please Note: Latest Android (R or newer) versions requires \'MANAGE_EXTERNAL_STORAGE\' permission to be granted to get access to files on external storage. Hence, to get this feature working on devices running Android R or newer, please execute the following command from an ADB shell.</string>
-    <string name="got_it">Got It</string>
     <string name="install">Install</string>
     <string name="install_question">Install %s?</string>
     <string name="installation_result">Installation completed! Result: %s</string>
@@ -32,11 +32,16 @@
     <string name="invite_friends_Summary">Invite your friends to try AEE</string>
     <string name="last_modified">Last Modified: %s</string>
     <string name="open_as_text">Open as text</string>
+    <string name="permission_denied_message">Permission denied for writing to storage!</string>
     <string name="preparing_apk">Preparing %s APK…</string>
     <string name="press_back">Press Back Button Again to close APK Explorer!</string>
     <string name="projects">Projects</string>
+    <string name="rate_us">Rate App</string>
+    <string name="rate_us_Summary">Rate or/and Review AEE in Google Play</string>
     <string name="replace">Replace</string>
     <string name="replace_question">Replace %s with</string>
+    <string name="report_issue">Report Issue</string>
+    <string name="report_issue_summary">Raise an issue at GitHub</string>
     <string name="save">Save</string>
     <string name="save_projects_question">Save project for future use?</string>
     <string name="save_question">Save changes made on this file?</string>

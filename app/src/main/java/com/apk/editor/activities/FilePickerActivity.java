@@ -97,7 +97,7 @@ public class FilePickerActivity extends AppCompatActivity {
 
     private File[] getFilesList() {
         if (APKExplorer.mFilePath == null) {
-            APKExplorer.mFilePath = Environment.getExternalStorageDirectory().toString();;
+            APKExplorer.mFilePath = Environment.getExternalStorageDirectory().toString();
         }
         if (!APKExplorer.mFilePath.endsWith(File.separator)) {
             APKExplorer.mFilePath = APKExplorer.mFilePath + File.separator;

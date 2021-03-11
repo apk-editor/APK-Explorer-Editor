@@ -1,6 +1,7 @@
 package com.apk.editor.utils;
 
 import android.content.Context;
+import android.os.Environment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class Projects {
     public static List<String> getData(Context context) {
         mData.clear();
         for (File mFile : Objects.requireNonNull(new File(context.getCacheDir().toString()).listFiles())) {
-            if (mFile.exists() && mFile.isDirectory()) {
+            if (mFile.exists() && mFile.isDirectory() && !mFile.getName().equals("WebView")) {
                 if (mSearchText == null) {
                     mData.add(mFile.getAbsolutePath());
                 } else if (mFile.getName().toLowerCase().contains(mSearchText.toLowerCase())) {
@@ -27,6 +28,10 @@ public class Projects {
             }
         }
         return mData;
+    }
+
+    public static String getExportPath() {
+        return Environment.getExternalStorageDirectory().toString() + "/AEE";
     }
 
 }

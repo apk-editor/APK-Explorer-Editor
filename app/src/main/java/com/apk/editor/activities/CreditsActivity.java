@@ -2,7 +2,6 @@ package com.apk.editor.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -138,7 +137,7 @@ public class CreditsActivity extends AppCompatActivity {
 
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), getString(R.string.credits_message), Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(R.string.translate, v -> {
-            APKEditorUtils.launchUrl("https://poeditor.com/", this);
+            APKEditorUtils.launchUrl("https://poeditor.com/join/project?hash=QztabxONOp", this);
             snackbar.dismiss();
         });
         snackbar.show();
