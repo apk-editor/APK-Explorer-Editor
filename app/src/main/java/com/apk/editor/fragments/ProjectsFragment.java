@@ -124,6 +124,7 @@ public class ProjectsFragment extends Fragment {
                             super.onPreExecute();
                             mRecyclerView.setVisibility(View.GONE);
                             mProgress.setVisibility(View.VISIBLE);
+                            mRecyclerView.removeAllViews();
                         }
 
                         @Override
@@ -136,6 +137,7 @@ public class ProjectsFragment extends Fragment {
                         protected void onPostExecute(List<String> recyclerViewItems) {
                             super.onPostExecute(recyclerViewItems);
                             mRecyclerView.setAdapter(mRecycleViewAdapter);
+                            mRecycleViewAdapter.notifyDataSetChanged();
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mProgress.setVisibility(View.GONE);
                             mLoader = null;

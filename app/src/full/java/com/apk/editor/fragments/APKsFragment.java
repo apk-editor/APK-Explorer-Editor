@@ -67,7 +67,7 @@ public class APKsFragment extends Fragment {
             }
         });
 
-        loadApps(requireActivity());
+        loadAPKs(requireActivity());
 
         mSearchWord.addTextChangedListener(new TextWatcher() {
             @Override
@@ -81,7 +81,7 @@ public class APKsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 APKData.mSearchText = s.toString().toLowerCase();
-                loadApps(requireActivity());
+                loadAPKs(requireActivity());
             }
         });
 
@@ -112,7 +112,7 @@ public class APKsFragment extends Fragment {
         return mRootView;
     }
 
-    private void loadApps(Activity activity) {
+    private void loadAPKs(Activity activity) {
         if (mLoader == null) {
             mHandler.postDelayed(new Runnable() {
                 @SuppressLint("StaticFieldLeak")
@@ -124,6 +124,7 @@ public class APKsFragment extends Fragment {
                             super.onPreExecute();
                             mRecyclerView.setVisibility(View.GONE);
                             mProgress.setVisibility(View.VISIBLE);
+                            mRecyclerView.removeAllViews();
                         }
 
                         @Override
@@ -136,6 +137,7 @@ public class APKsFragment extends Fragment {
                         protected void onPostExecute(List<String> recyclerViewItems) {
                             super.onPostExecute(recyclerViewItems);
                             mRecyclerView.setAdapter(mRecycleViewAdapter);
+                            mRecycleViewAdapter.notifyDataSetChanged();
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mProgress.setVisibility(View.GONE);
                             mLoader = null;
