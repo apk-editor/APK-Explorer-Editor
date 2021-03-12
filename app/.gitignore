@@ -2,6 +2,6 @@
 /release
 /full
 /play
-/src/full/assets
+/src/full/assets/APKEditor*
 /src/main/gen
 *.jks
