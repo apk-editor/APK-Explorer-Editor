@@ -34,6 +34,7 @@
     <string name="open_as_text">Open as text</string>
     <string name="permission_denied_message">Permission denied for writing to storage!</string>
     <string name="preparing_apk">Preparing %s APK…</string>
+    <string name="preparing_bundle">Preparing app bundle for sharing…</string>
     <string name="press_back">Press Back Button Again to close APK Explorer!</string>
     <string name="projects">Projects</string>
     <string name="rate_us">Rate App</string>

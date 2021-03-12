@@ -3,9 +3,14 @@ package com.apk.editor.utils;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 
+import androidx.core.content.FileProvider;
+
+import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.apksigner.ApkSigner;
 
@@ -202,6 +207,47 @@ public class APKData {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
                 }
+            }
+        }.execute();
+    }
+
+    public static void shareAppBundle(String name, String path, Context context) {
+        new AsyncTask<Void, Void, Void>() {
+            private ProgressDialog mProgressDialog;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                mProgressDialog = new ProgressDialog(context);
+                mProgressDialog.setMessage(context.getString(R.string.preparing_bundle));
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+                if (!APKEditorUtils.exist(Projects.getExportPath())) {
+                    APKEditorUtils.mkdir(Projects.getExportPath());
+                }
+                new File(Projects.getExportPath(), name + ".xapk").delete();
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                APKEditorUtils.zip(new File(path), new File(Projects.getExportPath(), name + ".xapk"));
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                try {
+                    mProgressDialog.dismiss();
+                } catch (IllegalArgumentException ignored) {
+                }
+                Uri uriFile = FileProvider.getUriForFile(context,
+                        BuildConfig.APPLICATION_ID + ".provider", new File(Projects.getExportPath(), name + ".xapk"));
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("application/zip");
+                share.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_summary, BuildConfig.VERSION_NAME));
+                share.putExtra(Intent.EXTRA_STREAM, uriFile);
+                share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                context.startActivity(Intent.createChooser(share, context.getString(R.string.share_with)));
             }
         }.execute();
     }

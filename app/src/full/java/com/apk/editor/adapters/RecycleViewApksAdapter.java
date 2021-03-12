@@ -84,6 +84,16 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                             data.remove(position);
                             notifyDataSetChanged();
                         }).show());
+                holder.mCard.setOnLongClickListener(v -> {
+                    new MaterialAlertDialogBuilder(holder.mCard.getContext())
+                            .setMessage(holder.mCard.getContext().getString(R.string.share_message, new File(data.get(position)).getName()))
+                            .setNegativeButton(holder.mCard.getContext().getString(R.string.cancel), (dialog, id) -> {
+                            })
+                            .setPositiveButton(holder.mCard.getContext().getString(R.string.share), (dialog, id) -> {
+                                APKData.shareAppBundle(new File(data.get(position)).getName(), data.get(position), holder.mCard.getContext());
+                            }).show();
+                    return false;
+                });
             } else {
                 holder.mAppIcon.setImageDrawable(APKData.getAppIcon(data.get(position), holder.mAppName.getContext()));
                 if (APKData.mSearchText != null && APKData.getAppName(data.get(position), holder.mAppName.getContext()).toString().toLowerCase().contains(APKData.mSearchText)) {
