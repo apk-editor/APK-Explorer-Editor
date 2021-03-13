@@ -70,9 +70,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
-                android:hint="@string/search"
+                android:layout_height="match_parent"
                 android:textColorHint="@null"
                 android:textSize="15sp" />
         </androidx.core.widget.NestedScrollView>

@@ -1,6 +1,7 @@
 package com.apk.editor.activities;
 
 import android.Manifest;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
@@ -40,6 +41,8 @@ public class TextViewActivity extends AppCompatActivity {
         AppCompatEditText mText = findViewById(R.id.text);
 
         String path = getIntent().getStringExtra(PATH_INTENT);
+
+        mText.setTextColor(APKEditorUtils.isDarkTheme(this) ? Color.WHITE : Color.BLACK);
 
         assert path != null;
         mTitle.setText(new File(path).getName());
