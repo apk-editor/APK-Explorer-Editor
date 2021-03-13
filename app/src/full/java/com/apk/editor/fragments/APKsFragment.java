@@ -24,9 +24,11 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.RecycleViewApksAdapter;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
+import java.util.Objects;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -51,10 +53,46 @@ public class APKsFragment extends Fragment {
         mSearchWord = mRootView.findViewById(R.id.search_word);
         mProgress = mRootView.findViewById(R.id.progress_layout);
         AppCompatImageButton mSearchButton = mRootView.findViewById(R.id.search_button);
+        TabLayout mTabLayout = mRootView.findViewById(R.id.tab_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
         mAppTitle.setText(getString(R.string.apps_exported));
+        mTabLayout.setVisibility(View.VISIBLE);
+
+        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.apks)));
+        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.bundles)));
+
+        Objects.requireNonNull(mTabLayout.getTabAt(getTabPosition(requireActivity()))).select();
+
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                String mStatus = APKEditorUtils.getString("apkTypes", "apks", requireActivity());
+                switch (tab.getPosition()) {
+                    case 0:
+                        if (!mStatus.equals("apks")) {
+                            APKEditorUtils.saveString("apkTypes", "apks", requireActivity());
+                            loadAPKs(requireActivity());
+                        }
+                        break;
+                    case 1:
+                        if (!mStatus.equals("bundles")) {
+                            APKEditorUtils.saveString("apkTypes", "bundles", requireActivity());
+                            loadAPKs(requireActivity());
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
 
         mSearchButton.setOnClickListener(v -> {
             if (mSearchWord.getVisibility() == View.VISIBLE) {
@@ -110,6 +148,15 @@ public class APKsFragment extends Fragment {
         });
 
         return mRootView;
+    }
+
+    private int getTabPosition(Activity activity) {
+        String mStatus = APKEditorUtils.getString("apkTypes", "apks", activity);
+        if (mStatus.equals("bundles")) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     private void loadAPKs(Activity activity) {

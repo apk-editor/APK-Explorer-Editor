@@ -30,18 +30,21 @@ public class APKData {
     public static List<String> getData(Context context) {
         mData.clear();
         for (File mFile : getAPKList(context)) {
-            if (mFile.exists() && mFile.isDirectory() && APKEditorUtils.exist(mFile.toString() + "/base.apk")) {
-                if (mSearchText == null) {
-                    mData.add(mFile.getAbsolutePath());
-                } else if (mFile.getAbsolutePath().toLowerCase().contains(mSearchText.toLowerCase())) {
-                    mData.add(mFile.getAbsolutePath());
+            if (APKEditorUtils.getString("apkTypes", "apks", context).equals("bundles")) {
+                if (mFile.exists() && mFile.isDirectory() && APKEditorUtils.exist(mFile.toString() + "/base.apk")) {
+                    if (mSearchText == null) {
+                        mData.add(mFile.getAbsolutePath());
+                    } else if (mFile.getAbsolutePath().toLowerCase().contains(mSearchText.toLowerCase())) {
+                        mData.add(mFile.getAbsolutePath());
+                    }
                 }
-            }
-            if (mFile.exists() && mFile.getName().endsWith(".apk")) {
-                if (mSearchText == null) {
-                    mData.add(mFile.getAbsolutePath());
-                } else if (getAppName(mFile.getAbsolutePath(), context).toString().toLowerCase().contains(mSearchText.toLowerCase())) {
-                    mData.add(mFile.getAbsolutePath());
+            } else {
+                if (mFile.exists() && mFile.getName().endsWith(".apk")) {
+                    if (mSearchText == null) {
+                        mData.add(mFile.getAbsolutePath());
+                    } else if (getAppName(mFile.getAbsolutePath(), context).toString().toLowerCase().contains(mSearchText.toLowerCase())) {
+                        mData.add(mFile.getAbsolutePath());
+                    }
                 }
             }
         }

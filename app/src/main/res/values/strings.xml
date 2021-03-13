@@ -7,6 +7,7 @@
     <string name="apps">Apps</string>
     <string name="apps_exported">Exported APK\'s</string>
     <string name="apps_installed">Installed Apps</string>
+    <string name="bundles">Bundles</string>
     <string name="cancel">Cancel</string>
     <string name="credits">Credits</string>
     <string name="credits_message">Want to see your name here? Then, please help me to translate this application!</string>
