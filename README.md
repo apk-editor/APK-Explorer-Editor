@@ -2,7 +2,7 @@
 
 ![AEE](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png?raw=true)
 
-[![](https://img.shields.io/badge/APK%20Explorer%20&%20Editor%20(AEE)-v0.5-green)](https://github.com/apk-editor/APK-Explorer-Editor/releases)
+[![](https://img.shields.io/badge/APK%20Explorer%20&%20Editor%20(AEE)-v0.6-green)](https://github.com/apk-editor/APK-Explorer-Editor/releases)
 ![](https://img.shields.io/github/downloads/apk-editor/APK-Explorer-Editor/total)
 ![](https://img.shields.io/github/languages/top/apk-editor/APK-Explorer-Editor)
 ![](https://img.shields.io/github/contributors/apk-editor/APK-Explorer-Editor)
@@ -22,9 +22,10 @@ AEE currently supports the following tasks
 * Share an exported & resigned APK.
 
 ## Download
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+     alt="" height="80">](https://play.google.com/store/apps/details?id=com.apk.explorer)
 [<img src="https://i.ibb.co/q0mdc4Z/get-it-on-github.png"
-          alt=""
-          height="80">](https://github.com/apk-editor/APK-Explorer-Editor/releases)
+                    alt="" height="80">](https://github.com/apk-editor/APK-Explorer-Editor/releases)
 
 ## Support
 [<img src="https://github.com/SmartPack/SmartPack.github.io/blob/master/asset/pic006.png?raw=true"
