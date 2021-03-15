@@ -47,6 +47,7 @@ public class AboutFragment extends Fragment {
         if (APKEditorUtils.isFullVersion(requireActivity())) {
             mData.add(new RecycleViewItem(getString(R.string.donations), getString(R.string.donations_summary), getResources().getDrawable(R.drawable.ic_donate), "https://www.paypal.me/menacherry/"));
         } else {
+            mData.add(new RecycleViewItem(getString(R.string.privacy_policy), getString(R.string.privacy_policy_summary), getResources().getDrawable(R.drawable.ic_privacy), "https://github.com/apk-editor/APK-Explorer-Editor/blob/master/privacy-policy.md"));
             mData.add(new RecycleViewItem(getString(R.string.rate_us), getString(R.string.rate_us_Summary), getResources().getDrawable(R.drawable.ic_rate), "https://play.google.com/store/apps/details?id=com.apk.explorer"));
         }
 

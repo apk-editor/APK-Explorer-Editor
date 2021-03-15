@@ -37,8 +37,10 @@
     <string name="preparing_apk">Preparing %s APK…</string>
     <string name="preparing_bundle">Preparing app bundle for sharing…</string>
     <string name="press_back">Press Back Button Again to close APK Explorer!</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy_summary">Read Privacy Policy</string>
     <string name="projects">Projects</string>
-    <string name="rate_us">Rate App</string>
+    <string name="rate_us">Rate AEE</string>
     <string name="rate_us_Summary">Rate or/and Review AEE in Google Play</string>
     <string name="replace">Replace</string>
     <string name="replace_question">Replace %s with</string>
