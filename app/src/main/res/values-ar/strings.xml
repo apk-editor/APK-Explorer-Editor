@@ -1,0 +1,87 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="about">"حول"</string>
+    <string name="accept">"قبول"</string>
+    <string name="all">"الكل"</string>
+    <string name="apks">"التطبيقات"</string>
+    <string name="apps">"التطبيقات"</string>
+    <string name="apps_exported">"التطبيقات المصدرة"</string>
+    <string name="apps_installed">"التطبيقات المثبتة"</string>
+    <string name="cancel">"إلغاء"</string>
+    <string name="credits">"ثناء"</string>
+    <string name="credits_message">"هل تريد رؤية اسمك هنا؟ إذن، يرجى مساعدتي في ترجمة هذا التطبيق!"</string>
+    <string name="credits_summary">"ثناء للمساهمين"</string>
+    <string name="copyright">"حقوق النشر: © %s"</string>
+    <string name="delete">"حذف"</string>
+    <string name="delete_question">"حذف %s؟"</string>
+    <string name="dismiss">"رفض"</string>
+    <string name="documentation">"الوثيقة"</string>
+    <string name="documentation_summary">"تحقق من وثيقة AEE"</string>
+    <string name="donations">"التبرعات"</string>
+    <string name="donations_summary">"ادعم تطوير AEE"</string>
+    <string name="export">"تصدير"</string>
+    <string name="export_question">"تصدير إلى ذاكرة تخزين الهاتف"</string>
+    <string name="export_complete_message">"تم تصدير المورد المحدد بنجاح إلى '%s'!"</string>
+    <string name="exploring">"استكشاف %s…"</string>
+    <string name="explore_error_status">"فشل استكشاف %s!"</string>
+    <string name="install">"تثبيت"</string>
+    <string name="install_question">"تثبيت %s"</string>
+    <string name="installation_result">"تم التثبيت! النتيجة: %s"</string>
+    <string name="installing">"يتم التثبيت %s…"</string>
+    <string name="invite_friends">"دعوة أصدقاء"</string>
+    <string name="invite_friends_Summary">"ادعو أصدقاءك لتجربة AEE"</string>
+    <string name="last_modified">"آخر تعديل: %s"</string>
+    <string name="open_as_text">"افتح كنص"</string>
+    <string name="permission_denied_message">"تم رفض الإذن بالكتابة إلى ذاكرة التخزين!"</string>
+    <string name="preparing_apk">"يتم إعداد تطبيق %s…"</string>
+    <string name="press_back">"اضغط زر الرجوع مرة أخرى لإغلاق متصفح التطبيق!"</string>
+    <string name="projects">"المشاريع"</string>
+    <string name="rate_us">"تقييم التطبيق"</string>
+    <string name="rate_us_Summary">"تقييم أو/و مراجعة AEE على متجر جوجل"</string>
+    <string name="replace">"استبدال"</string>
+    <string name="replace_question">"استبدل %s مع"</string>
+    <string name="report_issue">"إبلاغ عن مشكلة"</string>
+    <string name="report_issue_summary">"رفع مشكلة إلى GitHub"</string>
+    <string name="save">"حفظ"</string>
+    <string name="save_projects_question">"هل تريد حفظ المشروع للاستخدام لاحقًا؟"</string>
+    <string name="save_question">"حفظ التغييرات المجراة على هذا الملف؟"</string>
+    <string name="save_apk_message">"هل تريد إعداد ملف تطبيق موقع بالتعديلات الحالية؟"</string>
+    <string name="sdcard">"الذاكرة الخارجية"</string>
+    <string name="search">"بحث…"</string>
+    <string name="share">"مشاركة"</string>
+    <string name="share_message">"مشاركة %s؟"</string>
+    <string name="share_with">"مشاركة مع"</string>
+    <string name="sign">"توقيع"</string>
+    <string name="sign_question">"تصدير وإعادة توقيع %s بـ مفتاح AEE المخصص"</string>
+    <string name="signature_error">"التوقيع غير مطابق!"</string>
+    <string name="signature_error_summary">"%s بتوقيع مختلف مثبت مسبقًا على جهازك! الرجاء حذفه أولًا لتثبيت هذا الإصدار."</string>
+    <string name="signing">"يتم التوقيع %s…"</string>
+    <string name="size">"الحجم: %s"</string>
+    <string name="source_code">"الشفرة المصدرية"</string>
+    <string name="source_code_summary">"تحقق من الشفرة المصدرية لـ AEE"</string>
+    <string name="split_apk_installer">"مثبت التطبيقات المنفصلة AEE"</string>
+    <string name="support_group">"مجموعة الدعم"</string>
+    <string name="support_group_summary">"انضم لمجموعة دعم AEE"</string>
+    <string name="system">"النظام"</string>
+    <string name="translate">"ترجمة"</string>
+    <string name="unknown_file_message">"لا يتعامل AEE مع '%s' في الوقت الحالي. إذا كنت تعرف تنسيق الملف هذا، فيمكنك تصدير هذا الملف إلى ذاكرة تخزين الجهاز ومحاولة التعديل باستخدام تطبيق آخر مدعوم. كبديل، يمكنك محاولة فتحه كملف نصي؟"</string>
+    <string name="unsupported_file">"ملف غير مدعوم"</string>
+    <string name="unsupported_file_arsc">"لقد حددت \"resources.arsc\"، والتي للأسف من المستحيل على AEE قراءتها.
+
+ ما هو Resources.arsc؟
+ resources.arsc هو ملف موارد ثنائي يحتوي على القيم الخاصة بالتكوين لتطبيق م ، مثل الأعداد الصحيحة، القيم المنطقية والسلاسل، بالإضافة إلى مراجع إلى موارد أكثر تعقيدًا، مثل تخطيطات واجهة المستخدم.
+
+ كيف قراءة Resources.arsc؟
+ يجب استخدام أداة مثل Apktool أو Android Asset Packaging Tool (AAPT) لطباعة محتويات Resources.arsc إلى تنسيق يمكن للبشر قراءته."</string>
+    <string name="unsupported_file_dex">"لقد حددت ملف \"DEX\" (.dex)، والذي للأسف يستحيل على AEE قراءته.
+
+ ما هو ملف DEX؟
+ يحتوي ملف Dex على شفرة يتم تنفيذها في النهاية بواسطة Android Runtime. يجب أن يحتوي كل ملف APK على ملف \"class.dex\"، والذي يشير إلى أي class أو طرق مستخدمة داخل التطبيق. بشكل أساسي، سيتم تحويل أي نشاط أو كائن أو جزء مستخدم داخل قاعدة التعليمات البرمجية إلى بايت داخل ملف Dex يمكن تشغيله كتطبيق أندرويد.
+
+ كيف تقرأ ملف DEX؟
+ يجب تحويل ملف DEX إلى تنسيق \"jar\" ولاحقًا إلى ملف \"Java\" باستخدام أدوات مثل \"dex2jar\" و \"JD-GUI\"."</string>
+    <string name="user">"المستخدم"</string>
+    <string name="version">"الإصدار: %s"</string>
+    <string name="bundles">"الحزم"</string>
+    <string name="preparing_bundle">"يتم إعداد حزمة التطبيق للمشاركة…"</string>
+</resources>

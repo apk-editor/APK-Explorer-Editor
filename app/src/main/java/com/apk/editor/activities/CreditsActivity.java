@@ -50,6 +50,7 @@ public class CreditsActivity extends AppCompatActivity {
         }
         mData.add(new RecycleViewItem("sunilpaulmathew", "Package Manager", "https://github.com/SmartPack/PackageManager"));
         mData.add(new RecycleViewItem("Gospel Gilbert", "App Icon", "https://t.me/gilgreat0295"));
+        mData.add(new RecycleViewItem("Mohammed Qubati", "Arabic Translation", "https://t.me/Alqubati_MrK"));
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         RecycleViewAdapter mRecycleViewAdapter = new RecycleViewAdapter(mData);
