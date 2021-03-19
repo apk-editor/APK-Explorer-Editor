@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.view.inputmethod.InputMethodManager;
+
+import androidx.appcompat.widget.AppCompatEditText;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,6 +43,21 @@ public class AppData {
             }
         }
         return mData;
+    }
+
+    /*
+     * Based on the work of https://github.com/ZenerDeveloper
+     * Ref: https://github.com/SmartPack/PackageManager/commit/1ac499d0ed8922c02875df029ead80a17f1c40e1
+     */
+    public static void toggleKeyboard(int mode, AppCompatEditText textView, Context context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (mode == 1) {
+            if (textView.requestFocus()) {
+                imm.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+            }
+        } else {
+            imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+        }
     }
 
     public static PackageManager getPackageManager(Context context) {

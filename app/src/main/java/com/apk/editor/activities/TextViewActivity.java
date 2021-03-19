@@ -3,6 +3,8 @@ package com.apk.editor.activities;
 import android.Manifest;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -27,31 +29,59 @@ import java.util.Objects;
  */
 public class TextViewActivity extends AppCompatActivity {
 
+    private AppCompatEditText mSearchWord, mText;
+    private MaterialTextView mTitle;
     public static final String PATH_INTENT = "path";
+    private String mPath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_textview);
 
+        mSearchWord = findViewById(R.id.search_word);
         AppCompatImageButton mBack = findViewById(R.id.back);
         AppCompatImageButton mSave = findViewById(R.id.save);
+        AppCompatImageButton mSearch = findViewById(R.id.search);
         AppCompatImageButton mExport = findViewById(R.id.export);
-        MaterialTextView mTitle = findViewById(R.id.title);
-        AppCompatEditText mText = findViewById(R.id.text);
+        mTitle = findViewById(R.id.title);
+        mText = findViewById(R.id.text);
 
-        String path = getIntent().getStringExtra(PATH_INTENT);
+        mPath = getIntent().getStringExtra(PATH_INTENT);
 
         mText.setTextColor(APKEditorUtils.isDarkTheme(this) ? Color.WHITE : Color.BLACK);
 
-        assert path != null;
-        mTitle.setText(new File(path).getName());
-        if (APKExplorer.mAppID != null && path.endsWith(".xml")) {
-            mText.setText(APKExplorer.readXMLFromAPK(AppData.getSourceDir(APKExplorer.mAppID, this), path.replace(
-                    getCacheDir().getPath() + "/" + APKExplorer.mAppID + "/", "")));
-        } else {
-            mText.setText(APKEditorUtils.read(path));
-        }
+        assert mPath != null;
+        mTitle.setText(new File(mPath).getName());
+        loadText(null);
+
+        mSearch.setOnClickListener(v -> {
+            if (mSearchWord.getVisibility() == View.VISIBLE) {
+                mSearchWord.setVisibility(View.GONE);
+                mTitle.setVisibility(View.VISIBLE);
+                AppData.toggleKeyboard(0, mSearchWord, this);
+            } else {
+                mSearchWord.setVisibility(View.VISIBLE);
+                mTitle.setVisibility(View.GONE);
+                AppData.toggleKeyboard(1, mSearchWord, this);
+            }
+        });
+
+        mSearchWord.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                loadText(s.toString());
+
+            }
+        });
 
         mExport.setOnClickListener(v -> {
             if (!APKEditorUtils.isWritePermissionGranted(this)) {
@@ -66,7 +96,7 @@ public class TextViewActivity extends AppCompatActivity {
                     })
                     .setPositiveButton(getString(R.string.export), (dialog, id) -> {
                         APKEditorUtils.mkdir(Projects.getExportPath() + "/" + APKExplorer.mAppID);
-                        APKEditorUtils.copy(path, Projects.getExportPath() + "/" + APKExplorer.mAppID + "/" + new File(path).getName());
+                        APKEditorUtils.copy(mPath, Projects.getExportPath() + "/" + APKExplorer.mAppID + "/" + new File(mPath).getName());
                         new MaterialAlertDialogBuilder(this)
                                 .setMessage(getString(R.string.export_complete_message, Projects.getExportPath() + "/" + APKExplorer.mAppID))
                                 .setPositiveButton(getString(R.string.cancel), (dialog1, id1) -> {
@@ -79,7 +109,7 @@ public class TextViewActivity extends AppCompatActivity {
                     .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                     })
                     .setPositiveButton(getString(R.string.save), (dialog, id) -> {
-                        APKEditorUtils.create(Objects.requireNonNull(mText.getText()).toString(), path);
+                        APKEditorUtils.create(Objects.requireNonNull(mText.getText()).toString(), mPath);
                         finish();
                     }).show());
 
@@ -89,4 +119,38 @@ public class TextViewActivity extends AppCompatActivity {
 
         mBack.setOnClickListener(v -> finish());
     }
+
+    private void loadText(String searchText) {
+        String text;
+        if (APKExplorer.mAppID != null && mPath.endsWith(".xml")) {
+            text = APKExplorer.readXMLFromAPK(AppData.getSourceDir(APKExplorer.mAppID, this), mPath.replace(
+                    getCacheDir().getPath() + "/" + APKExplorer.mAppID + "/", ""));
+        } else {
+            text = APKEditorUtils.read(mPath);
+        }
+        StringBuilder sb = new StringBuilder();
+        if (searchText != null) {
+            if (text == null) return;
+            for (String line : text.split("\\r?\\n")) {
+                if (line.contains(searchText)) {
+                    sb.append(line).append("\n");
+                }
+            }
+            text = sb.toString();
+        }
+        mText.setText(searchText == null ? text : APKEditorUtils.fromHtml(text.replace(searchText,
+                "<b><i><font color=\"" + Color.RED + "\">" + searchText + "</font></i></b>")));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mSearchWord.getVisibility() == View.VISIBLE) {
+            mSearchWord.setVisibility(View.GONE);
+            mTitle.setVisibility(View.VISIBLE);
+            mSearchWord.setText(null);
+            return;
+        }
+        super.onBackPressed();
+    }
+
 }
