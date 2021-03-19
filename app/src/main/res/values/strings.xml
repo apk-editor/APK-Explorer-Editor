@@ -1,9 +1,9 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="about">About</string>
     <string name="accept">Accept</string>
     <string name="all">All</string>
     <string name="apks">APK\'s</string>
-    <string name="app_name_short">AEE</string>
+    <string name="app_name_short" translatable="false">AEE</string>
     <string name="apps">Apps</string>
     <string name="apps_exported">Exported APK\'s</string>
     <string name="apps_installed">Installed Apps</string>
@@ -39,6 +39,8 @@
     <string name="press_back">Press Back Button Again to close APK Explorer!</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_policy_summary">Read Privacy Policy</string>
+    <string name="private_key">Private Key</string>
+    <string name="private_key_summary">Select custom Private key</string>
     <string name="projects">Projects</string>
     <string name="rate_us">Rate AEE</string>
     <string name="rate_us_Summary">Rate or/and Review AEE in Google Play</string>
@@ -46,12 +48,15 @@
     <string name="replace_question">Replace %s with</string>
     <string name="report_issue">Report Issue</string>
     <string name="report_issue_summary">Raise an issue at GitHub</string>
+    <string name="rsa_template">RSA Template</string>
+    <string name="rsa_template_summary">Select custom RSA template</string>
     <string name="save">Save</string>
     <string name="save_projects_question">Save project for future use?</string>
     <string name="save_question">Save changes made on this file?</string>
     <string name="save_apk_message">Do you want to prepare a signed APK with the current modifications?</string>
     <string name="sdcard">SDCard</string>
     <string name="search">Search…</string>
+    <string name="select">Select</string>
     <string name="share">Share</string>
     <string name="share_message">Share %s?</string>
     <string name="share_with">Share with</string>
@@ -60,6 +65,10 @@
     <string name="signature_error">Signature doesn\'t match!</string>
     <string name="signature_error_summary">%s with a different signature is already installed in your device! Please remove it first to install this version.</string>
     <string name="signing">Signing %s…</string>
+    <string name="signing_title">APK Signing</string>
+    <string name="signing_message">AEE uses PseudoApkSigner library by Aefyr to sign APK\'s. As a result, AEE requires a private key in pk8 format as well as an RSA template file created from the same key. Click here to read more about creating a private key and RSA template!</string>
+    <string name="signing_question">Use \'%s\' as the new</string>
+    <string name="signing_summary">Configure APK signing</string>
     <string name="size">Size: %s</string>
     <string name="source_code">Source Code</string>
     <string name="source_code_summary">Checkout the source code of AEE</string>

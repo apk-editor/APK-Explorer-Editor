@@ -6,6 +6,7 @@
 
     <application>
         <activity android:name=".activities.InstallerActivity" />
+        <activity android:name=".activities.APKSignActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

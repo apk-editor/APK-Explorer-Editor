@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
+import com.apk.editor.activities.APKSignActivity;
 import com.apk.editor.activities.CreditsActivity;
 import com.apk.editor.activities.DocumentationActivity;
 import com.apk.editor.utils.APKEditorUtils;
@@ -70,6 +71,9 @@ public class RecycleViewAboutAdapter extends RecyclerView.Adapter<RecycleViewAbo
             } else if (position == 6) {
                 Intent credits = new Intent(holder.mRVLayout.getContext(), CreditsActivity.class);
                 holder.mRVLayout.getContext().startActivity(credits);
+            } else if (position == 7) {
+                Intent signing = new Intent(holder.mRVLayout.getContext(), APKSignActivity.class);
+                holder.mRVLayout.getContext().startActivity(signing);
             } else {
                 Intent share_app = new Intent();
                 share_app.setAction(Intent.ACTION_SEND);

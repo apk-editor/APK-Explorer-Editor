@@ -1,0 +1,158 @@
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:gravity="top" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="@color/colorBlack">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="center"
+                    android:background="@color/colorBlack"
+                    android:layout_gravity="start|center_vertical"
+                    android:src="@drawable/ic_back"
+                    android:tint="?attr/colorAccent"
+                    android:layout_marginEnd="10dp" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="30dp"
+                    android:textColor="?attr/colorAccent"
+                    android:text="@string/signing_title"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:padding="10dp" />
+        </FrameLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/signing_message"
+            android:gravity="center_vertical"
+            android:textStyle="bold|italic"
+            android:layout_gravity="start"
+            android:padding="10dp" />
+
+        <FrameLayout
+            android:id="@+id/private_key"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp" >
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_key"
+                    android:background="@null"
+                    android:clickable="false" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:padding="5dp"
+                    android:baselineAligned="false">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/colorAccent"
+                            android:text="@string/private_key"
+                            android:focusable="false"
+                            android:textStyle="bold"
+                            android:textSize="17sp" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/key_summary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/private_key_summary"
+                            android:textStyle="bold|italic"
+                            android:focusable="false" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/clear_key"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="end|center_vertical"
+                    android:src="@drawable/ic_delete"
+                    android:background="@null" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/rsa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp" >
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_template"
+                    android:background="@null"
+                    android:clickable="false" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:padding="5dp"
+                    android:baselineAligned="false">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/colorAccent"
+                            android:text="@string/rsa_template"
+                            android:focusable="false"
+                            android:textStyle="bold"
+                            android:textSize="17sp" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/rsa_summary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rsa_template_summary"
+                            android:textStyle="bold|italic"
+                            android:focusable="false" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/clear_rsa"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="end|center_vertical"
+                    android:src="@drawable/ic_delete"
+                    android:background="@null" />
+        </FrameLayout>
+</LinearLayout>

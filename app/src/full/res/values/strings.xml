@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name" translatable="false">APK Explorer &amp; Editor</string>
     <string name="about_summary">APK Explorer &amp; Editor (AEE), an open-source tool to explore the contents of an installed APK, is strictly made with an aim to inspect installed APK\'s.</string>
     <string name="share_summary">APK Explorer &amp; Editor (AEE) %s can be obtained from GitHub: https://github.com/apk-editor/APK-Explorer-Editor/releases</string>

@@ -57,13 +57,27 @@ public class FilePickerActivity extends AppCompatActivity {
                 reload();
             } else {
                 new MaterialAlertDialogBuilder(this)
-                        .setMessage(getString(R.string.replace_question, new File(APKExplorer.mFileToReplace).getName()) + " " +
-                                new File(mData.get(position)).getName() + "?")
+                        .setMessage(APKExplorer.mFileToReplace != null ? getString(R.string.replace_question, new File(APKExplorer
+                                .mFileToReplace).getName()) + " " + new File(mData.get(position)).getName() + "?" : getString(R.string.signing_question,
+                                new File(mData.get(position)).getName()) + " " + getString(APKExplorer.mPrivateKey ? R.string.private_key : R.string.rsa_template))
                         .setNegativeButton(R.string.cancel, (dialog, id) -> {
                         })
-                        .setPositiveButton(R.string.replace, (dialog, id) -> {
-                            APKEditorUtils.copy(mData.get(position), APKExplorer.mFileToReplace);
-                            APKExplorer.mFileToReplace = null;
+                        .setPositiveButton(APKExplorer.mFileToReplace != null ? R.string.replace : R.string.select, (dialog, id) -> {
+                            if (APKExplorer.mFileToReplace != null) {
+                                APKEditorUtils.copy(mData.get(position), APKExplorer.mFileToReplace);
+                                APKExplorer.mFileToReplace = null;
+                            }  else {
+                                new File(getFilesDir(), "signing").mkdirs();
+                                if (APKExplorer.mPrivateKey) {
+                                    APKEditorUtils.saveString("PrivateKey", mData.get(position), this);
+                                    APKEditorUtils.copy(mData.get(position), getFilesDir()+ "/signing/APKEditor.pk8");
+                                    APKExplorer.mPrivateKey = false;
+                                } else {
+                                    APKEditorUtils.saveString("RSATemplate", mData.get(position), this);
+                                    APKEditorUtils.copy(mData.get(position), getFilesDir()+ "/signing/APKEditor");
+                                    APKExplorer.mRSATemplate = false;
+                                }
+                            }
                             finish();
                         }).show();
             }
