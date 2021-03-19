@@ -122,7 +122,7 @@ public class TextViewActivity extends AppCompatActivity {
 
     private void loadText(String searchText) {
         String text;
-        if (APKExplorer.mAppID != null && mPath.endsWith(".xml")) {
+        if (APKExplorer.mAppID != null && isBinaryXML(mPath)) {
             text = APKExplorer.readXMLFromAPK(AppData.getSourceDir(APKExplorer.mAppID, this), mPath.replace(
                     getCacheDir().getPath() + "/" + APKExplorer.mAppID + "/", ""));
         } else {
@@ -140,6 +140,10 @@ public class TextViewActivity extends AppCompatActivity {
         }
         mText.setText(searchText == null ? text : APKEditorUtils.fromHtml(text.replace(searchText,
                 "<b><i><font color=\"" + Color.RED + "\">" + searchText + "</font></i></b>")));
+    }
+
+    private boolean isBinaryXML(String path) {
+        return path.endsWith(".xml") && (new File(path).getName().equals("AndroidManifest.xml") || path.contains(APKExplorer.mAppID + "/res/"));
     }
 
     @Override
