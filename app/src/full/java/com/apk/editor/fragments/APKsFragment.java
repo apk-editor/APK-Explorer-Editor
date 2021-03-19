@@ -24,6 +24,7 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.RecycleViewApksAdapter;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.AppData;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -98,10 +99,12 @@ public class APKsFragment extends Fragment {
             if (mSearchWord.getVisibility() == View.VISIBLE) {
                 mSearchWord.setVisibility(View.GONE);
                 mAppTitle.setVisibility(View.VISIBLE);
+                AppData.toggleKeyboard(0, mSearchWord, requireActivity());
             } else {
                 mSearchWord.setVisibility(View.VISIBLE);
                 mSearchWord.requestFocus();
                 mAppTitle.setVisibility(View.GONE);
+                AppData.toggleKeyboard(1, mSearchWord, requireActivity());
             }
         });
 
