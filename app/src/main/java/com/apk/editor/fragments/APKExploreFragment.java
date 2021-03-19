@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
+import com.apk.editor.activities.APKSignActivity;
 import com.apk.editor.activities.ImageViewActivity;
 import com.apk.editor.activities.TextViewActivity;
 import com.apk.editor.adapters.RecycleViewAPKExplorerAdapter;
@@ -63,7 +64,26 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
                 .setMessage(R.string.save_apk_message)
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                 })
-                .setPositiveButton(getString(R.string.save), (dialog, id) -> APKData.prepareSignedAPK(requireActivity()))
+                .setPositiveButton(getString(R.string.save), (dialog, id) -> {
+                    if (!APKEditorUtils.getBoolean("firstSigning", false, requireActivity())) {
+                        new MaterialAlertDialogBuilder(requireActivity()).setItems(requireActivity().getResources().getStringArray(
+                                R.array.signing), (dialogInterface, i) -> {
+                            APKEditorUtils.saveBoolean("firstSigning", true, requireActivity());
+                            switch (i) {
+                                case 0:
+                                    APKData.prepareSignedAPK(requireActivity());
+                                    break;
+                                case 1:
+                                    Intent signing = new Intent(requireActivity(), APKSignActivity.class);
+                                    startActivity(signing);
+                                    break;
+                            }}).setCancelable(false)
+                                .setOnDismissListener(dialogInterface -> {
+                                }).show();
+                    } else {
+                        APKData.prepareSignedAPK(requireActivity());
+                    }
+                })
                 .show());
 
         if (APKEditorUtils.isFullVersion(requireActivity())) {

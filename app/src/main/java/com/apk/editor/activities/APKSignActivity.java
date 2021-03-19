@@ -1,5 +1,6 @@
 package com.apk.editor.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.app.ActivityCompat;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
@@ -47,15 +49,27 @@ public class APKSignActivity extends AppCompatActivity {
         setStatus();
 
         mKey.setOnClickListener(v -> {
-            APKExplorer.mPrivateKey = true;
-            Intent filePicker = new Intent(this, FilePickerActivity.class);
-            startActivity(filePicker);
+            if (!APKEditorUtils.isWritePermissionGranted(this)) {
+                ActivityCompat.requestPermissions(this, new String[]{
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                APKEditorUtils.snackbar(v, getString(R.string.permission_denied_message));
+            } else {
+                APKExplorer.mPrivateKey = true;
+                Intent filePicker = new Intent(this, FilePickerActivity.class);
+                startActivity(filePicker);
+            }
         });
 
         mRSA.setOnClickListener(v -> {
-            APKExplorer.mRSATemplate = true;
-            Intent filePicker = new Intent(this, FilePickerActivity.class);
-            startActivity(filePicker);
+            if (!APKEditorUtils.isWritePermissionGranted(this)) {
+                ActivityCompat.requestPermissions(this, new String[]{
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                APKEditorUtils.snackbar(v, getString(R.string.permission_denied_message));
+            } else {
+                APKExplorer.mRSATemplate = true;
+                Intent filePicker = new Intent(this, FilePickerActivity.class);
+                startActivity(filePicker);
+            }
         });
 
         mBack.setOnClickListener(v -> finish());

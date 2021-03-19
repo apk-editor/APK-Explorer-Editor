@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string-array name="signing">
+        <item>@string/signing_default</item>
+        <item>@string/signing_custom</item>
+    </string-array>
+</resources>

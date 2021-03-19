@@ -50,7 +50,6 @@
             android:id="@+id/private_key"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_margin="10dp" >
 
                 <androidx.appcompat.widget.AppCompatImageButton
@@ -74,21 +73,19 @@
                     android:baselineAligned="false">
 
                         <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="?attr/colorAccent"
                             android:text="@string/private_key"
-                            android:focusable="false"
                             android:textStyle="bold"
                             android:textSize="17sp" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/key_summary"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/private_key_summary"
-                            android:textStyle="bold|italic"
-                            android:focusable="false" />
+                            android:textStyle="bold|italic" />
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatImageButton
@@ -105,7 +102,6 @@
             android:id="@+id/rsa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_margin="10dp" >
 
                 <androidx.appcompat.widget.AppCompatImageButton
@@ -129,21 +125,19 @@
                     android:baselineAligned="false">
 
                         <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="?attr/colorAccent"
                             android:text="@string/rsa_template"
-                            android:focusable="false"
                             android:textStyle="bold"
                             android:textSize="17sp" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/rsa_summary"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/rsa_template_summary"
-                            android:textStyle="bold|italic"
-                            android:focusable="false" />
+                            android:textStyle="bold|italic" />
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatImageButton

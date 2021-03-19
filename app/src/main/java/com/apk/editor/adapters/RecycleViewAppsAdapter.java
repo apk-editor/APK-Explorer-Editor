@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
+import com.apk.editor.activities.APKSignActivity;
 import com.apk.editor.activities.ImageViewActivity;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
@@ -76,7 +77,26 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
                             .setMessage(holder.mCard.getContext().getString(R.string.sign_question, AppData.getAppName(data.get(position), holder.mAppName.getContext())))
                             .setNegativeButton(R.string.cancel, (dialog, id) -> {
                             })
-                            .setPositiveButton(R.string.sign, (dialog, id) -> APKData.signAPK(data.get(position), holder.mCard.getContext())).show();
+                            .setPositiveButton(R.string.sign, (dialog, id) -> {
+                                if (!APKEditorUtils.getBoolean("firstSigning", false, v.getContext())) {
+                                    new MaterialAlertDialogBuilder(v.getContext()).setItems(v.getContext().getResources().getStringArray(
+                                            R.array.signing), (dialogInterface, i) -> {
+                                        APKEditorUtils.saveBoolean("firstSigning", true, v.getContext());
+                                        switch (i) {
+                                            case 0:
+                                                APKData.signAPK(data.get(position), holder.mCard.getContext());
+                                                break;
+                                            case 1:
+                                                Intent signing = new Intent(v.getContext(), APKSignActivity.class);
+                                                v.getContext().startActivity(signing);
+                                                break;
+                                        }}).setCancelable(false)
+                                            .setOnDismissListener(dialogInterface -> {
+                                            }).show();
+                                } else {
+                                    APKData.signAPK(data.get(position), holder.mCard.getContext());
+                                }
+                            }).show();
                     return false;
                 });
             }
