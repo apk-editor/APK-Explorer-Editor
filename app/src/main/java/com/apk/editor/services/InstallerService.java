@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInstaller;
 import android.os.IBinder;
 
+import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
 
 /*
@@ -27,10 +28,28 @@ public class InstallerService extends Service {
                 }
                 break;
             case PackageInstaller.STATUS_SUCCESS:
-                APKEditorUtils.saveString("installationStatus", "success", this);
+                APKEditorUtils.saveString("installationStatus", getString(R.string.installation_status_success), this);
+                break;
+            case PackageInstaller.STATUS_FAILURE_ABORTED:
+                APKEditorUtils.saveString("installationStatus", getString(R.string.installation_status_aborted), this);
+                break;
+            case PackageInstaller.STATUS_FAILURE_BLOCKED:
+                APKEditorUtils.saveString("installationStatus", getString(R.string.installation_status_blocked), this);
+                break;
+            case PackageInstaller.STATUS_FAILURE_CONFLICT:
+                APKEditorUtils.saveString("installationStatus", getString(R.string.installation_status_conflict), this);
+                break;
+            case PackageInstaller.STATUS_FAILURE_INCOMPATIBLE:
+                APKEditorUtils.saveString("installationStatus", getString(R.string.installation_status_incompatible), this);
+                break;
+            case PackageInstaller.STATUS_FAILURE_INVALID:
+                APKEditorUtils.saveString("installationStatus", getString(R.string.installation_status_bad_apks), this);
+                break;
+            case PackageInstaller.STATUS_FAILURE_STORAGE:
+                APKEditorUtils.saveString("installationStatus", getString(R.string.installation_status_storage), this);
                 break;
             default:
-                APKEditorUtils.saveString("installationStatus", "failed", this);
+                APKEditorUtils.saveString("installationStatus", getString(R.string.installation_status_failed), this);
                 break;
         }
         stopSelf();

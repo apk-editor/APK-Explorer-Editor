@@ -12,6 +12,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.AppData;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -20,23 +21,26 @@ import com.google.android.material.textview.MaterialTextView;
  */
 public class InstallerActivity extends AppCompatActivity {
 
+    private AppCompatImageButton mIcon;
     private MaterialCardView mCancel;
-    private MaterialTextView mStatus;
+    private MaterialTextView mStatus, mTitle;
     private ProgressBar mProgress;
     public static final String PATH_INTENT = "path";
+    public String mPackageName = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_installer);
 
-        AppCompatImageButton mIcon = findViewById(R.id.icon);
+        mIcon = findViewById(R.id.icon);
         mProgress = findViewById(R.id.progress);
         mCancel = findViewById(R.id.cancel);
-        MaterialTextView mTitle = findViewById(R.id.title);
+        mTitle = findViewById(R.id.title);
         mStatus = findViewById(R.id.status);
 
         String path = getIntent().getStringExtra(PATH_INTENT);
+        mPackageName = APKData.getAppID(path, this).toString();
 
         mTitle.setText(APKData.getAppName(path, this));
         mIcon.setImageDrawable(APKData.getAppIcon(path, this));
@@ -60,9 +64,15 @@ public class InstallerActivity extends AppCompatActivity {
                             if (installationStatus.equals("waiting")) {
                                 mStatus.setText(getString(R.string.installing, APKData.getAppName(getIntent().getStringExtra(PATH_INTENT), activity)));
                             } else {
-                                mStatus.setText(getString(R.string.installation_result, installationStatus));
+                                mStatus.setText(installationStatus);
                                 mProgress.setVisibility(View.GONE);
                                 mCancel.setVisibility(View.VISIBLE);
+                                if (installationStatus.equals(getString(R.string.installation_status_success))) {
+                                    try {
+                                        mTitle.setText(AppData.getAppName(mPackageName, activity));
+                                        mIcon.setImageDrawable(AppData.getAppIcon(mPackageName, activity));
+                                    } catch (NullPointerException ignored) {}
+                                }
                             }
                         });
                     }

@@ -31,7 +31,14 @@
     <string name="got_it">Got It</string>
     <string name="install">Install</string>
     <string name="install_question">Install %s?</string>
-    <string name="installation_result">Installation completed! Result: %s</string>
+    <string name="installation_status_aborted">Installation was cancelled by user</string>
+    <string name="installation_status_bad_apks">Invalid APK files selected</string>
+    <string name="installation_status_blocked">Installation was blocked</string>
+    <string name="installation_status_conflict">Unable to install the app because it conflicts with an already installed app with same package name</string>
+    <string name="installation_status_failed">Installation Failed!</string>
+    <string name="installation_status_incompatible">Application is incompatible with this device</string>
+    <string name="installation_status_storage">Not enough storage space to install the application</string>
+    <string name="installation_status_success">Installation Completed Successfully!</string>
     <string name="installing">Installing %s…</string>
     <string name="invite_friends">Invite Friends</string>
     <string name="invite_friends_Summary">Invite your friends to try AEE</string>
