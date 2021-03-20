@@ -13,6 +13,7 @@ import androidx.core.content.FileProvider;
 import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.apksigner.ApkSigner;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -119,6 +120,16 @@ public class APKData {
 
     public static boolean isAppBundle(String path) {
         return splitApks(path).size() > 1;
+    }
+
+    public static void showSignatureErrorDialog(Context context) {
+        new MaterialAlertDialogBuilder(context)
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle(R.string.app_name)
+                .setMessage(context.getString(R.string.signature_warning))
+                .setPositiveButton(R.string.got_it, (dialog, id) -> {
+                    APKEditorUtils.saveBoolean("signature_warning", true, context);
+                }).show();
     }
 
     public static void prepareSignedAPK(Activity activity) {

@@ -19,7 +19,6 @@ import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppData;
-import com.apk.editor.utils.SignatureCheck;
 import com.apk.editor.utils.SplitAPKInstaller;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -60,11 +59,9 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                 }
                 holder.mVersion.setText(holder.mAppName.getContext().getString(R.string.version, APKData.getVersionName(data.get(position) + "/base.apk", holder.mAppName.getContext())));
                 holder.mCard.setOnClickListener(v -> {
-                    if (!SignatureCheck.isPackageInstalled(APKData.getAppID(data.get(position) + "/base.apk", holder.mAppName.getContext()).toString(),
-                            holder.mAppName.getContext()) || SignatureCheck.isPackageInstalled(APKData.getAppID(data.get(position) + "/base.apk",
-                            holder.mAppName.getContext()).toString(), holder.mAppName.getContext()) && SignatureCheck.isSignatureMatched(APKData
-                            .getAppID(data.get(position) + "/base.apk", holder.mAppName.getContext()).toString(), new File(data.get(position) +
-                            "/base.apk"), holder.mAppName.getContext())) {
+                    if (APKEditorUtils.isFullVersion(v.getContext()) && data.get(position).contains("_aee-signed") && !APKEditorUtils.getBoolean("signature_warning", false, v.getContext())) {
+                        APKData.showSignatureErrorDialog(v.getContext());
+                    } else {
                         new MaterialAlertDialogBuilder(holder.mCard.getContext())
                                 .setMessage(holder.mCard.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
@@ -72,8 +69,6 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                                 .setPositiveButton(R.string.install, (dialog, id) -> {
                                     SplitAPKInstaller.installSplitAPKs(data.get(position) + "/base.apk", (Activity) holder.mCard.getContext());
                                 }).show();
-                    } else {
-                        SignatureCheck.showSignatureErrorDialog(APKData.getAppIcon(data.get(position) + "/base.apk", holder.mAppName.getContext()), APKData.getAppName(data.get(position) + "/base.apk", holder.mAppName.getContext()).toString(), holder.mAppName.getContext());
                     }
                 });
                 holder.mDelete.setOnClickListener(v -> new MaterialAlertDialogBuilder(holder.mDelete.getContext())
@@ -111,10 +106,9 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                 holder.mSize.setTextColor(APKEditorUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
                 holder.mSize.setVisibility(View.VISIBLE);
                 holder.mCard.setOnClickListener(v -> {
-                    if (!SignatureCheck.isPackageInstalled(APKData.getAppID(data.get(position), holder.mAppName.getContext()).toString(), holder.mAppName.getContext())
-                            || SignatureCheck.isPackageInstalled(APKData.getAppID(data.get(position), holder.mAppName.getContext()).toString(), holder.mAppName.getContext())
-                            && SignatureCheck.isSignatureMatched(APKData.getAppID(data.get(position), holder.mAppName.getContext()).toString(), new File(data.get(position)),
-                            holder.mAppName.getContext())) {
+                    if (APKEditorUtils.isFullVersion(v.getContext()) && data.get(position).contains("_aee-signed.apk") && !APKEditorUtils.getBoolean("signature_warning", false, v.getContext())) {
+                        APKData.showSignatureErrorDialog(v.getContext());
+                    } else {
                         new MaterialAlertDialogBuilder(holder.mCard.getContext())
                                 .setMessage(holder.mCard.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
@@ -128,8 +122,6 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                                     intent.setDataAndType(uriFile, "application/vnd.android.package-archive");
                                     holder.mCard.getContext().startActivity(Intent.createChooser(intent, ""));
                                 }).show();
-                    } else {
-                        SignatureCheck.showSignatureErrorDialog(APKData.getAppIcon(data.get(position), holder.mAppName.getContext()), APKData.getAppName(data.get(position), holder.mAppName.getContext()).toString(), holder.mAppName.getContext());
                     }
                 });
                 holder.mDelete.setOnClickListener(v -> {

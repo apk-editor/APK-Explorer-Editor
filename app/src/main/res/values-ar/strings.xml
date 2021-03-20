@@ -51,10 +51,6 @@
     <string name="share">"مشاركة"</string>
     <string name="share_message">"مشاركة %s؟"</string>
     <string name="share_with">"مشاركة مع"</string>
-    <string name="sign">"توقيع"</string>
-    <string name="sign_question">"تصدير وإعادة توقيع %s بـ مفتاح AEE المخصص"</string>
-    <string name="signature_error">"التوقيع غير مطابق!"</string>
-    <string name="signature_error_summary">"%s بتوقيع مختلف مثبت مسبقًا على جهازك! الرجاء حذفه أولًا لتثبيت هذا الإصدار."</string>
     <string name="signing">"يتم التوقيع %s…"</string>
     <string name="size">"الحجم: %s"</string>
     <string name="source_code">"الشفرة المصدرية"</string>

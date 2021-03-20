@@ -28,6 +28,7 @@
     <string name="export_storage">Export to storage</string>
     <string name="exploring">Exploring %s…</string>
     <string name="explore_error_status">Failed to explore %s!</string>
+    <string name="got_it">Got It</string>
     <string name="install">Install</string>
     <string name="install_question">Install %s?</string>
     <string name="installation_result">Installation completed! Result: %s</string>
@@ -63,9 +64,7 @@
     <string name="share">Share</string>
     <string name="share_message">Share %s?</string>
     <string name="share_with">Share with</string>
-    <string name="sign">Sign</string>
-    <string name="signature_error">Signature doesn\'t match!</string>
-    <string name="signature_error_summary">%s with a different signature is already installed in your device! Please remove it first to install this version.</string>
+    <string name="signature_warning">It is important to uninstall the old version (if exist) of the app before installing an AEE signed APK/App bundle to avoid installation failure due to signature mismatch!</string>
     <string name="signing">Signing %s…</string>
     <string name="signing_custom">Configure custom Key</string>
     <string name="signing_default">Sign with default Key</string>
