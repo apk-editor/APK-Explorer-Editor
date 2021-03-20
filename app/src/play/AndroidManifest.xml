@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" >
-
+    
     <application>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.apk.editor.provider"
+            android:authorities="com.apk.explorer.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

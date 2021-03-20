@@ -71,18 +71,20 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
             }
             holder.mSize.setVisibility(View.VISIBLE);
             holder.mVersion.setVisibility(View.VISIBLE);
-            if (APKEditorUtils.isFullVersion(holder.mCard.getContext())) {
-                holder.mCard.setOnLongClickListener(v -> {
-                    new MaterialAlertDialogBuilder(holder.mCard.getContext())
-                            .setMessage(holder.mCard.getContext().getString(R.string.sign_question, AppData.getAppName(data.get(position), holder.mAppName.getContext())))
-                            .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                            })
-                            .setPositiveButton(R.string.sign, (dialog, id) -> {
+            holder.mCard.setOnLongClickListener(v -> {
+                if (APKEditorUtils.isFullVersion(holder.mCard.getContext())) {
+                    new MaterialAlertDialogBuilder(v.getContext()).setItems(v.getContext().getResources().getStringArray(
+                            R.array.export_options), (dialogInterface, i) -> {
+                        switch (i) {
+                            case 0:
+                                APKData.exportApp(data.get(position), holder.mCard.getContext());
+                                break;
+                            case 1:
                                 if (!APKEditorUtils.getBoolean("firstSigning", false, v.getContext())) {
                                     new MaterialAlertDialogBuilder(v.getContext()).setItems(v.getContext().getResources().getStringArray(
-                                            R.array.signing), (dialogInterface, i) -> {
+                                            R.array.signing), (dialogInterfacei, ii) -> {
                                         APKEditorUtils.saveBoolean("firstSigning", true, v.getContext());
-                                        switch (i) {
+                                        switch (ii) {
                                             case 0:
                                                 APKData.signAPK(data.get(position), holder.mCard.getContext());
                                                 break;
@@ -90,16 +92,29 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
                                                 Intent signing = new Intent(v.getContext(), APKSignActivity.class);
                                                 v.getContext().startActivity(signing);
                                                 break;
-                                        }}).setCancelable(false)
-                                            .setOnDismissListener(dialogInterface -> {
+                                        }
+                                    }).setCancelable(false)
+                                            .setOnDismissListener(dialogInterfacei -> {
                                             }).show();
                                 } else {
                                     APKData.signAPK(data.get(position), holder.mCard.getContext());
                                 }
-                            }).show();
-                    return false;
-                });
-            }
+                                break;
+                        }
+                    }).setOnDismissListener(dialogInterface -> {
+                    }).show();
+                } else {
+                    new MaterialAlertDialogBuilder(holder.mCard.getContext())
+                            .setIcon(AppData.getAppIcon(data.get(position), holder.mAppIcon.getContext()))
+                            .setTitle(AppData.getAppName(data.get(position), holder.mAppName.getContext()))
+                            .setMessage(holder.mCard.getContext().getString(R.string.export_app_question, AppData.getAppName(data.get(position), holder.mAppName.getContext())))
+                            .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                            })
+                            .setPositiveButton(R.string.export, (dialog, id) -> APKData.exportApp(data.get(position), holder.mCard.getContext())).show();
+                }
+                return false;
+            });
+
         } catch (NullPointerException ignored) {}
     }
 

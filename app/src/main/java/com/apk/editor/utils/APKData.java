@@ -151,13 +151,13 @@ public class APKData {
                                 new File(mParent.toString() + "/base.apk"), activity);
                     } else {
                         signApks(new File(Objects.requireNonNull(activity.getExternalFilesDir("")).toString() + "/" + APKExplorer.mAppID + ".apk"),
-                                new File(activity.getExternalFilesDir("") + "/" + APKExplorer.mAppID + "_signed.apk"), activity);
+                                new File(activity.getExternalFilesDir("") + "/" + APKExplorer.mAppID + "_aee-signed.apk"), activity);
                     }
                 } else {
                     APKEditorUtils.zip(new File(activity.getCacheDir().getPath() + "/" + new File(APKExplorer.mPath).getName()),
                             new File(Objects.requireNonNull(activity.getExternalFilesDir("")).toString() + "/" + new File(APKExplorer.mPath).getName() + ".apk"));
                     signApks(new File(Objects.requireNonNull(activity.getExternalFilesDir("")).toString() + "/" + new File(APKExplorer.mPath).getName() + ".apk"),
-                            new File(activity.getExternalFilesDir("") + "/" + new File(APKExplorer.mPath).getName() + "_signed.apk"), activity);
+                            new File(activity.getExternalFilesDir("") + "/" + new File(APKExplorer.mPath).getName() + "_aee-signed.apk"), activity);
                 }
                 return null;
             }
@@ -191,14 +191,53 @@ public class APKData {
             @Override
             protected Void doInBackground(Void... voids) {
                 if (APKData.isAppBundle(AppData.getSourceDir(packageName, context))) {
-                    File mParent = new File(context.getExternalFilesDir("") + "/" + packageName);
+                    File mParent = new File(context.getExternalFilesDir("") + "/" + packageName + "_aee-signed");
                     mParent.mkdirs();
                     for (String mSplits : splitApks(AppData.getSourceDir(packageName, context))) {
                         signApks(new File(mSplits), new File(mParent.toString() + "/" + new File(mSplits).getName()), context);
                     }
                 } else {
                     signApks(new File(AppData.getSourceDir(packageName, context)), new File(context.getExternalFilesDir("")
-                            + "/" + packageName + "_signed.apk"), context);
+                            + "/" + packageName + "_aee-signed.apk"), context);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                try {
+                    mProgressDialog.dismiss();
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
+        }.execute();
+    }
+
+    public static void exportApp(String packageName, Context context) {
+        new AsyncTask<Void, Void, Void>() {
+            private ProgressDialog mProgressDialog;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                mProgressDialog = new ProgressDialog(context);
+                mProgressDialog.setMessage(context.getString(R.string.exploring, AppData.getAppName(packageName, context)));
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                if (APKData.isAppBundle(AppData.getSourceDir(packageName, context))) {
+                    File mParent = new File(context.getExternalFilesDir("") + "/" + packageName);
+                    mParent.mkdirs();
+                    for (String mSplits : splitApks(AppData.getSourceDir(packageName, context))) {
+                        if (mSplits.endsWith(".apk")) {
+                            APKEditorUtils.copy(mSplits, mParent.toString() + "/" + new File(mSplits).getName());
+                        }
+                    }
+                } else {
+                    APKEditorUtils.copy(AppData.getSourceDir(packageName, context), context.getExternalFilesDir("") + "/" + packageName + ".apk");
                 }
                 return null;
             }

@@ -4,6 +4,7 @@
     package="com.apk.editor" >
 
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -28,10 +29,14 @@
         </activity>
 
         <activity android:name=".activities.APKExploreActivity" />
+        <activity android:name=".activities.APKSignActivity" />
         <activity android:name=".activities.CreditsActivity" />
         <activity android:name=".activities.DocumentationActivity" />
         <activity android:name=".activities.FilePickerActivity" />
         <activity android:name=".activities.ImageViewActivity" />
+        <activity android:name=".activities.InstallerActivity" />
         <activity android:name=".activities.TextViewActivity" />
+
+        <service android:name=".services.InstallerService" />
     </application>
 </manifest>

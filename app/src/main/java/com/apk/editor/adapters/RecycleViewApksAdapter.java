@@ -62,8 +62,9 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                 holder.mCard.setOnClickListener(v -> {
                     if (!SignatureCheck.isPackageInstalled(APKData.getAppID(data.get(position) + "/base.apk", holder.mAppName.getContext()).toString(),
                             holder.mAppName.getContext()) || SignatureCheck.isPackageInstalled(APKData.getAppID(data.get(position) + "/base.apk",
-                            holder.mAppName.getContext()).toString(), holder.mAppName.getContext()) && SignatureCheck.isSignatureMatched(APKData.getAppID(
-                                    data.get(position) + "/base.apk", holder.mAppName.getContext()).toString(), holder.mAppName.getContext())) {
+                            holder.mAppName.getContext()).toString(), holder.mAppName.getContext()) && SignatureCheck.isSignatureMatched(APKData
+                            .getAppID(data.get(position) + "/base.apk", holder.mAppName.getContext()).toString(), new File(data.get(position) +
+                            "/base.apk"), holder.mAppName.getContext())) {
                         new MaterialAlertDialogBuilder(holder.mCard.getContext())
                                 .setMessage(holder.mCard.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
@@ -112,7 +113,8 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                 holder.mCard.setOnClickListener(v -> {
                     if (!SignatureCheck.isPackageInstalled(APKData.getAppID(data.get(position), holder.mAppName.getContext()).toString(), holder.mAppName.getContext())
                             || SignatureCheck.isPackageInstalled(APKData.getAppID(data.get(position), holder.mAppName.getContext()).toString(), holder.mAppName.getContext())
-                            && SignatureCheck.isSignatureMatched(APKData.getAppID(data.get(position), holder.mAppName.getContext()).toString(), holder.mAppName.getContext())) {
+                            && SignatureCheck.isSignatureMatched(APKData.getAppID(data.get(position), holder.mAppName.getContext()).toString(), new File(data.get(position)),
+                            holder.mAppName.getContext())) {
                         new MaterialAlertDialogBuilder(holder.mCard.getContext())
                                 .setMessage(holder.mCard.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
