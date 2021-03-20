@@ -23,9 +23,9 @@ public class InstallerActivity extends AppCompatActivity {
 
     private AppCompatImageButton mIcon;
     private MaterialCardView mCancel;
-    private MaterialTextView mStatus, mTitle;
+    private MaterialTextView mHeading, mStatus, mTitle;
     private ProgressBar mProgress;
-    public static final String PATH_INTENT = "path";
+    public static final String HEADING_INTENT = "heading", PATH_INTENT = "path";
     public String mPackageName = null;
 
     @Override
@@ -36,12 +36,14 @@ public class InstallerActivity extends AppCompatActivity {
         mIcon = findViewById(R.id.icon);
         mProgress = findViewById(R.id.progress);
         mCancel = findViewById(R.id.cancel);
+        mHeading = findViewById(R.id.heading);
         mTitle = findViewById(R.id.title);
         mStatus = findViewById(R.id.status);
 
         String path = getIntent().getStringExtra(PATH_INTENT);
         mPackageName = APKData.getAppID(path, this).toString();
 
+        mHeading.setText(getIntent().getStringExtra(HEADING_INTENT));
         mTitle.setText(APKData.getAppName(path, this));
         mIcon.setImageDrawable(APKData.getAppIcon(path, this));
 
@@ -62,7 +64,9 @@ public class InstallerActivity extends AppCompatActivity {
                         runOnUiThread(() -> {
                             String installationStatus = APKEditorUtils.getString("installationStatus", "waiting", activity);
                             if (installationStatus.equals("waiting")) {
-                                mStatus.setText(getString(R.string.installing, APKData.getAppName(getIntent().getStringExtra(PATH_INTENT), activity)));
+                                try {
+                                    mStatus.setText(getString(R.string.installing, APKData.getAppName(getIntent().getStringExtra(PATH_INTENT), activity)));
+                                } catch (NullPointerException ignored) {}
                             } else {
                                 mStatus.setText(installationStatus);
                                 mProgress.setVisibility(View.GONE);

@@ -5,10 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/heading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorBlack"
-            android:text="@string/split_apk_installer"
             android:textColor="?attr/colorAccent"
             android:textStyle="bold"
             android:textSize="18sp"

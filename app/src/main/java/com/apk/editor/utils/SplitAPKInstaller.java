@@ -5,10 +5,8 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageInstaller;
 import android.os.AsyncTask;
-import android.os.Build;
 
-import androidx.annotation.RequiresApi;
-
+import com.apk.editor.R;
 import com.apk.editor.activities.InstallerActivity;
 import com.apk.editor.services.InstallerService;
 
@@ -125,11 +123,11 @@ public class SplitAPKInstaller {
                 super.onPreExecute();
                 APKEditorUtils.saveString("installationStatus", "waiting", activity);
                 Intent installIntent = new Intent(activity, InstallerActivity.class);
+                installIntent.putExtra(InstallerActivity.HEADING_INTENT, activity.getString(R.string.split_apk_installer));
                 installIntent.putExtra(InstallerActivity.PATH_INTENT, path);
                 activity.startActivity(installIntent);
             }
 
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             protected Void doInBackground(Void... voids) {
                 int sessionId;
@@ -142,6 +140,37 @@ public class SplitAPKInstaller {
                             runInstallWrite(mFile.length(), sessionId, mFile.getName(), mFile.toString(), activity);
                         }
                     }
+                } catch (NullPointerException ignored) {}
+                doCommitSession(sessionId, activity);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+            }
+        }.execute();
+    }
+
+    public static void installAPK(File APK, Activity activity) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                APKEditorUtils.saveString("installationStatus", "waiting", activity);
+                Intent installIntent = new Intent(activity, InstallerActivity.class);
+                installIntent.putExtra(InstallerActivity.HEADING_INTENT, activity.getString(R.string.apk_installer));
+                installIntent.putExtra(InstallerActivity.PATH_INTENT, APK.getAbsolutePath());
+                activity.startActivity(installIntent);
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                int sessionId;
+                final InstallParams installParams = makeInstallParams(APK.length());
+                sessionId = runInstallCreate(installParams, activity);
+                try {
+                    runInstallWrite(APK.length(), sessionId, APK.getName(), APK.getAbsolutePath(), activity);
                 } catch (NullPointerException ignored) {}
                 doCommitSession(sessionId, activity);
                 return null;

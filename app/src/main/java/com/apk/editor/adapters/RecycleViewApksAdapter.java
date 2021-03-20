@@ -114,13 +114,7 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
                                 .setPositiveButton(R.string.install, (dialog, id) -> {
-                                    Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-                                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                    Uri uriFile;
-                                    uriFile = FileProvider.getUriForFile(holder.mCard.getContext(), BuildConfig.APPLICATION_ID + ".provider",
-                                            new File(data.get(position)));
-                                    intent.setDataAndType(uriFile, "application/vnd.android.package-archive");
-                                    holder.mCard.getContext().startActivity(Intent.createChooser(intent, ""));
+                                    SplitAPKInstaller.installAPK(new File(data.get(position)), (Activity) holder.mCard.getContext());
                                 }).show();
                     }
                 });
