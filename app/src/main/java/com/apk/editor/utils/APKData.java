@@ -232,7 +232,7 @@ public class APKData {
             protected void onPreExecute() {
                 super.onPreExecute();
                 mProgressDialog = new ProgressDialog(context);
-                mProgressDialog.setMessage(context.getString(R.string.exploring, AppData.getAppName(packageName, context)));
+                mProgressDialog.setMessage(context.getString(R.string.exporting, AppData.getAppName(packageName, context)));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
             }

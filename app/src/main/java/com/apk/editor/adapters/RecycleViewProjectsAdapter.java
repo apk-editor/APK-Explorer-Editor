@@ -1,6 +1,8 @@
 package com.apk.editor.adapters;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
@@ -67,14 +70,54 @@ public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleView
             holder.mTotalSize.setText(holder.mAppName.getContext().getString(R.string.last_modified, DateFormat.getDateTimeInstance()
                     .format(new File(data.get(position)).lastModified())));
             holder.mCard.setOnClickListener(v -> {
-                if (AppData.isAppInstalled(data.get(position).replace(holder.mCard.getContext().getCacheDir().getPath() + "/",""), holder.mCard.getContext())) {
-                    APKExplorer.mAppID = data.get(position).replace(holder.mCard.getContext().getCacheDir().getPath() + "/","");
+                if (AppData.isAppInstalled(data.get(position).replace(v.getContext().getCacheDir().getPath() + "/",""), v.getContext())) {
+                    APKExplorer.mAppID = data.get(position).replace(v.getContext().getCacheDir().getPath() + "/","");
                 } else {
                     APKExplorer.mAppID = null;
                 }
                 APKExplorer.mPath = data.get(position);
-                Intent explorer = new Intent(holder.mCard.getContext(), APKExploreActivity.class);
-                holder.mCard.getContext().startActivity(explorer);
+                Intent explorer = new Intent(v.getContext(), APKExploreActivity.class);
+                v.getContext().startActivity(explorer);
+            });
+            holder.mCard.setOnLongClickListener(v -> {
+                if (!APKEditorUtils.isWritePermissionGranted(v.getContext())) {
+                    ActivityCompat.requestPermissions((Activity) v.getContext(), new String[] {
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    APKEditorUtils.snackbar(v, v.getContext().getString(R.string.permission_denied_message));
+                } else {
+                    new MaterialAlertDialogBuilder(v.getContext())
+                            .setMessage(v.getContext().getString(R.string.export_project_question))
+                            .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                            })
+                            .setPositiveButton(R.string.export, (dialog, id) -> {
+                                APKEditorUtils.dialogEditText(null,
+                                        (dialogInterface, i) -> {
+                                        }, text -> {
+                                            if (text.isEmpty()) {
+                                                APKEditorUtils.snackbar(v, v.getContext().getString(R.string.name_empty));
+                                                return;
+                                            }
+                                            if (text.contains(" ")) {
+                                                text = text.replace(" ", "_");
+                                            }
+                                            String mName = text;
+                                            if (APKEditorUtils.exist(Projects.getExportPath() + "/" + text)) {
+                                                new MaterialAlertDialogBuilder(v.getContext())
+                                                        .setMessage(v.getContext().getString(R.string.export_project_replace, text))
+                                                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                                                        })
+                                                        .setPositiveButton(R.string.replace, (dialogInterface, i) -> {
+                                                            Projects.exportProject(new File(data.get(position)), mName, v.getContext());
+                                                        })
+                                                        .show();
+                                            } else {
+                                                Projects.exportProject(new File(data.get(position)), mName, v.getContext());
+                                            }
+                                        }, v.getContext()).setOnDismissListener(dialogInterface -> {
+                                }).show();
+                            }).show();
+                }
+                return false;
             });
             holder.mDelete.setOnClickListener(v -> new MaterialAlertDialogBuilder(holder.mDelete.getContext())
                     .setMessage(holder.mDelete.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))

@@ -1,7 +1,11 @@
 package com.apk.editor.utils;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Environment;
+
+import com.apk.editor.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,6 +36,38 @@ public class Projects {
 
     public static String getExportPath() {
         return Environment.getExternalStorageDirectory().toString() + "/AEE";
+    }
+
+    public static void exportProject(File path, String name, Context context) {
+        new AsyncTask<Void, Void, Void>() {
+            private ProgressDialog mProgressDialog;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                mProgressDialog = new ProgressDialog(context);
+                mProgressDialog.setMessage(context.getString(R.string.exporting, path.getName()));
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+                if (APKEditorUtils.exist(getExportPath() + "/" + name)) {
+                    APKEditorUtils.delete(getExportPath() + "/" + name);
+                }
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                APKEditorUtils.copyDir(path, new File(getExportPath(), name));
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                try {
+                    mProgressDialog.dismiss();
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
+        }.execute();
     }
 
 }

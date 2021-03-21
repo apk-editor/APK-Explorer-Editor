@@ -24,9 +24,12 @@
     <string name="export">Export</string>
     <string name="export_app_question">Export \'%s\' to device storage?</string>
     <string name="export_complete_message">The selected resource is successfully exported into \'%s\'!</string>
+    <string name="export_project_question">Make a copy of this project folder into device storage?</string>
+    <string name="export_project_replace">\'%s\' already exists! Do you want to replace it?</string>
     <string name="export_question">Export to device storage?</string>
     <string name="export_resign">Export and Re-sign</string>
     <string name="export_storage">Export to storage</string>
+    <string name="exporting">Exporting %s…</string>
     <string name="exploring">Exploring %s…</string>
     <string name="explore_error_status">Failed to explore %s!</string>
     <string name="got_it">Got It</string>
@@ -44,6 +47,8 @@
     <string name="invite_friends">Invite Friends</string>
     <string name="invite_friends_Summary">Invite your friends to try AEE</string>
     <string name="last_modified">Last Modified: %s</string>
+    <string name="name_empty">Name shouldn\'t be empty! Aborting.</string>
+    <string name="ok">OK</string>
     <string name="open_as_text">Open as text</string>
     <string name="permission_denied_message">Permission denied for writing to storage!</string>
     <string name="preparing_apk">Preparing %s APK…</string>

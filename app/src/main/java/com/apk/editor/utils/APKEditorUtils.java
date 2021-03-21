@@ -3,6 +3,7 @@ package com.apk.editor.utils;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -11,9 +12,15 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import androidx.appcompat.widget.AppCompatEditText;
 
 import com.apk.editor.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import net.lingala.zip4j.ZipFile;
@@ -54,6 +61,52 @@ public class APKEditorUtils {
     public static int getOrientation(Activity activity) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && activity.isInMultiWindowMode() ?
                 Configuration.ORIENTATION_PORTRAIT : activity.getResources().getConfiguration().orientation;
+    }
+
+    public interface OnDialogEditTextListener {
+        void onClick(String text);
+    }
+
+    public static MaterialAlertDialogBuilder dialogEditText(String text, final DialogInterface.OnClickListener negativeListener,
+                                                            final OnDialogEditTextListener onDialogEditTextListener,
+                                                            Context context) {
+        return dialogEditText(text, negativeListener, onDialogEditTextListener, -1, context);
+    }
+
+    private static MaterialAlertDialogBuilder dialogEditText(String text, final DialogInterface.OnClickListener negativeListener,
+                                                            final OnDialogEditTextListener onDialogEditTextListener, int inputType,
+                                                            Context context) {
+        LinearLayout layout = new LinearLayout(context);
+        layout.setPadding(75, 75, 75, 75);
+
+        final AppCompatEditText editText = new AppCompatEditText(context);
+        editText.setGravity(Gravity.CENTER);
+        editText.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        if (text != null) {
+            editText.append(text);
+        }
+        editText.setSingleLine(true);
+        if (inputType >= 0) {
+            editText.setInputType(inputType);
+        }
+
+        layout.addView(editText);
+
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context).setView(layout);
+        if (negativeListener != null) {
+            dialog.setNegativeButton(context.getString(R.string.cancel), negativeListener);
+        }
+        if (onDialogEditTextListener != null) {
+            dialog.setPositiveButton(context.getString(R.string.ok), (dialog1, which)
+                    -> onDialogEditTextListener.onClick(Objects.requireNonNull(editText.getText()).toString()))
+                    .setOnDismissListener(dialog1 -> {
+                        if (negativeListener != null) {
+                            negativeListener.onClick(dialog1, 0);
+                        }
+                    });
+        }
+        return dialog;
     }
 
     public static void delete(String path) {
@@ -109,6 +162,19 @@ public class APKEditorUtils {
             inputStream.close();
             outputStream.close();
         } catch (IOException ignored) {}
+    }
+
+    public static void copyDir(File sourceDir, File destDir) {
+        if (destDir.exists()) {
+            destDir.mkdirs();
+        }
+        for (File mFile : Objects.requireNonNull(sourceDir.listFiles())) {
+            if (mFile.isDirectory()) {
+                copyDir(mFile, new File(destDir.getAbsoluteFile(), mFile.getName()));
+            } else {
+                copy(mFile.getAbsolutePath(), destDir.getAbsolutePath() + "/" + mFile.getName());
+            }
+        }
     }
 
     public static String read(String file) {
