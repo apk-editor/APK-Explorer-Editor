@@ -8,6 +8,7 @@
     <string name="apps">Apps</string>
     <string name="apps_exported">Exported APK\'s</string>
     <string name="apps_installed">Installed Apps</string>
+    <string name="bundle_install_question">Are you sure to install app bundle \'%s\'?</string>
     <string name="bundles">Bundles</string>
     <string name="cancel">Cancel</string>
     <string name="credits">Credits</string>
@@ -35,6 +36,9 @@
     <string name="got_it">Got It</string>
     <string name="install">Install</string>
     <string name="install_question">Install %s?</string>
+    <string name="install_storage">Install from Storage</string>
+    <string name="installer_message">AEE Split APK installer will handle normal APK\'s, split APK\'s as well as \'xapk\', \'apks\' and \'apkm\' App bundles. In order to initialize an installation, simply select the installation file(s) from the next screen and follow onscreen instructions.</string>
+    <string name="installation_cancel_message">Are you sure to cancel the installation?</string>
     <string name="installation_status_aborted">Installation was cancelled by user</string>
     <string name="installation_status_bad_apks">Invalid APK files selected</string>
     <string name="installation_status_blocked">Installation was blocked</string>
@@ -53,6 +57,7 @@
     <string name="permission_denied_message">Permission denied for writing to storage!</string>
     <string name="preparing_apk">Preparing %s APK…</string>
     <string name="preparing_bundle">Preparing app bundle for sharing…</string>
+    <string name="preparing_bundle_install">Preparing \'%s\' for installation…</string>
     <string name="press_back">Press Back Button Again to close APK Explorer!</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_policy_summary">Read Privacy Policy</string>
@@ -74,6 +79,7 @@
     <string name="sdcard">SDCard</string>
     <string name="search">Search…</string>
     <string name="select">Select</string>
+    <string name="select_apk">Select Split APK\'s</string>
     <string name="share">Share</string>
     <string name="share_message">Share %s?</string>
     <string name="share_with">Share with</string>
@@ -99,4 +105,6 @@
     <string name="unsupported_file_dex">You\'re selected a \'DEX\' (.dex) file, which is unfortunately impossible for AEE to read.\n\nWhat is a DEX file?\nA Dex file has code that is ultimately executed by the Android Runtime. Every APK\'s should have a \'classes.dex\' file, which references any classes or methods used within an app. Essentially, any Activity, Object, or Fragment used within the code base will be transformed into bytes within a Dex file that can be run as an Android app.\n\nHow to read a DEX file?\nA DEX file shall be converted to \'jar\' format and later into \'Java\' file using tools such as \'dex2jar\' and \'JD-GUI\'.</string>
     <string name="user">User</string>
     <string name="version">Version: %s</string>
+    <string name="wrong_extension">Please select a file with %s extension.</string>
+    <string name="yes">Yes</string>
 </resources>

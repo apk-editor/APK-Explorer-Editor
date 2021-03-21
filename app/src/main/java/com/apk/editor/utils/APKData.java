@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -59,16 +60,32 @@ public class APKData {
         return new File(Objects.requireNonNull(context.getExternalFilesDir("")).toString()).listFiles();
     }
 
+    private static PackageInfo getPackageInfo(String path, Context context) {
+        return AppData.getPackageManager(context).getPackageArchiveInfo(path, 0);
+    }
+
     public static CharSequence getAppName(String path, Context context) {
-        return Objects.requireNonNull(AppData.getPackageManager(context).getPackageArchiveInfo(path, 0)).applicationInfo.loadLabel(AppData.getPackageManager(context));
+        if (getPackageInfo(path, context) != null) {
+            return getPackageInfo(path, context).applicationInfo.loadLabel(AppData.getPackageManager(context));
+        } else {
+            return null;
+        }
     }
 
     public static CharSequence getAppID(String path, Context context) {
-        return Objects.requireNonNull(AppData.getPackageManager(context).getPackageArchiveInfo(path, 0)).applicationInfo.packageName;
+        if (getPackageInfo(path, context) != null) {
+            return getPackageInfo(path, context).applicationInfo.packageName;
+        } else {
+            return null;
+        }
     }
 
     public static Drawable getAppIcon(String path, Context context) {
-        return Objects.requireNonNull(AppData.getPackageManager(context).getPackageArchiveInfo(path, 0)).applicationInfo.loadIcon(AppData.getPackageManager(context));
+        if (getPackageInfo(path, context) != null) {
+            return getPackageInfo(path, context).applicationInfo.loadIcon(AppData.getPackageManager(context));
+        } else {
+            return null;
+        }
     }
 
     public static String getVersionName(String path, Context context) {

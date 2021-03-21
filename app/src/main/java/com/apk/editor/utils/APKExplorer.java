@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
+import com.google.android.material.card.MaterialCardView;
 
 import net.dongliu.apk.parser.ApkFile;
 
@@ -21,14 +22,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
 public class APKExplorer {
 
-    public static String mAppID, mPath = null, mFilePath = null, mFileToReplace = null;
     public static boolean mPrivateKey = false, mRSATemplate = false;
+    public static List<String> mAPKList = new ArrayList<>();
+    public static MaterialCardView mSelect;
+    public static String mAppID, mPath = null, mFilePath = null, mFileToReplace = null;
 
     public static boolean isTextFile(String path) {
         return path.endsWith(".txt") || path.endsWith(".xml") || path.endsWith(".json") || path.endsWith(".properties")

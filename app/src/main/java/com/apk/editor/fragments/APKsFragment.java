@@ -1,9 +1,12 @@
 package com.apk.editor.fragments;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,15 +19,20 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
+import com.apk.editor.activities.InstallerFilePickerActivity;
 import com.apk.editor.adapters.RecycleViewApksAdapter;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -48,14 +56,17 @@ public class APKsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mRootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View mRootView = inflater.inflate(R.layout.fragment_apks, container, false);
 
         mAppTitle = mRootView.findViewById(R.id.app_title);
         mSearchWord = mRootView.findViewById(R.id.search_word);
         mProgress = mRootView.findViewById(R.id.progress_layout);
         AppCompatImageButton mSearchButton = mRootView.findViewById(R.id.search_button);
+        AppCompatImageButton mAddButton = mRootView.findViewById(R.id.add_button);
+        MaterialCardView mInstall = mRootView.findViewById(R.id.add);
         TabLayout mTabLayout = mRootView.findViewById(R.id.tab_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
         mAppTitle.setText(getString(R.string.apps_exported));
@@ -126,6 +137,9 @@ public class APKsFragment extends Fragment {
             }
         });
 
+        mAddButton.setOnClickListener(v -> launchInstallerFilePicker());
+        mInstall.setOnClickListener(v -> launchInstallerFilePicker());
+
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -160,6 +174,35 @@ public class APKsFragment extends Fragment {
         } else {
             return 0;
         }
+    }
+
+    private void launchInstallerFilePicker() {
+        if (!APKEditorUtils.isWritePermissionGranted(requireActivity())) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[] {
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            APKEditorUtils.snackbar(requireActivity().findViewById(android.R.id.content), requireActivity().getString(R.string.permission_denied_message));
+        } else {
+            if (!APKEditorUtils.getBoolean("firstInstall", false, requireActivity())) {
+                new MaterialAlertDialogBuilder(requireActivity())
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setTitle(R.string.split_apk_installer)
+                        .setMessage(getString(R.string.installer_message))
+                        .setCancelable(false)
+                        .setPositiveButton(getString(R.string.got_it), (dialog, id) -> {
+                            APKEditorUtils.saveBoolean("firstInstall", true, requireActivity());
+                            launchAEEInstaller();
+                        }).show();
+            } else {
+                launchAEEInstaller();
+            }
+        }
+    }
+
+    private void launchAEEInstaller() {
+        APKExplorer.mAPKList.clear();
+        APKExplorer.mPath = Environment.getExternalStorageDirectory().toString();
+        Intent installer = new Intent(requireActivity(), InstallerFilePickerActivity.class);
+        startActivity(installer);
     }
 
     private void loadAPKs(Activity activity) {
