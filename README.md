@@ -24,6 +24,9 @@ AEE currently supports the following tasks
 ## Download
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
      alt="" height="80">](https://play.google.com/store/apps/details?id=com.apk.explorer)
+[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
+          alt=""
+          height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.apk.editor)
 [<img src="https://i.ibb.co/q0mdc4Z/get-it-on-github.png"
                     alt="" height="80">](https://github.com/apk-editor/APK-Explorer-Editor/releases)
 
