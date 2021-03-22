@@ -1,0 +1,26 @@
+<b>APK Explorer & Editor</b> (AEE) includes a set of open-source tools mainly designed to explore the contents of an installed application on an Android device. Additionally, AEE offers a feature-rich APK/Split APK's/App bundle installer which allows users to pick and install files from device storage. <i>Please Note</i>: This is the full version of AEE. The Google Play version lacks editing capabilities as well as features such as APK/App Bundle signing.
+
+<b>Features</b>
+
+* A beautifully designed list view of installed applications.
+* Explore and navigate through the contents of an installed application.
+* Export and easily manage (install, share etc.) APK's/Split APK's into device storage.
+* Includes a feature-rich APK/Split APK/App bundle installer (easily pick and install files from device storage)
+* Easily extract an app icon by single-clicking on it.
+* Very basic editing, only on text files at this moment.
+* Provides basic information about important resource files.
+* View graphics, texts, binary XML, and many more.
+* Save/Export individual resource files to device storage.
+* Delete or replaces resources.
+* Create signed APK's/App Bundles after the above-mentioned processes.
+* Resign APK's/bundles with AEE custom key.
+* Elegantly designed user interface with an auto-dark/light theme.
+* A lot more.
+
+<b>Translations</b>
+
+Please help me to translate this application via <a href='https://poeditor.com/join/project?hash=QztabxONOp'>POEditor</a>. You may also translate after downloading the original language string available <a href='https://github.com/apk-editor/APK-Explorer-Editor/blob/master/app/src/main/res/values/strings.xml'>GitHub</a>.
+
+<b>Documentation</b>
+
+- <a href='https://apk-editor.github.io/general/'>How-To</a>

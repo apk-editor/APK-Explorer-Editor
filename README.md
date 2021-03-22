@@ -14,12 +14,12 @@
 AEE currently supports the following tasks
 * Explore an installed application and navigate through its contents.
 * Save/export individual resource files such as icon, fonts, graphics, binary XML files, etc to device storage.
+* Export and easily manage (install, share etc.) APK's/Split APK's into device storage.
+* Includes a feature-rich APK/Split APK/App bundle installer (easily pick and install files from device storage)
 * Very basic editing, only on text files at this moment.
 * Delete or replaces resources.
 * Create signed APK's/App Bundles after the above-mentioned processes.
 * Resign APK's/bundles with AEE custom key.
-* Install exported & resigned Split APK's
-* Share an exported & resigned APK.
 
 ## Download
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
