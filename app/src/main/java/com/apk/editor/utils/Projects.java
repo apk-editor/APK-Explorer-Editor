@@ -23,7 +23,7 @@ public class Projects {
     public static List<String> getData(Context context) {
         mData.clear();
         for (File mFile : Objects.requireNonNull(new File(context.getCacheDir().toString()).listFiles())) {
-            if (mFile.exists() && mFile.isDirectory() && !mFile.getName().equals("WebView")) {
+            if (mFile.exists() && mFile.isDirectory() && !mFile.getName().matches("WebView|splits")) {
                 if (mSearchText == null) {
                     mData.add(mFile.getAbsolutePath());
                 } else if (mFile.getName().toLowerCase().contains(mSearchText.toLowerCase())) {

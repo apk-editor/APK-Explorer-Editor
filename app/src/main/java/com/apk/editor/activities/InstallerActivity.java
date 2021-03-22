@@ -58,9 +58,7 @@ public class InstallerActivity extends AppCompatActivity {
 
         mHeading.setText(getIntent().getStringExtra(HEADING_INTENT));
 
-        mCancel.setOnClickListener(v -> {
-            finish();
-        });
+        mCancel.setOnClickListener(v -> onBackPressed());
 
         refreshStatus(this);
     }
@@ -134,6 +132,9 @@ public class InstallerActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (APKEditorUtils.getString("installationStatus", "waiting", this).equals("waiting")) {
             return;
+        }
+        if (APKEditorUtils.exist(getCacheDir().getPath() + "/splits")) {
+            APKEditorUtils.delete(getCacheDir().getPath() + "/splits");
         }
         super.onBackPressed();
     }
