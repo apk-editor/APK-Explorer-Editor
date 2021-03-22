@@ -45,12 +45,14 @@ public class CreditsActivity extends AppCompatActivity {
         mData.add(new RecycleViewItem("Hsiafan", "APK parser", "https://github.com/hsiafan/apk-parser"));
         mData.add(new RecycleViewItem("Srikanth Reddy Lingala", "Zip4j", "https://github.com/srikanth-lingala/zip4j"));
         if (APKEditorUtils.isFullVersion(this)) {
-            mData.add(new RecycleViewItem("Aefyr", "SAI", "https://github.com/Aefyr/SAI"));
-            mData.add(new RecycleViewItem("Nitin Kalra", "Split App Share & Install", "https://github.com/nkalra0123/splitapkinstall"));
+            mData.add(new RecycleViewItem("Aefyr", "PseudoApkSigner", "https://github.com/Aefyr/PseudoApkSigner"));
         }
+        mData.add(new RecycleViewItem("Aefyr", "SAI", "https://github.com/Aefyr/SAI"));
+        mData.add(new RecycleViewItem("Nitin Kalra", "Split App Share & Install", "https://github.com/nkalra0123/splitapkinstall"));
         mData.add(new RecycleViewItem("sunilpaulmathew", "Package Manager", "https://github.com/SmartPack/PackageManager"));
         mData.add(new RecycleViewItem("Gospel Gilbert", "App Icon", "https://t.me/gilgreat0295"));
         mData.add(new RecycleViewItem("Mohammed Qubati", "Arabic Translation", "https://t.me/Alqubati_MrK"));
+        mData.add(new RecycleViewItem("wushidi", "Chinese (Simplified) Translation", "https://t.me/wushidi"));
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         RecycleViewAdapter mRecycleViewAdapter = new RecycleViewAdapter(mData);

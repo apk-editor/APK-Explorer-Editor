@@ -40,6 +40,7 @@ AEE currently supports the following tasks
 * [Nitin Kalra](https://github.com/nkalra0123/) - Split App Share & Install
 * [Gospel Gilbert](https://t.me/gilgreat0295) - App Icon
 * [Mohammed Qubati](https://t.me/Alqubati_MrK) - Arabic Translation
+* [wushidi](https://t.me/wushidi) - Chinese (Simplified) Translation
 
 ## Translations
 Please help me to translate this application via [POEditor](https://poeditor.com/join/project?hash=QztabxONOp). You may also translate after downloading the original language string available [here](app/src/main/res/values/strings.xml).
