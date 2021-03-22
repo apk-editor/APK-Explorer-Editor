@@ -1,0 +1,5 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="about_summary">APK 浏览 &amp; 编辑器 (AEE), 一个开源的可反编译apk的工具，支持查看已安装的应用</string>
+    <string name="share_summary">APK 浏览 &amp; 编辑器 (AEE) %s GitHub 项目地址: https://github.com/apk-editor/APK-Explorer-Editor/releases</string>
+    <string name="warning_message">欢迎来到APK 浏览＆编辑器，一个强大的反编译APK的工具！\n\n注意：\nAPK 浏览＆编辑器 严格遵守协议。点击“接受”按钮即代表您同意不使用此应用进行违法行为</string>
+</resources>
