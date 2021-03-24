@@ -9,6 +9,7 @@ import com.apk.editor.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,6 +31,10 @@ public class Projects {
                     mData.add(mFile.getAbsolutePath());
                 }
             }
+        }
+        Collections.sort(mData);
+        if (!APKEditorUtils.getBoolean("az_order", true, context)) {
+            Collections.reverse(mData);
         }
         return mData;
     }

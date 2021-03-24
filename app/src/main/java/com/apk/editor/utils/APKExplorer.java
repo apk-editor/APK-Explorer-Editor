@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /*
@@ -34,6 +35,38 @@ public class APKExplorer {
     public static List<String> mAPKList = new ArrayList<>();
     public static MaterialCardView mSelect;
     public static String mAppID, mPath = null, mFilePath = null, mFileToReplace = null;
+
+    public static List<String> getData(File[] files, Activity activity) {
+        List<String> mData = new ArrayList<>(), mDir = new ArrayList<>(), mFiles = new ArrayList<>();
+        try {
+            mData.clear();
+            // Add directories
+            for (File mFile : files) {
+                if (mFile.isDirectory()) {
+                    mDir.add(mFile.getAbsolutePath());
+                }
+            }
+            Collections.sort(mDir);
+            if (!APKEditorUtils.getBoolean("az_order", true, activity)) {
+                Collections.reverse(mDir);
+            }
+            mData.addAll(mDir);
+            // Add files
+            for (File mFile :files) {
+                if (mFile.isFile()) {
+                    mFiles.add(mFile.getAbsolutePath());
+                }
+            }
+            Collections.sort(mFiles);
+            if (!APKEditorUtils.getBoolean("az_order", true, activity)) {
+                Collections.reverse(mFiles);
+            }
+            mData.addAll(mFiles);
+        } catch (NullPointerException ignored) {
+            activity.finish();
+        }
+        return mData;
+    }
 
     public static boolean isTextFile(String path) {
         return path.endsWith(".txt") || path.endsWith(".xml") || path.endsWith(".json") || path.endsWith(".properties")

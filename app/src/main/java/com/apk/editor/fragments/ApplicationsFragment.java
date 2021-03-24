@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -16,6 +18,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +39,7 @@ import java.util.Objects;
 public class ApplicationsFragment extends Fragment {
 
     private AppCompatEditText mSearchWord;
+    private AppCompatImageButton mSortButton;
     private AsyncTask<Void, Void, List<String>> mLoader;
     private boolean mExit;
     private Handler mHandler = new Handler();
@@ -53,6 +57,7 @@ public class ApplicationsFragment extends Fragment {
         mSearchWord = mRootView.findViewById(R.id.search_word);
         mProgress = mRootView.findViewById(R.id.progress_layout);
         AppCompatImageButton mSearchButton = mRootView.findViewById(R.id.search_button);
+        mSortButton = mRootView.findViewById(R.id.sort_button);
         TabLayout mTabLayout = mRootView.findViewById(R.id.tab_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
@@ -114,6 +119,8 @@ public class ApplicationsFragment extends Fragment {
                 AppData.toggleKeyboard(1, mSearchWord, requireActivity());
             }
         });
+
+        mSortButton.setOnClickListener(v -> sortMenu(requireActivity()));
 
         mSearchWord.addTextChangedListener(new TextWatcher() {
             @Override
@@ -206,6 +213,48 @@ public class ApplicationsFragment extends Fragment {
                 }
             }, 250);
         }
+    }
+
+    private void sortMenu(Activity activity) {
+        PopupMenu popupMenu = new PopupMenu(activity, mSortButton);
+        Menu menu = popupMenu.getMenu();
+        SubMenu sort = menu.addSubMenu(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_by));
+        sort.add(Menu.NONE, 1, Menu.NONE, getString(R.string.sort_by_name)).setCheckable(true)
+                .setChecked(APKEditorUtils.getBoolean("sort_name", false, activity));
+        sort.add(Menu.NONE, 2, Menu.NONE, getString(R.string.sort_by_id)).setCheckable(true)
+                .setChecked(APKEditorUtils.getBoolean("sort_id", true, activity));
+        menu.add(Menu.NONE, 3, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
+                .setChecked(APKEditorUtils.getBoolean("az_order", true, activity));
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case 0:
+                    break;
+                case 1:
+                    if (!APKEditorUtils.getBoolean("sort_name", false, activity)) {
+                        APKEditorUtils.saveBoolean("sort_name", true, activity);
+                        APKEditorUtils.saveBoolean("sort_id", false, activity);
+                        loadApps(activity);
+                    }
+                    break;
+                case 2:
+                    if (!APKEditorUtils.getBoolean("sort_id", true, activity)) {
+                        APKEditorUtils.saveBoolean("sort_id", true, activity);
+                        APKEditorUtils.saveBoolean("sort_name", false, activity);
+                        loadApps(activity);
+                    }
+                    break;
+                case 3:
+                    if (APKEditorUtils.getBoolean("az_order", true, activity)) {
+                        APKEditorUtils.saveBoolean("az_order", false, activity);
+                    } else {
+                        APKEditorUtils.saveBoolean("az_order", true, activity);
+                    }
+                    loadApps(activity);
+                    break;
+            }
+            return false;
+        });
+        popupMenu.show();
     }
 
     @Override

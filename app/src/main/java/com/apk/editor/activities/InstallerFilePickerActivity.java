@@ -1,14 +1,17 @@
 package com.apk.editor.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +24,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +34,6 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
 
     private AsyncTask<Void, Void, List<String>> mLoader;
     private Handler mHandler = new Handler();
-    private List<String> mData = new ArrayList<>();
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
     private RecycleViewInstallerFilePickerAdapter mRecycleViewAdapter;
@@ -46,10 +47,11 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
 
         AppCompatImageButton mBack = findViewById(R.id.back);
         mTitle = findViewById(R.id.title);
+        AppCompatImageButton mSortButton = findViewById(R.id.sort);
         APKExplorer.mSelect = findViewById(R.id.select);
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, APKExplorer.getSpanCount(this)));
-        mRecycleViewAdapter = new RecycleViewInstallerFilePickerAdapter(getData());
+        mRecycleViewAdapter = new RecycleViewInstallerFilePickerAdapter(APKExplorer.getData(getFilesList(), this));
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
         if (getIntent().getStringExtra(TITLE_INTENT) != null) {
@@ -59,23 +61,24 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
         }
 
         mRecycleViewAdapter.setOnItemClickListener((position, v) -> {
-            if (new File(mData.get(position)).isDirectory()) {
-                APKExplorer.mPath = mData.get(position);
-                reload();
-            } else if (mData.get(position).endsWith(".apks") || mData.get(position).endsWith(".apkm") || mData.get(position).endsWith(".xapk")) {
+            if (new File(APKExplorer.getData(getFilesList(), this).get(position)).isDirectory()) {
+                APKExplorer.mPath = APKExplorer.getData(getFilesList(), this).get(position);
+                reload(this);
+            } else if (APKExplorer.getData(getFilesList(), this).get(position).endsWith(".apks") || APKExplorer.getData(getFilesList(),
+                    this).get(position).endsWith(".apkm") || APKExplorer.getData(getFilesList(), this).get(position).endsWith(".xapk")) {
                 new MaterialAlertDialogBuilder(this)
-                        .setMessage(getString(R.string.bundle_install_question, new File(mData.get(position)).getName()))
+                        .setMessage(getString(R.string.bundle_install_question, new File(APKExplorer.getData(getFilesList(), this).get(position)).getName()))
                         .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
                         })
                         .setPositiveButton(getString(R.string.install), (dialogInterface, i) -> {
-                            SplitAPKInstaller.handleAppBundle(mData.get(position), this);
+                            SplitAPKInstaller.handleAppBundle(APKExplorer.getData(getFilesList(), this).get(position), this);
                             finish();
                         }).show();
-            } else if (mData.get(position).endsWith(".apk")) {
-                if (APKExplorer.mAPKList.contains(mData.get(position))) {
-                    APKExplorer.mAPKList.remove(mData.get(position));
+            } else if (APKExplorer.getData(getFilesList(), this).get(position).endsWith(".apk")) {
+                if (APKExplorer.mAPKList.contains(APKExplorer.getData(getFilesList(), this).get(position))) {
+                    APKExplorer.mAPKList.remove(APKExplorer.getData(getFilesList(), this).get(position));
                 } else {
-                    APKExplorer.mAPKList.add(mData.get(position));
+                    APKExplorer.mAPKList.add(APKExplorer.getData(getFilesList(), this).get(position));
                 }
                 mRecycleViewAdapter.notifyItemChanged(position);
                 APKExplorer.mSelect.setVisibility(APKExplorer.mAPKList.isEmpty() ? View.GONE : View.VISIBLE);
@@ -93,34 +96,28 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
             finish();
         });
 
+        mSortButton.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(this, mSortButton);
+            Menu menu = popupMenu.getMenu();
+            menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
+                    .setChecked(APKEditorUtils.getBoolean("az_order", true, this));
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == 0) {
+                    if (APKEditorUtils.getBoolean("az_order", true, this)) {
+                        APKEditorUtils.saveBoolean("az_order", false, this);
+                    } else {
+                        APKEditorUtils.saveBoolean("az_order", true, this);
+                    }
+                    reload(this);
+                }
+                return false;
+            });
+            popupMenu.show();
+        });
+
         mBack.setOnClickListener(v -> {
             super.onBackPressed();
         });
-    }
-
-    private List<String> getData() {
-        try {
-            mData.clear();
-            // Add directories
-            for (File mFile : getFilesList()) {
-                if (mFile.isDirectory()) {
-                    mData.add(mFile.getAbsolutePath());
-                }
-            }
-            // Add files
-            for (File mFile : getFilesList()) {
-                if (mFile.isFile() && isSupportedFile(mFile.getAbsolutePath())) {
-                    mData.add(mFile.getAbsolutePath());
-                }
-            }
-        } catch (NullPointerException ignored) {
-            finish();
-        }
-        return mData;
-    }
-
-    private boolean isSupportedFile(String path) {
-        return path.endsWith(".apk") || path.endsWith(".apks") || path.endsWith(".apkm") || path.endsWith(".xapk");
     }
 
     private File[] getFilesList() {
@@ -130,7 +127,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
         return new File(APKExplorer.mPath).listFiles();
     }
 
-    private void reload() {
+    private void reload(Activity activity) {
         if (mLoader == null) {
             mHandler.postDelayed(new Runnable() {
                 @SuppressLint("StaticFieldLeak")
@@ -140,13 +137,13 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                         @Override
                         protected void onPreExecute() {
                             super.onPreExecute();
-                            mData.clear();
+                            APKExplorer.getData(getFilesList(), activity).clear();
                             mRecyclerView.setVisibility(View.GONE);
                         }
 
                         @Override
                         protected List<String> doInBackground(Void... voids) {
-                            mRecycleViewAdapter = new RecycleViewInstallerFilePickerAdapter(getData());
+                            mRecycleViewAdapter = new RecycleViewInstallerFilePickerAdapter(APKExplorer.getData(getFilesList(), activity));
                             return null;
                         }
 
@@ -191,7 +188,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
         } else {
             APKExplorer.mPath = Objects.requireNonNull(new File(APKExplorer.mPath).getParentFile()).getPath();
             APKExplorer.mAPKList.clear();
-            reload();
+            reload(this);
         }
     }
 

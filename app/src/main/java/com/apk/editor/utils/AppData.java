@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,6 +26,11 @@ public class AppData {
         boolean mAppType;
         mData.clear();
         List<ApplicationInfo> packages = getPackageManager(context).getInstalledApplications(PackageManager.GET_META_DATA);
+        if (APKEditorUtils.getBoolean("sort_name", true, context)) {
+            Collections.sort(packages, new ApplicationInfo.DisplayNameComparator(getPackageManager(context)));
+        } else {
+            Collections.sort(packages, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.packageName, rhs.packageName));
+        }
         for (ApplicationInfo packageInfo: packages) {
             if (APKEditorUtils.getString("appTypes", "all", context).equals("system")) {
                 mAppType = (packageInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
@@ -41,6 +47,9 @@ public class AppData {
                     mData.add(packageInfo.packageName);
                 }
             }
+        }
+        if (!APKEditorUtils.getBoolean("az_order", true, context)) {
+            Collections.reverse(mData);
         }
         return mData;
     }

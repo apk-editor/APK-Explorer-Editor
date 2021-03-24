@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -16,6 +17,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,6 +54,7 @@ public class ProjectsFragment extends Fragment {
         mSearchWord = mRootView.findViewById(R.id.search_word);
         mProgress = mRootView.findViewById(R.id.progress_layout);
         AppCompatImageButton mSearchButton = mRootView.findViewById(R.id.search_button);
+        AppCompatImageButton mSortButton = mRootView.findViewById(R.id.sort_button);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
@@ -68,6 +71,25 @@ public class ProjectsFragment extends Fragment {
                 mAppTitle.setVisibility(View.GONE);
                 AppData.toggleKeyboard(1, mSearchWord, requireActivity());
             }
+        });
+
+        mSortButton.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(requireActivity(), mSortButton);
+            Menu menu = popupMenu.getMenu();
+            menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
+                    .setChecked(APKEditorUtils.getBoolean("az_order", true, requireActivity()));
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == 0) {
+                    if (APKEditorUtils.getBoolean("az_order", true, requireActivity())) {
+                        APKEditorUtils.saveBoolean("az_order", false, requireActivity());
+                    } else {
+                        APKEditorUtils.saveBoolean("az_order", true, requireActivity());
+                    }
+                    loadProjects(requireActivity());
+                }
+                return false;
+            });
+            popupMenu.show();
         });
 
         loadProjects(requireActivity());

@@ -18,6 +18,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,11 +45,15 @@ public class APKData {
                 if (mFile.exists() && mFile.getName().endsWith(".apk")) {
                     if (mSearchText == null) {
                         mData.add(mFile.getAbsolutePath());
-                    } else if (getAppName(mFile.getAbsolutePath(), context).toString().toLowerCase().contains(mSearchText.toLowerCase())) {
+                    } else if (Objects.requireNonNull(getAppName(mFile.getAbsolutePath(), context)).toString().toLowerCase().contains(mSearchText.toLowerCase())) {
                         mData.add(mFile.getAbsolutePath());
                     }
                 }
             }
+        }
+        Collections.sort(mData);
+        if (!APKEditorUtils.getBoolean("az_order", true, context)) {
+            Collections.reverse(mData);
         }
         return mData;
     }
