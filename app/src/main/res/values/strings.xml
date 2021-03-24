@@ -2,6 +2,7 @@
     <string name="about">About</string>
     <string name="accept">Accept</string>
     <string name="all">All</string>
+    <string name="apk_corrupted">APK file(s) is corrupted! Aborting.</string>
     <string name="apk_installer">AEE APK Installer</string>
     <string name="apks">APK\'s</string>
     <string name="app_name_short" translatable="false">AEE</string>

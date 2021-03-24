@@ -45,7 +45,10 @@ public class APKData {
                 if (mFile.exists() && mFile.getName().endsWith(".apk")) {
                     if (mSearchText == null) {
                         mData.add(mFile.getAbsolutePath());
-                    } else if (Objects.requireNonNull(getAppName(mFile.getAbsolutePath(), context)).toString().toLowerCase().contains(mSearchText.toLowerCase())) {
+                    } else if (getAppName(mFile.getAbsolutePath(), context) != null && Objects.requireNonNull(getAppName(
+                            mFile.getAbsolutePath(), context)).toString().toLowerCase().contains(mSearchText.toLowerCase())) {
+                        mData.add(mFile.getAbsolutePath());
+                    } else if (mFile.getName().toLowerCase().contains(mSearchText.toLowerCase())) {
                         mData.add(mFile.getAbsolutePath());
                     }
                 }
@@ -183,7 +186,7 @@ public class APKData {
                     APKEditorUtils.zip(new File(activity.getCacheDir().getPath() + "/" + APKExplorer.mAppID), new File(Objects.requireNonNull(
                             activity.getExternalFilesDir("")).toString() + "/" + APKExplorer.mAppID + ".apk"));
                     if (APKData.isAppBundle(AppData.getSourceDir(APKExplorer.mAppID, activity))) {
-                        File mParent = new File(activity.getExternalFilesDir("") + "/" + APKExplorer.mAppID);
+                        File mParent = new File(activity.getExternalFilesDir("") + "/" + APKExplorer.mAppID + "_aee-signed");
                         mParent.mkdirs();
                         for (String mSplits : splitApks(AppData.getSourceDir(APKExplorer.mAppID, activity))) {
                             if (!new File(mSplits).getName().equals("base.apk")) {
