@@ -296,11 +296,7 @@ public class APKData {
                 } catch (IllegalArgumentException ignored) {
                 }
                 if (mPackageName == null) {
-                    new MaterialAlertDialogBuilder(activity)
-                            .setMessage(activity.getString(R.string.installation_status_bad_apks))
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.cancel, (dialog, id) -> {
-                            }).show();
+                    APKEditorUtils.snackbar(activity.findViewById(android.R.id.content), activity.getString(R.string.installation_status_bad_apks));
                 } else {
                     new MaterialAlertDialogBuilder(activity)
                             .setIcon(R.mipmap.ic_launcher)
@@ -356,11 +352,7 @@ public class APKData {
                 } catch (IllegalArgumentException ignored) {
                 }
                 if (mPackageName == null) {
-                    new MaterialAlertDialogBuilder(activity)
-                            .setMessage(activity.getString(R.string.installation_status_bad_apks))
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.cancel, (dialog, id) -> {
-                            }).show();
+                    APKEditorUtils.snackbar(activity.findViewById(android.R.id.content), activity.getString(R.string.installation_status_bad_apks));
                 } else {
                     if (APKExplorer.mAPKList.size() > 1) {
                         List<String> signedAPKs = new ArrayList<>();

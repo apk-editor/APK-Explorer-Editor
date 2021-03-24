@@ -116,12 +116,16 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
     }
 
     private void installAPKs() {
-        if (APKExplorer.mAPKList.size() > 1) {
-            SplitAPKInstaller.installSplitAPKs(APKExplorer.mAPKList, null, this);
+        if (APKData.findPackageName(this) != null) {
+            if (APKExplorer.mAPKList.size() > 1) {
+                SplitAPKInstaller.installSplitAPKs(APKExplorer.mAPKList, null, this);
+            } else {
+                SplitAPKInstaller.installAPK(new File(APKExplorer.mAPKList.get(0)), this);
+            }
+            finish();
         } else {
-            SplitAPKInstaller.installAPK(new File(APKExplorer.mAPKList.get(0)), this);
+            APKEditorUtils.snackbar(mRecyclerView, getString(R.string.installation_status_bad_apks));
         }
-        finish();
     }
 
     private void handleAPKs(Activity activity) {
