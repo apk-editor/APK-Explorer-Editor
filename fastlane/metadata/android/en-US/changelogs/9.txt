@@ -1,0 +1,9 @@
+* Added option to sort packages and items on file picker windows.
+* AEE will now support signing APK's before installing from storage.
+* Added option to simply pick & sign APK's from storage.
+* App will now identify corrupted APK's after signing.
+* APK Installer will now notify if the selected APK's are invalid.
+* Fixed signing failed on some cases.
+* Removed unnecessary items from Projects folder.
+* Updated Chinese (simplified).
+* Miscellaneous changes.
