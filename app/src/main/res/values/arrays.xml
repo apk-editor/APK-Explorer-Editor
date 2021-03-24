@@ -6,6 +6,12 @@
         <item>@string/export_resign</item>
     </string-array>
 
+    <string-array name="install_options">
+        <item>@string/install</item>
+        <item>@string/install_resign</item>
+        <item>@string/resign_only</item>
+    </string-array>
+
     <string-array name="signing">
         <item>@string/signing_default</item>
         <item>@string/signing_custom</item>

@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class APKExplorer {
 
-    public static boolean mPrivateKey = false, mRSATemplate = false;
+    public static boolean mFinish = false, mPrivateKey = false, mRSATemplate = false;
     public static List<String> mAPKList = new ArrayList<>();
     public static MaterialCardView mSelect;
     public static String mAppID, mPath = null, mFilePath = null, mFileToReplace = null;

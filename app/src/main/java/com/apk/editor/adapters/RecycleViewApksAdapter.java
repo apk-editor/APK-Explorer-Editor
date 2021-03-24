@@ -66,9 +66,7 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                                 .setMessage(holder.mCard.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
-                                .setPositiveButton(R.string.install, (dialog, id) -> {
-                                    SplitAPKInstaller.installSplitAPKs(data.get(position) + "/base.apk", (Activity) holder.mCard.getContext());
-                                }).show();
+                                .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installSplitAPKs(null, data.get(position) + "/base.apk", (Activity) holder.mCard.getContext())).show();
                     }
                 });
                 holder.mDelete.setOnClickListener(v -> new MaterialAlertDialogBuilder(holder.mDelete.getContext())

@@ -28,7 +28,7 @@
     <string name="export_project_question">Make a copy of this project folder into device storage?</string>
     <string name="export_project_replace">\'%s\' already exists! Do you want to replace it?</string>
     <string name="export_question">Export to device storage?</string>
-    <string name="export_resign">Export and Re-sign</string>
+    <string name="export_resign">Export &amp; Re-sign</string>
     <string name="export_storage">Export to storage</string>
     <string name="exporting">Exporting %s…</string>
     <string name="exploring">Exploring %s…</string>
@@ -36,6 +36,7 @@
     <string name="got_it">Got It</string>
     <string name="install">Install</string>
     <string name="install_question">Install %s?</string>
+    <string name="install_resign">Re-sign &amp; Install</string>
     <string name="install_storage">Install from Storage</string>
     <string name="installer_message">AEE Split APK installer will handle normal APK\'s, split APK\'s as well as \'xapk\', \'apks\' and \'apkm\' App bundles. In order to initialize an installation, simply select the installation file(s) from the next screen and follow onscreen instructions.</string>
     <string name="installation_cancel_message">Are you sure to cancel the installation?</string>
@@ -70,6 +71,9 @@
     <string name="replace_question">Replace %s with</string>
     <string name="report_issue">Report Issue</string>
     <string name="report_issue_summary">Raise an issue at GitHub</string>
+    <string name="resign_only">Re-sign Only</string>
+    <string name="resigned_apks_path">Re-signed APK file(s) are generated!\n\nPath: \'%s\'</string>
+    <string name="resigning_apks">Re-signing selected APK\'s…</string>
     <string name="rsa_template">RSA Template</string>
     <string name="rsa_template_summary">Select custom RSA template</string>
     <string name="save">Save</string>
@@ -80,6 +84,7 @@
     <string name="search">Search…</string>
     <string name="select">Select</string>
     <string name="select_apk">Select Split APK\'s</string>
+    <string name="select_storage">Select from Storage</string>
     <string name="share">Share</string>
     <string name="share_message">Share %s?</string>
     <string name="share_with">Share with</string>

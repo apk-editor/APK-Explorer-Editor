@@ -128,6 +128,16 @@ public class APKData {
         return Objects.requireNonNull(new File(path).getParentFile()).toString();
     }
 
+    public static String findPackageName(Context context) {
+        String name = null;
+        for (String mAPKs : APKExplorer.mAPKList) {
+            if (APKData.getAppID(mAPKs, context) != null) {
+                name = Objects.requireNonNull(APKData.getAppID(mAPKs, context)).toString();
+            }
+        }
+        return name;
+    }
+
     public static List<String> splitApks(String path) {
         List<String> list = new ArrayList<>();
         if (new File(path).getName().equals("base.apk") && new File(path).exists()) {
@@ -243,6 +253,129 @@ public class APKData {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
                 }
+            }
+        }.execute();
+    }
+
+    public static void reSignAPKs(Activity activity) {
+        new AsyncTask<Void, Void, Void>() {
+            private ProgressDialog mProgressDialog;
+            private String mPackageName = null, mSignedAPKPath = null;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                mProgressDialog = new ProgressDialog(activity);
+                mProgressDialog.setMessage(activity.getString(R.string.resigning_apks));
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+                // Find package name from the selected APK's
+                mPackageName = findPackageName(activity);
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                if (mPackageName != null) {
+                    if (APKExplorer.mAPKList.size() > 1) {
+                        File mParent = new File(Projects.getExportPath() + "/" + mPackageName + "_aee-signed");
+                        mParent.mkdirs();
+                        mSignedAPKPath = mParent.getAbsolutePath();
+                        for (String mSplits : APKExplorer.mAPKList) {
+                            signApks(new File(mSplits), new File(mParent.toString() + "/" + new File(mSplits).getName()), activity);
+                        }
+                    } else {
+                        new File(Projects.getExportPath()).mkdirs();
+                        mSignedAPKPath = Projects.getExportPath() + "/" + mPackageName + "_aee-signed.apk";
+                        signApks(new File(APKExplorer.mAPKList.get(0)), new File(Projects.getExportPath() + "/" + mPackageName + "_aee-signed.apk"), activity);
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                try {
+                    mProgressDialog.dismiss();
+                } catch (IllegalArgumentException ignored) {
+                }
+                if (mPackageName == null) {
+                    new MaterialAlertDialogBuilder(activity)
+                            .setMessage(activity.getString(R.string.installation_status_bad_apks))
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.cancel, (dialog, id) -> {
+                            }).show();
+                } else {
+                    new MaterialAlertDialogBuilder(activity)
+                            .setIcon(R.mipmap.ic_launcher)
+                            .setTitle(mPackageName)
+                            .setMessage(activity.getString(
+                                    R.string.resigned_apks_path, mSignedAPKPath))
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.cancel, (dialog, id) -> activity.finish()).show();
+                }
+            }
+        }.execute();
+    }
+
+    public static void reSignAndInstall(Activity activity) {
+        new AsyncTask<Void, Void, Void>() {
+            private ProgressDialog mProgressDialog;
+            private String mPackageName = null, mSignedAPKPath = null;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                mProgressDialog = new ProgressDialog(activity);
+                mProgressDialog.setMessage(activity.getString(R.string.resigning_apks));
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+                // Find package name from the selected APK's
+                mPackageName = findPackageName(activity);
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                if (mPackageName != null) {
+                    if (APKExplorer.mAPKList.size() > 1) {
+                        File mParent = new File(Projects.getExportPath() + "/" + mPackageName + "_aee-signed");
+                        mParent.mkdirs();
+                        mSignedAPKPath = mParent.getAbsolutePath();
+                        for (String mSplits : APKExplorer.mAPKList) {
+                            signApks(new File(mSplits), new File(mParent.toString() + "/" + new File(mSplits).getName()), activity);
+                        }
+                    } else {
+                        new File(Projects.getExportPath()).mkdirs();
+                        mSignedAPKPath = Projects.getExportPath() + "/" + mPackageName + ".apk";
+                        signApks(new File(APKExplorer.mAPKList.get(0)), new File(Projects.getExportPath() + "/" + mPackageName + ".apk"), activity);
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                try {
+                    mProgressDialog.dismiss();
+                } catch (IllegalArgumentException ignored) {
+                }
+                if (mPackageName == null) {
+                    new MaterialAlertDialogBuilder(activity)
+                            .setMessage(activity.getString(R.string.installation_status_bad_apks))
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.cancel, (dialog, id) -> {
+                            }).show();
+                } else {
+                    if (APKExplorer.mAPKList.size() > 1) {
+                        List<String> signedAPKs = new ArrayList<>();
+                        for (String mAPKs : APKExplorer.mAPKList) {
+                            signedAPKs.add(mSignedAPKPath + "/" + new File(mAPKs).getName());
+                        }
+                        SplitAPKInstaller.installSplitAPKs(signedAPKs, null, activity);
+                    } else {
+                        SplitAPKInstaller.installAPK(new File(mSignedAPKPath), activity);
+                    }
+                }
+                APKExplorer.mFinish = true;
             }
         }.execute();
     }

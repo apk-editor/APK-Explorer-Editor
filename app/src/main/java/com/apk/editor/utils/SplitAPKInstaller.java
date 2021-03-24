@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -166,7 +167,7 @@ public class SplitAPKInstaller {
         }.execute();
     }
 
-    public static void installSplitAPKs(String path, Activity activity) {
+    public static void installSplitAPKs(List<String> apks, String path, Activity activity) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected void onPreExecute() {
@@ -191,8 +192,8 @@ public class SplitAPKInstaller {
                                 runInstallWrite(mFile.length(), sessionId, mFile.getName(), mFile.toString(), activity);
                             }
                         }
-                    } else if (APKExplorer.mAPKList.size() > 0) {
-                        for (String string : APKExplorer.mAPKList) {
+                    } else {
+                        for (String string : apks) {
                             if (APKEditorUtils.exist(string)) {
                                 File mFile = new File(string);
                                 if (mFile.exists() && mFile.getName().endsWith(".apk")) {

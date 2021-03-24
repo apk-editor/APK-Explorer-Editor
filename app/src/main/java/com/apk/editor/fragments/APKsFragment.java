@@ -67,8 +67,11 @@ public class APKsFragment extends Fragment {
         AppCompatImageButton mSortButton = mRootView.findViewById(R.id.sort_button);
         AppCompatImageButton mAddButton = mRootView.findViewById(R.id.add_button);
         MaterialCardView mInstall = mRootView.findViewById(R.id.add);
+        MaterialTextView mSelectText = mRootView.findViewById(R.id.select_text);
         TabLayout mTabLayout = mRootView.findViewById(R.id.tab_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
+
+        mSelectText.setText(getString(APKEditorUtils.isFullVersion(requireActivity()) ? R.string.select_storage : R.string.install_storage));
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 

@@ -51,7 +51,7 @@ public class InstallerActivity extends AppCompatActivity {
             mTitle.setText(APKData.getAppName(path, this));
             mIcon.setImageDrawable(APKData.getAppIcon(path, this));
         } else {
-            mPackageName = getPackageId();
+            mPackageName = APKData.findPackageName(this);
             mTitle.setText(getName());
             mIcon.setImageDrawable(getIcon());
         }
@@ -103,16 +103,6 @@ public class InstallerActivity extends AppCompatActivity {
         for (String mAPKs : APKExplorer.mAPKList) {
             if (APKData.getAppName(mAPKs, this) != null) {
                 name = APKData.getAppName(mAPKs, this);
-            }
-        }
-        return name;
-    }
-
-    private String getPackageId() {
-        String name = null;
-        for (String mAPKs : APKExplorer.mAPKList) {
-            if (APKData.getAppID(mAPKs, this) != null) {
-                name = Objects.requireNonNull(APKData.getAppID(mAPKs, this)).toString();
             }
         }
         return name;
