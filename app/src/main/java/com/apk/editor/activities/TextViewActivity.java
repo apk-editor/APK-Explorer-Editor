@@ -95,10 +95,10 @@ public class TextViewActivity extends AppCompatActivity {
                     .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                     })
                     .setPositiveButton(getString(R.string.export), (dialog, id) -> {
-                        APKEditorUtils.mkdir(Projects.getExportPath() + "/" + APKExplorer.mAppID);
-                        APKEditorUtils.copy(mPath, Projects.getExportPath() + "/" + APKExplorer.mAppID + "/" + new File(mPath).getName());
+                        APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + APKExplorer.mAppID);
+                        APKEditorUtils.copy(mPath, Projects.getExportPath(this) + "/" + APKExplorer.mAppID + "/" + new File(mPath).getName());
                         new MaterialAlertDialogBuilder(this)
-                                .setMessage(getString(R.string.export_complete_message, Projects.getExportPath() + "/" + APKExplorer.mAppID))
+                                .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(this) + "/" + APKExplorer.mAppID))
                                 .setPositiveButton(getString(R.string.cancel), (dialog1, id1) -> {
                                 }).show();
                     }).show();

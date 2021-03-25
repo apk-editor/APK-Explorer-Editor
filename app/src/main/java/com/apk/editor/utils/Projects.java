@@ -24,7 +24,7 @@ public class Projects {
     public static List<String> getData(Context context) {
         mData.clear();
         for (File mFile : Objects.requireNonNull(new File(context.getCacheDir().toString()).listFiles())) {
-            if (mFile.exists() && mFile.isDirectory() && !mFile.getName().matches("WebView|splits")) {
+            if (mFile.exists() && mFile.isDirectory() && !mFile.getName().matches("WebView|splits|aee-signed")) {
                 if (mSearchText == null) {
                     mData.add(mFile.getAbsolutePath());
                 } else if (mFile.getName().toLowerCase().contains(mSearchText.toLowerCase())) {
@@ -39,8 +39,12 @@ public class Projects {
         return mData;
     }
 
-    public static String getExportPath() {
-        return Environment.getExternalStorageDirectory().toString() + "/AEE";
+    public static String getExportPath(Context context) {
+        if (APKEditorUtils.getString("exportPath", null, context) != null) {
+            return APKEditorUtils.getString("exportPath", null, context);
+        } else {
+            return Environment.getExternalStorageDirectory().toString() + "/AEE";
+        }
     }
 
     public static void exportProject(File path, String name, Context context) {
@@ -53,14 +57,14 @@ public class Projects {
                 mProgressDialog.setMessage(context.getString(R.string.exporting, path.getName()));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
-                if (APKEditorUtils.exist(getExportPath() + "/" + name)) {
-                    APKEditorUtils.delete(getExportPath() + "/" + name);
+                if (APKEditorUtils.exist(getExportPath(context) + "/" + name)) {
+                    APKEditorUtils.delete(getExportPath(context) + "/" + name);
                 }
             }
 
             @Override
             protected Void doInBackground(Void... voids) {
-                APKEditorUtils.copyDir(path, new File(getExportPath(), name));
+                APKEditorUtils.copyDir(path, new File(getExportPath(context), name));
                 return null;
             }
 

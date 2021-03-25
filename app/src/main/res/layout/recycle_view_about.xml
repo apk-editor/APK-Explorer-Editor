@@ -1,11 +1,11 @@
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rv_about"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:gravity="center_vertical"
-    android:layout_margin="10dp"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:layout_margin="10dp" >
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/icon"
@@ -13,7 +13,6 @@
             android:layout_height="25dp"
             android:scaleType="fitCenter"
             android:layout_gravity="center_vertical"
-            android:src="@color/colorBlack"
             android:background="@null" />
 
         <LinearLayout

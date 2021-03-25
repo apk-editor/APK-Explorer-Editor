@@ -66,20 +66,20 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
         }
         holder.mTitle.setText(new File(data.get(position)).getName());
         holder.mSettings.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(holder.mSettings.getContext(), v);
+            PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
             Menu menu = popupMenu.getMenu();
-            if (APKEditorUtils.isFullVersion(holder.mSettings.getContext())) {
+            if (APKEditorUtils.isFullVersion(v.getContext())) {
                 menu.add(Menu.NONE, 0, Menu.NONE, R.string.delete);
             }
             menu.add(Menu.NONE, 1, Menu.NONE, R.string.export);
-            if (APKEditorUtils.isFullVersion(holder.mSettings.getContext())) {
+            if (APKEditorUtils.isFullVersion(v.getContext())) {
                 menu.add(Menu.NONE, 2, Menu.NONE, R.string.replace);
             }
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case 0:
-                        new MaterialAlertDialogBuilder(holder.mSettings.getContext())
-                                .setMessage(holder.mSettings.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))
+                        new MaterialAlertDialogBuilder(v.getContext())
+                                .setMessage(v.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
                                 .setPositiveButton(R.string.delete, (dialog, id) -> {
@@ -89,34 +89,34 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
                                 }).show();
                         break;
                     case 1:
-                        if (!APKEditorUtils.isWritePermissionGranted(holder.mSettings.getContext())) {
-                            ActivityCompat.requestPermissions((Activity) holder.mSettings.getContext(), new String[]{
+                        if (!APKEditorUtils.isWritePermissionGranted(v.getContext())) {
+                            ActivityCompat.requestPermissions((Activity) v.getContext(), new String[]{
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                            APKEditorUtils.snackbar(v, holder.mSettings.getContext().getString(R.string.permission_denied_message));
+                            APKEditorUtils.snackbar(v, v.getContext().getString(R.string.permission_denied_message));
                         } else {
-                            new MaterialAlertDialogBuilder(holder.mSettings.getContext())
+                            new MaterialAlertDialogBuilder(v.getContext())
                                     .setMessage(R.string.export_question)
-                                    .setNegativeButton(holder.mSettings.getContext().getString(R.string.cancel), (dialog, id) -> {
+                                    .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
                                     })
-                                    .setPositiveButton(holder.mSettings.getContext().getString(R.string.export), (dialog, id) -> {
-                                        APKEditorUtils.mkdir(Projects.getExportPath() + "/" + APKExplorer.mAppID);
-                                        APKEditorUtils.copy(data.get(position), Projects.getExportPath() + "/" + APKExplorer.mAppID + "/" + new File(data.get(position)).getName());
-                                        new MaterialAlertDialogBuilder(holder.mSettings.getContext())
-                                                .setMessage(holder.mSettings.getContext().getString(R.string.export_complete_message, Projects.getExportPath() + "/" + APKExplorer.mAppID))
-                                                .setPositiveButton(holder.mSettings.getContext().getString(R.string.cancel), (dialog1, id1) -> {
+                                    .setPositiveButton(v.getContext().getString(R.string.export), (dialog, id) -> {
+                                        APKEditorUtils.mkdir(Projects.getExportPath(v.getContext()) + "/" + APKExplorer.mAppID);
+                                        APKEditorUtils.copy(data.get(position), Projects.getExportPath(v.getContext()) + "/" + APKExplorer.mAppID + "/" + new File(data.get(position)).getName());
+                                        new MaterialAlertDialogBuilder(v.getContext())
+                                                .setMessage(v.getContext().getString(R.string.export_complete_message, Projects.getExportPath(v.getContext()) + "/" + APKExplorer.mAppID))
+                                                .setPositiveButton(v.getContext().getString(R.string.cancel), (dialog1, id1) -> {
                                                 }).show();
                                     }).show();
                         }
                         break;
                     case 2:
-                        if (!APKEditorUtils.isWritePermissionGranted(holder.mSettings.getContext())) {
-                            ActivityCompat.requestPermissions((Activity) holder.mSettings.getContext(), new String[]{
+                        if (!APKEditorUtils.isWritePermissionGranted(v.getContext())) {
+                            ActivityCompat.requestPermissions((Activity) v.getContext(), new String[]{
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                            APKEditorUtils.snackbar(v, holder.mSettings.getContext().getString(R.string.permission_denied_message));
+                            APKEditorUtils.snackbar(v, v.getContext().getString(R.string.permission_denied_message));
                         } else {
                             APKExplorer.mFileToReplace = data.get(position);
-                            Intent filePicker = new Intent(holder.mSettings.getContext(), FilePickerActivity.class);
-                            holder.mSettings.getContext().startActivity(filePicker);
+                            Intent filePicker = new Intent(v.getContext(), FilePickerActivity.class);
+                            v.getContext().startActivity(filePicker);
                         }
                         break;
                 }

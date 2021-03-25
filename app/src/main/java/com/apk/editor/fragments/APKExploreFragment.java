@@ -156,11 +156,11 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
                                 APKEditorUtils.snackbar(requireActivity().findViewById(android.R.id.content), getString(R.string.permission_denied_message));
                                 return;
                             }
-                            APKEditorUtils.mkdir(Projects.getExportPath() + "/" + APKExplorer.mAppID);
-                            APKEditorUtils.copy(APKExplorer.getData(getFilesList(), requireActivity()).get(position), Projects.getExportPath() + "/" + APKExplorer.mAppID + "/"
+                            APKEditorUtils.mkdir(Projects.getExportPath(requireActivity()) + "/" + APKExplorer.mAppID);
+                            APKEditorUtils.copy(APKExplorer.getData(getFilesList(), requireActivity()).get(position), Projects.getExportPath(requireActivity()) + "/" + APKExplorer.mAppID + "/"
                                     + new File(APKExplorer.getData(getFilesList(), requireActivity()).get(position)).getName());
                             new MaterialAlertDialogBuilder(requireActivity())
-                                    .setMessage(getString(R.string.export_complete_message, Projects.getExportPath() + "/" + APKExplorer.mAppID))
+                                    .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(requireActivity()) + "/" + APKExplorer.mAppID))
                                     .setPositiveButton(getString(R.string.cancel), (dialog2, id2) -> {
                                     }).show();
                         })
@@ -188,18 +188,26 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
     }
 
     private void retainDialog() {
-        new MaterialAlertDialogBuilder(requireActivity())
-                .setMessage(R.string.save_projects_question)
-                .setNeutralButton(getString(R.string.delete), (dialog, id) -> {
-                    APKEditorUtils.delete(requireActivity().getCacheDir().getPath() + "/" + (APKExplorer.mAppID != null ?
-                            APKExplorer.mAppID : new File(APKExplorer.mPath).getName()));
-                    requireActivity().finish();
-                })
-                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
-                })
-                .setPositiveButton(getString(R.string.save), (dialog, id) -> {
-                    requireActivity().finish();
-                }).show();
+        if (APKEditorUtils.getString("projectAction", null, requireActivity()) == null) {
+            new MaterialAlertDialogBuilder(requireActivity())
+                    .setMessage(R.string.save_projects_question)
+                    .setNeutralButton(getString(R.string.delete), (dialog, id) -> {
+                        APKEditorUtils.delete(requireActivity().getCacheDir().getPath() + "/" + (APKExplorer.mAppID != null ?
+                                APKExplorer.mAppID : new File(APKExplorer.mPath).getName()));
+                        requireActivity().finish();
+                    })
+                    .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
+                    })
+                    .setPositiveButton(getString(R.string.save), (dialog, id) -> {
+                        requireActivity().finish();
+                    }).show();
+        } else if (APKEditorUtils.getString("projectAction", null, requireActivity()).equals(getString(R.string.delete))) {
+            APKEditorUtils.delete(requireActivity().getCacheDir().getPath() + "/" + (APKExplorer.mAppID != null ?
+                    APKExplorer.mAppID : new File(APKExplorer.mPath).getName()));
+            requireActivity().finish();
+        } else {
+            requireActivity().finish();
+        }
     }
 
     private File[] getFilesList() {

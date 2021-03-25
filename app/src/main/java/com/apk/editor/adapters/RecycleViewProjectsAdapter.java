@@ -101,7 +101,7 @@ public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleView
                                                 text = text.replace(" ", "_");
                                             }
                                             String mName = text;
-                                            if (APKEditorUtils.exist(Projects.getExportPath() + "/" + text)) {
+                                            if (APKEditorUtils.exist(Projects.getExportPath(v.getContext()) + "/" + text)) {
                                                 new MaterialAlertDialogBuilder(v.getContext())
                                                         .setMessage(v.getContext().getString(R.string.export_project_replace, text))
                                                         .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {

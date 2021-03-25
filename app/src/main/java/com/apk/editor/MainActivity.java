@@ -5,8 +5,10 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.apk.editor.activities.DocumentationActivity;
+import com.apk.editor.activities.SettingsActivity;
 import com.apk.editor.fragments.ApplicationsFragment;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.BottomNavView;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         BottomNavigationView mBottomNav = findViewById(R.id.bottom_navigation);
+        AppCompatImageButton mSettings = findViewById(R.id.settings_menu);
+
         mBottomNav.setOnNavigationItemSelectedListener(navListener);
 
         if (savedInstanceState == null) {
@@ -48,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(documentation);
                     }).show();
         }
+
+        mSettings.setOnClickListener(v -> {
+            Intent settings = new Intent(this, SettingsActivity.class);
+            startActivity(settings);
+        });
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener

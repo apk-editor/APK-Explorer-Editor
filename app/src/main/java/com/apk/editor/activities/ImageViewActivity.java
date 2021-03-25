@@ -59,14 +59,14 @@ public class ImageViewActivity extends AppCompatActivity {
                     .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                     })
                     .setPositiveButton(getString(R.string.export), (dialog, id) -> {
-                        APKEditorUtils.mkdir(Projects.getExportPath() + "/" + APKExplorer.mAppID);
+                        APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + APKExplorer.mAppID);
                         if (path != null) {
-                            APKExplorer.saveImage(BitmapFactory.decodeFile(path), Projects.getExportPath() + "/" + APKExplorer.mAppID + "/" + new File(path).getName());
+                            APKExplorer.saveImage(BitmapFactory.decodeFile(path), Projects.getExportPath(this) + "/" + APKExplorer.mAppID + "/" + new File(path).getName());
                         } else {
-                            APKExplorer.saveImage(APKExplorer.drawableToBitmap(mImage.getDrawable()),Projects.getExportPath() + "/" + APKExplorer.mAppID + "/icon.png");
+                            APKExplorer.saveImage(APKExplorer.drawableToBitmap(mImage.getDrawable()),Projects.getExportPath(this) + "/" + APKExplorer.mAppID + "/icon.png");
                         }
                         new MaterialAlertDialogBuilder(this)
-                                .setMessage(getString(R.string.export_complete_message, Projects.getExportPath() + "/" + APKExplorer.mAppID))
+                                .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(this) + "/" + APKExplorer.mAppID))
                                 .setPositiveButton(getString(R.string.cancel), (dialog1, id1) -> {
                                 }).show();
                     }).show();

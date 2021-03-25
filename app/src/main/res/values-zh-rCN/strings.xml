@@ -78,7 +78,6 @@
     <string name="signing_default">"使用默认密钥签名"</string>
     <string name="signing_message">"AEE使用由Awfry制作的签名工具。因此，AEE仅支持PK8格式的私钥以及RSA模板文件。点击此处阅读更多关于创建私钥和RSA模板的更多信息！"</string>
     <string name="signing_question">"使用 '%s' 作为新"</string>
-    <string name="signing_summary">"配置应用签名"</string>
     <string name="signing_title">"应用签名"</string>
     <string name="apk_installer">"AEE APK 安装器"</string>
     <string name="bundle_install_question">"你确定要安装 App Bundle '%s' 吗？"</string>

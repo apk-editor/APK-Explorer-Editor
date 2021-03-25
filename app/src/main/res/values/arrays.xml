@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+    <string-array name="export_apk">
+        <item>@string/export_storage</item>
+        <item>@string/export_resign</item>
+        <item>@string/prompt</item>
+    </string-array>
+
     <string-array name="export_options">
         <item>@string/export_storage</item>
         <item>@string/export_resign</item>
+    </string-array>
+
+    <string-array name="export_path">
+        <item>@string/sdcard</item>
+        <item>@string/export_path_default</item>
+        <item>@string/export_path_download</item>
     </string-array>
 
     <string-array name="install_options">
@@ -12,8 +24,25 @@
         <item>@string/resign_only</item>
     </string-array>
 
+    <string-array name="installer_options">
+        <item>@string/install</item>
+        <item>@string/install_resign</item>
+        <item>@string/prompt</item>
+    </string-array>
+
+    <string-array name="project_options">
+        <item>@string/save</item>
+        <item>@string/delete</item>
+        <item>@string/prompt</item>
+    </string-array>
+
     <string-array name="signing">
         <item>@string/signing_default</item>
         <item>@string/signing_custom</item>
+    </string-array>
+
+    <string-array name="signing_options">
+        <item>@string/sign_apk_default</item>
+        <item>@string/sign_apk_custom</item>
     </string-array>
 </resources>

@@ -26,7 +26,6 @@
     <string name="explore_error_status">"فشل استكشاف %s!"</string>
     <string name="install">"تثبيت"</string>
     <string name="install_question">"تثبيت %s"</string>
-    <string name="installation_result">"تم التثبيت! النتيجة: %s"</string>
     <string name="installing">"يتم التثبيت %s…"</string>
     <string name="invite_friends">"دعوة أصدقاء"</string>
     <string name="invite_friends_Summary">"ادعو أصدقاءك لتجربة AEE"</string>

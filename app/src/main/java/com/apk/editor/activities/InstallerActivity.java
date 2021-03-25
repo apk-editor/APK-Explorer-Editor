@@ -47,9 +47,11 @@ public class InstallerActivity extends AppCompatActivity {
 
         String path = getIntent().getStringExtra(PATH_INTENT);
         if (path != null) {
-            mPackageName = Objects.requireNonNull(APKData.getAppID(path, this)).toString();
-            mTitle.setText(APKData.getAppName(path, this));
-            mIcon.setImageDrawable(APKData.getAppIcon(path, this));
+            try {
+                mPackageName = Objects.requireNonNull(APKData.getAppID(path, this)).toString();
+                mTitle.setText(APKData.getAppName(path, this));
+                mIcon.setImageDrawable(APKData.getAppIcon(path, this));
+            } catch (NullPointerException ignored) {}
         } else {
             mPackageName = APKData.findPackageName(this);
             mTitle.setText(getName());
