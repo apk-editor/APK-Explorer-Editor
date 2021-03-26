@@ -23,6 +23,7 @@ import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Projects;
 import com.apk.editor.utils.TextEditor;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -56,7 +57,7 @@ public class TextViewActivity extends AppCompatActivity {
         mTitle = findViewById(R.id.title);
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
 
-        if (APKEditorUtils.isFullVersion(this)) {
+        if (APKEditorUtils.isFullVersion(this) && AppSettings.isTextEditingEnabled(this)) {
             mEdit.setVisibility(View.VISIBLE);
         }
 

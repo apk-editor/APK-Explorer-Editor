@@ -42,6 +42,14 @@ public class AppSettings {
         }
     }
 
+    public static String getEditingOptions(Context context) {
+        if (APKEditorUtils.getBoolean("editText", false, context)) {
+            return context.getString(R.string.enable);
+        } else {
+            return context.getString(R.string.disable);
+        }
+    }
+
     public static String getInstallerAction(Context context) {
         if (APKEditorUtils.getString("installerAction", null, context) != null) {
             return APKEditorUtils.getString("installerAction", null, context);
@@ -112,6 +120,29 @@ public class AppSettings {
         }).show();
     }
 
+    public static void setEditingOptions(Context context) {
+        new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
+                R.array.editing_options), (dialogInterface, i) -> {
+            switch (i) {
+                case 0:
+                    APKEditorUtils.saveBoolean("editText", false, context);
+                    break;
+                case 1:
+                    new MaterialAlertDialogBuilder(context)
+                            .setIcon(R.mipmap.ic_launcher)
+                            .setTitle(R.string.warning)
+                            .setMessage(context.getString(R.string.text_editing_summary))
+                            .setNegativeButton(context.getString(R.string.cancel), (dialog, id) -> {
+                            })
+                            .setPositiveButton(context.getString(R.string.enable), (dialog, id) -> {
+                                APKEditorUtils.saveBoolean("editText", true, context);
+                            }).show();
+                    break;
+            }
+        }).setOnDismissListener(dialogInterface -> {
+        }).show();
+    }
+
     public static void setInstallerAction(Context context) {
         new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
                 R.array.installer_options), (dialogInterface, i) -> {
@@ -154,7 +185,7 @@ public class AppSettings {
     public static void deleteAppSettings(Activity activity) {
         new MaterialAlertDialogBuilder(activity)
                 .setIcon(R.mipmap.ic_launcher)
-                .setTitle(R.string.app_name)
+                .setTitle(R.string.warning)
                 .setMessage(activity.getString(R.string.clear_cache_message))
                 .setNegativeButton(activity.getString(R.string.cancel), (dialog, id) -> {
                 })
@@ -172,6 +203,10 @@ public class AppSettings {
     private static boolean isCustomKey(Context context) {
         return APKEditorUtils.getString("PrivateKey", null, context) != null &&
                 APKEditorUtils.getString("RSATemplate", null, context) != null;
+    }
+
+    public static boolean isTextEditingEnabled(Context context) {
+        return APKEditorUtils.getBoolean("editText", false, context);
     }
 
 }

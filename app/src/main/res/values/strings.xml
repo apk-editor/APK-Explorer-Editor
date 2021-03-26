@@ -14,18 +14,20 @@
     <string name="cancel">Cancel</string>
     <string name="clear_cache">Clear Cache</string>
     <string name="clear_cache_summary">Delete internal settings of AEE</string>
-    <string name="clear_cache_message">Please Note: Everything, except the exported applications, will be removed!</string>
+    <string name="clear_cache_message">Everything, except the exported applications, will be removed!</string>
     <string name="credits">Credits</string>
     <string name="credits_message">Want to see your name here? Then, please help me to translate this application!</string>
     <string name="credits_summary">Credits to contributors</string>
     <string name="copyright">Copyright: © %s</string>
     <string name="delete">Delete</string>
     <string name="delete_question">Delete %s?</string>
+    <string name="disable">Disable</string>
     <string name="dismiss">Dismiss</string>
     <string name="documentation">Documentation</string>
     <string name="documentation_summary">Check out AEE documentation</string>
     <string name="donations">Donations</string>
     <string name="donations_summary">Support the development of AEE</string>
+    <string name="enable">Enable</string>
     <string name="export">Export</string>
     <string name="export_app_question">Export \'%s\' to device storage?</string>
     <string name="export_complete_message">The selected resource is successfully exported into \'%s\'!</string>
@@ -123,6 +125,8 @@
     <string name="support_group">Support Group</string>
     <string name="support_group_summary">Join AEE support group</string>
     <string name="system">System</string>
+    <string name="text_editing">Enable Text Editing</string>
+    <string name="text_editing_summary">AEE text editor is still very basic and a little buggy. APK\'s prepared after editing text may not work properly. Please use it with extreme care.</string>
     <string name="translate">Translate</string>
     <string name="unknown_file_message">AEE doesn\'t handle \'%s\' at this moment. If you know this file format, you may export this file into device storage and try editing using a supported third-party application. Alternately, you may try to open it as a text file?</string>
     <string name="unsupported_file">Unsupported file</string>
@@ -130,6 +134,7 @@
     <string name="unsupported_file_dex">You\'re selected a \'DEX\' (.dex) file, which is unfortunately impossible for AEE to read.\n\nWhat is a DEX file?\nA Dex file has code that is ultimately executed by the Android Runtime. Every APK\'s should have a \'classes.dex\' file, which references any classes or methods used within an app. Essentially, any Activity, Object, or Fragment used within the code base will be transformed into bytes within a Dex file that can be run as an Android app.\n\nHow to read a DEX file?\nA DEX file shall be converted to \'jar\' format and later into \'Java\' file using tools such as \'dex2jar\' and \'JD-GUI\'.</string>
     <string name="user">User</string>
     <string name="version">Version: %s</string>
+    <string name="warning">Warning</string>
     <string name="wrong_extension">Please select a file with %s extension.</string>
     <string name="yes">Yes</string>
 </resources>

@@ -18,6 +18,11 @@
         <item>@string/export_path_download</item>
     </string-array>
 
+    <string-array name="editing_options">
+        <item>@string/disable</item>
+        <item>@string/enable</item>
+    </string-array>
+
     <string-array name="install_options">
         <item>@string/install</item>
         <item>@string/install_resign</item>
