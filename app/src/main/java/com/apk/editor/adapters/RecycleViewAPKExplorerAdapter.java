@@ -57,10 +57,14 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
             if (APKExplorer.getIconFromPath(data.get(position)) != null) {
                 holder.mIcon.setImageURI(APKExplorer.getIconFromPath(data.get(position)));
             } else {
-                holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_file);
+                holder.mIcon.setImageDrawable(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_file));
             }
         } else {
-            holder.mIcon.setImageDrawable(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_file));
+            if (data.get(position).endsWith(".xml")) {
+                holder.mIcon.setImageDrawable(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_xml));
+            } else {
+                holder.mIcon.setImageDrawable(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_file));
+            }
             holder.mIcon.setColorFilter(APKEditorUtils.isDarkTheme(holder.mIcon.getContext()) ? holder.mIcon.getContext()
                     .getResources().getColor(R.color.colorWhite) : holder.mIcon.getContext().getResources().getColor(R.color.colorBlack));
         }

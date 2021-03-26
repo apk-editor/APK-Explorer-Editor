@@ -37,6 +37,7 @@
         <activity android:name=".activities.InstallerActivity" />
         <activity android:name=".activities.InstallerFilePickerActivity" />
         <activity android:name=".activities.SettingsActivity" />
+        <activity android:name=".activities.TextEditorActivity" />
         <activity android:name=".activities.TextViewActivity" />
 
         <service android:name=".services.InstallerService" />

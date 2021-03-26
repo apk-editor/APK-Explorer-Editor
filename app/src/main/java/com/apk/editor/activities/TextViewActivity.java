@@ -1,35 +1,44 @@
 package com.apk.editor.activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Projects;
+import com.apk.editor.utils.TextEditor;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
 public class TextViewActivity extends AppCompatActivity {
 
-    private AppCompatEditText mSearchWord, mText;
+    private AppCompatEditText mSearchWord;
+    private List<String> mData = new ArrayList<>();
     private MaterialTextView mTitle;
     public static final String PATH_INTENT = "path";
     private String mPath;
@@ -41,19 +50,23 @@ public class TextViewActivity extends AppCompatActivity {
 
         mSearchWord = findViewById(R.id.search_word);
         AppCompatImageButton mBack = findViewById(R.id.back);
-        AppCompatImageButton mSave = findViewById(R.id.save);
         AppCompatImageButton mSearch = findViewById(R.id.search);
+        AppCompatImageButton mEdit = findViewById(R.id.edit);
         AppCompatImageButton mExport = findViewById(R.id.export);
         mTitle = findViewById(R.id.title);
-        mText = findViewById(R.id.text);
+        RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
+
+        if (APKEditorUtils.isFullVersion(this)) {
+            mEdit.setVisibility(View.VISIBLE);
+        }
 
         mPath = getIntent().getStringExtra(PATH_INTENT);
 
-        mText.setTextColor(APKEditorUtils.isDarkTheme(this) ? Color.WHITE : Color.BLACK);
-
         assert mPath != null;
         mTitle.setText(new File(mPath).getName());
-        loadText(null);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(new RecycleViewAdapter(getData()));
 
         mSearch.setOnClickListener(v -> {
             if (mSearchWord.getVisibility() == View.VISIBLE) {
@@ -78,9 +91,17 @@ public class TextViewActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loadText(s.toString());
+                TextEditor.mSearchText = s.toString();
+                mRecyclerView.setAdapter(new RecycleViewAdapter(getData()));
 
             }
+        });
+
+        mEdit.setOnClickListener(v -> {
+            Intent textEditor = new Intent(this, TextEditorActivity.class);
+            textEditor.putExtra(TextEditorActivity.PATH_INTENT, mPath);
+            startActivity(textEditor);
+            finish();
         });
 
         mExport.setOnClickListener(v -> {
@@ -104,46 +125,68 @@ public class TextViewActivity extends AppCompatActivity {
                     }).show();
         });
 
-        mSave.setOnClickListener(v -> new MaterialAlertDialogBuilder(this)
-                    .setMessage(R.string.save_question)
-                    .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
-                    })
-                    .setPositiveButton(getString(R.string.save), (dialog, id) -> {
-                        APKEditorUtils.create(Objects.requireNonNull(mText.getText()).toString(), mPath);
-                        finish();
-                    }).show());
-
-        if (APKEditorUtils.isFullVersion(this)) {
-            mSave.setVisibility(View.VISIBLE);
-        }
-
         mBack.setOnClickListener(v -> finish());
     }
 
-    private void loadText(String searchText) {
+    private List<String> getData() {
+        mData.clear();
         String text;
-        if (APKExplorer.mAppID != null && isBinaryXML(mPath)) {
+        if (APKExplorer.mAppID != null && TextEditor.isBinaryXML(mPath)) {
             text = APKExplorer.readXMLFromAPK(AppData.getSourceDir(APKExplorer.mAppID, this), mPath.replace(
                     getCacheDir().getPath() + "/" + APKExplorer.mAppID + "/", ""));
         } else {
             text = APKEditorUtils.read(mPath);
         }
-        StringBuilder sb = new StringBuilder();
-        if (searchText != null) {
-            if (text == null) return;
+        if (text != null) {
             for (String line : text.split("\\r?\\n")) {
-                if (line.contains(searchText)) {
-                    sb.append(line).append("\n");
+                if (TextEditor.mSearchText == null) {
+                    mData.add(line);
+                } else if (line.contains(TextEditor.mSearchText)) {
+                    mData.add(line);
                 }
             }
-            text = sb.toString();
         }
-        mText.setText(searchText == null ? text : APKEditorUtils.fromHtml(text.replace(searchText,
-                "<b><i><font color=\"" + Color.RED + "\">" + searchText + "</font></i></b>")));
+        return mData;
     }
 
-    private boolean isBinaryXML(String path) {
-        return path.endsWith(".xml") && (new File(path).getName().equals("AndroidManifest.xml") || path.contains(APKExplorer.mAppID + "/res/"));
+    private static class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
+
+        private static List<String> data;
+
+        public RecycleViewAdapter(List<String> data) {
+            RecycleViewAdapter.data = data;
+        }
+
+        @NonNull
+        @Override
+        public RecycleViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_textview, parent, false);
+            return new RecycleViewAdapter.ViewHolder(rowItem);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecycleViewAdapter.ViewHolder holder, int position) {
+            if (TextEditor.mSearchText != null && data.get(position).contains(TextEditor.mSearchText)) {
+                holder.mText.setText(APKEditorUtils.fromHtml(data.get(position).replace(TextEditor.mSearchText,
+                        "<b><i><font color=\"" + Color.RED + "\">" + TextEditor.mSearchText + "</font></i></b>")));
+            } else {
+                holder.mText.setText(data.get(position));
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return data.size();
+        }
+
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+            private MaterialTextView mText;
+
+            public ViewHolder(View view) {
+                super(view);
+                this.mText = view.findViewById(R.id.text);
+            }
+        }
     }
 
     @Override

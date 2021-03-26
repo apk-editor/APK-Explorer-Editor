@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:orientation="vertical">
 
@@ -22,19 +23,6 @@
             android:tint="?attr/colorAccent"
             android:layout_marginEnd="10dp" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/search_word"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/colorBlack"
-            android:textColorHint="?attr/colorAccent"
-            android:textColor="@color/colorWhite"
-            android:layout_marginEnd="120dp"
-            android:hint="@string/search"
-            android:visibility="gone"
-            android:gravity="center"
-            android:maxLines="1" />
-
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
@@ -48,27 +36,16 @@
             android:padding="10dp" />
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/edit"
+            android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="center"
             android:background="@color/colorBlack"
             android:layout_gravity="end|center_vertical"
-            android:src="@drawable/ic_edit"
+            android:src="@drawable/ic_save"
             android:tint="?attr/colorAccent"
-            android:layout_marginEnd="80dp"
-            android:visibility="gone" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="center"
-            android:background="@color/colorBlack"
-            android:layout_gravity="end|center_vertical"
-            android:src="@drawable/ic_search"
-            android:tint="?attr/colorAccent"
-            android:layout_marginEnd="40dp" />
+            android:layout_marginEnd="40dp"
+            android:visibility="gone"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/export"
@@ -81,8 +58,21 @@
             android:tint="?attr/colorAccent" />
     </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:cardCornerRadius="5dp" >
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColorHint="@null"
+                android:textSize="15sp" />
+        </androidx.core.widget.NestedScrollView>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
