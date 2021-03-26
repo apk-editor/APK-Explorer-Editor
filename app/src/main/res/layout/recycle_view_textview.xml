@@ -1,12 +1,28 @@
-<com.google.android.material.textview.MaterialTextView
-    android:id="@+id/text"
-    android:layout_width="wrap_content"
+<LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:textIsSelectable="true"
+    android:orientation="horizontal"
+    android:layout_gravity="start"
     android:layout_margin="5dp"
-    android:focusable="true"
-    android:textStyle="bold"
-    android:textSize="16sp"
-    android:padding="5dp" >
-</com.google.android.material.textview.MaterialTextView>
+    android:gravity="start" >
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="10dp"
+        android:focusable="false"
+        android:textStyle="bold|italic" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:focusable="true"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:padding="3dp" />
+</LinearLayout>

@@ -168,17 +168,22 @@ public class TextViewActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull RecycleViewAdapter.ViewHolder holder, int position) {
             if (TextEditor.mSearchText != null && data.get(position).contains(TextEditor.mSearchText)) {
+                holder.mNumber.setText(String.valueOf(position));
                 holder.mText.setText(APKEditorUtils.fromHtml(data.get(position).replace(TextEditor.mSearchText,
                         "<b><i><font color=\"" + Color.RED + "\">" + TextEditor.mSearchText + "</font></i></b>")));
             } else {
+                holder.mNumber.setText(String.valueOf(position));
                 holder.mText.setText(data.get(position));
             }
-            if (data.get(position).contains("<uses-permission ")) {
+            holder.mNumber.setTextColor(Color.MAGENTA);
+            if (data.get(position).contains("<manifest") || data.get(position).contains("</manifest>")) {
+                holder.mText.setTextColor(APKEditorUtils.getThemeAccentColor(holder.mText.getContext()));
+            } else if (data.get(position).contains("<uses-permission")) {
                 holder.mText.setTextColor(Color.RED);
-            } else if (data.get(position).contains("<activity ")) {
+            } else if (data.get(position).contains("<activity")) {
                 holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.GREEN : Color.MAGENTA);
-            } else if (data.get(position).contains("<service ")) {
-                holder.mText.setTextColor(Color.BLUE);
+            } else if (data.get(position).contains("<service")) {
+                holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.MAGENTA : Color.BLUE);
             } else if (data.get(position).contains("<provider") || data.get(position).contains("</provider>")) {
                 holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.LTGRAY : Color.DKGRAY);
             } else {
@@ -192,10 +197,11 @@ public class TextViewActivity extends AppCompatActivity {
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            private MaterialTextView mText;
+            private MaterialTextView mNumber, mText;
 
             public ViewHolder(View view) {
                 super(view);
+                this.mNumber = view.findViewById(R.id.number);
                 this.mText = view.findViewById(R.id.text);
             }
         }
