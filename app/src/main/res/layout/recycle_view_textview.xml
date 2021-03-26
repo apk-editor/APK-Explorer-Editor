@@ -3,8 +3,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textIsSelectable="true"
     android:layout_margin="5dp"
-    android:focusable="false"
+    android:focusable="true"
     android:textStyle="bold"
     android:textSize="16sp"
     android:padding="5dp" >

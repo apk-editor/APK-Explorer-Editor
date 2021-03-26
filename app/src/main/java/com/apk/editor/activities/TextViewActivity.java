@@ -173,6 +173,17 @@ public class TextViewActivity extends AppCompatActivity {
             } else {
                 holder.mText.setText(data.get(position));
             }
+            if (data.get(position).contains("<uses-permission ")) {
+                holder.mText.setTextColor(Color.RED);
+            } else if (data.get(position).contains("<activity ")) {
+                holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.GREEN : Color.MAGENTA);
+            } else if (data.get(position).contains("<service ")) {
+                holder.mText.setTextColor(Color.BLUE);
+            } else if (data.get(position).contains("<provider") || data.get(position).contains("</provider>")) {
+                holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.LTGRAY : Color.DKGRAY);
+            } else {
+                holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.WHITE : Color.BLACK);
+            }
         }
 
         @Override
