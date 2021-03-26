@@ -168,11 +168,11 @@ public class TextViewActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull RecycleViewAdapter.ViewHolder holder, int position) {
             if (TextEditor.mSearchText != null && data.get(position).contains(TextEditor.mSearchText)) {
-                holder.mNumber.setText(String.valueOf(position));
+                holder.mNumber.setText(String.valueOf(position + 1));
                 holder.mText.setText(APKEditorUtils.fromHtml(data.get(position).replace(TextEditor.mSearchText,
                         "<b><i><font color=\"" + Color.RED + "\">" + TextEditor.mSearchText + "</font></i></b>")));
             } else {
-                holder.mNumber.setText(String.valueOf(position));
+                holder.mNumber.setText(String.valueOf(position + 1));
                 holder.mText.setText(data.get(position));
             }
             holder.mNumber.setTextColor(Color.MAGENTA);

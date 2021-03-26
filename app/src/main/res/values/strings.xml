@@ -126,7 +126,7 @@
     <string name="support_group_summary">Join AEE support group</string>
     <string name="system">System</string>
     <string name="text_editing">Enable Text Editing</string>
-    <string name="text_editing_summary">AEE text editor is still very basic and a little buggy. APK\'s prepared after editing text may not work properly. Please use it with extreme care.</string>
+    <string name="text_editing_summary">AEE text editor is still very basic and a little buggy. APK\'s prepared after editing binary text files may not work properly. Please use it with extreme care.</string>
     <string name="translate">Translate</string>
     <string name="unknown_file_message">AEE doesn\'t handle \'%s\' at this moment. If you know this file format, you may export this file into device storage and try editing using a supported third-party application. Alternately, you may try to open it as a text file?</string>
     <string name="unsupported_file">Unsupported file</string>

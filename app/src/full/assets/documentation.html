@@ -24,6 +24,7 @@ The main user interface of AEE is categorized into a number of pages, and are
     <li>Single click on any other part of an application will open the contents of the installed application in a File Manager and allows users to navigate through its contents.</li>
     <li>It is possible to <b>Save</b>/<b>Export</b> individual resource files such as fonts, graphics, binary XML files, etc to device storage.</li>
     <li>AEE even allow users to <b>Delete</b> or <b>Replace</b> original resource files of an APK.</li>
+    <li>It is also possible to edit text/binary files using an in-built text editor. However, AEE binary text editor is very basic and a little buggy. As a result, text editing is disabled by default in the <b>Settings</b> menu of the app.</li>
     <li>Finally, AEE offers the generation of a signed (with AEE custom key) APK's/App Bundles after the above-mentioned modifications.</li>
     <li>Alternately, long clicking on an entry on the main screen will allow users to simply export (with or without signing with AEE custom key) APK's/App bundles into device storage.</li>
 </ol>
@@ -47,6 +48,10 @@ The main user interface of AEE is categorized into a number of pages, and are
 <h3 style="color: blue">4. About</h3>
 
 <p style="text-align: justify;"><tab1>Shows very basic information about the development of this project. It includes links to visit the source code of AEE, Telegram support group etc.</tab1></p>
+
+<h3 style="color: blue">5. Settings</h3>
+
+<p style="text-align: justify;"><tab1>The <b>Settings</b> menu of AEE is bundled with a number of options that are designed to ease the use of the app.</tab1></p>
 
 <h2 style="color: blue">APK Signing</h2>
 
@@ -74,7 +79,7 @@ The main user interface of AEE is categorized into a number of pages, and are
 
 <h3 style="color: blue">Configure AEE to work with custom key</h3>
 
-<p style="text-align: justify;"><tab1>Open AEE and Navigate to <b>About -> APK Signing</b>. This page will allow users to select a custom <b>Private Key</b> and <b>RSA Template</b> using the in-built File picker. Use it! By doing so, AEE will do the following changes, and now onwards uses the new credentials for signing.</tab1></p>
+<p style="text-align: justify;"><tab1>Open AEE and Navigate to <b>Settings -> Sign APK's with</b> and select <b>Custom Key</b>. A new page will now open which allows users to select a custom <b>Private Key</b> and <b>RSA Template</b> using the in-built File picker. Use it! By doing so, AEE will do the following changes, and now onwards uses the new credentials for signing.</tab1></p>
 
 <ol>
     <li>Save private key as<br><br><b>/data/data/com.apk.editor/files/signing/APKEditor.pk8</b><br><br></li>
