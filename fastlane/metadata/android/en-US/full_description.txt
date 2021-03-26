@@ -7,10 +7,10 @@
 * Export and easily manage (install, share etc.) APK's/Split APK's into device storage.
 * Includes a feature-rich APK/Split APK/App bundle installer (easily pick and install files from device storage)
 * Easily extract an app icon by single-clicking on it.
-* Very basic editing, only on text files at this moment.
 * Provides basic information about important resource files.
 * View graphics, texts, binary XML, and many more.
 * Save/Export individual resource files to device storage.
+* It is also possible to edit text/binary XML files using an in-built text editor (disabled by default in the <b>Settings</b> menu).
 * Delete or replaces resources.
 * Create signed APK's/App Bundles after the above-mentioned processes.
 * Resign APK's/bundles with AEE custom key.
