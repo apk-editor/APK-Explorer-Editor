@@ -116,4 +116,25 @@
     <string name="sort_by_name">"名称"</string>
     <string name="sort_by_id">"应用 ID"</string>
     <string name="sort_order">"A-Z"</string>
+    <string name="clear_cache">"清除缓存"</string>
+    <string name="clear_cache_summary">"重置AEE设置"</string>
+    <string name="clear_cache_message">"除导出的应用外，所有数据都将被清除"</string>
+    <string name="disable">"禁用"</string>
+    <string name="enable">"启用"</string>
+    <string name="export_options">"对于导出的应用"</string>
+    <string name="export_path_default">"已安装应用"</string>
+    <string name="export_path_download">"Download 文件夹"</string>
+    <string name="export_path_resources">"导出路径"</string>
+    <string name="installer_action">"对于已安装应用"</string>
+    <string name="project_exist_action">"对于已有项目"</string>
+    <string name="prompt">"显示提示"</string>
+    <string name="settings">"设置"</string>
+    <string name="settings_general">"普通"</string>
+    <string name="settings_misc">"杂项"</string>
+    <string name="sign_apk_custom">"自定义签名"</string>
+    <string name="sign_apk_default">"默认签名"</string>
+    <string name="sign_apk_with">"配置应用签名"</string>
+    <string name="text_editing">"启用文本编辑"</string>
+    <string name="text_editing_summary">"AEE文本编辑器仍是非常基础的功能，并且仍有小问题。 编辑二进制文本文件后生成的APK可能无法正常安装。 使用此工具时请注意备份"</string>
+    <string name="warning">"警告"</string>
 </resources>
