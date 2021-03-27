@@ -94,7 +94,7 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), APKExplorer.getSpanCount(requireActivity())));
 
         try {
-            mRecycleViewAdapter = new RecycleViewAPKExplorerAdapter(APKExplorer.getData(getFilesList(), requireActivity()));
+            mRecycleViewAdapter = new RecycleViewAPKExplorerAdapter(APKExplorer.getData(getFilesList(), true, requireActivity()));
             mRecyclerView.setAdapter(mRecycleViewAdapter);
         } catch (NullPointerException ignored) {
             mRecyclerView.setVisibility(View.GONE);
@@ -122,23 +122,23 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
         });
 
         mRecycleViewAdapter.setOnItemClickListener((position, v) -> {
-            if (new File(APKExplorer.getData(getFilesList(), requireActivity()).get(position)).isDirectory()) {
-                APKExplorer.mPath = APKExplorer.getData(getFilesList(), requireActivity()).get(position);
+            if (new File(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position)).isDirectory()) {
+                APKExplorer.mPath = APKExplorer.getData(getFilesList(), true, requireActivity()).get(position);
                 reload(requireActivity());
-            } else if (APKExplorer.isImageFile(APKExplorer.getData(getFilesList(), requireActivity()).get(position))) {
+            } else if (APKExplorer.isImageFile(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position))) {
                 Intent imageView = new Intent(requireActivity(), ImageViewActivity.class);
-                imageView.putExtra(ImageViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), requireActivity()).get(position));
+                imageView.putExtra(ImageViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
                 startActivity(imageView);
-            } else if (APKExplorer.isTextFile(APKExplorer.getData(getFilesList(), requireActivity()).get(position))) {
+            } else if (APKExplorer.isTextFile(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position))) {
                 Intent textView = new Intent(requireActivity(), TextViewActivity.class);
-                textView.putExtra(TextViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), requireActivity()).get(position));
+                textView.putExtra(TextViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
                 startActivity(textView);
-            } else if (APKExplorer.getData(getFilesList(), requireActivity()).get(position).endsWith(".dex") || APKExplorer.getData(getFilesList(),
+            } else if (APKExplorer.getData(getFilesList(), true, requireActivity()).get(position).endsWith(".dex") || APKExplorer.getData(getFilesList(), true,
                     requireActivity()).get(position).endsWith("resources.arsc")) {
                 new MaterialAlertDialogBuilder(requireActivity())
                         .setIcon(R.mipmap.ic_launcher)
                         .setTitle(R.string.unsupported_file)
-                        .setMessage(getString(APKExplorer.getData(getFilesList(), requireActivity()).get(position).endsWith("resources.arsc") ?
+                        .setMessage(getString(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position).endsWith("resources.arsc") ?
                                 R.string.unsupported_file_arsc :R.string.unsupported_file_dex))
                         .setPositiveButton(getString(R.string.cancel), (dialog, id) -> {
                         }).show();
@@ -146,7 +146,7 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
                 new MaterialAlertDialogBuilder(requireActivity())
                         .setIcon(R.mipmap.ic_launcher)
                         .setTitle(R.string.app_name)
-                        .setMessage(getString(R.string.unknown_file_message, new File(APKExplorer.getData(getFilesList(), requireActivity()).get(position)).getName()))
+                        .setMessage(getString(R.string.unknown_file_message, new File(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position)).getName()))
                         .setNeutralButton(getString(R.string.cancel), (dialog, id) -> {
                         })
                         .setNegativeButton(getString(R.string.export), (dialog, id) -> {
@@ -157,8 +157,8 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
                                 return;
                             }
                             APKEditorUtils.mkdir(Projects.getExportPath(requireActivity()) + "/" + APKExplorer.mAppID);
-                            APKEditorUtils.copy(APKExplorer.getData(getFilesList(), requireActivity()).get(position), Projects.getExportPath(requireActivity()) + "/" + APKExplorer.mAppID + "/"
-                                    + new File(APKExplorer.getData(getFilesList(), requireActivity()).get(position)).getName());
+                            APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position), Projects.getExportPath(requireActivity()) + "/" + APKExplorer.mAppID + "/"
+                                    + new File(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position)).getName());
                             new MaterialAlertDialogBuilder(requireActivity())
                                     .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(requireActivity()) + "/" + APKExplorer.mAppID))
                                     .setPositiveButton(getString(R.string.cancel), (dialog2, id2) -> {
@@ -166,7 +166,7 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
                         })
                         .setPositiveButton(getString(R.string.open_as_text), (dialog1, id1) -> {
                             Intent textView = new Intent(requireActivity(), TextViewActivity.class);
-                            textView.putExtra(TextViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), requireActivity()).get(position));
+                            textView.putExtra(TextViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
                             startActivity(textView);
                         }).show();
             }
@@ -219,7 +219,7 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                mRecycleViewAdapter = new RecycleViewAPKExplorerAdapter(APKExplorer.getData(getFilesList(), activity));
+                mRecycleViewAdapter = new RecycleViewAPKExplorerAdapter(APKExplorer.getData(getFilesList(), true, activity));
                 return null;
             }
 

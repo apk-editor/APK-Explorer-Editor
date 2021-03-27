@@ -46,6 +46,7 @@ public class RecycleViewInstallerFilePickerAdapter extends RecyclerView.Adapter<
         try {
             if (new File(this.data.get(position)).isDirectory()) {
                 holder.mIcon.setImageDrawable(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_folder));
+                holder.mIcon.setBackground(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_circle));
                 holder.mIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mIcon.getContext()));
                 holder.mDescription.setVisibility(View.GONE);
                 holder.mSize.setVisibility(View.GONE);
@@ -54,7 +55,7 @@ public class RecycleViewInstallerFilePickerAdapter extends RecyclerView.Adapter<
                 if (APKData.getAppIcon(data.get(position), holder.mIcon.getContext()) != null) {
                     holder.mIcon.setImageDrawable(APKData.getAppIcon(data.get(position), holder.mIcon.getContext()));
                 } else {
-                    holder.mIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mIcon.getContext()));
+                    APKExplorer.setIcon(holder.mIcon, holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_android), holder.mIcon.getContext());
                 }
                 if (APKData.getAppID(data.get(position), holder.mIcon.getContext()) != null) {
                     holder.mDescription.setText(APKData.getAppID(data.get(position), holder.mIcon.getContext()));

@@ -12,6 +12,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+import androidx.appcompat.widget.AppCompatImageButton;
+
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
 import com.google.android.material.card.MaterialCardView;
@@ -36,7 +38,7 @@ public class APKExplorer {
     public static MaterialCardView mSelect;
     public static String mAppID, mPath = null, mFilePath = null, mFileToReplace = null;
 
-    public static List<String> getData(File[] files, Activity activity) {
+    public static List<String> getData(File[] files, boolean supported, Activity activity) {
         List<String> mData = new ArrayList<>(), mDir = new ArrayList<>(), mFiles = new ArrayList<>();
         try {
             mData.clear();
@@ -53,8 +55,13 @@ public class APKExplorer {
             mData.addAll(mDir);
             // Add files
             for (File mFile :files) {
-                if (mFile.isFile()) {
+                if (supported) {
+                    if (mFile.isFile()) {
+                        mFiles.add(mFile.getAbsolutePath());
+                    }
+                } else if (mFile.isFile() && isSupportedFile(mFile.getAbsolutePath())) {
                     mFiles.add(mFile.getAbsolutePath());
+
                 }
             }
             Collections.sort(mFiles);
@@ -76,6 +83,16 @@ public class APKExplorer {
 
     public static boolean isImageFile(String path) {
         return path.endsWith(".bmp") || path.endsWith(".png") || path.endsWith(".jpg");
+    }
+
+    private static boolean isSupportedFile(String path) {
+        return path.endsWith(".apk") || path.endsWith(".apks") || path.endsWith(".apkm") || path.endsWith(".xapk");
+    }
+
+    public static void setIcon(AppCompatImageButton icon, Drawable drawable, Context context) {
+        icon.setImageDrawable(drawable);
+        icon.setColorFilter(APKEditorUtils.isDarkTheme(context) ? context.getResources().getColor(R.color.colorWhite) :
+                context.getResources().getColor(R.color.colorBlack));
     }
 
     public static int getSpanCount(Activity activity) {

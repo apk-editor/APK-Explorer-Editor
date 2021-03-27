@@ -48,37 +48,37 @@ public class FilePickerActivity extends AppCompatActivity {
         AppCompatImageButton mSortButton = findViewById(R.id.sort);
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, APKExplorer.getSpanCount(this)));
-        mRecycleViewAdapter = new RecycleViewFilePickerAdapter(APKExplorer.getData(getFilesList(), this));
+        mRecycleViewAdapter = new RecycleViewFilePickerAdapter(APKExplorer.getData(getFilesList(), true, this));
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
         mTitle.setText(APKExplorer.mFilePath.equals("/storage/emulated/0/") ? getString(R.string.sdcard) : new File(APKExplorer.mFilePath).getName());
 
         mRecycleViewAdapter.setOnItemClickListener((position, v) -> {
-            if (new File(APKExplorer.getData(getFilesList(), this).get(position)).isDirectory()) {
-                APKExplorer.mFilePath = APKExplorer.getData(getFilesList(), this).get(position);
+            if (new File(APKExplorer.getData(getFilesList(), true, this).get(position)).isDirectory()) {
+                APKExplorer.mFilePath = APKExplorer.getData(getFilesList(), true, this).get(position);
                 reload(this);
             } else {
                 new MaterialAlertDialogBuilder(this)
                         .setMessage(APKExplorer.mFileToReplace != null ? getString(R.string.replace_question, new File(APKExplorer
                                 .mFileToReplace).getName()) + " " +
-                                new File(APKExplorer.getData(getFilesList(), this).get(position)).getName() + "?" : getString(R.string.signing_question,
-                                new File(APKExplorer.getData(getFilesList(), this).get(position)).getName()) + " " + getString(APKExplorer.mPrivateKey ?
+                                new File(APKExplorer.getData(getFilesList(), true, this).get(position)).getName() + "?" : getString(R.string.signing_question,
+                                new File(APKExplorer.getData(getFilesList(), true, this).get(position)).getName()) + " " + getString(APKExplorer.mPrivateKey ?
                                 R.string.private_key : R.string.rsa_template))
                         .setNegativeButton(R.string.cancel, (dialog, id) -> {
                         })
                         .setPositiveButton(APKExplorer.mFileToReplace != null ? R.string.replace : R.string.select, (dialog, id) -> {
                             if (APKExplorer.mFileToReplace != null) {
-                                APKEditorUtils.copy(APKExplorer.getData(getFilesList(), this).get(position), APKExplorer.mFileToReplace);
+                                APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, this).get(position), APKExplorer.mFileToReplace);
                                 APKExplorer.mFileToReplace = null;
                             }  else {
                                 new File(getFilesDir(), "signing").mkdirs();
                                 if (APKExplorer.mPrivateKey) {
-                                    APKEditorUtils.saveString("PrivateKey", APKExplorer.getData(getFilesList(), this).get(position), this);
-                                    APKEditorUtils.copy(APKExplorer.getData(getFilesList(), this).get(position), getFilesDir()+ "/signing/APKEditor.pk8");
+                                    APKEditorUtils.saveString("PrivateKey", APKExplorer.getData(getFilesList(), true, this).get(position), this);
+                                    APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, this).get(position), getFilesDir()+ "/signing/APKEditor.pk8");
                                     APKExplorer.mPrivateKey = false;
                                 } else {
-                                    APKEditorUtils.saveString("RSATemplate", APKExplorer.getData(getFilesList(), this).get(position), this);
-                                    APKEditorUtils.copy(APKExplorer.getData(getFilesList(), this).get(position), getFilesDir()+ "/signing/APKEditor");
+                                    APKEditorUtils.saveString("RSATemplate", APKExplorer.getData(getFilesList(), true, this).get(position), this);
+                                    APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, this).get(position), getFilesDir()+ "/signing/APKEditor");
                                     APKExplorer.mRSATemplate = false;
                                 }
                             }
@@ -131,13 +131,13 @@ public class FilePickerActivity extends AppCompatActivity {
                         @Override
                         protected void onPreExecute() {
                             super.onPreExecute();
-                            APKExplorer.getData(getFilesList(), activity).clear();
+                            APKExplorer.getData(getFilesList(), true, activity).clear();
                             mRecyclerView.setVisibility(View.GONE);
                         }
 
                         @Override
                         protected List<String> doInBackground(Void... voids) {
-                            mRecycleViewAdapter = new RecycleViewFilePickerAdapter(APKExplorer.getData(getFilesList(), activity));
+                            mRecycleViewAdapter = new RecycleViewFilePickerAdapter(APKExplorer.getData(getFilesList(), true, activity));
                             return null;
                         }
 

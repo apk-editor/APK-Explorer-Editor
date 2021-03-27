@@ -53,7 +53,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
         APKExplorer.mSelect = findViewById(R.id.select);
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, APKExplorer.getSpanCount(this)));
-        mRecycleViewAdapter = new RecycleViewInstallerFilePickerAdapter(APKExplorer.getData(getFilesList(), this));
+        mRecycleViewAdapter = new RecycleViewInstallerFilePickerAdapter(APKExplorer.getData(getFilesList(), false, this));
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
         if (getIntent().getStringExtra(TITLE_INTENT) != null) {
@@ -63,24 +63,24 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
         }
 
         mRecycleViewAdapter.setOnItemClickListener((position, v) -> {
-            if (new File(APKExplorer.getData(getFilesList(), this).get(position)).isDirectory()) {
-                APKExplorer.mPath = APKExplorer.getData(getFilesList(), this).get(position);
+            if (new File(APKExplorer.getData(getFilesList(), false, this).get(position)).isDirectory()) {
+                APKExplorer.mPath = APKExplorer.getData(getFilesList(), false, this).get(position);
                 reload(this);
-            } else if (APKExplorer.getData(getFilesList(), this).get(position).endsWith(".apks") || APKExplorer.getData(getFilesList(),
-                    this).get(position).endsWith(".apkm") || APKExplorer.getData(getFilesList(), this).get(position).endsWith(".xapk")) {
+            } else if (APKExplorer.getData(getFilesList(), false, this).get(position).endsWith(".apks") || APKExplorer.getData(getFilesList(), false,
+                    this).get(position).endsWith(".apkm") || APKExplorer.getData(getFilesList(), false, this).get(position).endsWith(".xapk")) {
                 new MaterialAlertDialogBuilder(this)
-                        .setMessage(getString(R.string.bundle_install_question, new File(APKExplorer.getData(getFilesList(), this).get(position)).getName()))
+                        .setMessage(getString(R.string.bundle_install_question, new File(APKExplorer.getData(getFilesList(), false, this).get(position)).getName()))
                         .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
                         })
                         .setPositiveButton(getString(R.string.install), (dialogInterface, i) -> {
-                            SplitAPKInstaller.handleAppBundle(APKExplorer.getData(getFilesList(), this).get(position), this);
+                            SplitAPKInstaller.handleAppBundle(APKExplorer.getData(getFilesList(), false, this).get(position), this);
                             finish();
                         }).show();
-            } else if (APKExplorer.getData(getFilesList(), this).get(position).endsWith(".apk")) {
-                if (APKExplorer.mAPKList.contains(APKExplorer.getData(getFilesList(), this).get(position))) {
-                    APKExplorer.mAPKList.remove(APKExplorer.getData(getFilesList(), this).get(position));
+            } else if (APKExplorer.getData(getFilesList(), false, this).get(position).endsWith(".apk")) {
+                if (APKExplorer.mAPKList.contains(APKExplorer.getData(getFilesList(), false, this).get(position))) {
+                    APKExplorer.mAPKList.remove(APKExplorer.getData(getFilesList(), false, this).get(position));
                 } else {
-                    APKExplorer.mAPKList.add(APKExplorer.getData(getFilesList(), this).get(position));
+                    APKExplorer.mAPKList.add(APKExplorer.getData(getFilesList(), false, this).get(position));
                 }
                 mRecycleViewAdapter.notifyItemChanged(position);
                 APKExplorer.mSelect.setVisibility(APKExplorer.mAPKList.isEmpty() ? View.GONE : View.VISIBLE);
@@ -227,13 +227,13 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                         @Override
                         protected void onPreExecute() {
                             super.onPreExecute();
-                            APKExplorer.getData(getFilesList(), activity).clear();
+                            APKExplorer.getData(getFilesList(), false, activity).clear();
                             mRecyclerView.setVisibility(View.GONE);
                         }
 
                         @Override
                         protected List<String> doInBackground(Void... voids) {
-                            mRecycleViewAdapter = new RecycleViewInstallerFilePickerAdapter(APKExplorer.getData(getFilesList(), activity));
+                            mRecycleViewAdapter = new RecycleViewInstallerFilePickerAdapter(APKExplorer.getData(getFilesList(), false, activity));
                             return null;
                         }
 
