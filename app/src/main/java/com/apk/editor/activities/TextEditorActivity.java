@@ -2,19 +2,25 @@ package com.apk.editor.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
+import android.view.Menu;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
+import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppData;
@@ -32,12 +38,14 @@ public class TextEditorActivity extends AppCompatActivity {
     public static final String PATH_INTENT = "path";
     private String mExternalFile = null;
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_texteditor);
 
         AppCompatImageButton mBack = findViewById(R.id.back);
+        AppCompatImageButton mMenu = findViewById(R.id.menu);
         AppCompatImageButton mSave = findViewById(R.id.save);
         MaterialTextView mTitle = findViewById(R.id.title);
         AppCompatEditText mText = findViewById(R.id.text);
@@ -65,6 +73,7 @@ public class TextEditorActivity extends AppCompatActivity {
                 }
             } else {
                 mExternalFile = APKEditorUtils.getPath(file);
+                mMenu.setVisibility(View.VISIBLE);
             }
             if (mExternalFile != null && APKEditorUtils.exist(mExternalFile)) {
                 mTitle.setText(new File(mExternalFile).getName());
@@ -84,16 +93,65 @@ public class TextEditorActivity extends AppCompatActivity {
             mText.setText(APKEditorUtils.read(mPath));
         }
 
-        mSave.setOnClickListener(v -> new MaterialAlertDialogBuilder(this)
-                    .setMessage(R.string.save_question)
-                    .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
-                    })
-                    .setPositiveButton(getString(R.string.save), (dialog, id) -> {
-                        APKEditorUtils.create(Objects.requireNonNull(mText.getText()).toString(), mExternalFile != null ? mExternalFile : mPath);
-                        finish();
-                    }).show());
+        if (mExternalFile != null) {
+            mSave.setVisibility(View.VISIBLE);
+            mSave.setImageDrawable(getResources().getDrawable(R.drawable.ic_save));
+            mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_dots));
+        } else {
+            mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_save));
+        }
+
+        mMenu.setOnClickListener(v -> {
+            if (mExternalFile == null) {
+                saveDialog(Objects.requireNonNull(mText.getText()).toString(), mExternalFile != null ? mExternalFile : mPath);
+                return;
+            }
+            PopupMenu popupMenu = new PopupMenu(this, mMenu);
+            Menu menu = popupMenu.getMenu();
+            menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.share));
+            menu.add(Menu.NONE, 1, Menu.NONE, getString(R.string.delete));
+            popupMenu.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case 0:
+                        Uri uriFile = FileProvider.getUriForFile(this,
+                                BuildConfig.APPLICATION_ID + ".provider", new File(mExternalFile));
+                        Intent share = new Intent(Intent.ACTION_SEND);
+                        share.setType("*/*");
+                        share.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_summary, BuildConfig.VERSION_NAME));
+                        share.putExtra(Intent.EXTRA_STREAM, uriFile);
+                        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        startActivity(Intent.createChooser(share, getString(R.string.share_with)));
+                        break;
+                    case 1:
+                        new MaterialAlertDialogBuilder(this)
+                                .setMessage(getString(R.string.delete_question, new File(mExternalFile).getName()))
+                                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
+                                })
+                                .setPositiveButton(R.string.delete, (dialogInterface, i) -> {
+                                    APKEditorUtils.delete(mExternalFile);
+                                    finish();
+                                }).show();
+                        break;
+                }
+                return false;
+            });
+            popupMenu.show();
+        });
+
+        mSave.setOnClickListener(v -> saveDialog(Objects.requireNonNull(mText.getText()).toString(), mExternalFile != null ? mExternalFile : mPath));
 
         mBack.setOnClickListener(v -> finish());
+    }
+
+    private void saveDialog(String text, String path) {
+        new MaterialAlertDialogBuilder(this)
+                .setMessage(R.string.save_question)
+                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
+                })
+                .setPositiveButton(getString(R.string.save), (dialog, id) -> {
+                    APKEditorUtils.create(text, path);
+                    finish();
+                }).show();
     }
 
     @Override

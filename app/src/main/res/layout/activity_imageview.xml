@@ -42,7 +42,6 @@
             android:scaleType="center"
             android:background="@color/colorBlack"
             android:layout_gravity="end|center_vertical"
-            android:src="@drawable/ic_export"
             android:tint="?attr/colorAccent"
             android:layout_marginEnd="10dp" />
     </FrameLayout>

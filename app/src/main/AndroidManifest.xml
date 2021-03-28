@@ -46,7 +46,16 @@
         <activity android:name=".activities.CreditsActivity" />
         <activity android:name=".activities.DocumentationActivity" />
         <activity android:name=".activities.FilePickerActivity" />
-        <activity android:name=".activities.ImageViewActivity" />
+
+        <activity android:name=".activities.ImageViewActivity"
+            android:label="@string/image_viewer" >
+            <intent-filter tools:ignore="AppLinkUrlError" >
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".activities.InstallerActivity" />
         <activity android:name=".activities.InstallerFilePickerActivity" />
         <activity android:name=".activities.SettingsActivity" />
