@@ -2,7 +2,7 @@
 
 ![AEE](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png?raw=true)
 
-[![](https://img.shields.io/badge/APK%20Explorer%20&%20Editor%20(AEE)-v0.10-green)](https://github.com/apk-editor/APK-Explorer-Editor/releases)
+[![](https://img.shields.io/badge/APK%20Explorer%20&%20Editor%20(AEE)-v0.11-green)](https://github.com/apk-editor/APK-Explorer-Editor/releases)
 ![](https://img.shields.io/github/downloads/apk-editor/APK-Explorer-Editor/total)
 ![](https://img.shields.io/github/languages/top/apk-editor/APK-Explorer-Editor)
 ![](https://img.shields.io/github/contributors/apk-editor/APK-Explorer-Editor)
@@ -24,6 +24,9 @@ AEE currently supports the following tasks
 ## Download
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
      alt="" height="80">](https://play.google.com/store/apps/details?id=com.apk.explorer)
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+               alt=""
+               height="80">](https://f-droid.org/packages/com.apk.editor/)
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
           alt=""
           height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.apk.editor)
@@ -44,7 +47,7 @@ AEE currently supports the following tasks
 * [Gospel Gilbert](https://t.me/gilgreat0295) - App Icon
 * [Mohammed Qubati](https://t.me/Alqubati_MrK) - Arabic Translation
 * [wushidi](https://t.me/wushidi) - Chinese (Simplified) Translation
-* [fossdd](https://chaos.social/@fossdd) - German Translation,
+* [fossdd](https://chaos.social/@fossdd) - German Translation
 
 ## Translations
 Please help me to translate this application via [POEditor](https://poeditor.com/join/project?hash=QztabxONOp). You may also translate after downloading the original language string available [here](app/src/main/res/values/strings.xml).

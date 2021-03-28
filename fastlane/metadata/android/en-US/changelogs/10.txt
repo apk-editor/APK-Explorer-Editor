@@ -1,5 +1,0 @@
-* Added a basic Settings menu.
-* Separate TextEditor with TextView (disabled by default).
-* Improved Text (especially XML) View.
-* Updated Chinese (simplified).
-* Miscellaneous changes.
