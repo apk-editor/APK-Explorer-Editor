@@ -43,6 +43,7 @@
     <string name="exporting">Exporting %s…</string>
     <string name="exploring">Exploring %s…</string>
     <string name="explore_error_status">Failed to explore %s!</string>
+    <string name="file_path_error">Failed to get file path from external File Manager!</string>
     <string name="got_it">Got It</string>
     <string name="install">Install</string>
     <string name="install_question">Install %s?</string>
@@ -125,6 +126,7 @@
     <string name="support_group">Support Group</string>
     <string name="support_group_summary">Join AEE support group</string>
     <string name="system">System</string>
+    <string name="text_editor">AEE Text Editor</string>
     <string name="text_editing">Enable Text Editing</string>
     <string name="text_editing_summary">AEE text editor is still very basic and a little buggy. APK\'s prepared after editing binary text files may not work properly. Please use it with extreme care.</string>
     <string name="translate">Translate</string>
