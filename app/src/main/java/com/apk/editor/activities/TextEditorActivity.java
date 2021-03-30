@@ -35,8 +35,9 @@ import java.util.Objects;
  */
 public class TextEditorActivity extends AppCompatActivity {
 
+    private AppCompatEditText mText;
     public static final String PATH_INTENT = "path";
-    private String mExternalFile = null;
+    private String mExternalFile = null, mTextContents = null;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -48,7 +49,7 @@ public class TextEditorActivity extends AppCompatActivity {
         AppCompatImageButton mMenu = findViewById(R.id.menu);
         AppCompatImageButton mSave = findViewById(R.id.save);
         MaterialTextView mTitle = findViewById(R.id.title);
-        AppCompatEditText mText = findViewById(R.id.text);
+        mText = findViewById(R.id.text);
 
         AppData.toggleKeyboard(1, mText, this);
 
@@ -78,6 +79,7 @@ public class TextEditorActivity extends AppCompatActivity {
             if (mExternalFile != null && APKEditorUtils.exist(mExternalFile)) {
                 mTitle.setText(new File(mExternalFile).getName());
                 mText.setText(APKEditorUtils.read(mExternalFile));
+                mTextContents = APKEditorUtils.read(mExternalFile);
             } else {
                 new MaterialAlertDialogBuilder(this)
                         .setIcon(R.mipmap.ic_launcher)
@@ -91,6 +93,7 @@ public class TextEditorActivity extends AppCompatActivity {
         } else if (mPath != null) {
             mTitle.setText(new File(mPath).getName());
             mText.setText(APKEditorUtils.read(mPath));
+            mTextContents = APKEditorUtils.read(mPath);
         }
 
         if (mExternalFile != null) {
@@ -140,7 +143,7 @@ public class TextEditorActivity extends AppCompatActivity {
 
         mSave.setOnClickListener(v -> saveDialog(Objects.requireNonNull(mText.getText()).toString(), mExternalFile != null ? mExternalFile : mPath));
 
-        mBack.setOnClickListener(v -> finish());
+        mBack.setOnClickListener(v -> onBackPressed());
     }
 
     private void saveDialog(String text, String path) {
@@ -156,6 +159,17 @@ public class TextEditorActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if (mTextContents != null && mText.getText() != null && !mTextContents.equals(mText.getText().toString())) {
+            new MaterialAlertDialogBuilder(this)
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(R.string.text_editor)
+                    .setMessage(getString(R.string.discard_message))
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                    })
+                    .setPositiveButton(R.string.discard, (dialogInterface, i) -> finish()).show();
+            return;
+        }
         super.onBackPressed();
     }
 

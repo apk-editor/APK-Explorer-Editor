@@ -27,6 +27,8 @@
     <string name="documentation_summary">Check out AEE documentation</string>
     <string name="donations">Donations</string>
     <string name="donations_summary">Support the development of AEE</string>
+    <string name="discard">Discard</string>
+    <string name="discard_message">Discard the changes made on this file?</string>
     <string name="enable">Enable</string>
     <string name="export">Export</string>
     <string name="export_app_question">Export \'%s\' to device storage?</string>
