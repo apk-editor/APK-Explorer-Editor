@@ -49,6 +49,7 @@ AEE currently supports the following tasks
 * [wushidi](https://t.me/wushidi) - Chinese (Simplified) Translation
 * [fossdd](https://chaos.social/@fossdd) - German Translation
 * bruh - Vietnamese Translation
+* Bruno - French Translation
 
 ## Translations
 Please help me to translate this application via [POEditor](https://poeditor.com/join/project?hash=QztabxONOp). You may also translate after downloading the original language string available [here](app/src/main/res/values/strings.xml).
