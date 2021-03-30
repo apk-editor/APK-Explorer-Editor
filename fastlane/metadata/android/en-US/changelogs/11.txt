@@ -1,5 +1,0 @@
-* AEE will now allow picking APK's/App bundles and text files directly from external File Manager (might have issues with some File Manager's).
-* Largely improved internal file picker
-* Added German translation.
-* Updated Chinese (simplified) translation.
-* Miscellaneous changes.
