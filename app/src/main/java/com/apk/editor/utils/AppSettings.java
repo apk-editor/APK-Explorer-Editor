@@ -1,9 +1,14 @@
 package com.apk.editor.utils;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Environment;
+
+import androidx.core.app.ActivityCompat;
 
 import com.apk.editor.MainActivity;
 import com.apk.editor.R;
@@ -44,6 +49,15 @@ public class AppSettings {
                 return context.getString(R.string.language_zh);
             default:
                 return context.getString(R.string.app_theme_auto);
+        }
+    }
+
+    public static String getExportAPKsPath(Context context) {
+        String exportAPKPath = APKEditorUtils.getString("exportAPKsPath", "externalFiles", context);
+        if (exportAPKPath.equals("internalStorage")) {
+            return context.getString(R.string.export_path_default);
+        } else {
+            return context.getString(R.string.export_path_files_dir);
         }
     }
 
@@ -162,6 +176,29 @@ public class AppSettings {
                     if (!APKEditorUtils.getLanguage(context).equals("vi")) {
                         APKEditorUtils.saveString("appLanguage", "vi", context);
                         restartApp(context);
+                    }
+                    break;
+            }
+        }).setOnDismissListener(dialogInterface -> {
+        }).show();
+    }
+
+    public static void setExportAPKsPath(Activity activity) {
+        new MaterialAlertDialogBuilder(activity).setItems(activity.getResources().getStringArray(
+                R.array.export_path_apk), (dialogInterface, i) -> {
+            switch (i) {
+                case 0:
+                    APKEditorUtils.saveString("exportAPKsPath", "externalFiles", activity);
+                    transferExportedApps(activity);
+                    break;
+                case 1:
+                    if (APKEditorUtils.isWritePermissionGranted(activity)) {
+                        APKEditorUtils.saveString("exportAPKsPath", "internalStorage", activity);
+                        transferExportedApps(activity);
+                    } else {
+                        ActivityCompat.requestPermissions((Activity) activity, new String[] {
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                        APKEditorUtils.snackbar(activity.findViewById(android.R.id.content), activity.getString(R.string.permission_denied_message));
                     }
                     break;
             }
@@ -301,6 +338,45 @@ public class AppSettings {
                     }
                     activity.finish();
                 }).show();
+    }
+
+    private static void transferExportedApps(Context context) {
+        new AsyncTask<Void, Void, Void>() {
+            private File sourceDir;
+            private ProgressDialog mProgressDialog;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                mProgressDialog = new ProgressDialog(context);
+                mProgressDialog.setMessage(context.getString(R.string.transfer_exported_apk));
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                File destDir;
+                if (APKEditorUtils.getString("exportAPKsPath", "externalFiles", context).equals("internalStorage")) {
+                    sourceDir = context.getExternalFilesDir("");
+                    destDir = new File(Environment.getExternalStorageDirectory(), "/AEE/exportedAPKs");
+                } else {
+                    destDir = context.getExternalFilesDir("");
+                    sourceDir = new File(Environment.getExternalStorageDirectory(), "/AEE/exportedAPKs");
+                }
+                APKEditorUtils.copyDir(sourceDir, destDir);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                APKEditorUtils.delete(sourceDir.getAbsolutePath());
+                try {
+                    mProgressDialog.dismiss();
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
+        }.execute();
     }
 
     private static boolean isCustomKey(Context context) {

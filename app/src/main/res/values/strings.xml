@@ -40,8 +40,10 @@
     <string name="export_options">On Exporting (APK\'s)</string>
     <string name="export_project_question">Make a copy of this project folder into device storage?</string>
     <string name="export_project_replace">\'%s\' already exists! Do you want to replace it?</string>
+    <string name="export_path_apks">Export Path (APK\'s)</string>
     <string name="export_path_default">Internal Storage/AEE</string>
     <string name="export_path_download">Download</string>
+    <string name="export_path_files_dir">External Files Directory</string>
     <string name="export_path_resources">Export Path (non-APK\'s)</string>
     <string name="export_question">Export to device storage?</string>
     <string name="export_resign">Export &amp; Re-sign</string>
@@ -143,6 +145,7 @@
     <string name="text_editor">AEE Text Editor</string>
     <string name="text_editing">Enable Text Editing</string>
     <string name="text_editing_summary">AEE text editor is still very basic and a little buggy. APK\'s prepared after editing binary text files may not work properly. Please use it with extreme care.</string>
+    <string name="transfer_exported_apk">Transferring previously Exported APK\'s to new path…</string>
     <string name="translate">Translate</string>
     <string name="unknown_file_message">AEE doesn\'t handle \'%s\' at this moment. If you know this file format, you may export this file into device storage and try editing using a supported third-party application. Alternately, you may try to open it as a text file?</string>
     <string name="unsupported_file">Unsupported file</string>

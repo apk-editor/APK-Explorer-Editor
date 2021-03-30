@@ -199,7 +199,7 @@ public class APKEditorUtils {
     }
 
     public static void copyDir(File sourceDir, File destDir) {
-        if (destDir.exists()) {
+        if (!destDir.exists()) {
             destDir.mkdirs();
         }
         for (File mFile : Objects.requireNonNull(sourceDir.listFiles())) {
