@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 
+import com.apk.editor.MainActivity;
 import com.apk.editor.R;
 import com.apk.editor.activities.APKSignActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -15,6 +16,17 @@ import java.io.File;
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 25, 2021
  */
 public class AppSettings {
+
+    public static String getAppTheme(Context context) {
+        String appTheme = APKEditorUtils.getString("appTheme", "Auto", context);
+        if (appTheme.equals("Dark")) {
+            return context.getString(R.string.app_theme_dark);
+        } else if (appTheme.equals("Light")) {
+            return context.getString(R.string.app_theme_light);
+        } else {
+            return context.getString(R.string.app_theme_auto);
+        }
+    }
 
     public static String getExportPath(Context context) {
         if (APKEditorUtils.getString("exportPath", null, context) != null && APKEditorUtils.getString("exportPath", null, context).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())) {
@@ -64,6 +76,27 @@ public class AppSettings {
         } else {
             return context.getString(R.string.sign_apk_default);
         }
+    }
+
+    public static void setAppTheme(Context context) {
+        new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
+                R.array.app_theme), (dialogInterface, i) -> {
+            switch (i) {
+                case 0:
+                    APKEditorUtils.saveString("appTheme", "Auto", context);
+                    restartApp(context);
+                    break;
+                case 1:
+                    APKEditorUtils.saveString("appTheme", "Dark", context);
+                    restartApp(context);
+                    break;
+                case 2:
+                    APKEditorUtils.saveString("appTheme", "Light", context);
+                    restartApp(context);
+                    break;
+            }
+        }).setOnDismissListener(dialogInterface -> {
+        }).show();
     }
 
     public static void setExportPath(Context context) {
@@ -207,6 +240,12 @@ public class AppSettings {
 
     public static boolean isTextEditingEnabled(Context context) {
         return APKEditorUtils.getBoolean("editText", false, context);
+    }
+
+    private static void restartApp(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
     }
 
 }

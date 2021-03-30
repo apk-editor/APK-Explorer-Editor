@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+    <string-array name="app_theme">
+        <item>@string/app_theme_auto</item>
+        <item>@string/app_theme_dark</item>
+        <item>@string/app_theme_light</item>
+    </string-array>
+
     <string-array name="export_apk">
         <item>@string/export_storage</item>
         <item>@string/export_resign</item>

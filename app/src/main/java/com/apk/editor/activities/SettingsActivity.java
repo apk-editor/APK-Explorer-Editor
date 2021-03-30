@@ -45,6 +45,8 @@ public class SettingsActivity extends AppCompatActivity {
         RecycleViewAdapter mRecycleViewAdapter = new RecycleViewAdapter(mData);
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
+        mData.add(new RecycleViewItem(getString(R.string.user_interface), null, null));
+        mData.add(new RecycleViewItem(getString(R.string.app_theme), AppSettings.getAppTheme(this), getResources().getDrawable(R.drawable.ic_theme)));
         mData.add(new RecycleViewItem(getString(R.string.settings_general), null, null));
         mData.add(new RecycleViewItem(getString(R.string.project_exist_action), AppSettings.getProjectExistAction(this), getResources().getDrawable(R.drawable.ic_projects)));
         mData.add(new RecycleViewItem(getString(R.string.export_path_resources), AppSettings.getExportPath(this), getResources().getDrawable(R.drawable.ic_export)));
@@ -61,26 +63,28 @@ public class SettingsActivity extends AppCompatActivity {
         mRecycleViewAdapter.setOnItemClickListener((position, v) -> {
             if (mData.get(position).getDescription() != null) {
                 if (position == 1) {
+                    AppSettings.setAppTheme(v.getContext());
+                } else if (position == 3) {
                     AppSettings.setProjectExistAction(v.getContext());
                     mData.set(position, new RecycleViewItem(getString(R.string.project_exist_action), AppSettings.getProjectExistAction(this), getResources().getDrawable(R.drawable.ic_projects)));
                     mRecycleViewAdapter.notifyItemChanged(position);
-                } else if (position == 2) {
+                } else if (position == 4) {
                     AppSettings.setExportPath(v.getContext());
                     mData.set(position, new RecycleViewItem(getString(R.string.export_path_resources), AppSettings.getExportPath(this), getResources().getDrawable(R.drawable.ic_export)));
                     mRecycleViewAdapter.notifyItemChanged(position);
-                } else if (APKEditorUtils.isFullVersion(this) && position == 3) {
+                } else if (APKEditorUtils.isFullVersion(this) && position == 5) {
                     AppSettings.setEditingOptions(v.getContext());
                     mData.set(position, new RecycleViewItem(getString(R.string.text_editing), AppSettings.getEditingOptions(this), getResources().getDrawable(R.drawable.ic_edit)));
                     mRecycleViewAdapter.notifyItemChanged(position);
-                } else if (APKEditorUtils.isFullVersion(this) && position == 5) {
+                } else if (APKEditorUtils.isFullVersion(this) && position == 7) {
                     AppSettings.setAPKs(v.getContext());
                     mData.set(position, new RecycleViewItem(getString(R.string.export_options), AppSettings.getAPKs(this), getResources().getDrawable(R.drawable.ic_android)));
                     mRecycleViewAdapter.notifyItemChanged(position);
-                } else if (APKEditorUtils.isFullVersion(this) && position == 6) {
+                } else if (APKEditorUtils.isFullVersion(this) && position == 8) {
                     AppSettings.setInstallerAction(v.getContext());
                     mData.set(position, new RecycleViewItem(getString(R.string.installer_action), AppSettings.getInstallerAction(this), getResources().getDrawable(R.drawable.ic_installer)));
                     mRecycleViewAdapter.notifyItemChanged(position);
-                } else if (APKEditorUtils.isFullVersion(this) && position == 7) {
+                } else if (APKEditorUtils.isFullVersion(this) && position == 9) {
                     AppSettings.setAPKSign(v.getContext());
                     mData.set(position, new RecycleViewItem(getString(R.string.sign_apk_with), AppSettings.getAPKSign(this), getResources().getDrawable(R.drawable.ic_key)));
                     mRecycleViewAdapter.notifyItemChanged(position);
