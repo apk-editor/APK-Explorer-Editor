@@ -81,8 +81,8 @@
     <string name="apk_installer">"AEE APK 安装器"</string>
     <string name="bundle_install_question">"是否安装拆分应用 '%s' ？"</string>
     <string name="export_app_question">"是否导出  '%s' 到设备存储？"</string>
-    <string name="export_project_question">"是否将此项目文件夹复制到设备存储？"</string>
-    <string name="export_project_replace">"'%s' 已存在！你想替换它吗？"</string>
+    <string name="export_project_question">"是否将此项目文件夹导出到设备存储？"</string>
+    <string name="export_project_replace">"'%s' 已存在！是否替换？"</string>
     <string name="export_resign">"导出并重新签名"</string>
     <string name="export_storage">"导出到内部存储"</string>
     <string name="exporting">"正在导出 %s…"</string>
@@ -125,7 +125,7 @@
     <string name="export_path_download">"Download 文件夹"</string>
     <string name="export_path_resources">"导出路径"</string>
     <string name="installer_action">"对于已安装应用"</string>
-    <string name="project_exist_action">"对于已有项目"</string>
+    <string name="project_exist_action">"保存项目"</string>
     <string name="prompt">"显示提示"</string>
     <string name="settings">"设置"</string>
     <string name="settings_general">"普通"</string>
@@ -136,4 +136,7 @@
     <string name="text_editing">"启用文本编辑"</string>
     <string name="text_editing_summary">"AEE文本编辑器仍是非常基础的功能，并且仍有小问题。 编辑二进制文本文件后生成的APK可能无法正常安装。 使用此工具时请注意备份"</string>
     <string name="warning">"警告"</string>
+    <string name="file_path_error">"无法从外部文件管理器获取文件路径！"</string>
+    <string name="image_viewer">"AEE图片查看器"</string>
+    <string name="text_editor">"AEE文本编辑器"</string>
 </resources>
