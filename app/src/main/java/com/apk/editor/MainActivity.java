@@ -45,13 +45,12 @@ public class MainActivity extends AppCompatActivity {
                     .setMessage(getString(R.string.warning_message))
                     .setCancelable(false)
                     .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
-                        finish();
                     })
-                    .setPositiveButton(getString(R.string.accept), (dialog, id) -> {
-                        APKEditorUtils.saveBoolean("welcome_message", true, this);
+                    .setPositiveButton(getString(R.string.documentation), (dialog, id) -> {
                         Intent documentation = new Intent(this, DocumentationActivity.class);
                         startActivity(documentation);
                     }).show();
+            APKEditorUtils.saveBoolean("welcome_message", true, this);
         }
 
         mSettings.setOnClickListener(v -> {

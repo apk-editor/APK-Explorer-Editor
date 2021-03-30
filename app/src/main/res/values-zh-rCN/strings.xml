@@ -1,7 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="about">"关于"</string>
-    <string name="accept">"接受"</string>
     <string name="all">"全部"</string>
     <string name="apks">"安装包"</string>
     <string name="apps">"全部应用"</string>

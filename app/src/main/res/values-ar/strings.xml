@@ -1,7 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="about">"حول"</string>
-    <string name="accept">"قبول"</string>
     <string name="all">"الكل"</string>
     <string name="apks">"التطبيقات"</string>
     <string name="apps">"التطبيقات"</string>
