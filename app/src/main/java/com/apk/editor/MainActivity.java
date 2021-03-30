@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
         // Initialize app theme
         APKEditorUtils.initializeAppTheme(this);
         super.onCreate(savedInstanceState);
+        // Set App Language
+        APKEditorUtils.setLanguage(this);
         setContentView(R.layout.activity_main);
 
         BottomNavigationView mBottomNav = findViewById(R.id.bottom_navigation);

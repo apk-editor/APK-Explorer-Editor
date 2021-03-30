@@ -28,6 +28,25 @@ public class AppSettings {
         }
     }
 
+    public static String getLanguage(Context context) {
+        switch (APKEditorUtils.getLanguage(context)) {
+            case "en_US":
+                return context.getString(R.string.language_en);
+            case "ar":
+                return context.getString(R.string.language_ar);
+            case "fr":
+                return context.getString(R.string.language_fr);
+            case "de":
+                return context.getString(R.string.language_de);
+            case "vi":
+                return context.getString(R.string.language_vi);
+            case "zh":
+                return context.getString(R.string.language_zh);
+            default:
+                return context.getString(R.string.app_theme_auto);
+        }
+    }
+
     public static String getExportPath(Context context) {
         if (APKEditorUtils.getString("exportPath", null, context) != null && APKEditorUtils.getString("exportPath", null, context).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())) {
             return context.getString(R.string.export_path_download);
@@ -93,6 +112,57 @@ public class AppSettings {
                 case 2:
                     APKEditorUtils.saveString("appTheme", "Light", context);
                     restartApp(context);
+                    break;
+            }
+        }).setOnDismissListener(dialogInterface -> {
+        }).show();
+    }
+
+    public static void setLanguage(Context context) {
+        new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
+                R.array.app_language), (dialogInterface, i) -> {
+            switch (i) {
+                case 0:
+                    if (!APKEditorUtils.getLanguage(context).equals(java.util.Locale.getDefault().getLanguage())) {
+                        APKEditorUtils.saveString("appLanguage", java.util.Locale.getDefault().getLanguage(), context);
+                        restartApp(context);
+                    }
+                    break;
+                case 1:
+                    if (!APKEditorUtils.getLanguage(context).equals("ar")) {
+                        APKEditorUtils.saveString("appLanguage", "ar", context);
+                        restartApp(context);
+                    }
+                    break;
+                case 2:
+                    if (!APKEditorUtils.getLanguage(context).equals("zh")) {
+                        APKEditorUtils.saveString("appLanguage", "zh", context);
+                        restartApp(context);
+                    }
+                    break;
+                case 3:
+                    if (!APKEditorUtils.getLanguage(context).equals("de")) {
+                        APKEditorUtils.saveString("appLanguage", "de", context);
+                        restartApp(context);
+                    }
+                    break;
+                case 4:
+                    if (!APKEditorUtils.getLanguage(context).equals("en_US")) {
+                        APKEditorUtils.saveString("appLanguage", "en_US", context);
+                        restartApp(context);
+                    }
+                    break;
+                case 5:
+                    if (!APKEditorUtils.getLanguage(context).equals("fr")) {
+                        APKEditorUtils.saveString("appLanguage", "fr", context);
+                        restartApp(context);
+                    }
+                    break;
+                case 6:
+                    if (!APKEditorUtils.getLanguage(context).equals("vi")) {
+                        APKEditorUtils.saveString("appLanguage", "vi", context);
+                        restartApp(context);
+                    }
                     break;
             }
         }).setOnDismissListener(dialogInterface -> {
