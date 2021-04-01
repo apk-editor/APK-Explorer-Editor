@@ -72,7 +72,7 @@
     <string name="invite_friends">Invite Friends</string>
     <string name="invite_friends_Summary">Invite your friends to try AEE</string>
     <string name="language">Language</string>
-    <string name="language_ar" translatable="false">عربى</string>
+    <string name="language_ar" translatable="false">العربية</string>
     <string name="language_en" translatable="false">English</string>
     <string name="language_fr" translatable="false">français</string>
     <string name="language_de" translatable="false">Deutsche</string>
