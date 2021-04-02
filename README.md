@@ -39,18 +39,7 @@ AEE currently supports the following tasks
      height="80">](https://t.me/apkexplorer)
 
 ## Credits
-* [Grarak](https://github.com/Grarak/) - Kernel Adiutor
-* [Aefyr](https://github.com/Aefyr) - PseudoApkSigner & SAI
-* [Hsiafan](https://github.com/hsiafan/) - APK parser
-* [Srikanth Reddy Lingala](https://github.com/srikanth-lingala) - zip4j
-* [Nitin Kalra](https://github.com/nkalra0123/) - Split App Share & Install
-* [Gospel Gilbert](https://t.me/gilgreat0295) - App Icon
-* [Mohammed Qubati](https://t.me/Alqubati_MrK) - Arabic Translation
-* [wushidi](https://t.me/wushidi) - Chinese (Simplified) Translation
-* [fossdd](https://chaos.social/@fossdd) - German Translation
-* bruh - Vietnamese Translation
-* Bruno - French Translation
-* Miloš Koliáš - Czech Translation
+A list of people who contributed to this project is available [here](Credits.md).
 
 ## Translations
 Please help me to translate this application via [POEditor](https://poeditor.com/join/project?hash=QztabxONOp). You may also translate after downloading the original language string available [here](app/src/main/res/values/strings.xml).
