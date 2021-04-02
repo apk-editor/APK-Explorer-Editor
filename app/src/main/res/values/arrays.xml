@@ -11,6 +11,7 @@
         <item>@string/app_theme_auto</item>
         <item>@string/language_ar</item>
         <item>@string/language_zh</item>
+        <item>@string/language_cs</item>
         <item>@string/language_de</item>
         <item>@string/language_en</item>
         <item>@string/language_fr</item>

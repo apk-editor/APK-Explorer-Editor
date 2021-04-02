@@ -50,6 +50,7 @@ AEE currently supports the following tasks
 * [fossdd](https://chaos.social/@fossdd) - German Translation
 * bruh - Vietnamese Translation
 * Bruno - French Translation
+* Miloš Koliáš - Czech Translation
 
 ## Translations
 Please help me to translate this application via [POEditor](https://poeditor.com/join/project?hash=QztabxONOp). You may also translate after downloading the original language string available [here](app/src/main/res/values/strings.xml).

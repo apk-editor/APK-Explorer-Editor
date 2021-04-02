@@ -74,6 +74,8 @@ public class AppSettings {
                 return context.getString(R.string.language_vi);
             case "zh":
                 return context.getString(R.string.language_zh);
+            case "cs":
+                return context.getString(R.string.language_cs);
             default:
                 return context.getString(R.string.app_theme_auto);
         }
@@ -208,24 +210,30 @@ public class AppSettings {
                     }
                     break;
                 case 3:
+                    if (!APKEditorUtils.getLanguage(context).equals("cs")) {
+                        APKEditorUtils.saveString("appLanguage", "cs", context);
+                        restartApp(context);
+                    }
+                    break;
+                case 4:
                     if (!APKEditorUtils.getLanguage(context).equals("de")) {
                         APKEditorUtils.saveString("appLanguage", "de", context);
                         restartApp(context);
                     }
                     break;
-                case 4:
+                case 5:
                     if (!APKEditorUtils.getLanguage(context).equals("en_US")) {
                         APKEditorUtils.saveString("appLanguage", "en_US", context);
                         restartApp(context);
                     }
                     break;
-                case 5:
+                case 6:
                     if (!APKEditorUtils.getLanguage(context).equals("fr")) {
                         APKEditorUtils.saveString("appLanguage", "fr", context);
                         restartApp(context);
                     }
                     break;
-                case 6:
+                case 7:
                     if (!APKEditorUtils.getLanguage(context).equals("vi")) {
                         APKEditorUtils.saveString("appLanguage", "vi", context);
                         restartApp(context);
