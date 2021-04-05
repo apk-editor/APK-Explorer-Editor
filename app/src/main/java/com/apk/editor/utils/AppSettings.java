@@ -76,6 +76,8 @@ public class AppSettings {
                 return context.getString(R.string.language_zh);
             case "cs":
                 return context.getString(R.string.language_cs);
+            case "tr":
+                return context.getString(R.string.language_tr);
             default:
                 return context.getString(R.string.app_theme_auto);
         }
@@ -234,6 +236,12 @@ public class AppSettings {
                     }
                     break;
                 case 7:
+                    if (!APKEditorUtils.getLanguage(context).equals("tr")) {
+                        APKEditorUtils.saveString("appLanguage", "tr", context);
+                        restartApp(context);
+                    }
+                    break;
+                case 8:
                     if (!APKEditorUtils.getLanguage(context).equals("vi")) {
                         APKEditorUtils.saveString("appLanguage", "vi", context);
                         restartApp(context);
