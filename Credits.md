@@ -12,7 +12,7 @@ APK Explorer & Editor (AEE) is, and as always, an open-source project which is r
 * [Gospel Gilbert](https://t.me/gilgreat0295) - App Icon
 
 ## Translations
-* [Mohammed Qubati](https://t.me/Alqubati_MrK) - Arabic Translation
+* [Mohammed Qubati](https://t.me/Alqubati_MrK) & Jander Mander - Arabic Translation
 * [wushidi](https://t.me/wushidi) - Chinese (Simplified) Translation
 * [fossdd](https://chaos.social/@fossdd) - German Translation
 * bruh - Vietnamese Translation
