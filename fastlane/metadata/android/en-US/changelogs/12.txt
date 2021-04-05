@@ -1,6 +1,0 @@
-* AEE will now allow changing exported APK's/bundles path into internal storage.
-* Added App Theme and language switches.
-* Image Viewer will now allow opening supported image files directly from external File Manager.
-* Added French and Vietnamese translation.
-* Updated Chinese (simplified) translation.
-* Miscellaneous changes.

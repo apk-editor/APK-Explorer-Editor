@@ -1,0 +1,4 @@
+* Changing options in the Settings page will now show the correct status.
+* Added Czech & Turkish translations.
+* Updated Arabic translation.
+* Miscellaneous changes.
