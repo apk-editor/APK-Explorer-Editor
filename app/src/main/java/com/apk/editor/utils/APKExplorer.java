@@ -20,6 +20,15 @@ import com.google.android.material.card.MaterialCardView;
 
 import net.dongliu.apk.parser.ApkFile;
 
+import org.jf.baksmali.Baksmali;
+import org.jf.baksmali.BaksmaliOptions;
+import org.jf.dexlib2.DexFileFactory;
+import org.jf.dexlib2.Opcodes;
+import org.jf.dexlib2.analysis.InlineMethodResolver;
+import org.jf.dexlib2.dexbacked.DexBackedDexFile;
+import org.jf.dexlib2.dexbacked.DexBackedOdexFile;
+import org.jf.dexlib2.iface.MultiDexContainer;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -27,6 +36,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -44,7 +54,7 @@ public class APKExplorer {
             mData.clear();
             // Add directories
             for (File mFile : files) {
-                if (mFile.isDirectory()) {
+                if (mFile.isDirectory() && !mFile.getName().equals(".aeeBackup")) {
                     mDir.add(mFile.getAbsolutePath());
                 }
             }
@@ -78,7 +88,7 @@ public class APKExplorer {
     public static boolean isTextFile(String path) {
         return path.endsWith(".txt") || path.endsWith(".xml") || path.endsWith(".json") || path.endsWith(".properties")
                 || path.endsWith(".version") || path.endsWith(".sh") || path.endsWith(".MF") || path.endsWith(".SF")
-                || path.endsWith(".html") || path.endsWith(".ini");
+                || path.endsWith(".html") || path.endsWith(".ini") || path.endsWith(".smali");
     }
 
     public static boolean isImageFile(String path) {
@@ -148,23 +158,38 @@ public class APKExplorer {
 
     public static void exploreAPK(String packageName, Context context) {
         new AsyncTask<Void, Void, Void>() {
+            private File mExplorePath;
+            private File mBackUpPath;
             private ProgressDialog mProgressDialog;
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                APKExplorer.mAppID = packageName;
-                APKExplorer.mPath = context.getCacheDir().getPath() + "/" + packageName;
                 mProgressDialog = new ProgressDialog(context);
                 mProgressDialog.setMessage(context.getString(R.string.exploring, AppData.getAppName(packageName, context)));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
+                APKExplorer.mAppID = packageName;
+                mExplorePath = new File(context.getCacheDir().getPath(), packageName);
+                mBackUpPath = new File(mExplorePath, ".aeeBackup");
+                APKExplorer.mPath = mExplorePath.getAbsolutePath();
             }
             @Override
             protected Void doInBackground(Void... voids) {
-                if (!APKEditorUtils.exist(APKExplorer.mPath)) {
-                    APKEditorUtils.mkdir(APKExplorer.mPath);
-                    APKEditorUtils.unzip(AppData.getSourceDir(packageName, context), context.getCacheDir().getPath()
-                            + "/" + packageName);
+                if (!mExplorePath.exists()) {
+                    mExplorePath.mkdirs();
+                    mBackUpPath.mkdirs();
+                    APKEditorUtils.unzip(AppData.getSourceDir(packageName, context), mExplorePath.getAbsolutePath());
+                    // Decompile dex file(s)
+                    for (File files : Objects.requireNonNull(mExplorePath.listFiles())) {
+                        if (files.getName().startsWith("classes") && files.getName().endsWith(".dex")) {
+                            APKEditorUtils.copy(files.getAbsolutePath(), new File(mBackUpPath, files.getName()).getAbsolutePath());
+                            APKEditorUtils.delete(files.getAbsolutePath());
+                            File mDexExtractPath = new File(mExplorePath, files.getName());
+                            mDexExtractPath.mkdirs();
+                            mProgressDialog.setMessage(context.getString(R.string.decompiling, files.getName()));
+                            dexToSmali(new File(AppData.getSourceDir(APKExplorer.mAppID, context)), mDexExtractPath, files.getName(), false, 0);
+                        }
+                    }
                 }
                 return null;
             }
@@ -179,6 +204,64 @@ public class APKExplorer {
                 context.startActivity(explorer);
             }
         }.execute();
+    }
+
+    /*
+     * The following code is based on the original work of @iBotPeaches for https://github.com/iBotPeaches/Apktool
+     */
+    public static void dexToSmali(File apkFile, File outDir, String dexName, boolean debugInfo, int api) {
+        try {
+            final BaksmaliOptions options = new BaksmaliOptions();
+
+            // options
+            options.deodex = false;
+            options.implicitReferences = false;
+            options.parameterRegisters = true;
+            options.localsDirective = true;
+            options.sequentialLabels = true;
+            options.debugInfo = debugInfo;
+            options.codeOffsets = false;
+            options.accessorComments = false;
+            options.registerInfo = 0;
+            options.inlineResolver = null;
+
+            // set jobs automatically
+            int jobs = Runtime.getRuntime().availableProcessors();
+            if (jobs > 6) {
+                jobs = 6;
+            }
+
+            // create the container
+            MultiDexContainer<? extends DexBackedDexFile> container = DexFileFactory.loadDexContainer(apkFile, Opcodes.forApi(api));
+            MultiDexContainer.DexEntry<? extends DexBackedDexFile> dexEntry;
+            DexBackedDexFile dexFile;
+
+            // If we have 1 item, ignore the passed file. Pull the DexFile we need.
+            if (container.getDexEntryNames().size() == 1) {
+                dexEntry = container.getEntry(container.getDexEntryNames().get(0));
+            } else {
+                dexEntry = container.getEntry(dexName);
+            }
+
+            // Double check the passed param exists
+            if (dexEntry == null) {
+                dexEntry = container.getEntry(container.getDexEntryNames().get(0));
+            }
+
+            assert dexEntry != null;
+            dexFile = dexEntry.getDexFile();
+
+            if (dexFile.supportsOptimizedOpcodes()) {
+                throw new Exception("Warning: You are disassembling an odex file without deodexing it.");
+            }
+
+            if (dexFile instanceof DexBackedOdexFile) {
+                options.inlineResolver = InlineMethodResolver.createInlineMethodResolver(((DexBackedOdexFile)dexFile).getOdexVersion());
+            }
+
+            Baksmali.disassembleDexFile(dexFile, outDir, jobs, options);
+        } catch (Exception ignored) {
+        }
     }
 
 }

@@ -180,15 +180,21 @@ public class TextViewActivity extends AppCompatActivity {
                 holder.mText.setTextColor(APKEditorUtils.getThemeAccentColor(holder.mText.getContext()));
             } else if (data.get(position).contains("<uses-permission")) {
                 holder.mText.setTextColor(Color.RED);
-            } else if (data.get(position).contains("<activity")) {
+            } else if (data.get(position).contains("<activity") || data.get(position).startsWith(".method") || data.get(position).startsWith(".annotation")) {
                 holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.GREEN : Color.MAGENTA);
-            } else if (data.get(position).contains("<service")) {
+            } else if (data.get(position).contains("<service") || data.get(position).startsWith(".end method") || data.get(position).startsWith(".end annotation")) {
                 holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.MAGENTA : Color.BLUE);
             } else if (data.get(position).contains("<provider") || data.get(position).contains("</provider>")) {
                 holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.LTGRAY : Color.DKGRAY);
             } else {
                 holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.WHITE : Color.BLACK);
             }
+            if (data.get(position).startsWith("#")) {
+                holder.mText.setAlpha((float) 0.5);
+            } else {
+                holder.mText.setAlpha(1);
+            }
+            holder.mNumber.setAlpha((float) 0.5);
         }
 
         @Override
