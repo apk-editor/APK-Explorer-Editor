@@ -20,6 +20,7 @@ import com.apk.editor.activities.FilePickerActivity;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -55,6 +56,7 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
             holder.mIcon.setBackground(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_circle));
             holder.mIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mTitle.getContext()));
             holder.mSettings.setVisibility(View.GONE);
+            holder.mDescription.setVisibility(View.GONE);
         } else if (APKExplorer.isImageFile(data.get(position))) {
             if (APKExplorer.getIconFromPath(data.get(position)) != null) {
                 holder.mIcon.setImageURI(APKExplorer.getIconFromPath(data.get(position)));
@@ -75,6 +77,7 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
             }
         }
         holder.mTitle.setText(new File(data.get(position)).getName());
+        holder.mDescription.setText(AppData.getAPKSize(data.get(position)));
         holder.mSettings.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
             Menu menu = popupMenu.getMenu();
@@ -143,7 +146,7 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private AppCompatImageButton mIcon, mSettings;
-        private MaterialTextView mTitle;
+        private MaterialTextView mTitle, mDescription;
 
         public ViewHolder(View view) {
             super(view);
@@ -151,6 +154,7 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
             this.mIcon = view.findViewById(R.id.icon);
             this.mSettings = view.findViewById(R.id.settings);
             this.mTitle = view.findViewById(R.id.title);
+            this.mDescription = view.findViewById(R.id.description);
         }
 
         @Override
