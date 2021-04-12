@@ -60,8 +60,8 @@
     <string name="translate">Traducir</string>
     <string name="unknown_file_message">AEE no admite "%s" por el momento. Si conoces este formato de archivo, deberías exportar este archivo al almacenamiento del dispositivo e intentar editarlo con otra aplicación. De lo contrario, ¿deseas abrir de todos modos?</string>
     <string name="unsupported_file">Archivo no soportado</string>
-    <string name="unsupported_file_arsc">Has seleccionado 'resources.arsc', que desafortunadamente AEE no puede leer.\n\n¿Qué es resources.arsc?\nresources.arsc es un archivo de recursos binarios que contiene valores de configuración específicos para una aplicación, como enteros, booleanos, pero también referencias a recursos más complejos, como el diseño de la interfaz de usuario.\n\n¿Cómo leer resources.arsc?\nHerramientas como Apktool o Android Asset Packaging Tool (AAPT) pueden utilizarse para mostrar el contenido de resources.arsc en un formato comprensible para el ser humano.</string>
-    <string name="unsupported_file_dex">Has seleccionado un archivo 'DEX' (.dex) que desafortunadamente no puede ser leído por AEE.\n\n¿Qué es un archivo DEX?\nUn archivo DEX tiene código que es ejecutado al final por el Android Runtime. Cada APK debe tener un archivo \'classes.dex\' que hace referencia a todas las clases y métodos utilizados en la aplicación. Esencialmente, cualquier Actividad, Objeto o Fragmento utilizado en el código será transformado en bytes en el archivo DEX para ser ejecutado como una aplicación Android.\n\n¿Cómo leer un archivo DEX?\nUn archivo DEX debe ser convertido a formato 'jar' y luego a archivo 'Java' con herramientas como 'dex2jar' o 'JD-GUI'.</string>
+    <string name="unsupported_file_arsc">Has seleccionado \'resources.arsc\', que desafortunadamente AEE no puede leer.\n\n¿Qué es resources.arsc?\nresources.arsc es un archivo de recursos binarios que contiene valores de configuración específicos para una aplicación, como enteros, booleanos, pero también referencias a recursos más complejos, como el diseño de la interfaz de usuario.\n\n¿Cómo leer resources.arsc?\nHerramientas como Apktool o Android Asset Packaging Tool (AAPT) pueden utilizarse para mostrar el contenido de resources.arsc en un formato comprensible para el ser humano.</string>
+    <string name="unsupported_file_dex">Has seleccionado un archivo \'DEX\' (.dex) que desafortunadamente no puede ser leído por AEE.\n\n¿Qué es un archivo DEX?\nUn archivo DEX tiene código que es ejecutado al final por el Android Runtime. Cada APK debe tener un archivo \'classes.dex\' que hace referencia a todas las clases y métodos utilizados en la aplicación. Esencialmente, cualquier Actividad, Objeto o Fragmento utilizado en el código será transformado en bytes en el archivo DEX para ser ejecutado como una aplicación Android.\n\n¿Cómo leer un archivo DEX?\nUn archivo DEX debe ser convertido a formato \'jar\' y luego a archivo \'Java\' con herramientas como \'dex2jar\' o \'JD-GUI\'.</string>
     <string name="user">Usuario</string>
     <string name="version">Versión: %s</string>
     <string name="bundles">Compartir</string>
@@ -82,13 +82,13 @@
     <string name="bundle_install_question">¿Está seguro de instalar el paquete de aplicaciones \'%s\'?</string>
     <string name="export_app_question">¿Exportar \'%s\' al dispositivo de almacenamiento?</string>
     <string name="export_project_question">¿Deseas duplicar el proyecto en el almacenamiento del dispositivo?</string>
-    <string name="export_project_replace">¡'%s' ya existe! ¿Deseas reemplazar?</string>
+    <string name="export_project_replace">¡\'%s\' ya existe! ¿Deseas reemplazar?</string>
     <string name="export_resign">Exportar y refirmar</string>
     <string name="export_storage">Exportar al almacenamiento</string>
     <string name="exporting">Exportando %s…</string>
     <string name="got_it">Entendido</string>
     <string name="install_storage">Instalar desde almacenamiento</string>
-    <string name="installer_message">El instalador modular AEE de APK  soporta APKs normales, APKs modulares, así como paquetes de aplicaciones 'xapk', 'apks' y 'apkm'. Para iniciar una instalación, sólo tienes que seleccionar el/los archivo(s) de instalación en la siguiente pantalla y seguir las instrucciones que aparecen en ella.</string>
+    <string name="installer_message">El instalador modular AEE de APK  soporta APKs normales, APKs modulares, así como paquetes de aplicaciones \'xapk\', \'apks\' y \'apkm\'. Para iniciar una instalación, sólo tienes que seleccionar el/los archivo(s) de instalación en la siguiente pantalla y seguir las instrucciones que aparecen en ella.</string>
     <string name="installation_cancel_message">¿Está seguro de cancelar la instalación?</string>
     <string name="installation_status_aborted">La instalación ha sido cancelada por el usuario</string>
     <string name="installation_status_bad_apks">Archivo APK seleccionado no válido</string>
@@ -108,7 +108,7 @@
     <string name="apk_corrupted">¡Corrupción entre archivo(s) APK! Abortando.</string>
     <string name="install_resign">Rediseño e instalación</string>
     <string name="resign_only">Solo refirmar</string>
-    <string name="resigned_apks_path">Archivo(s) APK re-firmado(s) y generado(s)! \N - Ruta: \'%s\'</string>
+    <string name="resigned_apks_path">Archivo(s) APK re-firmado(s) y generado(s)! \n - Ruta: \'%s\'</string>
     <string name="resigning_apks">Volver a firmar los APKs seleccionados</string>
     <string name="select_storage">Seleccionar desde el almacenamiento</string>
     <string name="sort_by">Ordenar aplicaciones</string>
