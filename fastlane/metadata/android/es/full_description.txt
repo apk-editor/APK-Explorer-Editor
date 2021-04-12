@@ -1,0 +1,26 @@
+<b>APK Explorer & Editor</b> (AEE) incluye un conjunto de herramientas de código abierto diseñadas principalmente para explorar el contenido de una aplicación instalada en un dispositivo Android. Además, AEE ofrece un instalador de APK/APKs modulares/paquetes de aplicaciones con muchas funciones que permite a los usuarios elegir e instalar archivos desde el almacenamiento del dispositivo. <i>Nota</i>: Esta es la versión completa de AEE. La versión de Google Play carece de capacidades de edición, así como de características tales como la firma de APK / App Bundle.
+
+<b>Características</b>
+
+* Una vista de lista de las aplicaciones instaladas muy bien diseñada.
+* Explora y navega a través de los contenidos de una aplicación instalada.
+* Exporta y gestiona fácilmente (instala, comparte, etc.) APK's/Split APK's en el almacenamiento del dispositivo.
+* Incluye un instalador de APK/APK modular/paquetes de aplicaciones con muchas funciones (elige e instala fácilmente los archivos desde el almacenamiento del dispositivo)
+* Extrae fácilmente el icono de una aplicación haciendo un solo clic sobre él.
+* Proporciona información básica sobre los archivos de recursos importantes.
+* Ver gráficos, textos, XML binario, y muchos más.
+* Guarda/exporta archivos de recursos individuales al almacenamiento del dispositivo.
+* También es posible editar archivos de texto/XML binario utilizando un editor de texto incorporado (desactivado por defecto en el menú <b>Ajustes</b>).
+* Borra o reemplaza recursos.
+* Crea APK's/App Bundles firmados después de los procesos mencionados.
+* Firma APK's/paquetes con la clave personalizada de AEE.
+* Interfaz de usuario elegantemente diseñada con un tema auto-oscuro y claro.
+* Mucho más.
+
+<b>Traducciones</b>
+
+Por favor, ayúdame a traducir esta aplicación vía <a href='https://poeditor.com/join/project?hash=QztabxONOp'>POEditor</a>. También puedes traducir después de descargar la cadena de idiomas original disponible <a href='https://github.com/apk-editor/APK-Explorer-Editor/blob/master/app/src/main/res/values/strings.xml'>GitHub</a>.
+
+<b>Documentación</b>
+
+- <a href='https://apk-editor.github.io/general/'>Lista de cómos</a>
