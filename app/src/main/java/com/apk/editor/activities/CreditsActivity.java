@@ -45,10 +45,12 @@ public class CreditsActivity extends AppCompatActivity {
         mData.add(new RecycleViewItem("Hsiafan", "APK parser", "https://github.com/hsiafan/apk-parser"));
         mData.add(new RecycleViewItem("Srikanth Reddy Lingala", "Zip4j", "https://github.com/srikanth-lingala/zip4j"));
         if (APKEditorUtils.isFullVersion(this)) {
-            mData.add(new RecycleViewItem("Aefyr", "PseudoApkSigner", "https://github.com/Aefyr/PseudoApkSigner"));
-        }
-        mData.add(new RecycleViewItem("Aefyr", "SAI", "https://github.com/Aefyr/SAI"));
-        mData.add(new RecycleViewItem("Nitin Kalra", "Split App Share & Install", "https://github.com/nkalra0123/splitapkinstall"));
+            mData.add(new RecycleViewItem("Aefyr", "PseudoApkSigner", "https://github.com/Aefyr/PseudoApkSigner"));        }
+        mData.add(new RecycleViewItem("Connor Tumbleson", "Apktool", "https://github.com/iBotPeaches/Apktool/"));
+        mData.add(new RecycleViewItem("Ben Gruver", "smali/baksmali", "https://github.com/JesusFreke/smali/"));
+        mData.add(new RecycleViewItem("Jander Mander", "Arabic Translation", null));
+        mData.add(new RecycleViewItem("Diego", "Spanish Translation", "https://github.com/sguinetti"));
+
         mData.add(new RecycleViewItem("sunilpaulmathew", "Package Manager", "https://github.com/SmartPack/PackageManager"));
         mData.add(new RecycleViewItem("Gospel Gilbert", "App Icon", "https://t.me/gilgreat0295"));
         mData.add(new RecycleViewItem("Mohammed Qubati", "Arabic Translation", "https://t.me/Alqubati_MrK"));
