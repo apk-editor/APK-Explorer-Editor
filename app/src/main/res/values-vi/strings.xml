@@ -145,4 +145,9 @@
     <string name="app_theme_light">"Sáng"</string>
     <string name="discard">"Bỏ"</string>
     <string name="discard_message">"Bỏ các thay đổi đã tạo trên tệp này?"</string>
+    <string name="export_path_apks">"Đường dẫn xuất (APK)"</string>
+    <string name="export_path_files_dir">"Thư mục tệp bên ngoài"</string>
+    <string name="language">"Ngôn ngữ"</string>
+    <string name="transfer_exported_apk">"Chuyển các APK đã xuất trước đó sang đường dẫn mới…"</string>
+    <string name="user_interface">"Giao diện người dùng"</string>
 </resources>

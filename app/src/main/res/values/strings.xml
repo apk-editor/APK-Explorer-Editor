@@ -78,6 +78,7 @@
     <string name="language_cs" translatable="false">čeština</string>
     <string name="language_de" translatable="false">Deutsche</string>
     <string name="language_en" translatable="false">English</string>
+    <string name="language_es" translatable="false">Español</string>
     <string name="language_fr" translatable="false">français</string>
     <string name="language_tr" translatable="false">Türkçe</string>
     <string name="language_vi" translatable="false">Tiếng Việt</string>

@@ -15,6 +15,7 @@
         <item>@string/language_de</item>
         <item>@string/language_en</item>
         <item>@string/language_fr</item>
+        <item>@string/language_es</item>
         <item>@string/language_tr</item>
         <item>@string/language_vi</item>
     </string-array>
