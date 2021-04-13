@@ -166,6 +166,12 @@ public class APKData {
         return splitApks(path).size() > 1;
     }
 
+    private static boolean fileToExclude(File file) {
+        return file.isDirectory() && file.getName().equals(".aeeBackup") || file.isDirectory() && file.getName().equals(".aeeBuild")
+                || file.isDirectory() && file.getName().equals("META-INF") || file.isDirectory() && file.getName().startsWith("classes")
+                && file.getName().endsWith(".dex");
+    }
+
     public static void showSignatureErrorDialog(Context context) {
         new MaterialAlertDialogBuilder(context)
                 .setIcon(R.mipmap.ic_launcher)
@@ -176,9 +182,29 @@ public class APKData {
                 }).show();
     }
 
+    private static void prepareSource(File buildDir, File exportPath, File backupPath) {
+        for (File file : Objects.requireNonNull(exportPath.listFiles())) {
+            if (!fileToExclude(file)) {
+                if (file.isDirectory()) {
+                    APKEditorUtils.copyDir(file, new File(buildDir, file.getName()));
+                } else {
+                    APKEditorUtils.copy(file.getAbsolutePath(), new File(buildDir, file.getName()).getAbsolutePath());
+                }
+            }
+        }
+        if (backupPath.exists()) {
+            for (File file : Objects.requireNonNull(backupPath.listFiles())) {
+                if (file.getName().startsWith("classes") && file.getName().endsWith(".dex")) {
+                    APKEditorUtils.copy(file.getAbsolutePath(), new File(buildDir, file.getName()).getAbsolutePath());
+                }
+            }
+        }
+    }
+
     public static void prepareSignedAPK(Activity activity) {
         new AsyncTask<Void, Void, Void>() {
             private ProgressDialog mProgressDialog;
+            private File mBuilDir, mTMPZip = new File(activity.getCacheDir(), "tmp.apk");
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -187,12 +213,21 @@ public class APKData {
                         new File(APKExplorer.mPath).getName())));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
+
+                if (mTMPZip.exists()) {
+                    APKEditorUtils.delete(mTMPZip.getAbsolutePath());
+                }
             }
 
             @Override
             protected Void doInBackground(Void... voids) {
                 if (APKExplorer.mAppID != null) {
-                    APKEditorUtils.zip(new File(activity.getCacheDir().getPath() + "/" + APKExplorer.mAppID), new File(activity.getCacheDir(), "tmp.apk"));
+                    File mExportPath = new File(activity.getCacheDir().getPath(), APKExplorer.mAppID);
+                    File mBackUpPath = new File(mExportPath, ".aeeBackup");
+                    mBuilDir = new File(mExportPath, ".aeeBuild");
+                    mBuilDir.mkdirs();
+                    prepareSource(mBuilDir, mExportPath, mBackUpPath);
+                    APKEditorUtils.zip(mBuilDir, mTMPZip);
                     if (APKData.isAppBundle(AppData.getSourceDir(APKExplorer.mAppID, activity))) {
                         File mParent = new File(getExportAPKsPath(activity), APKExplorer.mAppID + "_aee-signed");
                         mParent.mkdirs();
@@ -201,19 +236,24 @@ public class APKData {
                                 signApks(new File(mSplits), new File(mParent.toString() + "/" + new File(mSplits).getName()), activity);
                             }
                         }
-                        signApks(new File(activity.getCacheDir(), "tmp.apk"), new File(mParent.toString() + "/base.apk"), activity);
+                        signApks(mTMPZip, new File(mParent.toString() + "/base.apk"), activity);
                     } else {
                         if (!getExportAPKsPath(activity).exists()) {
                             getExportAPKsPath(activity).mkdirs();
                         }
-                        signApks(new File(activity.getCacheDir(), "tmp.apk"), new File(getExportAPKsPath(activity), APKExplorer.mAppID + "_aee-signed.apk"), activity);
+                        signApks(mTMPZip, new File(getExportAPKsPath(activity), APKExplorer.mAppID + "_aee-signed.apk"), activity);
                     }
                 } else {
                     if (!getExportAPKsPath(activity).exists()) {
                         getExportAPKsPath(activity).mkdirs();
                     }
-                    APKEditorUtils.zip(new File(activity.getCacheDir().getPath() + "/" + new File(APKExplorer.mPath).getName()), new File(activity.getCacheDir(), "tmp.apk"));
-                    signApks(new File(activity.getCacheDir(), "tmp.apk"), new File(getExportAPKsPath(activity), new File(APKExplorer.mPath).getName() + "_aee-signed.apk"), activity);
+                    File mExportPath = new File(activity.getCacheDir().getPath() + "/" + new File(APKExplorer.mPath).getName());
+                    File mBackUpPath = new File(mExportPath, ".aeeBackup");
+                    mBuilDir = new File(mExportPath, ".aeeBuild");
+                    mBuilDir.mkdirs();
+                    prepareSource(mBuilDir, mExportPath, mBackUpPath);
+                    APKEditorUtils.zip(mBuilDir, mTMPZip);
+                    signApks(mTMPZip, new File(getExportAPKsPath(activity), new File(APKExplorer.mPath).getName() + "_aee-signed.apk"), activity);
                 }
                 return null;
             }
@@ -221,7 +261,8 @@ public class APKData {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                new File(activity.getCacheDir(), "tmp.apk").delete();
+                APKEditorUtils.delete(mTMPZip.getAbsolutePath());
+                APKEditorUtils.delete(mBuilDir.getAbsolutePath());
                 try {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {

@@ -54,7 +54,7 @@ public class APKExplorer {
             mData.clear();
             // Add directories
             for (File mFile : files) {
-                if (mFile.isDirectory() && !mFile.getName().equals(".aeeBackup")) {
+                if (mFile.isDirectory() && !mFile.getName().matches(".aeeBackup|.aeeBuild")) {
                     mDir.add(mFile.getAbsolutePath());
                 }
             }
@@ -177,11 +177,11 @@ public class APKExplorer {
             protected Void doInBackground(Void... voids) {
                 if (!mExplorePath.exists()) {
                     mExplorePath.mkdirs();
-                    mBackUpPath.mkdirs();
                     APKEditorUtils.unzip(AppData.getSourceDir(packageName, context), mExplorePath.getAbsolutePath());
                     // Decompile dex file(s)
                     for (File files : Objects.requireNonNull(mExplorePath.listFiles())) {
                         if (files.getName().startsWith("classes") && files.getName().endsWith(".dex")) {
+                            mBackUpPath.mkdirs();
                             APKEditorUtils.copy(files.getAbsolutePath(), new File(mBackUpPath, files.getName()).getAbsolutePath());
                             APKEditorUtils.delete(files.getAbsolutePath());
                             File mDexExtractPath = new File(mExplorePath, files.getName());
