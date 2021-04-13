@@ -41,7 +41,7 @@
             android:tint="?attr/colorAccent"
             android:layout_gravity="center|end"
             android:gravity="center_vertical"
-            android:src="@drawable/ic_save"
+            android:src="@drawable/ic_build"
             android:layout_marginEnd="40dp"
             android:visibility="gone" />
 
