@@ -192,8 +192,8 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
             new MaterialAlertDialogBuilder(requireActivity())
                     .setMessage(R.string.save_projects_question)
                     .setNeutralButton(getString(R.string.delete), (dialog, id) -> {
-                        APKEditorUtils.delete(requireActivity().getCacheDir().getPath() + "/" + (APKExplorer.mAppID != null ?
-                                APKExplorer.mAppID : new File(APKExplorer.mPath).getName()));
+                        Projects.deleteProject(new File(requireActivity().getCacheDir().getPath(), APKExplorer.mAppID != null ? APKExplorer.mAppID :
+                                new File(APKExplorer.mPath).getName()), requireActivity());
                         requireActivity().finish();
                     })
                     .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
@@ -202,8 +202,8 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
                         requireActivity().finish();
                     }).show();
         } else if (APKEditorUtils.getString("projectAction", null, requireActivity()).equals(getString(R.string.delete))) {
-            APKEditorUtils.delete(requireActivity().getCacheDir().getPath() + "/" + (APKExplorer.mAppID != null ?
-                    APKExplorer.mAppID : new File(APKExplorer.mPath).getName()));
+            Projects.deleteProject(new File(requireActivity().getCacheDir().getPath(), APKExplorer.mAppID != null ? APKExplorer.mAppID :
+                    new File(APKExplorer.mPath).getName()), requireActivity());
             requireActivity().finish();
         } else {
             requireActivity().finish();

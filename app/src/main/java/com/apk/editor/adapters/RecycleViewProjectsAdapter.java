@@ -124,7 +124,7 @@ public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleView
                     .setNegativeButton(R.string.cancel, (dialog, id) -> {
                     })
                     .setPositiveButton(R.string.delete, (dialog, id) -> {
-                        APKEditorUtils.delete(data.get(position));
+                        Projects.deleteProject(new File(data.get(position)), v.getContext());
                         data.remove(position);
                         notifyDataSetChanged();
                     }).show());

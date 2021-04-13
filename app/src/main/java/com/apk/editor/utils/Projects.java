@@ -79,4 +79,33 @@ public class Projects {
         }.execute();
     }
 
+    public static void deleteProject(File path, Context context) {
+        new AsyncTask<Void, Void, Void>() {
+            private ProgressDialog mProgressDialog;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                mProgressDialog = new ProgressDialog(context);
+                mProgressDialog.setMessage(context.getString(R.string.deleting, path.getName()));
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                APKEditorUtils.delete(path.getAbsolutePath());
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                try {
+                    mProgressDialog.dismiss();
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
+        }.execute();
+    }
+
 }

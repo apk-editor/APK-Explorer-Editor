@@ -25,6 +25,7 @@
     <string name="decompiling">Decompiling \'%s\'…</string>
     <string name="delete">Delete</string>
     <string name="delete_question">Delete %s?</string>
+    <string name="deleting">Deleting \'%s\'…</string>
     <string name="disable">Disable</string>
     <string name="dismiss">Dismiss</string>
     <string name="documentation">Documentation</string>
