@@ -1,4 +1,0 @@
-* Added option to decompile and read dex files (Note: Editing is not yet supported).
-* Improved APK building so that unnecessary files won't be added.
-* Added Spanish translations.
-* Miscellaneous changes.
