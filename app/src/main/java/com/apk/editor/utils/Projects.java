@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 public class Projects {
 
-    private static List<String> mData = new ArrayList<>();
+    private static final List<String> mData = new ArrayList<>();
     public static String mSearchText;
 
     public static List<String> getData(Context context) {

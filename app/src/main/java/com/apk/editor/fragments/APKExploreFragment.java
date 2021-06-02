@@ -5,7 +5,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -109,11 +111,7 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
                     .setChecked(APKEditorUtils.getBoolean("az_order", true, requireActivity()));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
-                    if (APKEditorUtils.getBoolean("az_order", true, requireActivity())) {
-                        APKEditorUtils.saveBoolean("az_order", false, requireActivity());
-                    } else {
-                        APKEditorUtils.saveBoolean("az_order", true, requireActivity());
-                    }
+                    APKEditorUtils.saveBoolean("az_order", !APKEditorUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
                     reload(requireActivity());
                 }
                 return false;
@@ -156,13 +154,25 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
                                 APKEditorUtils.snackbar(requireActivity().findViewById(android.R.id.content), getString(R.string.permission_denied_message));
                                 return;
                             }
-                            APKEditorUtils.mkdir(Projects.getExportPath(requireActivity()) + "/" + APKExplorer.mAppID);
-                            APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position), Projects.getExportPath(requireActivity()) + "/" + APKExplorer.mAppID + "/"
-                                    + new File(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position)).getName());
-                            new MaterialAlertDialogBuilder(requireActivity())
-                                    .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(requireActivity()) + "/" + APKExplorer.mAppID))
-                                    .setPositiveButton(getString(R.string.cancel), (dialog2, id2) -> {
-                                    }).show();
+                            if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() && Projects.getExportPath(requireActivity())
+                                    .startsWith(Environment.getExternalStorageDirectory().toString())) {
+                                new MaterialAlertDialogBuilder(requireActivity())
+                                        .setIcon(R.mipmap.ic_launcher)
+                                        .setTitle(getString(R.string.important))
+                                        .setMessage(getString(R.string.file_permission_request_message, getString(R.string.app_name)))
+                                        .setCancelable(false)
+                                        .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
+                                        })
+                                        .setPositiveButton(getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission(requireActivity())).show();
+                            } else {
+                                APKEditorUtils.mkdir(Projects.getExportPath(requireActivity()) + "/" + APKExplorer.mAppID);
+                                APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position), Projects.getExportPath(requireActivity()) + "/" + APKExplorer.mAppID + "/"
+                                        + new File(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position)).getName());
+                                new MaterialAlertDialogBuilder(requireActivity())
+                                        .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(requireActivity()) + "/" + APKExplorer.mAppID))
+                                        .setPositiveButton(getString(R.string.cancel), (dialog2, id2) -> {
+                                        }).show();
+                            }
                         })
                         .setPositiveButton(getString(R.string.open_as_text), (dialog1, id1) -> {
                             Intent textView = new Intent(requireActivity(), TextViewActivity.class);

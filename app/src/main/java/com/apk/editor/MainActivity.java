@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener navListener
             = menuItem -> {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 BottomNavView.getNavMenu(menuItem)).commit();

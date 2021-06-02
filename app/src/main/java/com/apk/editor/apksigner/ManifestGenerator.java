@@ -16,9 +16,9 @@ import java.util.zip.ZipFile;
  */
 class ManifestGenerator {
 
-    private File mApkFile;
-    private String mHashingAlgorithm;
-    private ArrayList<ManifestEntry> mEntries;
+    private final File mApkFile;
+    private final String mHashingAlgorithm;
+    private final ArrayList<ManifestEntry> mEntries;
 
     private long mVersion = 0;
     private String mCachedManifest;
@@ -61,7 +61,7 @@ class ManifestGenerator {
     }
 
     static class ManifestEntry {
-        private LinkedHashMap<String, String> mAttributes;
+        private final LinkedHashMap<String, String> mAttributes;
 
         ManifestEntry() {
             mAttributes = new LinkedHashMap<>();

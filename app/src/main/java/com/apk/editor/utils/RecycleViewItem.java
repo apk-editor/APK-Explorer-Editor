@@ -8,10 +8,9 @@ import java.io.Serializable;
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
 public class RecycleViewItem implements Serializable {
-    private String mTitle;
-    private String mDescription;
-    private Drawable mIcon;
-    private String mURL;
+
+    private final String mDescription, mTitle, mURL;
+    private final Drawable mIcon;
 
     public RecycleViewItem(String title, String description, Drawable icon, String url) {
         this.mTitle = title;

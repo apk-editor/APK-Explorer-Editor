@@ -11,7 +11,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.Settings;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.apk.editor.R;
@@ -51,7 +55,6 @@ public class APKExplorer {
     public static List<String> getData(File[] files, boolean supported, Activity activity) {
         List<String> mData = new ArrayList<>(), mDir = new ArrayList<>(), mFiles = new ArrayList<>();
         try {
-            mData.clear();
             // Add directories
             for (File mFile : files) {
                 if (mFile.isDirectory() && !mFile.getName().matches(".aeeBackup|.aeeBuild")) {
@@ -97,6 +100,21 @@ public class APKExplorer {
 
     private static boolean isSupportedFile(String path) {
         return path.endsWith(".apk") || path.endsWith(".apks") || path.endsWith(".apkm") || path.endsWith(".xapk");
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public static boolean isPermissionDenied() {
+        return !Environment.isExternalStorageManager();
+    }
+
+    @RequiresApi(30)
+    public static void requestPermission(Activity activity) {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+        intent.setData(uri);
+        activity.startActivity(intent);
+        activity.finish();
     }
 
     public static void setIcon(AppCompatImageButton icon, Drawable drawable, Context context) {

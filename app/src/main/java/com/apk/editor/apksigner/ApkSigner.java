@@ -25,8 +25,8 @@ import java.util.zip.ZipOutputStream;
 public class ApkSigner {
     private static final String HASHING_ALGORITHM = "SHA1";
 
-    private RSAPrivateKey mPrivateKey;
-    private File mTemplateFile;
+    private final RSAPrivateKey mPrivateKey;
+    private final File mTemplateFile;
 
     public ApkSigner(File template, File privateKey) throws Exception {
         mTemplateFile = template;

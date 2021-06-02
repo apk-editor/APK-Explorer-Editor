@@ -25,7 +25,7 @@ public class RecycleViewFilePickerAdapter extends RecyclerView.Adapter<RecycleVi
 
     private static ClickListener clickListener;
 
-    private List<String> data;
+    private final List<String> data;
 
     public RecycleViewFilePickerAdapter(List<String> data) {
         this.data = data;
@@ -73,8 +73,8 @@ public class RecycleViewFilePickerAdapter extends RecyclerView.Adapter<RecycleVi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private AppCompatImageButton mIcon;
-        private MaterialTextView mTitle;
+        private final AppCompatImageButton mIcon;
+        private final MaterialTextView mTitle;
 
         public ViewHolder(View view) {
             super(view);

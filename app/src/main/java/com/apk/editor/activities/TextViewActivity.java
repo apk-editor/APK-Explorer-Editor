@@ -3,7 +3,9 @@ package com.apk.editor.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -39,7 +41,7 @@ import java.util.List;
 public class TextViewActivity extends AppCompatActivity {
 
     private AppCompatEditText mSearchWord;
-    private List<String> mData = new ArrayList<>();
+    private final List<String> mData = new ArrayList<>();
     private MaterialTextView mTitle;
     public static final String PATH_INTENT = "path";
     private String mPath;
@@ -117,12 +119,24 @@ public class TextViewActivity extends AppCompatActivity {
                     .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                     })
                     .setPositiveButton(getString(R.string.export), (dialog, id) -> {
-                        APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + APKExplorer.mAppID);
-                        APKEditorUtils.copy(mPath, Projects.getExportPath(this) + "/" + APKExplorer.mAppID + "/" + new File(mPath).getName());
-                        new MaterialAlertDialogBuilder(this)
-                                .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(this) + "/" + APKExplorer.mAppID))
-                                .setPositiveButton(getString(R.string.cancel), (dialog1, id1) -> {
-                                }).show();
+                        if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() && Projects.getExportPath(this)
+                                .startsWith(Environment.getExternalStorageDirectory().toString())) {
+                            new MaterialAlertDialogBuilder(this)
+                                    .setIcon(R.mipmap.ic_launcher)
+                                    .setTitle(getString(R.string.important))
+                                    .setMessage(getString(R.string.file_permission_request_message, getString(R.string.app_name)))
+                                    .setCancelable(false)
+                                    .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
+                                    })
+                                    .setPositiveButton(getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission(this)).show();
+                        } else {
+                            APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + APKExplorer.mAppID);
+                            APKEditorUtils.copy(mPath, Projects.getExportPath(this) + "/" + APKExplorer.mAppID + "/" + new File(mPath).getName());
+                            new MaterialAlertDialogBuilder(this)
+                                    .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(this) + "/" + APKExplorer.mAppID))
+                                    .setPositiveButton(getString(R.string.cancel), (dialog1, id1) -> {
+                                    }).show();
+                        }
                     }).show();
         });
 
@@ -203,7 +217,7 @@ public class TextViewActivity extends AppCompatActivity {
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            private MaterialTextView mNumber, mText;
+            private final MaterialTextView mNumber, mText;
 
             public ViewHolder(View view) {
                 super(view);

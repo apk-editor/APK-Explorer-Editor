@@ -42,7 +42,7 @@ public class ApplicationsFragment extends Fragment {
     private AppCompatImageButton mSortButton;
     private AsyncTask<Void, Void, List<String>> mLoader;
     private boolean mExit;
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
     private LinearLayout mProgress;
     private MaterialTextView mAppTitle;
     private RecyclerView mRecyclerView;
@@ -244,11 +244,7 @@ public class ApplicationsFragment extends Fragment {
                     }
                     break;
                 case 3:
-                    if (APKEditorUtils.getBoolean("az_order", true, activity)) {
-                        APKEditorUtils.saveBoolean("az_order", false, activity);
-                    } else {
-                        APKEditorUtils.saveBoolean("az_order", true, activity);
-                    }
+                    APKEditorUtils.saveBoolean("az_order", !APKEditorUtils.getBoolean("az_order", true, activity), activity);
                     loadApps(activity);
                     break;
             }

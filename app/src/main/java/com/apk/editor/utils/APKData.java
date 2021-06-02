@@ -28,7 +28,7 @@ import java.util.Objects;
  */
 public class APKData {
 
-    private static List<String> mData = new ArrayList<>();
+    private static final List<String> mData = new ArrayList<>();
     public static String mSearchText;
 
     public static List<String> getData(Context context) {
@@ -204,7 +204,8 @@ public class APKData {
     public static void prepareSignedAPK(Activity activity) {
         new AsyncTask<Void, Void, Void>() {
             private ProgressDialog mProgressDialog;
-            private File mBuilDir, mTMPZip = new File(activity.getCacheDir(), "tmp.apk");
+            private final File mTMPZip = new File(activity.getCacheDir(), "tmp.apk");
+            private File mBuilDir;
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();

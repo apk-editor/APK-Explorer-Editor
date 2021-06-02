@@ -1,0 +1,45 @@
+<LinearLayout
+    android:id="@+id/permission_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:visibility="gone"
+    android:gravity="center" >
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/permission_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlue"
+            android:text="@string/file_permission_request_message"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:clickable="false"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:padding="15dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/grant_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/colorBlack"
+            android:layout_margin="15dp"
+            android:layout_gravity="end"
+            app:cardCornerRadius="15dp" >
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center"
+                    android:text="@string/grant"
+                    android:clickable="false"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:padding="10dp" />
+        </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

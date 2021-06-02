@@ -4,9 +4,12 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,8 +17,11 @@ import androidx.core.app.ActivityCompat;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.SplitAPKInstaller;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.util.Objects;
@@ -30,11 +36,24 @@ public class APKInstallerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.permission_layout);
 
-        if (!APKEditorUtils.isWritePermissionGranted(this)) {
-            ActivityCompat.requestPermissions(this, new String[] {
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            finish();
+        if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() || Build.VERSION.SDK_INT < 30 && !APKEditorUtils.isWritePermissionGranted(this)) {
+            LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
+            MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
+            MaterialTextView mPermissionText = findViewById(R.id.permission_text);
+            mPermissionText.setText(Build.VERSION.SDK_INT >= 30 ? getString(R.string.file_permission_request_message, getString(R.string.app_name)) : getString(R.string.permission_denied_message));
+            mPermissionLayout.setVisibility(View.VISIBLE);
+            mPermissionGrant.setOnClickListener(v -> {
+                if (Build.VERSION.SDK_INT >= 30) {
+                    APKExplorer.requestPermission(this);
+                } else {
+                    ActivityCompat.requestPermissions(this, new String[] {
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    finish();
+                }
+            });
+            return;
         }
 
         if (getIntent().getData() != null) {
@@ -60,9 +79,7 @@ public class APKInstallerActivity extends AppCompatActivity {
                             .setTitle(R.string.split_apk_installer)
                             .setMessage(getString(R.string.bundle_install_question, new File(mPath).getName()))
                             .setCancelable(false)
-                            .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
-                                finish();
-                            })
+                            .setNegativeButton(R.string.cancel, (dialogInterface, i) -> finish())
                             .setPositiveButton(R.string.install, (dialogInterface, i) -> {
                                 SplitAPKInstaller.handleAppBundle(mPath, this);
                                 finish();
@@ -73,9 +90,7 @@ public class APKInstallerActivity extends AppCompatActivity {
                             .setTitle(R.string.split_apk_installer)
                             .setMessage(getString(R.string.wrong_extension, ".apks/.apkm/.xapk"))
                             .setCancelable(false)
-                            .setPositiveButton(R.string.cancel, (dialogInterface, i) -> {
-                                finish();
-                            }).show();
+                            .setPositiveButton(R.string.cancel, (dialogInterface, i) -> finish()).show();
                 }
             } else {
                 new MaterialAlertDialogBuilder(this)
@@ -83,9 +98,7 @@ public class APKInstallerActivity extends AppCompatActivity {
                         .setTitle(R.string.split_apk_installer)
                         .setMessage(getString(R.string.file_path_error))
                         .setCancelable(false)
-                        .setPositiveButton(R.string.cancel, (dialogInterface, i) -> {
-                            finish();
-                        }).show();
+                        .setPositiveButton(R.string.cancel, (dialogInterface, i) -> finish()).show();
             }
         }
     }

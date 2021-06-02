@@ -182,9 +182,9 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private AppCompatImageButton mAppIcon, mDelete;
-        private MaterialCardView mCard;
-        private MaterialTextView mAppName, mSize, mVersion;
+        private final AppCompatImageButton mAppIcon, mDelete;
+        private final MaterialCardView mCard;
+        private final MaterialTextView mAppName, mSize, mVersion;
 
         public ViewHolder(View view) {
             super(view);

@@ -87,10 +87,9 @@ public class RecycleViewAboutAdapter extends RecyclerView.Adapter<RecycleViewAbo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private AppCompatImageButton mIcon;
-        private MaterialTextView Title;
-        private MaterialTextView Description;
-        private LinearLayout mRVLayout;
+        private final AppCompatImageButton mIcon;
+        private final MaterialTextView Description, Title;
+        private final LinearLayout mRVLayout;
 
         public ViewHolder(View view) {
             super(view);

@@ -10,8 +10,8 @@ import java.nio.charset.StandardCharsets;
  */
 class SignatureFileGenerator {
 
-    private ManifestGenerator mManifest;
-    private String mHashingAlgorithm;
+    private final ManifestGenerator mManifest;
+    private final String mHashingAlgorithm;
 
     SignatureFileGenerator(ManifestGenerator manifestGenerator) {
         mManifest = manifestGenerator;

@@ -4,10 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +25,7 @@ import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.SplitAPKInstaller;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -35,7 +39,7 @@ import java.util.Objects;
 public class InstallerFilePickerActivity extends AppCompatActivity {
 
     private AsyncTask<Void, Void, List<String>> mLoader;
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
     private RecycleViewInstallerFilePickerAdapter mRecycleViewAdapter;
@@ -56,10 +60,20 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
         mRecycleViewAdapter = new RecycleViewInstallerFilePickerAdapter(APKExplorer.getData(getFilesList(), false, this));
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
+        if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied()) {
+            LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
+            MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
+            MaterialTextView mPermissionText = findViewById(R.id.permission_text);
+            mPermissionText.setText(getString(R.string.file_permission_request_message, getString(R.string.app_name)));
+            mPermissionLayout.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+            mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
+        }
+
         if (getIntent().getStringExtra(TITLE_INTENT) != null) {
             mTitle.setText(getIntent().getStringExtra(TITLE_INTENT));
         } else {
-            mTitle.setText(APKExplorer.mPath.equals("/storage/emulated/0/") ? getString(R.string.sdcard) : new File(APKExplorer.mPath).getName());
+            mTitle.setText(APKExplorer.mPath.equals(Environment.getExternalStorageDirectory().toString() + File.separator) ? getString(R.string.sdcard) : new File(APKExplorer.mPath).getName());
         }
 
         mRecycleViewAdapter.setOnItemClickListener((position, v) -> {
@@ -98,11 +112,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                     .setChecked(APKEditorUtils.getBoolean("az_order", true, this));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
-                    if (APKEditorUtils.getBoolean("az_order", true, this)) {
-                        APKEditorUtils.saveBoolean("az_order", false, this);
-                    } else {
-                        APKEditorUtils.saveBoolean("az_order", true, this);
-                    }
+                    APKEditorUtils.saveBoolean("az_order", !APKEditorUtils.getBoolean("az_order", true, this), this);
                     reload(this);
                 }
                 return false;
@@ -245,7 +255,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                             if (getIntent().getStringExtra(TITLE_INTENT) != null) {
                                 mTitle.setText(getIntent().getStringExtra(TITLE_INTENT));
                             } else {
-                                mTitle.setText(APKExplorer.mPath.equals("/storage/emulated/0/") ? getString(R.string.sdcard)
+                                mTitle.setText(APKExplorer.mPath.equals(Environment.getExternalStorageDirectory().toString() + File.separator) ? getString(R.string.sdcard)
                                         : new File(APKExplorer.mPath).getName());
                             }
                             if (APKExplorer.mAPKList.isEmpty()) {
@@ -283,7 +293,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                     .setPositiveButton(getString(R.string.yes), (dialogInterface, i) -> {
                         finish();
                     }).show();
-        } else if (APKExplorer.mPath.equals("/storage/emulated/0/")) {
+        } else if (APKExplorer.mPath.equals(Environment.getExternalStorageDirectory().toString() + File.separator)) {
             super.onBackPressed();
         } else {
             APKExplorer.mPath = Objects.requireNonNull(new File(APKExplorer.mPath).getParentFile()).getPath();

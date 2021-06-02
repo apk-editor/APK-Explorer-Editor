@@ -4,6 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -112,12 +114,24 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
                                     .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
                                     })
                                     .setPositiveButton(v.getContext().getString(R.string.export), (dialog, id) -> {
-                                        APKEditorUtils.mkdir(Projects.getExportPath(v.getContext()) + "/" + APKExplorer.mAppID);
-                                        APKEditorUtils.copy(data.get(position), Projects.getExportPath(v.getContext()) + "/" + APKExplorer.mAppID + "/" + new File(data.get(position)).getName());
-                                        new MaterialAlertDialogBuilder(v.getContext())
-                                                .setMessage(v.getContext().getString(R.string.export_complete_message, Projects.getExportPath(v.getContext()) + "/" + APKExplorer.mAppID))
-                                                .setPositiveButton(v.getContext().getString(R.string.cancel), (dialog1, id1) -> {
-                                                }).show();
+                                        if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() && Projects.getExportPath(v.getContext())
+                                                .startsWith(Environment.getExternalStorageDirectory().toString())) {
+                                            new MaterialAlertDialogBuilder(v.getContext())
+                                                    .setIcon(R.mipmap.ic_launcher)
+                                                    .setTitle(v.getContext().getString(R.string.important))
+                                                    .setMessage(v.getContext().getString(R.string.file_permission_request_message, v.getContext().getString(R.string.app_name)))
+                                                    .setCancelable(false)
+                                                    .setNegativeButton(v.getContext().getString(R.string.cancel), (dialogInterface, i) -> {
+                                                    })
+                                                    .setPositiveButton(v.getContext().getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission((Activity) v.getContext())).show();
+                                        } else {
+                                            APKEditorUtils.mkdir(Projects.getExportPath(v.getContext()) + "/" + APKExplorer.mAppID);
+                                            APKEditorUtils.copy(data.get(position), Projects.getExportPath(v.getContext()) + "/" + APKExplorer.mAppID + "/" + new File(data.get(position)).getName());
+                                            new MaterialAlertDialogBuilder(v.getContext())
+                                                    .setMessage(v.getContext().getString(R.string.export_complete_message, Projects.getExportPath(v.getContext()) + "/" + APKExplorer.mAppID))
+                                                    .setPositiveButton(v.getContext().getString(R.string.cancel), (dialog1, id1) -> {
+                                                    }).show();
+                                        }
                                     }).show();
                         }
                         break;
@@ -145,8 +159,8 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private AppCompatImageButton mIcon, mSettings;
-        private MaterialTextView mTitle, mDescription;
+        private final AppCompatImageButton mIcon, mSettings;
+        private final MaterialTextView mDescription, mTitle;
 
         public ViewHolder(View view) {
             super(view);

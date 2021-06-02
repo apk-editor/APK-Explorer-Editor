@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 
 import androidx.core.app.ActivityCompat;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
  */
 public class AppSettings {
 
-    private static ArrayList <RecycleViewSettingsItem> mData = new ArrayList<>();
+    private static final ArrayList <RecycleViewSettingsItem> mData = new ArrayList<>();
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public static ArrayList<RecycleViewSettingsItem> getData(Context context) {
@@ -266,19 +267,42 @@ public class AppSettings {
                 R.array.export_path_apk), (dialogInterface, i) -> {
             switch (i) {
                 case 0:
-                    APKEditorUtils.saveString("exportAPKsPath", "externalFiles", activity);
-                    mData.set(position, new RecycleViewSettingsItem(activity.getString(R.string.export_path_apks), getExportAPKsPath(activity), activity.getResources().getDrawable(R.drawable.ic_export)));
-                    adapter.notifyItemChanged(position);
-                    transferExportedApps(activity);
-                    break;
-                case 1:
-                    if (APKEditorUtils.isWritePermissionGranted(activity)) {
-                        APKEditorUtils.saveString("exportAPKsPath", "internalStorage", activity);
+                    if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() && APKEditorUtils.getString("exportAPKsPath", "externalFiles",
+                            activity).equals("internalStorage")) {
+                        new MaterialAlertDialogBuilder(activity)
+                                .setIcon(R.mipmap.ic_launcher)
+                                .setTitle(activity.getString(R.string.important))
+                                .setMessage(activity.getString(R.string.file_permission_request_message, activity.getString(R.string.app_name)))
+                                .setCancelable(false)
+                                .setNegativeButton(activity.getString(R.string.cancel), (dialogInterfacei, ii) -> {
+                                })
+                                .setPositiveButton(activity.getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission(activity)).show();
+                    } else {
+                        APKEditorUtils.saveString("exportAPKsPath", "externalFiles", activity);
                         mData.set(position, new RecycleViewSettingsItem(activity.getString(R.string.export_path_apks), getExportAPKsPath(activity), activity.getResources().getDrawable(R.drawable.ic_export)));
                         adapter.notifyItemChanged(position);
                         transferExportedApps(activity);
+                    }
+                    break;
+                case 1:
+                    if (APKEditorUtils.isWritePermissionGranted(activity)) {
+                        if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied()) {
+                            new MaterialAlertDialogBuilder(activity)
+                                    .setIcon(R.mipmap.ic_launcher)
+                                    .setTitle(activity.getString(R.string.important))
+                                    .setMessage(activity.getString(R.string.file_permission_request_message, activity.getString(R.string.app_name)))
+                                    .setCancelable(false)
+                                    .setNegativeButton(activity.getString(R.string.cancel), (dialogInterfacei, ii) -> {
+                                    })
+                                    .setPositiveButton(activity.getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission(activity)).show();
+                        } else {
+                            APKEditorUtils.saveString("exportAPKsPath", "internalStorage", activity);
+                            mData.set(position, new RecycleViewSettingsItem(activity.getString(R.string.export_path_apks), getExportAPKsPath(activity), activity.getResources().getDrawable(R.drawable.ic_export)));
+                            adapter.notifyItemChanged(position);
+                            transferExportedApps(activity);
+                        }
                     } else {
-                        ActivityCompat.requestPermissions((Activity) activity, new String[] {
+                        ActivityCompat.requestPermissions(activity, new String[] {
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                         APKEditorUtils.snackbar(activity.findViewById(android.R.id.content), activity.getString(R.string.permission_denied_message));
                     }

@@ -1,51 +1,58 @@
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" >
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBlack"
-        android:gravity="center_vertical"
-        android:padding="10dp" >
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/back"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:background="@color/colorBlack"
-            android:tint="?attr/colorAccent"
-            android:layout_gravity="center|start"
-            android:gravity="center_vertical"
-            android:src="@drawable/ic_back" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="40dp"
-            android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:textColor="?attr/colorAccent"
-            android:textIsSelectable="true"
-            android:textSize="20sp" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/sort"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
             android:background="@color/colorBlack"
-            android:tint="?attr/colorAccent"
-            android:layout_gravity="center|end"
             android:gravity="center_vertical"
-            android:src="@drawable/ic_sort" />
-    </FrameLayout>
+            android:padding="10dp" >
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/back"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBlack"
+                android:tint="?attr/colorAccent"
+                android:layout_gravity="center|start"
+                android:gravity="center_vertical"
+                android:src="@drawable/ic_back" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="40dp"
+                android:textStyle="bold"
+                android:gravity="center_vertical"
+                android:textColor="?attr/colorAccent"
+                android:textIsSelectable="true"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/sort"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBlack"
+                android:tint="?attr/colorAccent"
+                android:layout_gravity="center|end"
+                android:gravity="center_vertical"
+                android:src="@drawable/ic_sort" />
+        </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <include layout="@layout/permission_layout" />
+</RelativeLayout>

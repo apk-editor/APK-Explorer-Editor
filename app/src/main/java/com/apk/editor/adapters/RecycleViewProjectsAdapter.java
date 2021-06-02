@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,31 +92,43 @@ public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleView
                             .setNegativeButton(R.string.cancel, (dialog, id) -> {
                             })
                             .setPositiveButton(R.string.export, (dialog, id) -> {
-                                APKEditorUtils.dialogEditText(null,
-                                        (dialogInterface, i) -> {
-                                        }, text -> {
-                                            if (text.isEmpty()) {
-                                                APKEditorUtils.snackbar(v, v.getContext().getString(R.string.name_empty));
-                                                return;
-                                            }
-                                            if (text.contains(" ")) {
-                                                text = text.replace(" ", "_");
-                                            }
-                                            String mName = text;
-                                            if (APKEditorUtils.exist(Projects.getExportPath(v.getContext()) + "/" + text)) {
-                                                new MaterialAlertDialogBuilder(v.getContext())
-                                                        .setMessage(v.getContext().getString(R.string.export_project_replace, text))
-                                                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
-                                                        })
-                                                        .setPositiveButton(R.string.replace, (dialogInterface, i) -> {
-                                                            Projects.exportProject(new File(data.get(position)), mName, v.getContext());
-                                                        })
-                                                        .show();
-                                            } else {
-                                                Projects.exportProject(new File(data.get(position)), mName, v.getContext());
-                                            }
-                                        }, v.getContext()).setOnDismissListener(dialogInterface -> {
-                                }).show();
+                                if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() && Projects.getExportPath(v.getContext())
+                                        .startsWith(Environment.getExternalStorageDirectory().toString())) {
+                                    new MaterialAlertDialogBuilder(v.getContext())
+                                            .setIcon(R.mipmap.ic_launcher)
+                                            .setTitle(v.getContext().getString(R.string.important))
+                                            .setMessage(v.getContext().getString(R.string.file_permission_request_message, v.getContext().getString(R.string.app_name)))
+                                            .setCancelable(false)
+                                            .setNegativeButton(v.getContext().getString(R.string.cancel), (dialogInterface, i) -> {
+                                            })
+                                            .setPositiveButton(v.getContext().getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission((Activity) v.getContext())).show();
+                                } else {
+                                    APKEditorUtils.dialogEditText(null,
+                                            (dialogInterface, i) -> {
+                                            }, text -> {
+                                                if (text.isEmpty()) {
+                                                    APKEditorUtils.snackbar(v, v.getContext().getString(R.string.name_empty));
+                                                    return;
+                                                }
+                                                if (text.contains(" ")) {
+                                                    text = text.replace(" ", "_");
+                                                }
+                                                String mName = text;
+                                                if (APKEditorUtils.exist(Projects.getExportPath(v.getContext()) + "/" + text)) {
+                                                    new MaterialAlertDialogBuilder(v.getContext())
+                                                            .setMessage(v.getContext().getString(R.string.export_project_replace, text))
+                                                            .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                                                            })
+                                                            .setPositiveButton(R.string.replace, (dialogInterface, i) -> {
+                                                                Projects.exportProject(new File(data.get(position)), mName, v.getContext());
+                                                            })
+                                                            .show();
+                                                } else {
+                                                    Projects.exportProject(new File(data.get(position)), mName, v.getContext());
+                                                }
+                                            }, v.getContext()).setOnDismissListener(dialogInterface -> {
+                                    }).show();
+                                }
                             }).show();
                 }
                 return false;
@@ -140,9 +154,9 @@ public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleView
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private AppCompatImageButton mAppIcon, mDelete;
-        private MaterialCardView mCard;
-        private MaterialTextView mAppName, mTotalSize;
+        private final AppCompatImageButton mAppIcon, mDelete;
+        private final MaterialCardView mCard;
+        private final MaterialTextView mAppName, mTotalSize;
 
         public ViewHolder(View view) {
             super(view);

@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,7 +13,6 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
 
 import com.apk.editor.R;
-import com.apk.editor.fragments.ApplicationsFragment;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 10, 2021
@@ -42,7 +40,6 @@ public class DocumentationActivity extends AppCompatActivity {
                                  @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             WebView mWebView = new WebView(requireActivity());
             mWebView.loadUrl("file:///android_asset/documentation.html");
-
 
             return mWebView;
         }

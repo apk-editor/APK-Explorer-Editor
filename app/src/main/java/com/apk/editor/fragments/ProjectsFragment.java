@@ -39,7 +39,7 @@ public class ProjectsFragment extends Fragment {
     private AppCompatEditText mSearchWord;
     private AsyncTask<Void, Void, List<String>> mLoader;
     private boolean mExit;
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
     private LinearLayout mProgress;
     private MaterialTextView mAppTitle;
     private RecyclerView mRecyclerView;
@@ -80,11 +80,7 @@ public class ProjectsFragment extends Fragment {
                     .setChecked(APKEditorUtils.getBoolean("az_order", true, requireActivity()));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
-                    if (APKEditorUtils.getBoolean("az_order", true, requireActivity())) {
-                        APKEditorUtils.saveBoolean("az_order", false, requireActivity());
-                    } else {
-                        APKEditorUtils.saveBoolean("az_order", true, requireActivity());
-                    }
+                    APKEditorUtils.saveBoolean("az_order", !APKEditorUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
                     loadProjects(requireActivity());
                 }
                 return false;

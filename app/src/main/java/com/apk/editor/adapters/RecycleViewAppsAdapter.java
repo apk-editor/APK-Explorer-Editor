@@ -1,7 +1,10 @@
 package com.apk.editor.adapters;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.Projects;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -72,6 +76,18 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
             holder.mSize.setVisibility(View.VISIBLE);
             holder.mVersion.setVisibility(View.VISIBLE);
             holder.mCard.setOnLongClickListener(v -> {
+                if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() && APKEditorUtils.getString("exportAPKsPath", "externalFiles",
+                        v.getContext()).equals("internalStorage")) {
+                    new MaterialAlertDialogBuilder(v.getContext())
+                            .setIcon(R.mipmap.ic_launcher)
+                            .setTitle(v.getContext().getString(R.string.important))
+                            .setMessage(v.getContext().getString(R.string.file_permission_request_message, v.getContext().getString(R.string.app_name)))
+                            .setCancelable(false)
+                            .setNegativeButton(v.getContext().getString(R.string.cancel), (dialogInterface, i) -> {
+                            })
+                            .setPositiveButton(v.getContext().getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission((Activity) v.getContext())).show();
+                    return true;
+                }
                 if (APKEditorUtils.isFullVersion(v.getContext())) {
                     if (APKEditorUtils.getString("exportAPKs", null, v.getContext()) == null) {
                         new MaterialAlertDialogBuilder(v.getContext()).setItems(v.getContext().getResources().getStringArray(
@@ -134,7 +150,21 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
                             .setMessage(v.getContext().getString(R.string.export_app_question, AppData.getAppName(data.get(position), v.getContext())))
                             .setNegativeButton(R.string.cancel, (dialog, id) -> {
                             })
-                            .setPositiveButton(R.string.export, (dialog, id) -> APKData.exportApp(data.get(position), v.getContext())).show();
+                            .setPositiveButton(R.string.export, (dialog, id) -> {
+                                if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() && APKEditorUtils.getString("exportAPKsPath", "externalFiles",
+                                        v.getContext()).equals("internalStorage")) {
+                                    new MaterialAlertDialogBuilder(v.getContext())
+                                            .setIcon(R.mipmap.ic_launcher)
+                                            .setTitle(v.getContext().getString(R.string.important))
+                                            .setMessage(v.getContext().getString(R.string.file_permission_request_message, v.getContext().getString(R.string.app_name)))
+                                            .setCancelable(false)
+                                            .setNegativeButton(v.getContext().getString(R.string.cancel), (dialogInterface, i) -> {
+                                            })
+                                            .setPositiveButton(v.getContext().getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission((Activity) v.getContext())).show();
+                                } else {
+                                    APKData.exportApp(data.get(position), v.getContext());
+                                }
+                            }).show();
                 }
                 return false;
             });
@@ -148,9 +178,9 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private AppCompatImageButton mAppIcon;
-        private MaterialCardView mCard;
-        private MaterialTextView mAppName, mAppID, mSize, mVersion;
+        private final AppCompatImageButton mAppIcon;
+        private final MaterialCardView mCard;
+        private final MaterialTextView mAppID, mAppName, mSize, mVersion;
 
         public ViewHolder(View view) {
             super(view);

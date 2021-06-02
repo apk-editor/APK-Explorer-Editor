@@ -63,9 +63,8 @@ public class RecycleViewSettingsAdapter extends RecyclerView.Adapter<RecycleView
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private AppCompatImageButton mIcon;
-        private MaterialTextView Title;
-        private MaterialTextView Description;
+        private final AppCompatImageButton mIcon;
+        private final MaterialTextView Description, Title;
 
         public ViewHolder(View view) {
             super(view);

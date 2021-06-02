@@ -28,8 +28,8 @@ import java.util.ArrayList;
 public class AboutFragment extends Fragment {
 
     private boolean mExit;
-    private Handler mHandler = new Handler();
-    private ArrayList <RecycleViewItem> mData = new ArrayList<>();
+    private final Handler mHandler = new Handler();
+    private final ArrayList <RecycleViewItem> mData = new ArrayList<>();
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Nullable

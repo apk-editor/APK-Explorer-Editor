@@ -1,5 +1,6 @@
 package com.apk.editor.utils;
 
+import android.annotation.SuppressLint;
 import android.view.MenuItem;
 
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import com.apk.editor.fragments.ProjectsFragment;
  */
 public class BottomNavView {
 
+    @SuppressLint("NonConstantResourceId")
     public static Fragment getNavMenu (MenuItem menuItem) {
         Fragment selectedFragment = null;
         switch (menuItem.getItemId()) {

@@ -9,9 +9,8 @@ import java.io.Serializable;
  */
 public class RecycleViewSettingsItem implements Serializable {
 
-    private String mTitle;
-    private String mDescription;
-    private Drawable mIcon;
+    private final String mDescription, mTitle;
+    private final Drawable mIcon;
 
     public RecycleViewSettingsItem(String title, String description, Drawable icon) {
         this.mTitle = title;
