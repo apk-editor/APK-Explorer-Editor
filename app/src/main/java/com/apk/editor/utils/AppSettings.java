@@ -81,6 +81,8 @@ public class AppSettings {
                 return context.getString(R.string.language_tr);
             case "es":
                 return context.getString(R.string.language_es);
+            case "ru":
+                return context.getString(R.string.language_ru);
             default:
                 return context.getString(R.string.app_theme_auto);
         }
@@ -245,12 +247,18 @@ public class AppSettings {
                     }
                     break;
                 case 8:
+                    if (!APKEditorUtils.getLanguage(context).equals("ru")) {
+                        APKEditorUtils.saveString("appLanguage", "ru", context);
+                        restartApp(context);
+                    }
+                    break;
+                case 9:
                     if (!APKEditorUtils.getLanguage(context).equals("tr")) {
                         APKEditorUtils.saveString("appLanguage", "tr", context);
                         restartApp(context);
                     }
                     break;
-                case 9:
+                case 10:
                     if (!APKEditorUtils.getLanguage(context).equals("vi")) {
                         APKEditorUtils.saveString("appLanguage", "vi", context);
                         restartApp(context);

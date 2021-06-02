@@ -17,10 +17,11 @@ APK Explorer & Editor (AEE) is, and as always, an open-source project which is r
 * [Mohammed Qubati](https://t.me/Alqubati_MrK) & Jander Mander - Arabic Translation
 * [wushidi](https://t.me/wushidi) - Chinese (Simplified) Translation
 * [fossdd](https://chaos.social/@fossdd) - German Translation
-* bruh - Vietnamese Translation
+* bruh & Hoa Gia Đại Thiếu - Vietnamese Translation
 * Bruno - French Translation
 * Miloš Koliáš - Czech Translation
 * Mehmet Un - Turkish Translation
 * [Diego](https://github.com/sguinetti) - Spanish Translation
+* tommynok & Alexander Steiner - Russian Translation
 
 _If you think I missed your name, please let me know._

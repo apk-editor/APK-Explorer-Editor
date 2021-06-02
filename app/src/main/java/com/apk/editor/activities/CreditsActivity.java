@@ -61,6 +61,9 @@ public class CreditsActivity extends AppCompatActivity {
         mData.add(new RecycleViewItem("Mehmet Un", "Turkish Translation", null));
         mData.add(new RecycleViewItem("Jander Mander", "Arabic Translation", null));
         mData.add(new RecycleViewItem("Diego", "Spanish Translation", "https://github.com/sguinetti"));
+        mData.add(new RecycleViewItem("tommynok", "Russian Translation", null));
+        mData.add(new RecycleViewItem("Alexander Steiner", "Russian Translation", null));
+        mData.add(new RecycleViewItem("Hoa Gia Đại Thiếu", "Vietnamese Translation", null));
         
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         RecycleViewAdapter mRecycleViewAdapter = new RecycleViewAdapter(mData);

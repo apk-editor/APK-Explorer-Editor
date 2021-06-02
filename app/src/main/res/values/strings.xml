@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
     <string name="about">About</string>
     <string name="all">All</string>
     <string name="apk_corrupted">APK file(s) is corrupted! Aborting.</string>
@@ -83,6 +84,7 @@
     <string name="language_en" translatable="false">English</string>
     <string name="language_es" translatable="false">Español</string>
     <string name="language_fr" translatable="false">français</string>
+    <string name="language_ru" translatable="false">русский</string>
     <string name="language_tr" translatable="false">Türkçe</string>
     <string name="language_vi" translatable="false">Tiếng Việt</string>
     <string name="language_zh" translatable="false">中文（简体）</string>

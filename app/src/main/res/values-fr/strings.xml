@@ -8,8 +8,8 @@
     <string name="apps_installed">"Applications installées"</string>
     <string name="cancel">"Annuler"</string>
     <string name="credits">"Crédits"</string>
-    <string name="credits_message">"Vous voulez voir votre nom ici ? Alors, aidez-moi s'il vous plaît à traduire cette application !"</string>
-    <string name="credits_summary">"Contribteurs"</string>
+    <string name="credits_message">"Vous voulez voir votre nom ici ? Alors, aidez-moi s'il vous plaît à traduire AEE !"</string>
+    <string name="credits_summary">"Contributeurs"</string>
     <string name="copyright">"Copyright: © %s"</string>
     <string name="delete">"Effacer"</string>
     <string name="delete_question">"Effacer %s ?"</string>
@@ -52,15 +52,15 @@
     <string name="signing">"Signature de %s…"</string>
     <string name="size">"Taille : %s"</string>
     <string name="source_code">"Code source"</string>
-    <string name="source_code_summary">"Consulter le code source de AEE"</string>
+    <string name="source_code_summary">"Consulter le code source d'AEE"</string>
     <string name="split_apk_installer">"Installeur d'APK modulaires AEE"</string>
-    <string name="support_group">"Groupe de soutien"</string>
-    <string name="support_group_summary">"Rejoindre le groupe de soutien d'AEE"</string>
+    <string name="support_group">"Groupe d'entraide"</string>
+    <string name="support_group_summary">"Rejoindre le groupe d'entraide d'AEE"</string>
     <string name="system">"Système"</string>
     <string name="translate">"Traduire"</string>
     <string name="unknown_file_message">"AEE ne supporte pas '%s' pour le moment. Si vous connaissez ce format de fichier, vous devez exporter ce fichier vers le stockage de l'appareil et essayer de l'éditer avec une autre application. Autrement vous devriez essayer de l'ouvrir en tant que texte ?"</string>
     <string name="unsupported_file">"Fichier non supporté"</string>
-    <string name="unsupported_file_arsc">"Vous avez sélectionné  'resources.arsc', que malheureusement AEE ne peut pas lire.\n\nQu'est-ce que resources.arsc ?\nresources.arsc  est une fichier ressource binaire qui contient les valeurs spécifiques de configuration d'une application, comme des entiers, des booléens, mais aussi des références à des ressources plus complexes, comme la disposition de l'interface utilisateur.\n\nComment lire resources.arsc ?\nDes outils comme Apktool ou Android Asset Packaging Tool (AAPT) peuvent être utilisés pour afficher le contenu de ressources.arsc dans un format lisible par l'humain."</string>
+    <string name="unsupported_file_arsc">"Vous avez sélectionné  'resources.arsc', que malheureusement AEE ne peut pas lire.\n\nQu'est-ce que resources.arsc ?\nresources.arsc  est une fichier ressource binaire qui contient les valeurs spécifiques de configuration d'une application, comme des entiers, des booléens, mais aussi des références à des ressources plus complexes, comme la disposition de l'interface utilisateur.\nComment lire resources.arsc ?\nDes outils comme Apktool ou Android Asset Packaging Tool (AAPT) peuvent être utilisés pour afficher le contenu de ressources.arsc dans un format lisible par l'humain."</string>
     <string name="unsupported_file_dex">"Vous avez sélectionné un fichier 'DEX' (.dex) qui ne peut malheureusement pas être lu par AEE.\n\nQu'est-ce qu'un fichier DEX ?\nUn fichier DEX a du code qui est exécuté a la fin par le Runtime Android. Chaque APK devrait avoir un fichier 'classes.dex' qui référence toutes les classes et les méthodes utilisées dans l'application. Essentiellement, tout Activity, Object ou Fragment utilisé dans le code vont être transformés en octets dans le fichier DEX afin d'être exécuté comme une application Android.\n\nComment lire un fichier DEX ?\nUn fichier DEX doit être converti au format 'jar' et ensuite en fichier 'Java' avec des outils tels que 'dex2jar' ou 'JD-GUI'."</string>
     <string name="user">"Utilisateur"</string>
     <string name="version">"Version : %s"</string>
@@ -105,7 +105,7 @@
     <string name="signature_warning">"Il est important de désinstaller l'ancienne version (si elle existe) de l'application avant d'installer un•e APK/Application pour éviter les échecs d'installation dûs à une signature qui ne correspond pas !"</string>
     <string name="wrong_extension">"SVP sélectionnez un fichier avec l'extension %s."</string>
     <string name="yes">"Oui"</string>
-    <string name="apk_corrupted">"Fichier(s) APK corrompu(s) ! Abandon"</string>
+    <string name="apk_corrupted">"Fichier(s) APK corrompu(s) ! Abandon."</string>
     <string name="install_resign">"Re-signer et installer"</string>
     <string name="resign_only">"Re-signer seulement"</string>
     <string name="resigned_apks_path">"Le(s) APK re-signé(s) a/ont été généré(s) !\n\nChemin : '%s'"</string>
@@ -150,4 +150,6 @@
     <string name="language">"Langue"</string>
     <string name="transfer_exported_apk">"Transfert de l'APK préalablement exportée vers le nouveau chemin"</string>
     <string name="user_interface">"Interface utilisateur"</string>
+    <string name="decompiling">"Décompilation de '%s'"</string>
+    <string name="deleting">"Suppression de '%s'"</string>
 </resources>

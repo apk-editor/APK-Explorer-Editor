@@ -150,4 +150,6 @@
     <string name="language">"Ngôn ngữ"</string>
     <string name="transfer_exported_apk">"Chuyển các APK đã xuất trước đó sang đường dẫn mới…"</string>
     <string name="user_interface">"Giao diện người dùng"</string>
+    <string name="decompiling">"Đang dịch ngược lại '%s'…"</string>
+    <string name="deleting">"Đang xoá '%s'…"</string>
 </resources>
