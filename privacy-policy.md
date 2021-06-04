@@ -10,7 +10,7 @@ The developer of AEE does not collect, store or share any personal information a
 
 ## Permissions explained
 
-AEE is made with a special focus on the privacy of end-users. As a result, AEE only demands very necessary permissions to offer the promised features to the users and are explained below.<br><br><b>QUERY_ALL_PACKAGES </b><br>Necessary permission to get most applications visible in Android 11 and above.<br><br><b>WRITE_EXTERNAL_STORAGE</b><br>Necessary permission to export the resources from the installed applications to device storage.
+AEE is made with a special focus on the privacy of end-users. As a result, AEE only demands very necessary permissions to offer the promised features to the users and are explained below.<br><br><b>MANAGE_EXTERNAL_STORAGE</b><br>Necessary to export APK's, and other resources to device storage, pick APK's  & app bundles for Split APK Installer, etc (Android 11 and above).<br><br><b>REQUEST_INSTALL_PACKAGES</b><br>Necessary to install APK, Split APK's, and app bundles.<br><br><b>WRITE_EXTERNAL_STORAGE</b><br>Necessary to export APK's, and other resources to device storage, pick APK's  & app bundles for Split APK Installer, etc (Android 10 and above).<br><br><b>QUERY_ALL_PACKAGES </b><br>Necessary permission to get most applications visible in Android 11 and above.
 
 ## Changes
 
