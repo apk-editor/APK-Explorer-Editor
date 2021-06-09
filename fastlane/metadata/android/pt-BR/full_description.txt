@@ -1,0 +1,28 @@
+<b>APK Explorador & Editor</b> (AEE) inclui um conjunto de ferramentas de software livre usado principalmente para explorar o conteúdo de aplicativos instalados nos dispositivos de Android. Além disso, o AEE oferece um instalador de APKs/pacotes divididos que permite ao usuário escolher e instalar os arquivos do armazenamento. <i>Por favor, considere que</i>: esta é a versão completa do AEE. A versão do Google Play não possui recursos de edição nem a funcionalidade de assinaturas do APK/Pacote de Apps.
+
+
+<b>Funcionalidades</b>
+
+* Lindamente feita lista de apps instalados
+* Explore e navegue através do conteúdo de apps instalados.
+* Exportar e facilmente gerenciar (instalar, compartilhar, etc.) APK/Pacote dividido no armazenamento de dispositivo.
+* Inclui um instalador de pacotes divididos de APK (facilmente escolha e instale os arquivos do armazenamento).
+* Extraia facilmente um ícone de aplicativo com um único clique.
+* Fornece informações básicas sobre recursos importantes de arquivos.
+* Visualiza gráficos, textos, XML binário e muito mais.
+* Salvar/Exportar recursos de arquivos individuais para o armazenamento do dispositivo.
+* Fornece possibilidade de editar arquivos XML de texto/binário usando um editor de texto próprio (desabilitado por padrão no menu em <b>Configurações</b>).
+* Exclua ou substitua os recursos.
+* Crie APK/Pacotes de Apps assinados após os processos acima mencionados.
+* Reassinar APKs/Pacotes com a chave personalizada do AEE.
+* Interface de usuário lindamente desenvolvida com um tema escuro e claro.
+* E muito mais.
+
+
+<b>Traduções</b>
+
+Por favor, ajude a traduzir este App no site<a href='https://poeditor.com/join/project?hash=QztabxONOp'>POEditor</a>. Você também pode traduzir após baixar o conjunto de frases em idioma original via<a href='https://github.com/apk-editor/APK-Explorer-Editor/blob/master/app/src/main/res/values/strings.xml'>GitHub</a>.
+
+<b>Documentação</b>
+
+- <a href='https://apk-editor.github.io/general/'>Como fazer</a>
