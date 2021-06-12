@@ -38,7 +38,7 @@ public class APKInstallerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.permission_layout);
 
-        if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() || Build.VERSION.SDK_INT < 30 && !APKEditorUtils.isWritePermissionGranted(this)) {
+        if (APKExplorer.isPermissionDenied(this)) {
             LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
             MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
             MaterialTextView mPermissionText = findViewById(R.id.permission_text);

@@ -99,4 +99,6 @@
                 android:textSize="20sp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
+
+    <include layout="@layout/permission_layout" />
 </RelativeLayout>

@@ -1,6 +1,5 @@
 package com.apk.editor.activities;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,13 +10,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.view.Menu;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import com.apk.editor.BuildConfig;
@@ -26,6 +26,7 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Projects;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -49,15 +50,24 @@ public class ImageViewActivity extends AppCompatActivity {
         AppCompatImageButton mBack = findViewById(R.id.back);
         AppCompatImageButton mMenu = findViewById(R.id.export);
         AppCompatImageView mImage = findViewById(R.id.image);
+        LinearLayout mMainLayout = findViewById(R.id.main_layout);
         MaterialTextView mTitle = findViewById(R.id.title);
-
         String path = getIntent().getStringExtra(PATH_INTENT);
 
         if (getIntent().getData() != null) {
-            if (!APKEditorUtils.isWritePermissionGranted(this)) {
-                ActivityCompat.requestPermissions(this, new String[] {
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                finish();
+            if (APKExplorer.isPermissionDenied(this)) {
+                LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
+                MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
+                MaterialTextView mPermissionText = findViewById(R.id.permission_text);
+                mPermissionText.setText(Build.VERSION.SDK_INT >= 30 ? getString(R.string.file_permission_request_message,
+                        getString(R.string.app_name)) : getString(R.string.permission_denied_message));
+                mPermissionLayout.setVisibility(View.VISIBLE);
+                mMainLayout.setVisibility(View.GONE);
+                mPermissionGrant.setOnClickListener(v -> {
+                    APKExplorer.requestPermission(this);
+                    if (Build.VERSION.SDK_INT < 30) finish();
+                });
+                return;
             }
             Uri uri = getIntent().getData();
             assert uri != null;
@@ -131,27 +141,13 @@ public class ImageViewActivity extends AppCompatActivity {
                 });
                 popupMenu.show();
             } else {
-                if (!APKEditorUtils.isWritePermissionGranted(this)) {
-                    ActivityCompat.requestPermissions(this, new String[]{
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                    APKEditorUtils.snackbar(findViewById(android.R.id.content), getString(R.string.permission_denied_message));
-                    return;
-                }
                 new MaterialAlertDialogBuilder(this)
                         .setMessage(R.string.export_question)
                         .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                         })
                         .setPositiveButton(getString(R.string.export), (dialog, id) -> {
-                            if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() && Projects.getExportPath(this)
-                                    .startsWith(Environment.getExternalStorageDirectory().toString())) {
-                                new MaterialAlertDialogBuilder(this)
-                                        .setIcon(R.mipmap.ic_launcher)
-                                        .setTitle(getString(R.string.important))
-                                        .setMessage(getString(R.string.file_permission_request_message, getString(R.string.app_name)))
-                                        .setCancelable(false)
-                                        .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
-                                        })
-                                        .setPositiveButton(getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission(this)).show();
+                            if (APKExplorer.isPermissionDenied(this)) {
+                                APKExplorer.launchPermissionDialog(this);
                             } else {
                                 APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + APKExplorer.mAppID);
                                 if (path != null) {

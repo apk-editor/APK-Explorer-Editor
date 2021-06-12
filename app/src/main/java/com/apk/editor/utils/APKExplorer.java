@@ -1,9 +1,11 @@
 package com.apk.editor.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,12 +17,13 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.app.ActivityCompat;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import net.dongliu.apk.parser.ApkFile;
 
@@ -102,19 +105,43 @@ public class APKExplorer {
         return path.endsWith(".apk") || path.endsWith(".apks") || path.endsWith(".apkm") || path.endsWith(".xapk");
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.R)
-    public static boolean isPermissionDenied() {
-        return !Environment.isExternalStorageManager();
+    public static boolean isPermissionDenied(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return !Environment.isExternalStorageManager();
+        } else {
+            String permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+            return (context.checkCallingOrSelfPermission(permission) != PackageManager.PERMISSION_GRANTED);
+        }
     }
 
-    @RequiresApi(30)
     public static void requestPermission(Activity activity) {
-        Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
-        intent.setData(uri);
-        activity.startActivity(intent);
-        activity.finish();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+            Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+            intent.setData(uri);
+            activity.startActivity(intent);
+            activity.finish();
+        } else {
+            ActivityCompat.requestPermissions(activity, new String[] {
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            APKEditorUtils.snackbar(activity.findViewById(android.R.id.content), activity.getString(R.string.permission_denied_message));
+        }
+    }
+
+    public static void launchPermissionDialog(Activity activity) {
+        if (Build.VERSION.SDK_INT >= 30) {
+            new MaterialAlertDialogBuilder(activity)
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(activity.getString(R.string.important))
+                    .setMessage(activity.getString(R.string.file_permission_request_message, activity.getString(R.string.app_name)))
+                    .setCancelable(false)
+                    .setNegativeButton(activity.getString(R.string.cancel), (dialogInterfacei, ii) -> {
+                    })
+                    .setPositiveButton(activity.getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission(activity)).show();
+        } else {
+            APKExplorer.requestPermission(activity);
+        }
     }
 
     public static void setIcon(AppCompatImageButton icon, Drawable drawable, Context context) {

@@ -3,8 +3,6 @@ package com.apk.editor.adapters;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
-import com.apk.editor.utils.Projects;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -76,16 +73,9 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
             holder.mSize.setVisibility(View.VISIBLE);
             holder.mVersion.setVisibility(View.VISIBLE);
             holder.mCard.setOnLongClickListener(v -> {
-                if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() && APKEditorUtils.getString("exportAPKsPath", "externalFiles",
+                if (APKExplorer.isPermissionDenied(v.getContext()) && APKEditorUtils.getString("exportAPKsPath", "externalFiles",
                         v.getContext()).equals("internalStorage")) {
-                    new MaterialAlertDialogBuilder(v.getContext())
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(v.getContext().getString(R.string.important))
-                            .setMessage(v.getContext().getString(R.string.file_permission_request_message, v.getContext().getString(R.string.app_name)))
-                            .setCancelable(false)
-                            .setNegativeButton(v.getContext().getString(R.string.cancel), (dialogInterface, i) -> {
-                            })
-                            .setPositiveButton(v.getContext().getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission((Activity) v.getContext())).show();
+                    APKExplorer.launchPermissionDialog((Activity) v.getContext());
                     return true;
                 }
                 if (APKEditorUtils.isFullVersion(v.getContext())) {
@@ -151,24 +141,11 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
                             .setNegativeButton(R.string.cancel, (dialog, id) -> {
                             })
                             .setPositiveButton(R.string.export, (dialog, id) -> {
-                                if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() && APKEditorUtils.getString("exportAPKsPath", "externalFiles",
-                                        v.getContext()).equals("internalStorage")) {
-                                    new MaterialAlertDialogBuilder(v.getContext())
-                                            .setIcon(R.mipmap.ic_launcher)
-                                            .setTitle(v.getContext().getString(R.string.important))
-                                            .setMessage(v.getContext().getString(R.string.file_permission_request_message, v.getContext().getString(R.string.app_name)))
-                                            .setCancelable(false)
-                                            .setNegativeButton(v.getContext().getString(R.string.cancel), (dialogInterface, i) -> {
-                                            })
-                                            .setPositiveButton(v.getContext().getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission((Activity) v.getContext())).show();
-                                } else {
-                                    APKData.exportApp(data.get(position), v.getContext());
-                                }
+                                APKData.exportApp(data.get(position), v.getContext());
                             }).show();
                 }
                 return false;
             });
-
         } catch (NullPointerException ignored) {}
     }
 

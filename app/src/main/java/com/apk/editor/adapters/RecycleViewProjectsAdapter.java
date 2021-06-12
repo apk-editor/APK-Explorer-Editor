@@ -1,19 +1,15 @@
 package com.apk.editor.adapters;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
@@ -82,55 +78,41 @@ public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleView
                 v.getContext().startActivity(explorer);
             });
             holder.mCard.setOnLongClickListener(v -> {
-                if (!APKEditorUtils.isWritePermissionGranted(v.getContext())) {
-                    ActivityCompat.requestPermissions((Activity) v.getContext(), new String[] {
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                    APKEditorUtils.snackbar(v, v.getContext().getString(R.string.permission_denied_message));
-                } else {
-                    new MaterialAlertDialogBuilder(v.getContext())
-                            .setMessage(v.getContext().getString(R.string.export_project_question))
-                            .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                            })
-                            .setPositiveButton(R.string.export, (dialog, id) -> {
-                                if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() && Projects.getExportPath(v.getContext())
-                                        .startsWith(Environment.getExternalStorageDirectory().toString())) {
-                                    new MaterialAlertDialogBuilder(v.getContext())
-                                            .setIcon(R.mipmap.ic_launcher)
-                                            .setTitle(v.getContext().getString(R.string.important))
-                                            .setMessage(v.getContext().getString(R.string.file_permission_request_message, v.getContext().getString(R.string.app_name)))
-                                            .setCancelable(false)
-                                            .setNegativeButton(v.getContext().getString(R.string.cancel), (dialogInterface, i) -> {
-                                            })
-                                            .setPositiveButton(v.getContext().getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission((Activity) v.getContext())).show();
-                                } else {
-                                    APKEditorUtils.dialogEditText(null,
-                                            (dialogInterface, i) -> {
-                                            }, text -> {
-                                                if (text.isEmpty()) {
-                                                    APKEditorUtils.snackbar(v, v.getContext().getString(R.string.name_empty));
-                                                    return;
-                                                }
-                                                if (text.contains(" ")) {
-                                                    text = text.replace(" ", "_");
-                                                }
-                                                String mName = text;
-                                                if (APKEditorUtils.exist(Projects.getExportPath(v.getContext()) + "/" + text)) {
-                                                    new MaterialAlertDialogBuilder(v.getContext())
-                                                            .setMessage(v.getContext().getString(R.string.export_project_replace, text))
-                                                            .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
-                                                            })
-                                                            .setPositiveButton(R.string.replace, (dialogInterface, i) -> {
-                                                                Projects.exportProject(new File(data.get(position)), mName, v.getContext());
-                                                            })
-                                                            .show();
-                                                } else {
-                                                    Projects.exportProject(new File(data.get(position)), mName, v.getContext());
-                                                }
-                                            }, v.getContext()).setOnDismissListener(dialogInterface -> {
-                                    }).show();
-                                }
-                            }).show();
-                }
+                new MaterialAlertDialogBuilder(v.getContext())
+                        .setMessage(v.getContext().getString(R.string.export_project_question))
+                        .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                        })
+                        .setPositiveButton(R.string.export, (dialog, id) -> {
+                            if (APKExplorer.isPermissionDenied(v.getContext())) {
+                                APKExplorer.launchPermissionDialog((Activity) v.getContext());
+                            } else {
+                                APKEditorUtils.dialogEditText(null,
+                                        (dialogInterface, i) -> {
+                                        }, text -> {
+                                            if (text.isEmpty()) {
+                                                APKEditorUtils.snackbar(v, v.getContext().getString(R.string.name_empty));
+                                                return;
+                                            }
+                                            if (text.contains(" ")) {
+                                                text = text.replace(" ", "_");
+                                            }
+                                            String mName = text;
+                                            if (APKEditorUtils.exist(Projects.getExportPath(v.getContext()) + "/" + text)) {
+                                                new MaterialAlertDialogBuilder(v.getContext())
+                                                        .setMessage(v.getContext().getString(R.string.export_project_replace, text))
+                                                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                                                        })
+                                                        .setPositiveButton(R.string.replace, (dialogInterface, i) -> {
+                                                            Projects.exportProject(new File(data.get(position)), mName, v.getContext());
+                                                        })
+                                                        .show();
+                                            } else {
+                                                Projects.exportProject(new File(data.get(position)), mName, v.getContext());
+                                            }
+                                        }, v.getContext()).setOnDismissListener(dialogInterface -> {
+                                }).show();
+                            }
+                        }).show();
                 return false;
             });
             holder.mDelete.setOnClickListener(v -> new MaterialAlertDialogBuilder(holder.mDelete.getContext())

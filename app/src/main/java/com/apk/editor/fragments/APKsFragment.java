@@ -1,6 +1,5 @@
 package com.apk.editor.fragments;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -21,7 +20,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -198,24 +196,18 @@ public class APKsFragment extends Fragment {
     }
 
     private void launchInstallerFilePicker() {
-        if (!APKEditorUtils.isWritePermissionGranted(requireActivity())) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[] {
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            APKEditorUtils.snackbar(requireActivity().findViewById(android.R.id.content), requireActivity().getString(R.string.permission_denied_message));
+        if (!APKEditorUtils.getBoolean("firstInstall", false, requireActivity())) {
+            new MaterialAlertDialogBuilder(requireActivity())
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(R.string.split_apk_installer)
+                    .setMessage(getString(R.string.installer_message))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.got_it), (dialog, id) -> {
+                        APKEditorUtils.saveBoolean("firstInstall", true, requireActivity());
+                        launchAEEInstaller();
+                    }).show();
         } else {
-            if (!APKEditorUtils.getBoolean("firstInstall", false, requireActivity())) {
-                new MaterialAlertDialogBuilder(requireActivity())
-                        .setIcon(R.mipmap.ic_launcher)
-                        .setTitle(R.string.split_apk_installer)
-                        .setMessage(getString(R.string.installer_message))
-                        .setCancelable(false)
-                        .setPositiveButton(getString(R.string.got_it), (dialog, id) -> {
-                            APKEditorUtils.saveBoolean("firstInstall", true, requireActivity());
-                            launchAEEInstaller();
-                        }).show();
-            } else {
-                launchAEEInstaller();
-            }
+            launchAEEInstaller();
         }
     }
 

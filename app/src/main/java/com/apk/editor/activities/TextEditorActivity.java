@@ -1,29 +1,31 @@
 package com.apk.editor.activities;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.view.Menu;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -48,6 +50,7 @@ public class TextEditorActivity extends AppCompatActivity {
         AppCompatImageButton mBack = findViewById(R.id.back);
         AppCompatImageButton mMenu = findViewById(R.id.menu);
         AppCompatImageButton mSave = findViewById(R.id.save);
+        LinearLayout mMainLayout = findViewById(R.id.main_layout);
         MaterialTextView mTitle = findViewById(R.id.title);
         mText = findViewById(R.id.text);
 
@@ -58,10 +61,19 @@ public class TextEditorActivity extends AppCompatActivity {
         mText.setTextColor(APKEditorUtils.isDarkTheme(this) ? Color.WHITE : Color.BLACK);
 
         if (getIntent().getData() != null) {
-            if (!APKEditorUtils.isWritePermissionGranted(this)) {
-                ActivityCompat.requestPermissions(this, new String[] {
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                finish();
+            if (APKExplorer.isPermissionDenied(this)) {
+                LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
+                MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
+                MaterialTextView mPermissionText = findViewById(R.id.permission_text);
+                mPermissionText.setText(Build.VERSION.SDK_INT >= 30 ? getString(R.string.file_permission_request_message,
+                        getString(R.string.app_name)) : getString(R.string.permission_denied_message));
+                mPermissionLayout.setVisibility(View.VISIBLE);
+                mMainLayout.setVisibility(View.GONE);
+                mPermissionGrant.setOnClickListener(v -> {
+                    APKExplorer.requestPermission(this);
+                    if (Build.VERSION.SDK_INT < 30) finish();
+                });
+                return;
             }
             Uri uri = getIntent().getData();
             assert uri != null;

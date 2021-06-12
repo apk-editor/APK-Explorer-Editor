@@ -56,19 +56,29 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
         AppCompatImageButton mSortButton = findViewById(R.id.sort);
         APKExplorer.mSelect = findViewById(R.id.select);
         mRecyclerView = findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, APKExplorer.getSpanCount(this)));
-        mRecycleViewAdapter = new RecycleViewInstallerFilePickerAdapter(APKExplorer.getData(getFilesList(), false, this));
-        mRecyclerView.setAdapter(mRecycleViewAdapter);
 
-        if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied()) {
+        mBack.setOnClickListener(v -> {
+            super.onBackPressed();
+        });
+
+        if (APKExplorer.isPermissionDenied(this)) {
             LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
             MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
             MaterialTextView mPermissionText = findViewById(R.id.permission_text);
-            mPermissionText.setText(getString(R.string.file_permission_request_message, getString(R.string.app_name)));
+            mPermissionText.setText(Build.VERSION.SDK_INT >= 30 ? getString(R.string.file_permission_request_message,
+                    getString(R.string.app_name)) : getString(R.string.permission_denied_message));
             mPermissionLayout.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
-            mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
+            mPermissionGrant.setOnClickListener(v -> {
+                APKExplorer.requestPermission(this);
+                if (Build.VERSION.SDK_INT < 30) finish();
+            });
+            return;
         }
+
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, APKExplorer.getSpanCount(this)));
+        mRecycleViewAdapter = new RecycleViewInstallerFilePickerAdapter(APKExplorer.getData(getFilesList(), false, this));
+        mRecyclerView.setAdapter(mRecycleViewAdapter);
 
         if (getIntent().getStringExtra(TITLE_INTENT) != null) {
             mTitle.setText(getIntent().getStringExtra(TITLE_INTENT));
@@ -118,10 +128,6 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                 return false;
             });
             popupMenu.show();
-        });
-
-        mBack.setOnClickListener(v -> {
-            super.onBackPressed();
         });
     }
 

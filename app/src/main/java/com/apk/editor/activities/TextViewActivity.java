@@ -1,11 +1,8 @@
 package com.apk.editor.activities;
 
-import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -108,27 +104,13 @@ public class TextViewActivity extends AppCompatActivity {
         });
 
         mExport.setOnClickListener(v -> {
-            if (!APKEditorUtils.isWritePermissionGranted(this)) {
-                ActivityCompat.requestPermissions(this, new String[] {
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                APKEditorUtils.snackbar(findViewById(android.R.id.content), getString(R.string.permission_denied_message));
-                return;
-            }
             new MaterialAlertDialogBuilder(this)
                     .setMessage(R.string.export_question)
                     .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                     })
                     .setPositiveButton(getString(R.string.export), (dialog, id) -> {
-                        if (Build.VERSION.SDK_INT >= 30 && APKExplorer.isPermissionDenied() && Projects.getExportPath(this)
-                                .startsWith(Environment.getExternalStorageDirectory().toString())) {
-                            new MaterialAlertDialogBuilder(this)
-                                    .setIcon(R.mipmap.ic_launcher)
-                                    .setTitle(getString(R.string.important))
-                                    .setMessage(getString(R.string.file_permission_request_message, getString(R.string.app_name)))
-                                    .setCancelable(false)
-                                    .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
-                                    })
-                                    .setPositiveButton(getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission(this)).show();
+                        if (APKExplorer.isPermissionDenied(this)) {
+                            APKExplorer.launchPermissionDialog(this);
                         } else {
                             APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + APKExplorer.mAppID);
                             APKEditorUtils.copy(mPath, Projects.getExportPath(this) + "/" + APKExplorer.mAppID + "/" + new File(mPath).getName());

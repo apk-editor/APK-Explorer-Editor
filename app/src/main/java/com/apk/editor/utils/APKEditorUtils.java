@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -277,11 +276,6 @@ public class APKEditorUtils {
                 }
             }
         } catch (ZipException ignored) {}
-    }
-
-    public static boolean isWritePermissionGranted(Context context) {
-        String permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-        return (context.checkCallingOrSelfPermission(permission) == PackageManager.PERMISSION_GRANTED);
     }
 
     public static void launchUrl(String url, Activity activity) {

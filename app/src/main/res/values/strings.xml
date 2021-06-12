@@ -92,7 +92,7 @@
     <string name="name_empty">Name shouldn\'t be empty! Aborting.</string>
     <string name="ok">OK</string>
     <string name="open_as_text">Open as text</string>
-    <string name="permission_denied_message">Permission denied for writing to storage!</string>
+    <string name="permission_denied_message">Permission denied for accessing device storage!</string>
     <string name="preparing_apk">Preparing %s APK…</string>
     <string name="preparing_bundle">Preparing app bundle for sharing…</string>
     <string name="preparing_bundle_install">Preparing \'%s\' for installation…</string>
