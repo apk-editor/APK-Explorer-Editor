@@ -14,6 +14,7 @@ import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.Common;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -61,14 +62,14 @@ public class RecycleViewInstallerFilePickerAdapter extends RecyclerView.Adapter<
                     holder.mDescription.setText(APKData.getAppID(data.get(position), holder.mIcon.getContext()));
                     holder.mDescription.setVisibility(View.VISIBLE);
                 }
-                holder.mCheckBox.setChecked(APKExplorer.mAPKList.contains(this.data.get(position)));
+                holder.mCheckBox.setChecked(Common.getAPKList().contains(this.data.get(position)));
                 holder.mCheckBox.setOnClickListener(v -> {
-                    if (APKExplorer.mAPKList.contains(this.data.get(position))) {
-                        APKExplorer.mAPKList.remove(this.data.get(position));
+                    if (Common.getAPKList().contains(this.data.get(position))) {
+                        Common.getAPKList().remove(this.data.get(position));
                     } else {
-                        APKExplorer.mAPKList.add(this.data.get(position));
+                        Common.getAPKList().add(this.data.get(position));
                     }
-                    APKExplorer.mSelect.setVisibility(APKExplorer.mAPKList.isEmpty() ? View.GONE : View.VISIBLE);
+                    Common.getSelectCard().setVisibility(Common.getAPKList().isEmpty() ? View.GONE : View.VISIBLE);
                 });
                 holder.mSize.setText(AppData.getAPKSize(data.get(position)));
                 holder.mSize.setVisibility(View.VISIBLE);

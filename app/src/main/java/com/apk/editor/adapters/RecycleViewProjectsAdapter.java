@@ -17,6 +17,7 @@ import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -50,17 +51,17 @@ public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleView
         try {
             if (AppData.isAppInstalled(new File(data.get(position)).getName(), holder.mAppIcon.getContext())) {
                 holder.mAppIcon.setImageDrawable(AppData.getAppIcon(new File(data.get(position)).getName(), holder.mAppIcon.getContext()));
-                if (Projects.mSearchText != null && AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString().toLowerCase().contains(Projects.mSearchText)) {
-                    holder.mAppName.setText(APKEditorUtils.fromHtml(AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString().toLowerCase().replace(Projects.mSearchText,
-                            "<b><i><font color=\"" + Color.RED + "\">" + Projects.mSearchText + "</font></i></b>")));
+                if (Common.getSearchWord() != null && AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString().toLowerCase().contains(Common.getSearchWord())) {
+                    holder.mAppName.setText(APKEditorUtils.fromHtml(AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString().toLowerCase().replace(Common.getSearchWord(),
+                            "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
                 } else {
                     holder.mAppName.setText(AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()));
                 }
             } else {
                 holder.mAppIcon.setImageDrawable(holder.mAppIcon.getContext().getResources().getDrawable(R.drawable.ic_projects));
-                if (Projects.mSearchText != null && new File(data.get(position)).getName().toLowerCase().contains(Projects.mSearchText)) {
-                    holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().toLowerCase().replace(Projects.mSearchText,
-                            "<b><i><font color=\"" + Color.RED + "\">" + Projects.mSearchText + "</font></i></b>")));
+                if (Common.getSearchWord() != null && new File(data.get(position)).getName().toLowerCase().contains(Common.getSearchWord())) {
+                    holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().toLowerCase().replace(Common.getSearchWord(),
+                            "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
                 } else {
                     holder.mAppName.setText(new File(data.get(position)).getName());
                 }
@@ -69,11 +70,11 @@ public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleView
                     .format(new File(data.get(position)).lastModified())));
             holder.mCard.setOnClickListener(v -> {
                 if (AppData.isAppInstalled(data.get(position).replace(v.getContext().getCacheDir().getPath() + "/",""), v.getContext())) {
-                    APKExplorer.mAppID = data.get(position).replace(v.getContext().getCacheDir().getPath() + "/","");
+                    Common.setAppID(data.get(position).replace(v.getContext().getCacheDir().getPath() + "/",""));
                 } else {
-                    APKExplorer.mAppID = null;
+                    Common.setAppID(null);
                 }
-                APKExplorer.mPath = data.get(position);
+                Common.setPath(data.get(position));
                 Intent explorer = new Intent(v.getContext(), APKExploreActivity.class);
                 v.getContext().startActivity(explorer);
             });

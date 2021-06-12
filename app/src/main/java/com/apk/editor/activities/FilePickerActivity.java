@@ -22,6 +22,7 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.RecycleViewFilePickerAdapter;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.Common;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -51,9 +52,7 @@ public class FilePickerActivity extends AppCompatActivity {
         AppCompatImageButton mSortButton = findViewById(R.id.sort);
         mRecyclerView = findViewById(R.id.recycler_view);
 
-        mBack.setOnClickListener(v -> {
-            super.onBackPressed();
-        });
+        mBack.setOnClickListener(v -> super.onBackPressed());
 
         if (APKExplorer.isPermissionDenied(this)) {
             LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
@@ -75,35 +74,34 @@ public class FilePickerActivity extends AppCompatActivity {
         mRecycleViewAdapter = new RecycleViewFilePickerAdapter(APKExplorer.getData(getFilesList(), true, this));
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
-        mTitle.setText(APKExplorer.mFilePath.equals(Environment.getExternalStorageDirectory().toString() + File.separator) ? getString(R.string.sdcard) : new File(APKExplorer.mFilePath).getName());
+        mTitle.setText(Common.getFilePath().equals(Environment.getExternalStorageDirectory().toString() + File.separator) ? getString(R.string.sdcard) : new File(Common.getFilePath()).getName());
 
         mRecycleViewAdapter.setOnItemClickListener((position, v) -> {
             if (new File(APKExplorer.getData(getFilesList(), true, this).get(position)).isDirectory()) {
-                APKExplorer.mFilePath = APKExplorer.getData(getFilesList(), true, this).get(position);
+                Common.setFilePath(APKExplorer.getData(getFilesList(), true, this).get(position));
                 reload(this);
             } else {
                 new MaterialAlertDialogBuilder(this)
-                        .setMessage(APKExplorer.mFileToReplace != null ? getString(R.string.replace_question, new File(APKExplorer
-                                .mFileToReplace).getName()) + " " +
+                        .setMessage(Common.getFileToReplace() != null ? getString(R.string.replace_question, new File(Common.getFileToReplace()).getName()) + " " +
                                 new File(APKExplorer.getData(getFilesList(), true, this).get(position)).getName() + "?" : getString(R.string.signing_question,
-                                new File(APKExplorer.getData(getFilesList(), true, this).get(position)).getName()) + " " + getString(APKExplorer.mPrivateKey ?
+                                new File(APKExplorer.getData(getFilesList(), true, this).get(position)).getName()) + " " + getString(Common.hasPrivateKey() ?
                                 R.string.private_key : R.string.rsa_template))
                         .setNegativeButton(R.string.cancel, (dialog, id) -> {
                         })
-                        .setPositiveButton(APKExplorer.mFileToReplace != null ? R.string.replace : R.string.select, (dialog, id) -> {
-                            if (APKExplorer.mFileToReplace != null) {
-                                APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, this).get(position), APKExplorer.mFileToReplace);
-                                APKExplorer.mFileToReplace = null;
+                        .setPositiveButton(Common.getFileToReplace() != null ? R.string.replace : R.string.select, (dialog, id) -> {
+                            if (Common.getFileToReplace() != null) {
+                                APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, this).get(position), Common.getFileToReplace());
+                                Common.setFileToReplace(null);
                             }  else {
                                 new File(getFilesDir(), "signing").mkdirs();
-                                if (APKExplorer.mPrivateKey) {
+                                if (Common.hasPrivateKey()) {
                                     APKEditorUtils.saveString("PrivateKey", APKExplorer.getData(getFilesList(), true, this).get(position), this);
                                     APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, this).get(position), getFilesDir()+ "/signing/APKEditor.pk8");
-                                    APKExplorer.mPrivateKey = false;
+                                    Common.setPrivateKeyStatus(false);
                                 } else {
                                     APKEditorUtils.saveString("RSATemplate", APKExplorer.getData(getFilesList(), true, this).get(position), this);
                                     APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, this).get(position), getFilesDir()+ "/signing/APKEditor");
-                                    APKExplorer.mRSATemplate = false;
+                                    Common.setRSATemplateStatus(false);
                                 }
                             }
                             finish();
@@ -128,13 +126,13 @@ public class FilePickerActivity extends AppCompatActivity {
     }
 
     private File[] getFilesList() {
-        if (APKExplorer.mFilePath == null) {
-            APKExplorer.mFilePath = Environment.getExternalStorageDirectory().toString();
+        if (Common.getFilePath() == null) {
+            Common.setFilePath(Environment.getExternalStorageDirectory().toString());
         }
-        if (!APKExplorer.mFilePath.endsWith(File.separator)) {
-            APKExplorer.mFilePath = APKExplorer.mFilePath + File.separator;
+        if (!Common.getFilePath().endsWith(File.separator)) {
+            Common.setFilePath(Common.getFilePath() + File.separator);
         }
-        return new File(APKExplorer.mFilePath).listFiles();
+        return new File(Common.getFilePath()).listFiles();
     }
 
     private void reload(Activity activity) {
@@ -162,8 +160,8 @@ public class FilePickerActivity extends AppCompatActivity {
                             super.onPostExecute(recyclerViewItems);
                             mRecyclerView.setAdapter(mRecycleViewAdapter);
                             mRecycleViewAdapter.notifyDataSetChanged();
-                            mTitle.setText(APKExplorer.mFilePath.equals(Environment.getExternalStorageDirectory().toString() + File.separator) ? getString(R.string.sdcard)
-                                    : new File(APKExplorer.mFilePath).getName());
+                            mTitle.setText(Common.getFilePath().equals(Environment.getExternalStorageDirectory().toString() + File.separator) ? getString(R.string.sdcard)
+                                    : new File(Common.getFilePath()).getName());
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mLoader = null;
                         }
@@ -176,10 +174,10 @@ public class FilePickerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (APKExplorer.mFilePath.equals(Environment.getExternalStorageDirectory().toString() + File.separator)) {
+        if (Common.getFilePath().equals(Environment.getExternalStorageDirectory().toString() + File.separator)) {
             super.onBackPressed();
         } else {
-            APKExplorer.mFilePath = Objects.requireNonNull(new File(APKExplorer.mFilePath).getParentFile()).getPath();
+            Common.setFilePath(Objects.requireNonNull(new File(Common.getFilePath()).getParentFile()).getPath());
             reload(this);
         }
     }

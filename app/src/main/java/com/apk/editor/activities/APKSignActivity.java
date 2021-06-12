@@ -12,7 +12,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.Common;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
@@ -47,13 +47,13 @@ public class APKSignActivity extends AppCompatActivity {
         setStatus();
 
         mKey.setOnClickListener(v -> {
-            APKExplorer.mPrivateKey = true;
+            Common.setPrivateKeyStatus(true);
             Intent filePicker = new Intent(this, FilePickerActivity.class);
             startActivity(filePicker);
         });
 
         mRSA.setOnClickListener(v -> {
-            APKExplorer.mRSATemplate = true;
+            Common.setRSATemplateStatus(true);
             Intent filePicker = new Intent(this, FilePickerActivity.class);
             startActivity(filePicker);
         });
@@ -102,8 +102,8 @@ public class APKSignActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        if (APKExplorer.mPrivateKey) APKExplorer.mPrivateKey = false;
-        if (APKExplorer.mRSATemplate) APKExplorer.mRSATemplate = false;
+        if (Common.hasPrivateKey()) Common.setPrivateKeyStatus(false);
+        if (Common.hasRASATemplate()) Common.setRSATemplateStatus(false);
     }
 
 }

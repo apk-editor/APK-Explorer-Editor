@@ -20,7 +20,6 @@ import java.util.Objects;
 public class AppData {
 
     private static final List<String> mData = new ArrayList<>();
-    public static String mSearchText;
 
     public static List<String> getData(Context context) {
         boolean mAppType;
@@ -40,10 +39,10 @@ public class AppData {
                 mAppType = true;
             }
             if (mAppType) {
-                if (mSearchText == null) {
+                if (Common.getSearchWord() == null) {
                     mData.add(packageInfo.packageName);
-                } else if (getPackageManager(context).getApplicationLabel(packageInfo).toString().toLowerCase().contains(mSearchText.toLowerCase())
-                        || packageInfo.packageName.toLowerCase().contains(mSearchText.toLowerCase())) {
+                } else if (getPackageManager(context).getApplicationLabel(packageInfo).toString().toLowerCase().contains(Common.getSearchWord().toLowerCase())
+                        || packageInfo.packageName.toLowerCase().contains(Common.getSearchWord().toLowerCase())) {
                     mData.add(packageInfo.packageName);
                 }
             }

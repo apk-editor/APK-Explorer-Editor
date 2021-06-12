@@ -19,15 +19,14 @@ import java.util.Objects;
 public class Projects {
 
     private static final List<String> mData = new ArrayList<>();
-    public static String mSearchText;
 
     public static List<String> getData(Context context) {
         mData.clear();
         for (File mFile : Objects.requireNonNull(new File(context.getCacheDir().toString()).listFiles())) {
             if (mFile.exists() && mFile.isDirectory() && !mFile.getName().matches("WebView|splits|aee-signed")) {
-                if (mSearchText == null) {
+                if (Common.getSearchWord() == null) {
                     mData.add(mFile.getAbsolutePath());
-                } else if (mFile.getName().toLowerCase().contains(mSearchText.toLowerCase())) {
+                } else if (mFile.getName().toLowerCase().contains(Common.getSearchWord().toLowerCase())) {
                     mData.add(mFile.getAbsolutePath());
                 }
             }

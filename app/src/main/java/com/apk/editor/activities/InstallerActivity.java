@@ -13,8 +13,8 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.Common;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -31,7 +31,6 @@ public class InstallerActivity extends AppCompatActivity {
     private MaterialTextView mTitle;
     private ProgressBar mProgress;
     public static final String HEADING_INTENT = "heading", PATH_INTENT = "path";
-    public String mPackageName = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,12 +47,12 @@ public class InstallerActivity extends AppCompatActivity {
         String path = getIntent().getStringExtra(PATH_INTENT);
         if (path != null) {
             try {
-                mPackageName = Objects.requireNonNull(APKData.getAppID(path, this)).toString();
+                Common.setPackageName(Objects.requireNonNull(APKData.getAppID(path, this)).toString());
                 mTitle.setText(APKData.getAppName(path, this));
                 mIcon.setImageDrawable(APKData.getAppIcon(path, this));
             } catch (NullPointerException ignored) {}
         } else {
-            mPackageName = APKData.findPackageName(this);
+            Common.setPackageName(APKData.findPackageName(this));
             mTitle.setText(getName());
             mIcon.setImageDrawable(getIcon());
         }
@@ -88,8 +87,8 @@ public class InstallerActivity extends AppCompatActivity {
                                 mCancel.setVisibility(View.VISIBLE);
                                 if (installationStatus.equals(getString(R.string.installation_status_success))) {
                                     try {
-                                        mTitle.setText(AppData.getAppName(mPackageName, activity));
-                                        mIcon.setImageDrawable(AppData.getAppIcon(mPackageName, activity));
+                                        mTitle.setText(AppData.getAppName(Common.getPackageName(), activity));
+                                        mIcon.setImageDrawable(AppData.getAppIcon(Common.getPackageName(), activity));
                                     } catch (NullPointerException ignored) {}
                                 }
                             }
@@ -102,7 +101,7 @@ public class InstallerActivity extends AppCompatActivity {
 
     private CharSequence getName() {
         CharSequence name = null;
-        for (String mAPKs : APKExplorer.mAPKList) {
+        for (String mAPKs : Common.getAPKList()) {
             if (APKData.getAppName(mAPKs, this) != null) {
                 name = APKData.getAppName(mAPKs, this);
             }
@@ -112,7 +111,7 @@ public class InstallerActivity extends AppCompatActivity {
 
     private Drawable getIcon() {
         Drawable icon = null;
-        for (String mAPKs : APKExplorer.mAPKList) {
+        for (String mAPKs : Common.getAPKList()) {
             if (APKData.getAppIcon(mAPKs, this) != null) {
                 icon = APKData.getAppIcon(mAPKs, this);
             }

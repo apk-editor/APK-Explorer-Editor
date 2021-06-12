@@ -29,8 +29,8 @@ import com.apk.editor.activities.InstallerFilePickerActivity;
 import com.apk.editor.adapters.RecycleViewApksAdapter;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.Common;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
@@ -151,7 +151,7 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                APKData.mSearchText = s.toString().toLowerCase();
+                Common.setSearchWord(s.toString().toLowerCase());
                 loadAPKs(requireActivity());
             }
         });
@@ -162,9 +162,9 @@ public class APKsFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (APKData.mSearchText != null) {
+                if (Common.getSearchWord() != null) {
                     mSearchWord.setText(null);
-                    APKData.mSearchText = null;
+                    Common.setSearchWord(null);
                     return;
                 }
                 if (mSearchWord.getVisibility() == View.VISIBLE) {
@@ -212,8 +212,8 @@ public class APKsFragment extends Fragment {
     }
 
     private void launchAEEInstaller() {
-        APKExplorer.mAPKList.clear();
-        APKExplorer.mPath = Environment.getExternalStorageDirectory().toString();
+        Common.getAPKList().clear();
+        Common.setPath(Environment.getExternalStorageDirectory().toString());
         Intent installer = new Intent(requireActivity(), InstallerFilePickerActivity.class);
         startActivity(installer);
     }
@@ -259,9 +259,9 @@ public class APKsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-        if (APKData.mSearchText != null) {
+        if (Common.getSearchWord() != null) {
             mSearchWord.setText(null);
-            APKData.mSearchText = null;
+            Common.setSearchWord(null);
         }
     }
     

@@ -50,11 +50,6 @@ import java.util.Objects;
  */
 public class APKExplorer {
 
-    public static boolean mFinish = false, mPrivateKey = false, mRSATemplate = false;
-    public static List<String> mAPKList = new ArrayList<>();
-    public static MaterialCardView mSelect;
-    public static String mAppID, mPath = null, mFilePath = null, mFileToReplace = null;
-
     public static List<String> getData(File[] files, boolean supported, Activity activity) {
         List<String> mData = new ArrayList<>(), mDir = new ArrayList<>(), mFiles = new ArrayList<>();
         try {
@@ -99,6 +94,10 @@ public class APKExplorer {
 
     public static boolean isImageFile(String path) {
         return path.endsWith(".bmp") || path.endsWith(".png") || path.endsWith(".jpg");
+    }
+
+    public static boolean isBinaryXML(String path) {
+        return path.endsWith(".xml") && (new File(path).getName().equals("AndroidManifest.xml") || path.contains(Common.getAppID() + "/res/"));
     }
 
     private static boolean isSupportedFile(String path) {
@@ -213,10 +212,10 @@ public class APKExplorer {
                 mProgressDialog.setMessage(context.getString(R.string.exploring, AppData.getAppName(packageName, context)));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
-                APKExplorer.mAppID = packageName;
+                Common.setAppID(packageName);
                 mExplorePath = new File(context.getCacheDir().getPath(), packageName);
                 mBackUpPath = new File(mExplorePath, ".aeeBackup");
-                APKExplorer.mPath = mExplorePath.getAbsolutePath();
+                Common.setPath(mExplorePath.getAbsolutePath());
             }
             @Override
             protected Void doInBackground(Void... voids) {
@@ -232,7 +231,7 @@ public class APKExplorer {
                             File mDexExtractPath = new File(mExplorePath, files.getName());
                             mDexExtractPath.mkdirs();
                             mProgressDialog.setMessage(context.getString(R.string.decompiling, files.getName()));
-                            dexToSmali(new File(AppData.getSourceDir(APKExplorer.mAppID, context)), mDexExtractPath, files.getName(), false, 0);
+                            dexToSmali(new File(AppData.getSourceDir(Common.getAppID(), context)), mDexExtractPath, files.getName(), false, 0);
                         }
                     }
                 }

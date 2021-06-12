@@ -23,7 +23,7 @@ import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Projects;
-import com.apk.editor.utils.TextEditor;
+import com.apk.editor.utils.Common;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -90,7 +90,7 @@ public class TextViewActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                TextEditor.mSearchText = s.toString();
+                Common.setSearchText(s.toString());
                 mRecyclerView.setAdapter(new RecycleViewAdapter(getData()));
 
             }
@@ -103,24 +103,22 @@ public class TextViewActivity extends AppCompatActivity {
             finish();
         });
 
-        mExport.setOnClickListener(v -> {
-            new MaterialAlertDialogBuilder(this)
-                    .setMessage(R.string.export_question)
-                    .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
-                    })
-                    .setPositiveButton(getString(R.string.export), (dialog, id) -> {
-                        if (APKExplorer.isPermissionDenied(this)) {
-                            APKExplorer.launchPermissionDialog(this);
-                        } else {
-                            APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + APKExplorer.mAppID);
-                            APKEditorUtils.copy(mPath, Projects.getExportPath(this) + "/" + APKExplorer.mAppID + "/" + new File(mPath).getName());
-                            new MaterialAlertDialogBuilder(this)
-                                    .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(this) + "/" + APKExplorer.mAppID))
-                                    .setPositiveButton(getString(R.string.cancel), (dialog1, id1) -> {
-                                    }).show();
-                        }
-                    }).show();
-        });
+        mExport.setOnClickListener(v -> new MaterialAlertDialogBuilder(this)
+                .setMessage(R.string.export_question)
+                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
+                })
+                .setPositiveButton(getString(R.string.export), (dialog, id) -> {
+                    if (APKExplorer.isPermissionDenied(this)) {
+                        APKExplorer.launchPermissionDialog(this);
+                    } else {
+                        APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + Common.getAppID());
+                        APKEditorUtils.copy(mPath, Projects.getExportPath(this) + "/" + Common.getAppID() + "/" + new File(mPath).getName());
+                        new MaterialAlertDialogBuilder(this)
+                                .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(this) + "/" + Common.getAppID()))
+                                .setPositiveButton(getString(R.string.cancel), (dialog1, id1) -> {
+                                }).show();
+                    }
+                }).show());
 
         mBack.setOnClickListener(v -> finish());
     }
@@ -128,17 +126,17 @@ public class TextViewActivity extends AppCompatActivity {
     private List<String> getData() {
         mData.clear();
         String text;
-        if (APKExplorer.mAppID != null && TextEditor.isBinaryXML(mPath)) {
-            text = APKExplorer.readXMLFromAPK(AppData.getSourceDir(APKExplorer.mAppID, this), mPath.replace(
-                    getCacheDir().getPath() + "/" + APKExplorer.mAppID + "/", ""));
+        if (Common.getAppID() != null && APKExplorer.isBinaryXML(mPath)) {
+            text = APKExplorer.readXMLFromAPK(AppData.getSourceDir(Common.getAppID(), this), mPath.replace(
+                    getCacheDir().getPath() + "/" + Common.getAppID() + "/", ""));
         } else {
             text = APKEditorUtils.read(mPath);
         }
         if (text != null) {
             for (String line : text.split("\\r?\\n")) {
-                if (TextEditor.mSearchText == null) {
+                if (Common.getSearchText() == null) {
                     mData.add(line);
-                } else if (line.contains(TextEditor.mSearchText)) {
+                } else if (line.contains(Common.getSearchText())) {
                     mData.add(line);
                 }
             }
@@ -163,10 +161,10 @@ public class TextViewActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull RecycleViewAdapter.ViewHolder holder, int position) {
-            if (TextEditor.mSearchText != null && data.get(position).contains(TextEditor.mSearchText)) {
+            if (Common.getSearchText() != null && data.get(position).contains(Common.getSearchText())) {
                 holder.mNumber.setText(String.valueOf(position + 1));
-                holder.mText.setText(APKEditorUtils.fromHtml(data.get(position).replace(TextEditor.mSearchText,
-                        "<b><i><font color=\"" + Color.RED + "\">" + TextEditor.mSearchText + "</font></i></b>")));
+                holder.mText.setText(APKEditorUtils.fromHtml(data.get(position).replace(Common.getSearchText(),
+                        "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchText() + "</font></i></b>")));
             } else {
                 holder.mNumber.setText(String.valueOf(position + 1));
                 holder.mText.setText(data.get(position));

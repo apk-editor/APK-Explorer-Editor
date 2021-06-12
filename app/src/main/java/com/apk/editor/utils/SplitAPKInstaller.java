@@ -113,8 +113,8 @@ public class SplitAPKInstaller {
                     totalSize += mFile.length();
                 }
             }
-        } else if (APKExplorer.mAPKList.size() > 0) {
-            for (String string : APKExplorer.mAPKList) {
+        } else if (Common.getAPKList().size() > 0) {
+            for (String string : Common.getAPKList()) {
                 if (APKEditorUtils.exist(string)) {
                     File mFile = new File(string);
                     if (mFile.exists() && mFile.getName().endsWith(".apk")) {
@@ -158,8 +158,8 @@ public class SplitAPKInstaller {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
                 }
-                APKExplorer.mAPKList.clear();
-                APKExplorer.mPath = activity.getCacheDir().getPath() + "/splits";
+                Common.getAPKList().clear();
+                Common.setPath(activity.getCacheDir().getPath() + "/splits");
                 Intent installer = new Intent(activity, InstallerFilePickerActivity.class);
                 installer.putExtra(InstallerFilePickerActivity.TITLE_INTENT, activity.getString(R.string.select_apk));
                 activity.startActivity(installer);

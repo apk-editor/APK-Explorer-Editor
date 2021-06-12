@@ -18,6 +18,7 @@ import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.Common;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -46,15 +47,15 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
     public void onBindViewHolder(@NonNull RecycleViewAppsAdapter.ViewHolder holder, int position) {
         try {
             holder.mAppIcon.setImageDrawable(AppData.getAppIcon(data.get(position), holder.mAppIcon.getContext()));
-            if (AppData.mSearchText != null && data.get(position).toLowerCase().contains(AppData.mSearchText)) {
-                holder.mAppID.setText(APKEditorUtils.fromHtml(data.get(position).toLowerCase().replace(AppData.mSearchText, "<b><i><font color=\"" +
-                        Color.RED + "\">" + AppData.mSearchText + "</font></i></b>")));
+            if (Common.getSearchWord() != null && data.get(position).toLowerCase().contains(Common.getSearchWord())) {
+                holder.mAppID.setText(APKEditorUtils.fromHtml(data.get(position).toLowerCase().replace(Common.getSearchWord(), "<b><i><font color=\"" +
+                        Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
             } else {
                 holder.mAppID.setText(data.get(position));
             }
-            if (AppData.mSearchText != null && AppData.getAppName(data.get(position), holder.mAppName.getContext()).toString().toLowerCase().contains(AppData.mSearchText)) {
-                holder.mAppName.setText(APKEditorUtils.fromHtml(AppData.getAppName(data.get(position), holder.mAppName.getContext()).toString().toLowerCase().replace(AppData.mSearchText,
-                        "<b><i><font color=\"" + Color.RED + "\">" + AppData.mSearchText + "</font></i></b>")));
+            if (Common.getSearchWord() != null && AppData.getAppName(data.get(position), holder.mAppName.getContext()).toString().toLowerCase().contains(Common.getSearchWord())) {
+                holder.mAppName.setText(APKEditorUtils.fromHtml(AppData.getAppName(data.get(position), holder.mAppName.getContext()).toString().toLowerCase().replace(Common.getSearchWord(),
+                        "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
             } else {
                 holder.mAppName.setText(AppData.getAppName(data.get(position), holder.mAppName.getContext()));
             }
@@ -63,7 +64,7 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
             holder.mVersion.setTextColor(Color.RED);
             holder.mSize.setTextColor(APKEditorUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
             holder.mAppIcon.setOnClickListener(v -> {
-                APKExplorer.mAppID = data.get(position);
+                Common.setAppID(data.get(position));
                 Intent imageView = new Intent(holder.mCard.getContext(), ImageViewActivity.class);
                 holder.mCard.getContext().startActivity(imageView);
             });

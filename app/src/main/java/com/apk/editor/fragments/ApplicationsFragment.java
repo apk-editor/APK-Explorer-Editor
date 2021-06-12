@@ -27,6 +27,7 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.RecycleViewAppsAdapter;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.Common;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -133,7 +134,7 @@ public class ApplicationsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                AppData.mSearchText = s.toString().toLowerCase();
+                Common.setSearchWord(s.toString().toLowerCase());
                 loadApps(requireActivity());
             }
         });
@@ -143,9 +144,9 @@ public class ApplicationsFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (AppData.mSearchText != null) {
+                if (Common.getSearchWord() != null) {
                     mSearchWord.setText(null);
-                    AppData.mSearchText = null;
+                    Common.setSearchWord(null);
                     return;
                 }
                 if (mSearchWord.getVisibility() == View.VISIBLE) {
@@ -257,9 +258,9 @@ public class ApplicationsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-        if (AppData.mSearchText != null) {
+        if (Common.getSearchWord() != null) {
             mSearchWord.setText(null);
-            AppData.mSearchText = null;
+            Common.setSearchWord(null);
         }
     }
     

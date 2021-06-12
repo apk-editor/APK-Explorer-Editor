@@ -26,6 +26,7 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.RecycleViewProjectsAdapter;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -101,7 +102,7 @@ public class ProjectsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Projects.mSearchText = s.toString().toLowerCase();
+                Common.setSearchWord(s.toString().toLowerCase());
                 loadProjects(requireActivity());
             }
         });
@@ -109,9 +110,9 @@ public class ProjectsFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (Projects.mSearchText != null) {
+                if (Common.getSearchWord() != null) {
                     mSearchWord.setText(null);
-                    Projects.mSearchText = null;
+                    Common.setSearchWord(null);
                     return;
                 }
                 if (mSearchWord.getVisibility() == View.VISIBLE) {
@@ -181,9 +182,9 @@ public class ProjectsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-        if (Projects.mSearchText != null) {
+        if (Common.getSearchWord() != null) {
             mSearchWord.setText(null);
-            Projects.mSearchText = null;
+            Common.setSearchWord(null);
         }
     }
     

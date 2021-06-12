@@ -25,6 +25,7 @@ import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -98,8 +99,8 @@ public class ImageViewActivity extends AppCompatActivity {
             mTitle.setText(new File(path).getName());
             mImage.setImageURI(APKExplorer.getIconFromPath(path));
         } else {
-            mTitle.setText(AppData.getAppName(APKExplorer.mAppID, this));
-            mImage.setImageDrawable(AppData.getAppIcon(APKExplorer.mAppID, this));
+            mTitle.setText(AppData.getAppName(Common.getAppID(), this));
+            mImage.setImageDrawable(AppData.getAppIcon(Common.getAppID(), this));
         }
 
         if (mExternalFile != null) {
@@ -149,14 +150,14 @@ public class ImageViewActivity extends AppCompatActivity {
                             if (APKExplorer.isPermissionDenied(this)) {
                                 APKExplorer.launchPermissionDialog(this);
                             } else {
-                                APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + APKExplorer.mAppID);
+                                APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + Common.getAppID());
                                 if (path != null) {
-                                    APKExplorer.saveImage(BitmapFactory.decodeFile(path), Projects.getExportPath(this) + "/" + APKExplorer.mAppID + "/" + new File(path).getName());
+                                    APKExplorer.saveImage(BitmapFactory.decodeFile(path), Projects.getExportPath(this) + "/" + Common.getAppID() + "/" + new File(path).getName());
                                 } else {
-                                    APKExplorer.saveImage(APKExplorer.drawableToBitmap(mImage.getDrawable()), Projects.getExportPath(this) + "/" + APKExplorer.mAppID + "/icon.png");
+                                    APKExplorer.saveImage(APKExplorer.drawableToBitmap(mImage.getDrawable()), Projects.getExportPath(this) + "/" + Common.getAppID() + "/icon.png");
                                 }
                                 new MaterialAlertDialogBuilder(this)
-                                        .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(this) + "/" + APKExplorer.mAppID))
+                                        .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(this) + "/" + Common.getAppID()))
                                         .setPositiveButton(getString(R.string.cancel), (dialog1, id1) -> {
                                         }).show();
                             }

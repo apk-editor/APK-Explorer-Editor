@@ -19,6 +19,7 @@ import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -108,17 +109,17 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
                                     if (APKExplorer.isPermissionDenied(v.getContext())) {
                                         APKExplorer.launchPermissionDialog((Activity) v.getContext());
                                     } else {
-                                        APKEditorUtils.mkdir(Projects.getExportPath(v.getContext()) + "/" + APKExplorer.mAppID);
-                                        APKEditorUtils.copy(data.get(position), Projects.getExportPath(v.getContext()) + "/" + APKExplorer.mAppID + "/" + new File(data.get(position)).getName());
+                                        APKEditorUtils.mkdir(Projects.getExportPath(v.getContext()) + "/" + Common.getAppID());
+                                        APKEditorUtils.copy(data.get(position), Projects.getExportPath(v.getContext()) + "/" + Common.getAppID() + "/" + new File(data.get(position)).getName());
                                         new MaterialAlertDialogBuilder(v.getContext())
-                                                .setMessage(v.getContext().getString(R.string.export_complete_message, Projects.getExportPath(v.getContext()) + "/" + APKExplorer.mAppID))
+                                                .setMessage(v.getContext().getString(R.string.export_complete_message, Projects.getExportPath(v.getContext()) + "/" + Common.getAppID()))
                                                 .setPositiveButton(v.getContext().getString(R.string.cancel), (dialog1, id1) -> {
                                                 }).show();
                                     }
                                 }).show();
                         break;
                     case 2:
-                        APKExplorer.mFileToReplace = data.get(position);
+                        Common.setFileToReplace(data.get(position));
                         Intent filePicker = new Intent(v.getContext(), FilePickerActivity.class);
                         v.getContext().startActivity(filePicker);
                         break;
