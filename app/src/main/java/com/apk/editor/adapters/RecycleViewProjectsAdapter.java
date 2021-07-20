@@ -51,16 +51,16 @@ public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleView
         try {
             if (AppData.isAppInstalled(new File(data.get(position)).getName(), holder.mAppIcon.getContext())) {
                 holder.mAppIcon.setImageDrawable(AppData.getAppIcon(new File(data.get(position)).getName(), holder.mAppIcon.getContext()));
-                if (Common.getSearchWord() != null && AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString().toLowerCase().contains(Common.getSearchWord())) {
-                    holder.mAppName.setText(APKEditorUtils.fromHtml(AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString().toLowerCase().replace(Common.getSearchWord(),
+                if (Common.getSearchWord() != null && Common.isTextMatched(AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString(), Common.getSearchWord())) {
+                    holder.mAppName.setText(APKEditorUtils.fromHtml(AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString().replace(Common.getSearchWord(),
                             "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
                 } else {
                     holder.mAppName.setText(AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()));
                 }
             } else {
                 holder.mAppIcon.setImageDrawable(holder.mAppIcon.getContext().getResources().getDrawable(R.drawable.ic_projects));
-                if (Common.getSearchWord() != null && new File(data.get(position)).getName().toLowerCase().contains(Common.getSearchWord())) {
-                    holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().toLowerCase().replace(Common.getSearchWord(),
+                if (Common.getSearchWord() != null && Common.isTextMatched(new File(data.get(position)).getName(), Common.getSearchWord())) {
+                    holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().replace(Common.getSearchWord(),
                             "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
                 } else {
                     holder.mAppName.setText(new File(data.get(position)).getName());

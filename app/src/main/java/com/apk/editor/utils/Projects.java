@@ -26,7 +26,7 @@ public class Projects {
             if (mFile.exists() && mFile.isDirectory() && !mFile.getName().matches("WebView|splits|aee-signed")) {
                 if (Common.getSearchWord() == null) {
                     mData.add(mFile.getAbsolutePath());
-                } else if (mFile.getName().toLowerCase().contains(Common.getSearchWord().toLowerCase())) {
+                } else if (Common.isTextMatched(mFile.getName(), Common.getSearchWord())) {
                     mData.add(mFile.getAbsolutePath());
                 }
             }

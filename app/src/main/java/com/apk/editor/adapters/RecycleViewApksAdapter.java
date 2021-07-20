@@ -59,8 +59,8 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                     holder.mAppIcon.setImageDrawable(holder.mAppIcon.getResources().getDrawable(R.drawable.ic_android));
                     holder.mAppIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mAppIcon.getContext()));
                 }
-                if (Common.getSearchWord() != null && new File(data.get(position)).getName().toLowerCase().contains(Common.getSearchWord())) {
-                    holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().toLowerCase().replace(Common.getSearchWord(),
+                if (Common.getSearchWord() != null && Common.isTextMatched(new File(data.get(position)).getName(), Common.getSearchWord())) {
+                    holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().replace(Common.getSearchWord(),
                             "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
                 } else {
                     holder.mAppName.setText(new File(data.get(position)).getName());
@@ -103,15 +103,15 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                     holder.mAppIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mAppIcon.getContext()));
                 }
                 if (APKData.getAppName(data.get(position), holder.mAppName.getContext()) != null) {
-                    if (Common.getSearchWord() != null && Objects.requireNonNull(APKData.getAppName(data.get(position), holder.mAppName.getContext())).toString().toLowerCase().contains(Common.getSearchWord())) {
-                        holder.mAppName.setText(APKEditorUtils.fromHtml(Objects.requireNonNull(APKData.getAppName(data.get(position), holder.mAppName.getContext())).toString().toLowerCase().replace(Common.getSearchWord(),
+                    if (Common.getSearchWord() != null && Common.isTextMatched(Objects.requireNonNull(APKData.getAppName(data.get(position), holder.mAppName.getContext())).toString(), Common.getSearchWord())) {
+                        holder.mAppName.setText(APKEditorUtils.fromHtml(Objects.requireNonNull(APKData.getAppName(data.get(position), holder.mAppName.getContext())).toString().replace(Common.getSearchWord(),
                                 "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
                     } else {
                         holder.mAppName.setText(APKData.getAppName(data.get(position), holder.mAppName.getContext()));
                     }
                 } else {
-                    if (Common.getSearchWord() != null && new File(data.get(position)).getName().toLowerCase().contains(Common.getSearchWord())) {
-                        holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().toLowerCase().replace(Common.getSearchWord(),
+                    if (Common.getSearchWord() != null && Common.isTextMatched(new File(data.get(position)).getName(), Common.getSearchWord())) {
+                        holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().replace(Common.getSearchWord(),
                                 "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
                     } else {
                         holder.mAppName.setText(new File(data.get(position)).getName());

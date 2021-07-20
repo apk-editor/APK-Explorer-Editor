@@ -47,14 +47,14 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
     public void onBindViewHolder(@NonNull RecycleViewAppsAdapter.ViewHolder holder, int position) {
         try {
             holder.mAppIcon.setImageDrawable(AppData.getAppIcon(data.get(position), holder.mAppIcon.getContext()));
-            if (Common.getSearchWord() != null && data.get(position).toLowerCase().contains(Common.getSearchWord())) {
-                holder.mAppID.setText(APKEditorUtils.fromHtml(data.get(position).toLowerCase().replace(Common.getSearchWord(), "<b><i><font color=\"" +
+            if (Common.getSearchWord() != null && Common.isTextMatched(data.get(position), Common.getSearchWord())) {
+                holder.mAppID.setText(APKEditorUtils.fromHtml(data.get(position).replace(Common.getSearchWord(), "<b><i><font color=\"" +
                         Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
             } else {
                 holder.mAppID.setText(data.get(position));
             }
-            if (Common.getSearchWord() != null && AppData.getAppName(data.get(position), holder.mAppName.getContext()).toString().toLowerCase().contains(Common.getSearchWord())) {
-                holder.mAppName.setText(APKEditorUtils.fromHtml(AppData.getAppName(data.get(position), holder.mAppName.getContext()).toString().toLowerCase().replace(Common.getSearchWord(),
+            if (Common.getSearchWord() != null && Common.isTextMatched(AppData.getAppName(data.get(position), holder.mAppName.getContext()).toString(), Common.getSearchWord())) {
+                holder.mAppName.setText(APKEditorUtils.fromHtml(AppData.getAppName(data.get(position), holder.mAppName.getContext()).toString().replace(Common.getSearchWord(),
                         "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
             } else {
                 holder.mAppName.setText(AppData.getAppName(data.get(position), holder.mAppName.getContext()));

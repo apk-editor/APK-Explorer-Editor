@@ -136,7 +136,7 @@ public class TextViewActivity extends AppCompatActivity {
             for (String line : text.split("\\r?\\n")) {
                 if (Common.getSearchText() == null) {
                     mData.add(line);
-                } else if (line.contains(Common.getSearchText())) {
+                } else if (Common.isTextMatched(line, Common.getSearchText())) {
                     mData.add(line);
                 }
             }
@@ -161,7 +161,7 @@ public class TextViewActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull RecycleViewAdapter.ViewHolder holder, int position) {
-            if (Common.getSearchText() != null && data.get(position).contains(Common.getSearchText())) {
+            if (Common.getSearchText() != null && Common.isTextMatched(data.get(position), Common.getSearchText())) {
                 holder.mNumber.setText(String.valueOf(position + 1));
                 holder.mText.setText(APKEditorUtils.fromHtml(data.get(position).replace(Common.getSearchText(),
                         "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchText() + "</font></i></b>")));

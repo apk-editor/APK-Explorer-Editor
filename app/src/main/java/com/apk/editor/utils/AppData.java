@@ -41,8 +41,8 @@ public class AppData {
             if (mAppType) {
                 if (Common.getSearchWord() == null) {
                     mData.add(packageInfo.packageName);
-                } else if (getPackageManager(context).getApplicationLabel(packageInfo).toString().toLowerCase().contains(Common.getSearchWord().toLowerCase())
-                        || packageInfo.packageName.toLowerCase().contains(Common.getSearchWord().toLowerCase())) {
+                } else if (Common.isTextMatched(getPackageManager(context).getApplicationLabel(packageInfo).toString(), Common.getSearchWord())
+                        || Common.isTextMatched(packageInfo.packageName, Common.getSearchWord())) {
                     mData.add(packageInfo.packageName);
                 }
             }

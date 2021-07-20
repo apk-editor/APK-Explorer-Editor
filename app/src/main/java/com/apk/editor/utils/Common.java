@@ -21,6 +21,15 @@ public class Common {
         return mFinish;
     }
 
+    public static boolean isTextMatched(String searchText, String searchWord) {
+        for (int a = 0; a < searchText.length() - searchWord.length() + 1; a++) {
+            if (searchWord.equalsIgnoreCase(searchText.substring(a, a + searchWord.length()))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean hasPrivateKey() {
         return mPrivateKey;
     }

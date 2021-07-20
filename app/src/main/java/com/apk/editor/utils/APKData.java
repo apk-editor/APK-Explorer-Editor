@@ -37,7 +37,7 @@ public class APKData {
                 if (mFile.exists() && mFile.isDirectory() && APKEditorUtils.exist(mFile.toString() + "/base.apk")) {
                     if (Common.getSearchWord() == null) {
                         mData.add(mFile.getAbsolutePath());
-                    } else if (mFile.getAbsolutePath().toLowerCase().contains(Common.getSearchWord().toLowerCase())) {
+                    } else if (Common.isTextMatched(mFile.getAbsolutePath(), Common.getSearchWord())) {
                         mData.add(mFile.getAbsolutePath());
                     }
                 }
@@ -45,10 +45,10 @@ public class APKData {
                 if (mFile.exists() && mFile.getName().endsWith(".apk")) {
                     if (Common.getSearchWord() == null) {
                         mData.add(mFile.getAbsolutePath());
-                    } else if (getAppName(mFile.getAbsolutePath(), context) != null && Objects.requireNonNull(getAppName(
-                            mFile.getAbsolutePath(), context)).toString().toLowerCase().contains(Common.getSearchWord().toLowerCase())) {
+                    } else if (getAppName(mFile.getAbsolutePath(), context) != null && Common.isTextMatched(Objects.requireNonNull(getAppName(
+                            mFile.getAbsolutePath(), context)).toString(), Common.getSearchWord())) {
                         mData.add(mFile.getAbsolutePath());
-                    } else if (mFile.getName().toLowerCase().contains(Common.getSearchWord().toLowerCase())) {
+                    } else if (Common.isTextMatched(mFile.getName(), Common.getSearchWord())) {
                         mData.add(mFile.getAbsolutePath());
                     }
                 }
