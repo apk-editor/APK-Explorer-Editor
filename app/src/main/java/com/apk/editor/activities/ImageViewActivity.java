@@ -2,6 +2,7 @@ package com.apk.editor.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -66,7 +68,6 @@ public class ImageViewActivity extends AppCompatActivity {
                 mMainLayout.setVisibility(View.GONE);
                 mPermissionGrant.setOnClickListener(v -> {
                     APKExplorer.requestPermission(this);
-                    if (Build.VERSION.SDK_INT < 30) finish();
                 });
                 return;
             }
@@ -166,6 +167,15 @@ public class ImageViewActivity extends AppCompatActivity {
         });
 
         mBack.setOnClickListener(v -> finish());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == 1 && Build.VERSION.SDK_INT < 30 && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            this.recreate();
+        }
     }
 
 }

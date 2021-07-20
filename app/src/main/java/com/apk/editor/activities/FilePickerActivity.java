@@ -2,6 +2,7 @@ package com.apk.editor.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -64,8 +66,6 @@ public class FilePickerActivity extends AppCompatActivity {
             mRecyclerView.setVisibility(View.GONE);
             mPermissionGrant.setOnClickListener(v -> {
                 APKExplorer.requestPermission(this);
-                if (Build.VERSION.SDK_INT < 30) finish();
-
             });
             return;
         }
@@ -169,6 +169,15 @@ public class FilePickerActivity extends AppCompatActivity {
                     mLoader.execute();
                 }
             }, 250);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == 1 && Build.VERSION.SDK_INT < 30 && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            this.recreate();
         }
     }
 

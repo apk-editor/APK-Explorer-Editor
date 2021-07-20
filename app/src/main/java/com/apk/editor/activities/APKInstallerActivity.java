@@ -1,7 +1,7 @@
 package com.apk.editor.activities;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -11,9 +11,9 @@ import android.provider.OpenableColumns;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
@@ -45,13 +45,7 @@ public class APKInstallerActivity extends AppCompatActivity {
             mPermissionText.setText(Build.VERSION.SDK_INT >= 30 ? getString(R.string.file_permission_request_message, getString(R.string.app_name)) : getString(R.string.permission_denied_message));
             mPermissionLayout.setVisibility(View.VISIBLE);
             mPermissionGrant.setOnClickListener(v -> {
-                if (Build.VERSION.SDK_INT >= 30) {
-                    APKExplorer.requestPermission(this);
-                } else {
-                    ActivityCompat.requestPermissions(this, new String[] {
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                    finish();
-                }
+                APKExplorer.requestPermission(this);
             });
             return;
         }
@@ -100,6 +94,15 @@ public class APKInstallerActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .setPositiveButton(R.string.cancel, (dialogInterface, i) -> finish()).show();
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == 1 && Build.VERSION.SDK_INT < 30 && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            this.recreate();
         }
     }
 
