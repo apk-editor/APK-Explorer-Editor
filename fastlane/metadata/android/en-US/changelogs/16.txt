@@ -1,0 +1,6 @@
+* Improved case sensitivity in searching.
+* Improved permission handling.
+* Added Portuguese (Portugal & Brazilian) locale and updated others.
+* Update build tools and dependencies.
+* Internal improvements.
+* Miscellaneous changes.
