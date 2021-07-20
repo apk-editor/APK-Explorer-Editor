@@ -9,6 +9,7 @@ APK Explorer & Editor (AEE) is, and as always, an open-source project which is r
 * [Nitin Kalra](https://github.com/nkalra0123/) - Split App Share & Install
 * [Connor Tumbleson](https://github.com/iBotPeaches/Apktool/) - Apktool
 * [Ben Gruver](https://github.com/JesusFreke/smali/) - smali/baksmali
+* [sunilpaulmathew](https://github.com/SmartPack/PackageManager/) - Package Manager
 
 ## Icon
 * [Gospel Gilbert](https://t.me/gilgreat0295) - App Icon
@@ -24,5 +25,6 @@ APK Explorer & Editor (AEE) is, and as always, an open-source project which is r
 * [Diego](https://github.com/sguinetti) - Spanish Translation
 * tommynok & Alexander Steiner - Russian Translation
 * [mezysinc](https://github.com/mezysinc) - Portuguese (Brazilian) Translation
+* Andreaugustoqueiroz999 - Portuguese (Portugal) Translation
 
 _If you think I missed your name, please let me know._
