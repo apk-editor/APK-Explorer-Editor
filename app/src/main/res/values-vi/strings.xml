@@ -60,8 +60,21 @@
     <string name="translate">"Dịch"</string>
     <string name="unknown_file_message">"AEE không xử lý '%s' vào lúc này. Nếu bạn biết định dạng tệp này, bạn có thể xuất tệp này ra bộ nhớ thiết bị và thử chỉnh sửa bằng một ứng dụng bên thứ ba được hỗ trợ. Hoặc bạn có thể mở nó dưới dạng tệp văn bản?"</string>
     <string name="unsupported_file">"Tệp không được hỗ trợ"</string>
-    <string name="unsupported_file_arsc">"Bạn đã chọn 'resources.arsc', không may là AEE không thể đọc nó.\n\nresources.arsc là gì?\nresources.arsc là một tệp tài nguyên nhị phân chứa các giá trị cụ thể cho sự thiết lập của một ứng dụng, như là các số nguyên, boolean và xâu kí tự, cũng như là các lần nhắc đến các tài nguyên phức tạp hơn, như là bố cục giao diện.\n\nLàm thế nào để đọc resources.arsc?\nCác công cụ như Apktool hoặc Android Asset Packaging Tool (AAPT) nên được sử dụng để hiển thị nội dung của resources.arsc ra định dạng con người có thể đọc."</string>
-    <string name="unsupported_file_dex">"Bạn đã chọn một tệp 'DEX' (.dex), không may là AEE không thể đọc nó.\n\nTệp DEX là gì?\nMột tệp DEX có mã mà cuối cùng sẽ được Android Runtime thực thi. Mọi tệp APK nên có một tệp 'classes.dex', nó nhắc đến bất kỳ class hoặc phương pháp nào được sử dụng trong một ứng dụng. Về bản chất, bất kỳ Hoạt động, Đối tượng, hoặc Phân mảnh nào được sử dụng trong mã sẽ được chuyển thành các byte trong một tệp Dex mà có thể được chạy dưới dạng một ứng dụng Android.\n\nLàm thế nào để đọc một tệp DEX?\nMột tệp DEX nên được chuyển thành định dạng 'jar' và lát nữa thành tệp 'Java' bằng cách sử dụng các công cụ như 'dex2jar' và 'JD-GUI'."</string>
+    <string name="unsupported_file_arsc">"Bạn đã chọn 'resources.arsc', không may là AEE không thể đọc nó.
+
+resources.arsc là gì?
+resources.arsc là một tệp tài nguyên nhị phân chứa các giá trị cụ thể cho sự thiết lập của một ứng dụng, như là các số nguyên, boolean và xâu kí tự, cũng như là các lần nhắc đến các tài nguyên phức tạp hơn, như là bố cục giao diện.
+
+Làm thế nào để đọc resources.arsc?
+Các công cụ như Apktool hoặc Android Asset Packaging Tool (AAPT) nên được sử dụng để hiển thị nội dung của resources.arsc ra định dạng con người có thể đọc.
+"</string>
+    <string name="unsupported_file_dex">"Bạn đã chọn một tệp 'DEX' (.dex), không may là AEE không thể đọc nó.
+
+Tệp DEX là gì?
+Một tệp DEX có mã mà cuối cùng sẽ được Android Runtime thực thi. Mọi tệp APK nên có một tệp 'classes.dex', nó nhắc đến bất kỳ class hoặc phương pháp nào được sử dụng trong một ứng dụng. Về bản chất, bất kỳ Hoạt động, Đối tượng, hoặc Phân mảnh nào được sử dụng trong mã sẽ được chuyển thành các byte trong một tệp Dex mà có thể được chạy dưới dạng một ứng dụng Android.
+
+Làm thế nào để đọc một tệp DEX?
+Một tệp DEX nên được chuyển thành định dạng 'jar' và lát nữa thành tệp 'Java' bằng cách sử dụng các công cụ như 'dex2jar' và 'JD-GUI'."</string>
     <string name="user">"Người dùng"</string>
     <string name="version">"Phiên bản: %s"</string>
     <string name="bundles">"Bộ ứng dụng"</string>
@@ -108,7 +121,9 @@
     <string name="apk_corrupted">"(Các) tệp APK bị hỏng! Đang huỷ bỏ."</string>
     <string name="install_resign">"Ký lại &amp; cài đặt"</string>
     <string name="resign_only">"Chỉ ký lại"</string>
-    <string name="resigned_apks_path">"(Các) tệp APK đã ký lại đã được tạo!\n\nĐường dẫn: '%s'"</string>
+    <string name="resigned_apks_path">"(Các) tệp APK đã ký lại đã được tạo!
+
+Đường dẫn: '%s'"</string>
     <string name="resigning_apks">"Đang ký lại các tệp APK đã chọn…"</string>
     <string name="select_storage">"Chọn từ bộ nhớ"</string>
     <string name="sort_by">"Sắp xếp ứng dụng"</string>
@@ -152,4 +167,7 @@
     <string name="user_interface">"Giao diện người dùng"</string>
     <string name="decompiling">"Đang dịch ngược lại '%s'…"</string>
     <string name="deleting">"Đang xoá '%s'…"</string>
+    <string name="file_permission_request_message">"Để tính năng này hoạt động trên các phiên bản Android mới hơn (Android R hoặc mới hơn), cần cấp quyền \"Tất cả quyền truy cập tệp\" cho %s. Vui lòng cấp quyền theo cách thủ công từ màn hình mới được mở sau khi nhấp vào nút \"Cấp\"."</string>
+    <string name="grant">"Cấp"</string>
+    <string name="important">"Quan trọng"</string>
 </resources>
