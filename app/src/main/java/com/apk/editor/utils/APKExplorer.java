@@ -22,19 +22,9 @@ import androidx.core.app.ActivityCompat;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import net.dongliu.apk.parser.ApkFile;
-
-import org.jf.baksmali.Baksmali;
-import org.jf.baksmali.BaksmaliOptions;
-import org.jf.dexlib2.DexFileFactory;
-import org.jf.dexlib2.Opcodes;
-import org.jf.dexlib2.analysis.InlineMethodResolver;
-import org.jf.dexlib2.dexbacked.DexBackedDexFile;
-import org.jf.dexlib2.dexbacked.DexBackedOdexFile;
-import org.jf.dexlib2.iface.MultiDexContainer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -231,7 +221,7 @@ public class APKExplorer {
                             File mDexExtractPath = new File(mExplorePath, files.getName());
                             mDexExtractPath.mkdirs();
                             mProgressDialog.setMessage(context.getString(R.string.decompiling, files.getName()));
-                            dexToSmali(new File(AppData.getSourceDir(Common.getAppID(), context)), mDexExtractPath, files.getName(), false, 0);
+                            new DexToSmali(false, new File(AppData.getSourceDir(Common.getAppID(), context)), mDexExtractPath, 0, files.getName()).execute();
                         }
                     }
                 }
@@ -248,64 +238,6 @@ public class APKExplorer {
                 context.startActivity(explorer);
             }
         }.execute();
-    }
-
-    /*
-     * The following code is based on the original work of @iBotPeaches for https://github.com/iBotPeaches/Apktool
-     */
-    public static void dexToSmali(File apkFile, File outDir, String dexName, boolean debugInfo, int api) {
-        try {
-            final BaksmaliOptions options = new BaksmaliOptions();
-
-            // options
-            options.deodex = false;
-            options.implicitReferences = false;
-            options.parameterRegisters = true;
-            options.localsDirective = true;
-            options.sequentialLabels = true;
-            options.debugInfo = debugInfo;
-            options.codeOffsets = false;
-            options.accessorComments = false;
-            options.registerInfo = 0;
-            options.inlineResolver = null;
-
-            // set jobs automatically
-            int jobs = Runtime.getRuntime().availableProcessors();
-            if (jobs > 6) {
-                jobs = 6;
-            }
-
-            // create the container
-            MultiDexContainer<? extends DexBackedDexFile> container = DexFileFactory.loadDexContainer(apkFile, Opcodes.forApi(api));
-            MultiDexContainer.DexEntry<? extends DexBackedDexFile> dexEntry;
-            DexBackedDexFile dexFile;
-
-            // If we have 1 item, ignore the passed file. Pull the DexFile we need.
-            if (container.getDexEntryNames().size() == 1) {
-                dexEntry = container.getEntry(container.getDexEntryNames().get(0));
-            } else {
-                dexEntry = container.getEntry(dexName);
-            }
-
-            // Double check the passed param exists
-            if (dexEntry == null) {
-                dexEntry = container.getEntry(container.getDexEntryNames().get(0));
-            }
-
-            assert dexEntry != null;
-            dexFile = dexEntry.getDexFile();
-
-            if (dexFile.supportsOptimizedOpcodes()) {
-                throw new Exception("Warning: You are disassembling an odex file without deodexing it.");
-            }
-
-            if (dexFile instanceof DexBackedOdexFile) {
-                options.inlineResolver = InlineMethodResolver.createInlineMethodResolver(((DexBackedOdexFile)dexFile).getOdexVersion());
-            }
-
-            Baksmali.disassembleDexFile(dexFile, outDir, jobs, options);
-        } catch (Exception ignored) {
-        }
     }
 
 }
