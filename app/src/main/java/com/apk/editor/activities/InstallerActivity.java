@@ -1,6 +1,7 @@
 package com.apk.editor.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -26,9 +27,8 @@ import java.util.Objects;
 public class InstallerActivity extends AppCompatActivity {
 
     private AppCompatImageButton mIcon;
-    private MaterialCardView mCancel;
-    private MaterialTextView mStatus;
-    private MaterialTextView mTitle;
+    private MaterialCardView mCancel, mOpen;
+    private MaterialTextView mStatus, mTitle;
     private ProgressBar mProgress;
     public static final String HEADING_INTENT = "heading", PATH_INTENT = "path";
 
@@ -39,6 +39,7 @@ public class InstallerActivity extends AppCompatActivity {
 
         mIcon = findViewById(R.id.icon);
         mProgress = findViewById(R.id.progress);
+        mOpen = findViewById(R.id.open);
         mCancel = findViewById(R.id.cancel);
         MaterialTextView mHeading = findViewById(R.id.heading);
         mTitle = findViewById(R.id.title);
@@ -58,6 +59,14 @@ public class InstallerActivity extends AppCompatActivity {
         }
 
         mHeading.setText(getIntent().getStringExtra(HEADING_INTENT));
+
+        mOpen.setOnClickListener(v -> {
+            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(Common.getPackageName());
+            if (launchIntent != null) {
+                startActivity(launchIntent);
+                finish();
+            }
+        });
 
         mCancel.setOnClickListener(v -> onBackPressed());
 
@@ -89,6 +98,7 @@ public class InstallerActivity extends AppCompatActivity {
                                     try {
                                         mTitle.setText(AppData.getAppName(Common.getPackageName(), activity));
                                         mIcon.setImageDrawable(AppData.getAppIcon(Common.getPackageName(), activity));
+                                        mOpen.setVisibility(View.VISIBLE);
                                     } catch (NullPointerException ignored) {}
                                 }
                             }

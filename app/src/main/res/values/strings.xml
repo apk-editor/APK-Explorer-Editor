@@ -91,6 +91,7 @@
     <string name="last_modified">Last Modified: %s</string>
     <string name="name_empty">Name shouldn\'t be empty! Aborting.</string>
     <string name="ok">OK</string>
+    <string name="open">Open</string>
     <string name="open_as_text">Open as text</string>
     <string name="permission_denied_message">Permission denied for accessing device storage!</string>
     <string name="preparing_apk">Preparing %s APK…</string>
