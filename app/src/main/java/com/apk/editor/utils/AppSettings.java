@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.apk.editor.MainActivity;
 import com.apk.editor.R;
 import com.apk.editor.activities.APKSignActivity;
@@ -183,15 +185,15 @@ public class AppSettings {
             switch (i) {
                 case 0:
                     APKEditorUtils.saveString("appTheme", "Auto", context);
-                    restartApp(context);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
                     break;
                 case 1:
                     APKEditorUtils.saveString("appTheme", "Dark", context);
-                    restartApp(context);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     break;
                 case 2:
                     APKEditorUtils.saveString("appTheme", "Light", context);
-                    restartApp(context);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     break;
             }
         }).setOnDismissListener(dialogInterface -> {
