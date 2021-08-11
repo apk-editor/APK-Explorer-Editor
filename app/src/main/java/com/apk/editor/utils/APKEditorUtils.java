@@ -40,7 +40,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -187,8 +186,8 @@ public class APKEditorUtils {
             mkdir(Objects.requireNonNull(new File(dest).getParentFile()).toString());
         }
         try {
-            FileInputStream inputStream = new FileInputStream(new File(source));
-            FileOutputStream outputStream = new FileOutputStream(new File(dest));
+            FileInputStream inputStream = new FileInputStream(source);
+            FileOutputStream outputStream = new FileOutputStream(dest);
 
             copyStream(inputStream, outputStream);
 
@@ -286,12 +285,6 @@ public class APKEditorUtils {
             activity.startActivity(i);
         } catch (ActivityNotFoundException ignored) {
         }
-    }
-
-    public static void sleep(int sec) {
-        try {
-            TimeUnit.SECONDS.sleep(sec);
-        } catch (InterruptedException ignored) {}
     }
 
     public static boolean isDocumentsUI(Uri uri) {

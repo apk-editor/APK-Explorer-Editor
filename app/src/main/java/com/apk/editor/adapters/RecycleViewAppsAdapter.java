@@ -65,8 +65,8 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
             holder.mSize.setTextColor(APKEditorUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
             holder.mAppIcon.setOnClickListener(v -> {
                 Common.setAppID(data.get(position));
-                Intent imageView = new Intent(holder.mCard.getContext(), ImageViewActivity.class);
-                holder.mCard.getContext().startActivity(imageView);
+                Intent imageView = new Intent(v.getContext(), ImageViewActivity.class);
+                v.getContext().startActivity(imageView);
             });
             if (!APKEditorUtils.isDarkTheme(holder.mCard.getContext())) {
                 holder.mCard.setCardBackgroundColor(Color.LTGRAY);
@@ -141,9 +141,7 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
                             .setMessage(v.getContext().getString(R.string.export_app_question, AppData.getAppName(data.get(position), v.getContext())))
                             .setNegativeButton(R.string.cancel, (dialog, id) -> {
                             })
-                            .setPositiveButton(R.string.export, (dialog, id) -> {
-                                APKData.exportApp(data.get(position), v.getContext());
-                            }).show();
+                            .setPositiveButton(R.string.export, (dialog, id) -> APKData.exportApp(data.get(position), v.getContext())).show();
                 }
                 return false;
             });

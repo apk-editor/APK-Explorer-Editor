@@ -1,5 +1,6 @@
 package com.apk.editor.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -81,6 +82,7 @@ public class SplitAPKInstaller {
             } catch (IOException ignored) {
             }
             Intent callbackIntent = new Intent(activity, InstallerService.class);
+            @SuppressLint("UnspecifiedImmutableFlag")
             PendingIntent pendingIntent = PendingIntent.getService(activity, 0, callbackIntent, 0);
             assert session != null;
             session.commit(pendingIntent.getIntentSender());

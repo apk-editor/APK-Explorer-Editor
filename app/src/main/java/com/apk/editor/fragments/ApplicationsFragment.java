@@ -204,7 +204,6 @@ public class ApplicationsFragment extends Fragment {
                         protected void onPostExecute(List<String> recyclerViewItems) {
                             super.onPostExecute(recyclerViewItems);
                             mRecyclerView.setAdapter(mRecycleViewAdapter);
-                            mRecycleViewAdapter.notifyDataSetChanged();
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mProgress.setVisibility(View.GONE);
                             mLoader = null;

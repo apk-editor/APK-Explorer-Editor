@@ -23,8 +23,8 @@ import java.util.zip.ZipOutputStream;
  * Based on the original work of Aefyr for https://github.com/Aefyr/PseudoApkSigner
  */
 public class ApkSigner {
-    private static final String HASHING_ALGORITHM = "SHA1";
 
+    private static final String HASHING_ALGORITHM = "SHA1";
     private final RSAPrivateKey mPrivateKey;
     private final File mTemplateFile;
 

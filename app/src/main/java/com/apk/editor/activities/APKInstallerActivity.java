@@ -44,9 +44,7 @@ public class APKInstallerActivity extends AppCompatActivity {
             MaterialTextView mPermissionText = findViewById(R.id.permission_text);
             mPermissionText.setText(Build.VERSION.SDK_INT >= 30 ? getString(R.string.file_permission_request_message, getString(R.string.app_name)) : getString(R.string.permission_denied_message));
             mPermissionLayout.setVisibility(View.VISIBLE);
-            mPermissionGrant.setOnClickListener(v -> {
-                APKExplorer.requestPermission(this);
-            });
+            mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
             return;
         }
 

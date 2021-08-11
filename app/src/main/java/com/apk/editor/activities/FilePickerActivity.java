@@ -159,7 +159,6 @@ public class FilePickerActivity extends AppCompatActivity {
                         protected void onPostExecute(List<String> recyclerViewItems) {
                             super.onPostExecute(recyclerViewItems);
                             mRecyclerView.setAdapter(mRecycleViewAdapter);
-                            mRecycleViewAdapter.notifyDataSetChanged();
                             mTitle.setText(Common.getFilePath().equals(Environment.getExternalStorageDirectory().toString() + File.separator) ? getString(R.string.sdcard)
                                     : new File(Common.getFilePath()).getName());
                             mRecyclerView.setVisibility(View.VISIBLE);

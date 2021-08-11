@@ -47,7 +47,7 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
         return new RecycleViewAPKExplorerAdapter.ViewHolder(rowItem);
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint({"UseCompatLoadingForDrawables", "NotifyDataSetChanged"})
     @Override
     public void onBindViewHolder(@NonNull RecycleViewAPKExplorerAdapter.ViewHolder holder, int position) {
         if (new File(data.get(position)).isDirectory()) {

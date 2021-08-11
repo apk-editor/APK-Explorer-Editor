@@ -45,7 +45,7 @@ public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleView
         return new ViewHolder(rowItem);
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint({"UseCompatLoadingForDrawables", "NotifyDataSetChanged"})
     @Override
     public void onBindViewHolder(@NonNull RecycleViewProjectsAdapter.ViewHolder holder, int position) {
         try {
@@ -103,9 +103,7 @@ public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleView
                                                         .setMessage(v.getContext().getString(R.string.export_project_replace, text))
                                                         .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
                                                         })
-                                                        .setPositiveButton(R.string.replace, (dialogInterface, i) -> {
-                                                            Projects.exportProject(new File(data.get(position)), mName, v.getContext());
-                                                        })
+                                                        .setPositiveButton(R.string.replace, (dialogInterface, i) -> Projects.exportProject(new File(data.get(position)), mName, v.getContext()))
                                                         .show();
                                             } else {
                                                 Projects.exportProject(new File(data.get(position)), mName, v.getContext());
@@ -116,13 +114,14 @@ public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleView
                         }).show();
                 return false;
             });
-            holder.mDelete.setOnClickListener(v -> new MaterialAlertDialogBuilder(holder.mDelete.getContext())
-                    .setMessage(holder.mDelete.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))
+            holder.mDelete.setOnClickListener(v -> new MaterialAlertDialogBuilder(v.getContext())
+                    .setMessage(v.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))
                     .setNegativeButton(R.string.cancel, (dialog, id) -> {
                     })
                     .setPositiveButton(R.string.delete, (dialog, id) -> {
                         Projects.deleteProject(new File(data.get(position)), v.getContext());
                         data.remove(position);
+                        notifyItemRemoved(position);
                         notifyDataSetChanged();
                     }).show());
             holder.mTotalSize.setVisibility(View.VISIBLE);

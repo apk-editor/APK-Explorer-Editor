@@ -33,9 +33,8 @@ public class SettingsActivity extends AppCompatActivity {
         RecycleViewSettingsAdapter mRecycleViewAdapter = new RecycleViewSettingsAdapter(AppSettings.getData(this));
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
-        mRecycleViewAdapter.setOnItemClickListener((position, v) -> {
-            AppSettings.handleSettingsActions(mRecycleViewAdapter, position, this);
-        });
+        mRecycleViewAdapter.setOnItemClickListener((position, v) ->
+                AppSettings.handleSettingsActions(mRecycleViewAdapter, position, this));
 
         mBack.setOnClickListener(v -> onBackPressed());
     }

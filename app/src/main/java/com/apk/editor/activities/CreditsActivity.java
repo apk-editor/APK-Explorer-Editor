@@ -101,7 +101,7 @@ public class CreditsActivity extends AppCompatActivity {
             holder.Description.setTextColor(APKEditorUtils.getThemeAccentColor(holder.Title.getContext()));
             holder.Description.setOnClickListener(v -> {
                 if (data.get(position).getURL() != null) {
-                    APKEditorUtils.launchUrl(data.get(position).getURL(), (Activity) holder.Description.getContext());
+                    APKEditorUtils.launchUrl(data.get(position).getURL(), (Activity) v.getContext());
                 }
             });
         }

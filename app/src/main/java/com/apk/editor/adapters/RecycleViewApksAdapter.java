@@ -48,7 +48,7 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
         return new ViewHolder(rowItem);
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint({"UseCompatLoadingForDrawables", "NotifyDataSetChanged"})
     @Override
     public void onBindViewHolder(@NonNull RecycleViewApksAdapter.ViewHolder holder, int position) {
         try {
@@ -67,9 +67,7 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                 }
                 if (APKData.getAppID(data.get(position) + "/base.apk", holder.mAppName.getContext()) == null) {
                     holder.mAppName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                    holder.mCard.setOnClickListener(v -> {
-                        APKEditorUtils.snackbar(v, v.getContext().getString(R.string.apk_corrupted));
-                    });
+                    holder.mCard.setOnClickListener(v -> APKEditorUtils.snackbar(v, v.getContext().getString(R.string.apk_corrupted)));
                 }
                 if (APKData.getVersionName(data.get(position) + "/base.apk", holder.mAppName.getContext()) != null) {
                     holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.version, APKData.getVersionName(data.get(position) + "/base.apk", holder.mAppName.getContext())));
@@ -78,21 +76,19 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                     if (APKEditorUtils.isFullVersion(v.getContext()) && data.get(position).contains("_aee-signed") && !APKEditorUtils.getBoolean("signature_warning", false, v.getContext())) {
                         APKData.showSignatureErrorDialog(v.getContext());
                     } else {
-                        new MaterialAlertDialogBuilder(holder.mCard.getContext())
-                                .setMessage(holder.mCard.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
+                        new MaterialAlertDialogBuilder(v.getContext())
+                                .setMessage(v.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
-                                .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installSplitAPKs(null, data.get(position) + "/base.apk", (Activity) holder.mCard.getContext())).show();
+                                .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installSplitAPKs(null, data.get(position) + "/base.apk", (Activity) v.getContext())).show();
                     }
                 });
                 holder.mCard.setOnLongClickListener(v -> {
-                    new MaterialAlertDialogBuilder(holder.mCard.getContext())
-                            .setMessage(holder.mCard.getContext().getString(R.string.share_message, new File(data.get(position)).getName()))
-                            .setNegativeButton(holder.mCard.getContext().getString(R.string.cancel), (dialog, id) -> {
+                    new MaterialAlertDialogBuilder(v.getContext())
+                            .setMessage(v.getContext().getString(R.string.share_message, new File(data.get(position)).getName()))
+                            .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
                             })
-                            .setPositiveButton(holder.mCard.getContext().getString(R.string.share), (dialog, id) -> {
-                                APKData.shareAppBundle(new File(data.get(position)).getName(), data.get(position), holder.mCard.getContext());
-                            }).show();
+                            .setPositiveButton(v.getContext().getString(R.string.share), (dialog, id) -> APKData.shareAppBundle(new File(data.get(position)).getName(), data.get(position), holder.mCard.getContext())).show();
                     return false;
                 });
             } else {
@@ -117,9 +113,7 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                         holder.mAppName.setText(new File(data.get(position)).getName());
                     }
                     holder.mAppName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                    holder.mCard.setOnClickListener(v -> {
-                        APKEditorUtils.snackbar(v, v.getContext().getString(R.string.apk_corrupted));
-                    });
+                    holder.mCard.setOnClickListener(v -> APKEditorUtils.snackbar(v, v.getContext().getString(R.string.apk_corrupted)));
                 }
                 if (!APKEditorUtils.isDarkTheme(holder.mCard.getContext())) {
                     holder.mCard.setCardBackgroundColor(Color.LTGRAY);
@@ -134,29 +128,27 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                     if (APKEditorUtils.isFullVersion(v.getContext()) && data.get(position).contains("_aee-signed.apk") && !APKEditorUtils.getBoolean("signature_warning", false, v.getContext())) {
                         APKData.showSignatureErrorDialog(v.getContext());
                     } else {
-                        new MaterialAlertDialogBuilder(holder.mCard.getContext())
-                                .setMessage(holder.mCard.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
+                        new MaterialAlertDialogBuilder(v.getContext())
+                                .setMessage(v.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
-                                .setPositiveButton(R.string.install, (dialog, id) -> {
-                                    SplitAPKInstaller.installAPK(new File(data.get(position)), (Activity) holder.mCard.getContext());
-                                }).show();
+                                .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installAPK(new File(data.get(position)), (Activity) v.getContext())).show();
                     }
                 });
                 holder.mCard.setOnLongClickListener(v -> {
-                    new MaterialAlertDialogBuilder(holder.mCard.getContext())
-                            .setMessage(holder.mCard.getContext().getString(R.string.share_message, APKData.getAppName(data.get(position), holder.mAppName.getContext())))
-                            .setNegativeButton(holder.mCard.getContext().getString(R.string.cancel), (dialog, id) -> {
+                    new MaterialAlertDialogBuilder(v.getContext())
+                            .setMessage(v.getContext().getString(R.string.share_message, APKData.getAppName(data.get(position), v.getContext())))
+                            .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
                             })
-                            .setPositiveButton(holder.mCard.getContext().getString(R.string.share), (dialog, id) -> {
-                                Uri uriFile = FileProvider.getUriForFile(holder.mCard.getContext(),
+                            .setPositiveButton(v.getContext().getString(R.string.share), (dialog, id) -> {
+                                Uri uriFile = FileProvider.getUriForFile(v.getContext(),
                                         BuildConfig.APPLICATION_ID + ".provider", new File(data.get(position)));
                                 Intent share = new Intent(Intent.ACTION_SEND);
                                 share.setType("application/java-archive");
-                                share.putExtra(Intent.EXTRA_TEXT, holder.mCard.getContext().getString(R.string.share_summary, BuildConfig.VERSION_NAME));
+                                share.putExtra(Intent.EXTRA_TEXT, v.getContext().getString(R.string.share_summary, BuildConfig.VERSION_NAME));
                                 share.putExtra(Intent.EXTRA_STREAM, uriFile);
                                 share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                holder.mCard.getContext().startActivity(Intent.createChooser(share, holder.mCard.getContext().getString(R.string.share_with)));
+                                v.getContext().startActivity(Intent.createChooser(share, v.getContext().getString(R.string.share_with)));
                             }).show();
                     return false;
                 });
@@ -165,13 +157,14 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
             holder.mVersion.setTextColor(Color.RED);
         } catch (NullPointerException ignored) {
         }
-        holder.mDelete.setOnClickListener(v -> new MaterialAlertDialogBuilder(holder.mDelete.getContext())
-                .setMessage(holder.mDelete.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))
+        holder.mDelete.setOnClickListener(v -> new MaterialAlertDialogBuilder(v.getContext())
+                .setMessage(v.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))
                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                 })
                 .setPositiveButton(R.string.delete, (dialog, id) -> {
                     APKEditorUtils.delete(data.get(position));
                     data.remove(position);
+                    notifyItemRemoved(position);
                     notifyDataSetChanged();
                 }).show());
         holder.mDelete.setColorFilter(Color.RED);

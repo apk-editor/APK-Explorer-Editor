@@ -57,26 +57,26 @@ public class RecycleViewAboutAdapter extends RecyclerView.Adapter<RecycleViewAbo
         holder.mIcon.setImageDrawable(data.get(position).getIcon());
         holder.mRVLayout.setOnClickListener(v -> {
             if (data.get(position).getURL() != null) {
-                APKEditorUtils.launchUrl(data.get(position).getURL(), (Activity) holder.mRVLayout.getContext());
+                APKEditorUtils.launchUrl(data.get(position).getURL(), (Activity) v.getContext());
             } else if (position == 0) {
                 Intent settings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 settings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Uri uri = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null);
                 settings.setData(uri);
-                holder.mRVLayout.getContext().startActivity(settings);
+                v.getContext().startActivity(settings);
             } else if (position == 5) {
-                Intent documentation = new Intent(holder.mRVLayout.getContext(), DocumentationActivity.class);
-                holder.mRVLayout.getContext().startActivity(documentation);
+                Intent documentation = new Intent(v.getContext(), DocumentationActivity.class);
+                v.getContext().startActivity(documentation);
             } else if (position == 6) {
-                Intent credits = new Intent(holder.mRVLayout.getContext(), CreditsActivity.class);
-                holder.mRVLayout.getContext().startActivity(credits);
+                Intent credits = new Intent(v.getContext(), CreditsActivity.class);
+                v.getContext().startActivity(credits);
             } else {
                 Intent share_app = new Intent();
                 share_app.setAction(Intent.ACTION_SEND);
-                share_app.putExtra(Intent.EXTRA_TEXT, holder.mRVLayout.getContext().getString(R.string.share_summary, BuildConfig.VERSION_NAME));
+                share_app.putExtra(Intent.EXTRA_TEXT, v.getContext().getString(R.string.share_summary, BuildConfig.VERSION_NAME));
                 share_app.setType("text/plain");
-                Intent shareIntent = Intent.createChooser(share_app, holder.mRVLayout.getContext().getString(R.string.share_with));
-                holder.mRVLayout.getContext().startActivity(shareIntent);
+                Intent shareIntent = Intent.createChooser(share_app, v.getContext().getString(R.string.share_with));
+                v.getContext().startActivity(shareIntent);
             }
         });
     }

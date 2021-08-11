@@ -71,9 +71,7 @@ public class TextEditorActivity extends AppCompatActivity {
                         getString(R.string.app_name)) : getString(R.string.permission_denied_message));
                 mPermissionLayout.setVisibility(View.VISIBLE);
                 mMainLayout.setVisibility(View.GONE);
-                mPermissionGrant.setOnClickListener(v -> {
-                    APKExplorer.requestPermission(this);
-                });
+                mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
                 return;
             }
             Uri uri = getIntent().getData();
@@ -99,9 +97,7 @@ public class TextEditorActivity extends AppCompatActivity {
                         .setTitle(R.string.text_editor)
                         .setMessage(getString(R.string.file_path_error))
                         .setCancelable(false)
-                        .setPositiveButton(R.string.cancel, (dialogInterface, i) -> {
-                            finish();
-                        }).show();
+                        .setPositiveButton(R.string.cancel, (dialogInterface, i) -> finish()).show();
             }
         } else if (mPath != null) {
             mTitle.setText(new File(mPath).getName());

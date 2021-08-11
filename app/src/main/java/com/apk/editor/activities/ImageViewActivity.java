@@ -66,9 +66,7 @@ public class ImageViewActivity extends AppCompatActivity {
                         getString(R.string.app_name)) : getString(R.string.permission_denied_message));
                 mPermissionLayout.setVisibility(View.VISIBLE);
                 mMainLayout.setVisibility(View.GONE);
-                mPermissionGrant.setOnClickListener(v -> {
-                    APKExplorer.requestPermission(this);
-                });
+                mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
                 return;
             }
             Uri uri = getIntent().getData();
@@ -92,9 +90,7 @@ public class ImageViewActivity extends AppCompatActivity {
                         .setTitle(R.string.image_viewer)
                         .setMessage(getString(R.string.file_path_error))
                         .setCancelable(false)
-                        .setPositiveButton(R.string.cancel, (dialogInterface, i) -> {
-                            finish();
-                        }).show();
+                        .setPositiveButton(R.string.cancel, (dialogInterface, i) -> finish()).show();
             }
         } else if (path != null) {
             mTitle.setText(new File(path).getName());

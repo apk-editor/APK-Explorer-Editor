@@ -70,9 +70,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                     getString(R.string.app_name)) : getString(R.string.permission_denied_message));
             mPermissionLayout.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
-            mPermissionGrant.setOnClickListener(v -> {
-                APKExplorer.requestPermission(this);
-            });
+            mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
             return;
         }
 
@@ -257,7 +255,6 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                         protected void onPostExecute(List<String> recyclerViewItems) {
                             super.onPostExecute(recyclerViewItems);
                             mRecyclerView.setAdapter(mRecycleViewAdapter);
-                            mRecycleViewAdapter.notifyDataSetChanged();
                             if (getIntent().getStringExtra(TITLE_INTENT) != null) {
                                 mTitle.setText(getIntent().getStringExtra(TITLE_INTENT));
                             } else {
@@ -305,9 +302,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                     .setMessage(getString(R.string.installation_cancel_message))
                     .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
                     })
-                    .setPositiveButton(getString(R.string.yes), (dialogInterface, i) -> {
-                        finish();
-                    }).show();
+                    .setPositiveButton(getString(R.string.yes), (dialogInterface, i) -> finish()).show();
         } else if (Common.getPath().equals(Environment.getExternalStorageDirectory().toString() + File.separator)) {
             super.onBackPressed();
         } else {

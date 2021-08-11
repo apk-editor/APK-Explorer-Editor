@@ -176,9 +176,8 @@ public class APKData {
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.app_name)
                 .setMessage(context.getString(R.string.signature_warning))
-                .setPositiveButton(R.string.got_it, (dialog, id) -> {
-                    APKEditorUtils.saveBoolean("signature_warning", true, context);
-                }).show();
+                .setPositiveButton(R.string.got_it, (dialog, id) ->
+                        APKEditorUtils.saveBoolean("signature_warning", true, context)).show();
     }
 
     private static void prepareSource(File buildDir, File exportPath, File backupPath) {
