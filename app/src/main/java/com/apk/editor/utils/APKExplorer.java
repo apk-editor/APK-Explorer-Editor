@@ -220,7 +220,6 @@ public class APKExplorer {
                             APKEditorUtils.delete(files.getAbsolutePath());
                             File mDexExtractPath = new File(mExplorePath, files.getName());
                             mDexExtractPath.mkdirs();
-                            mProgressDialog.setMessage(context.getString(R.string.decompiling, files.getName()));
                             new DexToSmali(false, new File(AppData.getSourceDir(Common.getAppID(), context)), mDexExtractPath, 0, files.getName()).execute();
                         }
                     }
@@ -238,6 +237,4 @@ public class APKExplorer {
                 context.startActivity(explorer);
             }
         }.execute();
-    }
-
-}
+    }}

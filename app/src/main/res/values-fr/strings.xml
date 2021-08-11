@@ -164,7 +164,6 @@ Chemin : '%s'"</string>
     <string name="language">"Langue"</string>
     <string name="transfer_exported_apk">"Transfert de l'APK préalablement exportée vers le nouveau chemin"</string>
     <string name="user_interface">"Interface utilisateur"</string>
-    <string name="decompiling">"Décompilation de '%s'"</string>
     <string name="deleting">"Suppression de '%s'"</string>
     <string name="file_permission_request_message">"Afin d'utiliser cette fonction sur des versions d'Android récentes (Android R ou plus récent), il est nécessaire d'accorder la permission \"Accès à tous les fichiers\" à %s. Merci de l'accorder manuellement sur le nouvel écran après avoir cliqué sur le bouton \"Accorder\""</string>
     <string name="grant">"Accorder"</string>
