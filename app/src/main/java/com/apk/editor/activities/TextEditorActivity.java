@@ -162,6 +162,12 @@ public class TextEditorActivity extends AppCompatActivity {
                 })
                 .setPositiveButton(getString(R.string.save), (dialog, id) -> {
                     APKEditorUtils.create(text, path);
+                    if (mExternalFile == null && path.contains("classes") && path.contains(".dex")) {
+                        String parentPath = path.split(".dex")[0] + ".dex";
+                        if (!APKEditorUtils.exist(new File(parentPath, "edited").getAbsolutePath())) {
+                            APKEditorUtils.create("# Edited", new File(parentPath, "edited").getAbsolutePath());
+                        }
+                    }
                     finish();
                 }).show();
     }

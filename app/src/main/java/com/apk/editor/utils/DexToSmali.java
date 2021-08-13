@@ -13,6 +13,8 @@ import java.io.File;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on August 08, 2021
+ * The following code is based on the original work of @iBotPeaches (ref: https://github.com/iBotPeaches/Apktool)
+ * and @JesusFreke (ref: https://github.com/JesusFreke/smali)
  */
 public class DexToSmali {
 
@@ -29,9 +31,6 @@ public class DexToSmali {
         this.mDEXName = dexName;
     }
 
-    /*
-     * The following code is based on the original work of @iBotPeaches for https://github.com/iBotPeaches/Apktool
-     */
     void execute() {
         try {
             final BaksmaliOptions options = new BaksmaliOptions();

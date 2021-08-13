@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.view.WindowManager;
 
 import androidx.core.content.FileProvider;
 
@@ -189,11 +190,15 @@ public class APKData {
                     APKEditorUtils.copy(file.getAbsolutePath(), new File(buildDir, file.getName()).getAbsolutePath());
                 }
             }
-        }
-        if (backupPath.exists()) {
-            for (File file : Objects.requireNonNull(backupPath.listFiles())) {
-                if (file.getName().startsWith("classes") && file.getName().endsWith(".dex")) {
-                    APKEditorUtils.copy(file.getAbsolutePath(), new File(buildDir, file.getName()).getAbsolutePath());
+            if (file.isDirectory() && file.getName().startsWith("classes") && file.getName().endsWith(".dex")) {
+                // Build new dex file if the smali files are modified
+                if (APKEditorUtils.exist(new File(file, "edited").getAbsolutePath())) {
+                    new SmaliToDex(file, new File(buildDir, file.getName()), 0).execute();
+                } else {
+                    // Otherwise, use the original one from the backup folder
+                    if (APKEditorUtils.exist(new File(backupPath, file.getName()).getAbsolutePath())) {
+                        APKEditorUtils.copy(new File(backupPath, file.getName()).getAbsolutePath(), new File(buildDir, file.getName()).getAbsolutePath());
+                    }
                 }
             }
         }
@@ -212,6 +217,8 @@ public class APKData {
                         new File(Common.getPath()).getName())));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
+
+                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
                 if (mTMPZip.exists()) {
                     APKEditorUtils.delete(mTMPZip.getAbsolutePath());
@@ -266,6 +273,7 @@ public class APKData {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
                 }
+                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 activity.finish();
             }
         }.execute();
@@ -322,6 +330,9 @@ public class APKData {
                 mProgressDialog.setMessage(activity.getString(R.string.resigning_apks));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
+
+                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
                 // Find package name from the selected APK's
                 mPackageName = findPackageName(activity);
             }
@@ -363,6 +374,7 @@ public class APKData {
                             .setCancelable(false)
                             .setPositiveButton(R.string.cancel, (dialog, id) -> activity.finish()).show();
                 }
+                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             }
         }.execute();
     }
@@ -379,6 +391,9 @@ public class APKData {
                 mProgressDialog.setMessage(activity.getString(R.string.resigning_apks));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
+
+                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
                 // Find package name from the selected APK's
                 mPackageName = findPackageName(activity);
                 if (mParent.exists()) {
@@ -425,6 +440,7 @@ public class APKData {
                     }
                 }
                 Common.setFinishStatus(true);
+                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             }
         }.execute();
     }

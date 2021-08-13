@@ -51,4 +51,5 @@ dependencies {
     implementation 'net.dongliu:apk-parser:2.6.10'
     implementation 'net.lingala.zip4j:zip4j:2.8.0'
     implementation 'org.smali:baksmali:2.5.2'
+    implementation 'org.smali:smali:2.5.2'
 }

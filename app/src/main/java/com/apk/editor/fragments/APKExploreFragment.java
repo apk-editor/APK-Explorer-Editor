@@ -217,9 +217,11 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                mTitle.setText(Common.getAppID().equals(requireActivity().getCacheDir().getPath() + "/" + (Common.getAppID() != null ?
-                        Common.getAppID() : new File(Common.getPath()).getName()) + File.separator) ? AppData.getAppName(Common.getAppID(), activity)
-                        : new File(Common.getPath()).getName());
+                if (Common.getAppID() != null) {
+                    mTitle.setText(Common.getAppID().equals(requireActivity().getCacheDir().getPath() + "/" + (Common.getAppID() != null ?
+                            Common.getAppID() : new File(Common.getPath()).getName()) + File.separator) ? AppData.getAppName(Common.getAppID(), activity)
+                            : new File(Common.getPath()).getName());
+                }
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
             }
         }.execute();
