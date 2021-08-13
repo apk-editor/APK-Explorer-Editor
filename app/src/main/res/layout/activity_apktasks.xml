@@ -63,19 +63,19 @@
                     android:padding="10dp" >
 
                         <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/error"
+                            android:id="@+id/success"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
                             android:layout_gravity="start"
                             android:clickable="false"
                             android:textStyle="italic"
                             android:visibility="gone" />
 
                         <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/success"
+                            android:id="@+id/error"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
                             android:layout_gravity="end"
                             android:clickable="false"
                             android:textStyle="italic"
