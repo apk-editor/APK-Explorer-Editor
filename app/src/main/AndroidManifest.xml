@@ -47,6 +47,7 @@
         </activity>
 
         <activity android:name=".activities.APKSignActivity" />
+        <activity android:name=".activities.APKTasksActivity" />
         <activity android:name=".activities.CreditsActivity" />
         <activity android:name=".activities.DocumentationActivity" />
         <activity android:name=".activities.FilePickerActivity" />

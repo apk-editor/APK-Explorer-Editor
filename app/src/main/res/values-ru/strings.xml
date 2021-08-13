@@ -137,5 +137,6 @@
     <string name="language">"Язык"</string>
     <string name="transfer_exported_apk">"Перенос экспортированных APK-файлов в новую директорию…"</string>
     <string name="user_interface">"Пользовательский интерфейс"</string>
+    <string name="decompiling">"Декомпиляция '%s'…"</string>
     <string name="deleting">"Удаление '%s'…"</string>
 </resources>

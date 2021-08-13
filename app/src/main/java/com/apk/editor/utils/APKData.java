@@ -15,6 +15,7 @@ import androidx.core.content.FileProvider;
 
 import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
+import com.apk.editor.activities.APKTasksActivity;
 import com.apk.editor.apksigner.ApkSigner;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -69,7 +70,7 @@ public class APKData {
         return getExportAPKsPath(context).listFiles();
     }
 
-    private static File getExportAPKsPath(Context context) {
+    public static File getExportAPKsPath(Context context) {
         if (APKEditorUtils.getString("exportAPKsPath", "externalFiles", context).equals("internalStorage")) {
             return new File(Environment.getExternalStorageDirectory(), "/AEE/exportedAPKs");
         } else {
@@ -181,7 +182,7 @@ public class APKData {
                         APKEditorUtils.saveBoolean("signature_warning", true, context)).show();
     }
 
-    private static void prepareSource(File buildDir, File exportPath, File backupPath) {
+    private static void prepareSource(File buildDir, File exportPath, File backupPath, Context context) {
         for (File file : Objects.requireNonNull(exportPath.listFiles())) {
             if (!fileToExclude(file)) {
                 if (file.isDirectory()) {
@@ -193,7 +194,8 @@ public class APKData {
             if (file.isDirectory() && file.getName().startsWith("classes") && file.getName().endsWith(".dex")) {
                 // Build new dex file if the smali files are modified
                 if (APKEditorUtils.exist(new File(file, "edited").getAbsolutePath())) {
-                    new SmaliToDex(file, new File(buildDir, file.getName()), 0).execute();
+                    Common.setStatus(context.getString(R.string.building, file.getName()));
+                    new SmaliToDex(file, new File(buildDir, file.getName()), 0, context).execute();
                 } else {
                     // Otherwise, use the original one from the backup folder
                     if (APKEditorUtils.exist(new File(backupPath, file.getName()).getAbsolutePath())) {
@@ -206,20 +208,18 @@ public class APKData {
 
     public static void prepareSignedAPK(Activity activity) {
         new AsyncTask<Void, Void, Void>() {
-            private ProgressDialog mProgressDialog;
             private final File mTMPZip = new File(activity.getCacheDir(), "tmp.apk");
             private File mBuilDir;
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                mProgressDialog = new ProgressDialog(activity);
-                mProgressDialog.setMessage(activity.getString(R.string.preparing_apk, (Common.getAppID() != null ? Common.getAppID() :
+                Common.setFinishStatus(false);
+                Common.isBuilding(true);
+                Common.setStatus(null);
+                Intent apkTasks = new Intent(activity, APKTasksActivity.class);
+                activity.startActivity(apkTasks);
+                Common.setStatus(activity.getString(R.string.preparing_apk, (Common.getAppID() != null ? Common.getAppID() :
                         new File(Common.getPath()).getName())));
-                mProgressDialog.setCancelable(false);
-                mProgressDialog.show();
-
-                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
                 if (mTMPZip.exists()) {
                     APKEditorUtils.delete(mTMPZip.getAbsolutePath());
                 }
@@ -227,26 +227,30 @@ public class APKData {
 
             @Override
             protected Void doInBackground(Void... voids) {
+                Common.setStatus(activity.getString(R.string.preparing_source));
                 if (Common.getAppID() != null) {
                     File mExportPath = new File(activity.getCacheDir().getPath(), Common.getAppID());
                     File mBackUpPath = new File(mExportPath, ".aeeBackup");
                     mBuilDir = new File(mExportPath, ".aeeBuild");
                     mBuilDir.mkdirs();
-                    prepareSource(mBuilDir, mExportPath, mBackUpPath);
+                    prepareSource(mBuilDir, mExportPath, mBackUpPath, activity);
                     APKEditorUtils.zip(mBuilDir, mTMPZip);
                     if (APKData.isAppBundle(AppData.getSourceDir(Common.getAppID(), activity))) {
                         File mParent = new File(getExportAPKsPath(activity), Common.getAppID() + "_aee-signed");
                         mParent.mkdirs();
                         for (String mSplits : splitApks(AppData.getSourceDir(Common.getAppID(), activity))) {
                             if (!new File(mSplits).getName().equals("base.apk")) {
+                                Common.setStatus(activity.getString(R.string.signing, new File(mSplits).getName()));
                                 signApks(new File(mSplits), new File(mParent.toString() + "/" + new File(mSplits).getName()), activity);
                             }
                         }
+                        Common.setStatus(activity.getString(R.string.signing, "base.apk"));
                         signApks(mTMPZip, new File(mParent.toString() + "/base.apk"), activity);
                     } else {
                         if (!getExportAPKsPath(activity).exists()) {
                             getExportAPKsPath(activity).mkdirs();
                         }
+                        Common.setStatus(activity.getString(R.string.signing, new File(getExportAPKsPath(activity), Common.getAppID() + "_aee-signed.apk").getName()));
                         signApks(mTMPZip, new File(getExportAPKsPath(activity), Common.getAppID() + "_aee-signed.apk"), activity);
                     }
                 } else {
@@ -257,8 +261,9 @@ public class APKData {
                     File mBackUpPath = new File(mExportPath, ".aeeBackup");
                     mBuilDir = new File(mExportPath, ".aeeBuild");
                     mBuilDir.mkdirs();
-                    prepareSource(mBuilDir, mExportPath, mBackUpPath);
+                    prepareSource(mBuilDir, mExportPath, mBackUpPath, activity);
                     APKEditorUtils.zip(mBuilDir, mTMPZip);
+                    Common.setStatus(activity.getString(R.string.signing, new File(getExportAPKsPath(activity), new File(Common.getPath()).getName() + "_aee-signed.apk").getName()));
                     signApks(mTMPZip, new File(getExportAPKsPath(activity), new File(Common.getPath()).getName() + "_aee-signed.apk"), activity);
                 }
                 return null;
@@ -269,11 +274,9 @@ public class APKData {
                 super.onPostExecute(aVoid);
                 APKEditorUtils.delete(mTMPZip.getAbsolutePath());
                 APKEditorUtils.delete(mBuilDir.getAbsolutePath());
-                try {
-                    mProgressDialog.dismiss();
-                } catch (IllegalArgumentException ignored) {
+                if (!Common.isFinished()) {
+                    Common.setFinishStatus(true);
                 }
-                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 activity.finish();
             }
         }.execute();

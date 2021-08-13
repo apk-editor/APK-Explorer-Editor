@@ -12,10 +12,16 @@ import java.util.List;
  */
 public class Common {
 
-    private static boolean mFinish = false, mPrivateKey = false, mRSATemplate = false;
+    private static boolean mBuilding = false, mFinish = false, mPrivateKey = false, mRSATemplate = false;
     private static final List<String> mAPKList = new ArrayList<>();
+    private static int mError = 0, mSuccess = 0;
     private static MaterialCardView mSelect;
-    private static String mAppID, mFilePath = null, mFileToReplace = null, mPackageName = null, mPath = null, mSearchText, mSearchWord;
+    private static String mAppID, mFilePath = null, mFileToReplace = null, mPackageName = null,
+            mPath = null, mSearchText, mSearchWord, mStatus = null;
+
+    public static boolean isBuilding() {
+        return mBuilding;
+    }
 
     public static boolean isFinished() {
         return mFinish;
@@ -36,6 +42,14 @@ public class Common {
 
     public static boolean hasRASATemplate() {
         return mRSATemplate;
+    }
+
+    public static int getError() {
+        return mError;
+    }
+
+    public static int getSuccess() {
+        return mSuccess;
     }
 
     public static List<String> getAPKList() {
@@ -74,8 +88,16 @@ public class Common {
         return mSearchWord;
     }
 
+    public static String getStatus() {
+        return mStatus;
+    }
+
     public static void initializeView(View view, int id) {
         mSelect = view.findViewById(id);
+    }
+
+    public static void isBuilding(boolean b) {
+        mBuilding = b;
     }
 
     public static void setFinishStatus(boolean b) {
@@ -92,6 +114,10 @@ public class Common {
 
     public static void setAppID(String appID) {
         mAppID = appID;
+    }
+
+    public static void setError(int i) {
+        mError = i;
     }
 
     public static void setFilePath(String filePath) {
@@ -116,6 +142,14 @@ public class Common {
 
     public static void setSearchWord(String searchWord) {
         mSearchWord = searchWord;
+    }
+
+    public static void setStatus(String status) {
+        mStatus = status;
+    }
+
+    public static void setSuccess(int i) {
+        mSuccess = i;
     }
 
 }

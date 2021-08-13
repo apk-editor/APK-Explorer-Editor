@@ -23,6 +23,7 @@
     <string name="credits_message">Quer ver seu nome aqui? Então, por favor, me ajude a traduzir este App!</string>
     <string name="credits_summary">Créditos aos colaboradores</string>
     <string name="copyright">Direitos autorais: © %s</string>
+    <string name="decompiling">Desmontando \'%s\'…</string>
     <string name="delete">Excluir</string>
     <string name="delete_question">Excluir %s?</string>
     <string name="deleting">Excluindo \'%s\'…</string>

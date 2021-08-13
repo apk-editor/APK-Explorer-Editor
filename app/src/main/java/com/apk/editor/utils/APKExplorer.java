@@ -2,7 +2,6 @@ package com.apk.editor.utils;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,6 +21,8 @@ import androidx.core.app.ActivityCompat;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
+import com.apk.editor.activities.APKSignActivity;
+import com.apk.editor.activities.APKTasksActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import net.dongliu.apk.parser.ApkFile;
@@ -190,22 +191,119 @@ public class APKExplorer {
         return bitmap;
     }
 
+    private static void installAPKs(Activity activity) {
+        if (APKData.findPackageName(activity) != null) {
+            if (Common.getAPKList().size() > 1) {
+                SplitAPKInstaller.installSplitAPKs(Common.getAPKList(), null, activity);
+            } else {
+                SplitAPKInstaller.installAPK(new File(Common.getAPKList().get(0)), activity);
+            }
+            activity.finish();
+        } else {
+            APKEditorUtils.snackbar(activity.findViewById(android.R.id.content), activity.getString(R.string.installation_status_bad_apks));
+        }
+    }
+
+    public static void handleAPKs(Activity activity) {
+        if (APKEditorUtils.isFullVersion(activity)) {
+            if (APKEditorUtils.getString("installerAction", null, activity) == null) {
+                new MaterialAlertDialogBuilder(activity).setItems(activity.getResources().getStringArray(
+                        R.array.install_options), (dialogInterface, i) -> {
+                    switch (i) {
+                        case 0:
+                            installAPKs(activity);
+                            break;
+                        case 1:
+                            if (!APKEditorUtils.getBoolean("firstSigning", false, activity)) {
+                                new MaterialAlertDialogBuilder(activity).setItems(activity.getResources().getStringArray(
+                                        R.array.signing), (dialogInterfacei, ii) -> {
+                                    APKEditorUtils.saveBoolean("firstSigning", true, activity);
+                                    switch (ii) {
+                                        case 0:
+                                            APKData.reSignAndInstall(activity);
+                                            break;
+                                        case 1:
+                                            Intent signing = new Intent(activity, APKSignActivity.class);
+                                            activity.startActivity(signing);
+                                            break;
+                                    }
+                                }).setCancelable(false)
+                                        .setOnDismissListener(dialogInterfacei -> {
+                                        }).show();
+                            } else {
+                                APKData.reSignAndInstall(activity);
+                            }
+                            break;
+                        case 2:
+                            if (!APKEditorUtils.getBoolean("firstSigning", false, activity)) {
+                                new MaterialAlertDialogBuilder(activity).setItems(activity.getResources().getStringArray(
+                                        R.array.signing), (dialogInterfacei, ii) -> {
+                                    APKEditorUtils.saveBoolean("firstSigning", true, activity);
+                                    switch (ii) {
+                                        case 0:
+                                            APKData.reSignAPKs(activity);
+                                            break;
+                                        case 1:
+                                            Intent signing = new Intent(activity, APKSignActivity.class);
+                                            activity.startActivity(signing);
+                                            break;
+                                    }
+                                }).setCancelable(false)
+                                        .setOnDismissListener(dialogInterfacei -> {
+                                        }).show();
+                            } else {
+                                APKData.reSignAPKs(activity);
+                            }
+                            break;
+                    }
+                }).setOnDismissListener(dialogInterface -> {
+                }).show();
+            } else if (APKEditorUtils.getString("installerAction", null, activity).equals(activity.getString(R.string.install))) {
+                installAPKs(activity);
+            } else {
+                if (!APKEditorUtils.getBoolean("firstSigning", false, activity)) {
+                    new MaterialAlertDialogBuilder(activity).setItems(activity.getResources().getStringArray(
+                            R.array.signing), (dialogInterface, i) -> {
+                        APKEditorUtils.saveBoolean("firstSigning", true, activity);
+                        switch (i) {
+                            case 0:
+                                APKData.reSignAndInstall(activity);
+                                break;
+                            case 1:
+                                Intent signing = new Intent(activity, APKSignActivity.class);
+                                activity.startActivity(signing);
+                                break;
+                        }
+                    }).setCancelable(false)
+                            .setOnDismissListener(dialogInterface -> {
+                            }).show();
+                } else {
+                    APKData.reSignAndInstall(activity);
+                }
+            }
+        } else {
+            installAPKs(activity);
+        }
+    }
+
     public static void exploreAPK(String packageName, Context context) {
         new AsyncTask<Void, Void, Void>() {
             private File mExplorePath;
             private File mBackUpPath;
-            private ProgressDialog mProgressDialog;
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                mProgressDialog = new ProgressDialog(context);
-                mProgressDialog.setMessage(context.getString(R.string.exploring, AppData.getAppName(packageName, context)));
-                mProgressDialog.setCancelable(false);
-                mProgressDialog.show();
                 Common.setAppID(packageName);
                 mExplorePath = new File(context.getCacheDir().getPath(), packageName);
                 mBackUpPath = new File(mExplorePath, ".aeeBackup");
                 Common.setPath(mExplorePath.getAbsolutePath());
+                if (!mExplorePath.exists()) {
+                    Common.setFinishStatus(false);
+                    Common.setStatus(null);
+                    Intent apkTasks = new Intent(context, APKTasksActivity.class);
+                    context.startActivity(apkTasks);
+                    Common.setStatus(context.getString(R.string.exploring, AppData.getAppName(packageName, context)));
+                }
             }
             @Override
             protected Void doInBackground(Void... voids) {
@@ -220,6 +318,7 @@ public class APKExplorer {
                             APKEditorUtils.delete(files.getAbsolutePath());
                             File mDexExtractPath = new File(mExplorePath, files.getName());
                             mDexExtractPath.mkdirs();
+                            Common.setStatus(context.getString(R.string.decompiling, files.getName()));
                             new DexToSmali(false, new File(AppData.getSourceDir(Common.getAppID(), context)), mDexExtractPath, 0, files.getName()).execute();
                         }
                     }
@@ -229,9 +328,8 @@ public class APKExplorer {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                try {
-                    mProgressDialog.dismiss();
-                } catch (IllegalArgumentException ignored) {
+                if (!Common.isFinished()) {
+                    Common.setFinishStatus(true);
                 }
                 Intent explorer = new Intent(context, APKExploreActivity.class);
                 context.startActivity(explorer);

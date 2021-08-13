@@ -1,5 +1,9 @@
 package com.apk.editor.utils;
 
+import android.content.Context;
+
+import com.apk.editor.R;
+
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
@@ -27,22 +31,28 @@ import java.util.Objects;
  */
 public class SmaliToDex {
 
+    private final Context mContext;
     private final File mDexFile, mSmaliDir;
     private final int mApiLevel;
     private final List<File> mFiles = new ArrayList<>();
 
-    public SmaliToDex(File smaliDir, File dexFile, int apiLevel) {
+    public SmaliToDex(File smaliDir, File dexFile, int apiLevel, Context context) {
         mSmaliDir = smaliDir;
         mDexFile = dexFile;
         mApiLevel = apiLevel;
+        mContext = context;
     }
 
     private void buildFile(File file, DexBuilder dexBuilder) {
         try {
             InputStream inStream = new FileInputStream(file);
             if (!assembleSmaliFile(file, dexBuilder, mApiLevel)) {
+                Common.setStatus(mContext.getString(R.string.assembling, file.getName()) + " : " + mContext.getString(R.string.failed));
+                Common.setError(Common.getError() + 1);
                 throw new RuntimeException("Could not smali file: " + file.getName());
             }
+            Common.setSuccess(Common.getSuccess() + 1);
+            Common.setStatus(mContext.getString(R.string.assembling, file.getName()) + " : " + mContext.getString(R.string.success));
             inStream.close();
         } catch (Exception ignored) {}
     }

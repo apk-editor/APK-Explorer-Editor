@@ -13,6 +13,8 @@
     <string name="app_theme_auto">Auto</string>
     <string name="app_theme_dark">Dark</string>
     <string name="app_theme_light">Light</string>
+    <string name="assembling">Assembling\n\'%s\'</string>
+    <string name="building">Building\'%s\'…</string>
     <string name="bundle_install_question">Are you sure to install app bundle \'%s\'?</string>
     <string name="bundles">Bundles</string>
     <string name="cancel">Cancel</string>
@@ -22,7 +24,9 @@
     <string name="credits">Credits</string>
     <string name="credits_message">Want to see your name here? Then, please help me to translate this application!</string>
     <string name="credits_summary">Credits to contributors</string>
+    <string name="copying">Copying \'%s\'…</string>
     <string name="copyright">Copyright: © %s</string>
+    <string name="decompiling">Decompiling \'%s\'…</string>
     <string name="delete">Delete</string>
     <string name="delete_question">Delete %s?</string>
     <string name="deleting">Deleting \'%s\'…</string>
@@ -52,6 +56,7 @@
     <string name="exporting">Exporting %s…</string>
     <string name="exploring">Exploring %s…</string>
     <string name="explore_error_status">Failed to explore %s!</string>
+    <string name="failed">Failed</string>
     <string name="file_path_error">Failed to get file path from external File Manager!</string>
     <string name="file_permission_request_message">In order to get this feature working on newer Android versions (Android R or newer), it is necessary to grant \"All files access\" permission to %s. Kindly grant the permission manually from the new screen opened after clicking the \"Grant\" button.</string>
     <string name="grant">Grant</string>
@@ -96,6 +101,7 @@
     <string name="preparing_apk">Preparing %s APK…</string>
     <string name="preparing_bundle">Preparing app bundle for sharing…</string>
     <string name="preparing_bundle_install">Preparing \'%s\' for installation…</string>
+    <string name="preparing_source">Preparing source for APK building…</string>
     <string name="press_back">Press Back Button Again to close APK Explorer!</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_policy_summary">Read Privacy Policy</string>
@@ -134,7 +140,7 @@
     <string name="sign_apk_default">Default Key</string>
     <string name="sign_apk_with">Sign APK\'s with</string>
     <string name="signature_warning">It is important to uninstall the old version (if exist) of the app before installing an AEE signed APK/App bundle to avoid installation failure due to signature mismatch!</string>
-    <string name="signing">Signing %s…</string>
+    <string name="signing">Signing \'%s\'…</string>
     <string name="signing_custom">Configure custom Key</string>
     <string name="signing_default">Sign with default Key</string>
     <string name="signing_message">AEE uses PseudoApkSigner library by Aefyr to sign APK\'s. As a result, AEE requires a private key in pk8 format as well as an RSA template file created from the same key. Click here to read more about creating a private key and RSA template!</string>
@@ -148,6 +154,7 @@
     <string name="source_code">Source Code</string>
     <string name="source_code_summary">Checkout the source code of AEE</string>
     <string name="split_apk_installer">AEE Split APK Installer</string>
+    <string name="success">Success</string>
     <string name="support_group">Support Group</string>
     <string name="support_group_summary">Join AEE support group</string>
     <string name="system">System</string>
