@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.apk.editor.R;
-import com.apk.editor.fragments.APKExploreFragment;
+import com.apk.editor.fragments.APKExplorerFragment;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -19,7 +19,7 @@ public class APKExploreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_apkexplorer);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new APKExploreFragment()).commit();
+                new APKExplorerFragment()).commit();
     }
 
 }

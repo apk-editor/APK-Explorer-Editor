@@ -49,6 +49,7 @@ public class SmaliToDex {
             if (!assembleSmaliFile(file, dexBuilder, mApiLevel)) {
                 Common.setStatus(mContext.getString(R.string.assembling, file.getName()) + " : " + mContext.getString(R.string.failed));
                 Common.setError(Common.getError() + 1);
+                Common.getErrorList().add(file.getAbsolutePath());
                 throw new RuntimeException("Could not smali file: " + file.getName());
             }
             Common.setSuccess(Common.getSuccess() + 1);

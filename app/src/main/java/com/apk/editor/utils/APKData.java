@@ -234,6 +234,9 @@ public class APKData {
                     mBuilDir = new File(mExportPath, ".aeeBuild");
                     mBuilDir.mkdirs();
                     prepareSource(mBuilDir, mExportPath, mBackUpPath, activity);
+                    if (Common.getError() > 0) {
+                        return null;
+                    }
                     APKEditorUtils.zip(mBuilDir, mTMPZip);
                     if (APKData.isAppBundle(AppData.getSourceDir(Common.getAppID(), activity))) {
                         File mParent = new File(getExportAPKsPath(activity), Common.getAppID() + "_aee-signed");
@@ -262,6 +265,9 @@ public class APKData {
                     mBuilDir = new File(mExportPath, ".aeeBuild");
                     mBuilDir.mkdirs();
                     prepareSource(mBuilDir, mExportPath, mBackUpPath, activity);
+                    if (Common.getError() > 0) {
+                        return null;
+                    }
                     APKEditorUtils.zip(mBuilDir, mTMPZip);
                     Common.setStatus(activity.getString(R.string.signing, new File(getExportAPKsPath(activity), new File(Common.getPath()).getName() + "_aee-signed.apk").getName()));
                     signApks(mTMPZip, new File(getExportAPKsPath(activity), new File(Common.getPath()).getName() + "_aee-signed.apk"), activity);

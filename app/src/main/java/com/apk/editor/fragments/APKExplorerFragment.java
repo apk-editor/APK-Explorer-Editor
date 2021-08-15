@@ -37,7 +37,7 @@ import java.util.Objects;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 05, 2021
  */
-public class APKExploreFragment extends androidx.fragment.app.Fragment {
+public class APKExplorerFragment extends androidx.fragment.app.Fragment {
 
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
@@ -64,7 +64,7 @@ public class APKExploreFragment extends androidx.fragment.app.Fragment {
                 .setMessage(R.string.save_apk_message)
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                 })
-                .setPositiveButton(getString(R.string.save), (dialog, id) -> {
+                .setPositiveButton(getString(R.string.build), (dialog, id) -> {
                     if (!APKEditorUtils.getBoolean("firstSigning", false, requireActivity())) {
                         new MaterialAlertDialogBuilder(requireActivity()).setItems(requireActivity().getResources().getStringArray(
                                 R.array.signing), (dialogInterface, i) -> {

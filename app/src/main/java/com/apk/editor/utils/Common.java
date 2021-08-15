@@ -13,7 +13,7 @@ import java.util.List;
 public class Common {
 
     private static boolean mBuilding = false, mFinish = false, mPrivateKey = false, mRSATemplate = false;
-    private static final List<String> mAPKList = new ArrayList<>();
+    private static final List<String> mAPKList = new ArrayList<>(), mErrorList = new ArrayList<>();
     private static int mError = 0, mSuccess = 0;
     private static MaterialCardView mSelect;
     private static String mAppID, mFilePath = null, mFileToReplace = null, mPackageName = null,
@@ -54,6 +54,10 @@ public class Common {
 
     public static List<String> getAPKList() {
         return mAPKList;
+    }
+
+    public static List<String> getErrorList() {
+        return mErrorList;
     }
 
     public static MaterialCardView getSelectCard() {

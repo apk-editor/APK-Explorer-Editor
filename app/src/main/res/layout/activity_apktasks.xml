@@ -1,86 +1,106 @@
-<com.google.android.material.card.MaterialCardView
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_gravity="center"
-    android:layout_margin="15dp"
-    app:cardCornerRadius="10dp"
+    android:orientation="vertical"
     android:gravity="center"
     android:padding="15dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/icon"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
             android:layout_gravity="center"
-            android:orientation="vertical"
+            android:layout_margin="15dp" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="150dp"
+            android:layout_height="20dp"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressBackgroundTint="?attr/colorAccent"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/task_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorAccent"
+            android:layout_margin="15dp"
+            android:visibility="gone"
             android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="17sp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/output_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlue"
+            android:layout_gravity="center"
+            android:textStyle="bold|italic"
+            android:layout_margin="10dp"
+            android:clickable="false"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textSize="15sp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:padding="10dp" >
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/icon"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="15dp" />
-
-                <ProgressBar
-                    android:id="@+id/progress"
-                    android:layout_width="150dp"
-                    android:layout_height="20dp"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:progressBackgroundTint="?attr/colorAccent"
-                    android:layout_gravity="center"
-                    android:indeterminate="true" />
-
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/task_summary"
+                    android:id="@+id/success"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/colorAccent"
-                    android:layout_margin="15dp"
-                    android:visibility="gone"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="17sp" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/output_path"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlue"
-                    android:layout_gravity="center"
-                    android:textStyle="bold|italic"
-                    android:layout_margin="10dp"
+                    android:layout_gravity="start"
                     android:clickable="false"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:textSize="15sp" />
+                    android:textStyle="italic"
+                    android:visibility="gone" />
 
-                <FrameLayout
-                    android:layout_width="match_parent"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/error"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp" >
+                    android:gravity="center_vertical"
+                    android:layout_gravity="end"
+                    android:clickable="false"
+                    android:textStyle="italic"
+                    android:visibility="gone" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="25dp"
+            android:gravity="center" >
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="?attr/colorAccent"
+                    android:layout_margin="25dp"
+                    app:cardCornerRadius="15dp"
+                    android:visibility="gone"
+                    android:padding="10dp">
 
                         <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/success"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/details_title"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:clickable="false"
-                            android:textStyle="italic"
-                            android:visibility="gone" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/error"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:layout_gravity="end"
-                            android:clickable="false"
-                            android:textStyle="italic"
-                            android:visibility="gone" />
-                </FrameLayout>
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold|italic"
+                            android:text="@string/details"
+                            android:layout_margin="10dp"
+                            android:textSize="17sp" />
+                </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cancel"
@@ -103,4 +123,4 @@
                             android:textSize="17sp" />
                 </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+</LinearLayout>

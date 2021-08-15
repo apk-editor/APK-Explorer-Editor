@@ -15,6 +15,7 @@ import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.Common;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 /*
@@ -24,7 +25,7 @@ public class APKTasksActivity extends AppCompatActivity {
 
     private AppCompatImageView mIcon;
     private ProgressBar mProgress;
-    private MaterialCardView mCancel;
+    private MaterialCardView mCancel, mDetails;
     private MaterialTextView mError, mOutputPath, mSuccess, mTaskSummary;
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -38,6 +39,8 @@ public class APKTasksActivity extends AppCompatActivity {
         mIcon = findViewById(R.id.icon);
         mProgress = findViewById(R.id.progress);
         mCancel = findViewById(R.id.cancel);
+        mDetails = findViewById(R.id.details);
+        MaterialTextView mDetailsText = findViewById(R.id.details_title);
         mError = findViewById(R.id.error);
         mOutputPath = findViewById(R.id.output_path);
         mTaskSummary = findViewById(R.id.task_summary);
@@ -54,6 +57,19 @@ public class APKTasksActivity extends AppCompatActivity {
         }
 
         mOutputPath.setText(getString(R.string.resigned_apks_path, APKData.getExportAPKsPath(this)));
+
+        mDetails.setOnClickListener(v -> {
+            StringBuilder sb = new StringBuilder();
+            for (String strings : Common.getErrorList()) {
+                sb.append(strings).append("\n");
+            }
+            new MaterialAlertDialogBuilder(this)
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(R.string.app_name)
+                    .setMessage(getString(R.string.failed_smali_message, sb.toString()))
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.cancel, (dialog, id) -> finish()).show();
+        });
 
         mCancel.setOnClickListener(v -> onBackPressed());
 
@@ -79,7 +95,10 @@ public class APKTasksActivity extends AppCompatActivity {
                                         mError.setVisibility(View.VISIBLE);
                                         mSuccess.setVisibility(View.VISIBLE);
                                         mError.setText(getString(R.string.failed) + ": " + Common.getError());
-                                        mSuccess.setText(getString(R.string.success) + ": " + Common.getSuccess());                                    return;
+                                        mSuccess.setText(getString(R.string.success) + ": " + Common.getSuccess());
+                                        if (Common.getError() > 0) {
+                                            mOutputPath.setText(getString(R.string.resigned_apks_error));
+                                        }
                                     }
                                 } catch (NullPointerException ignored) {
                                 }
@@ -88,10 +107,16 @@ public class APKTasksActivity extends AppCompatActivity {
                                 Common.setStatus(null);
                                 mProgress.setVisibility(View.GONE);
                                 if (Common.isBuilding() || Common.getError() > 0 || Common.getSuccess() > 0) {
-                                    mIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_check));
-                                    mIcon.setColorFilter(Color.GREEN);
                                     mCancel.setVisibility(View.VISIBLE);
                                     mOutputPath.setVisibility(View.VISIBLE);
+                                    if (Common.getError() > 0) {
+                                        mIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_clear));
+                                        mIcon.setColorFilter(Color.RED);
+                                        mDetails.setVisibility(View.VISIBLE);
+                                    } else {
+                                        mIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_check));
+                                        mIcon.setColorFilter(Color.GREEN);
+                                    }
                                     mTaskSummary.setVisibility(View.GONE);
                                     return;
                                 }
@@ -102,6 +127,21 @@ public class APKTasksActivity extends AppCompatActivity {
                 } catch (InterruptedException ignored) {}
             }
         }.start();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (Common.getError() > 0) {
+            Common.setError(0);
+        }
+        if (Common.getSuccess() > 0) {
+            Common.setSuccess(0);
+        }
+        if (Common.getErrorList().size() > 0) {
+            Common.getErrorList().clear();
+        }
     }
 
     @Override
