@@ -9,6 +9,7 @@
     <string name="cancel">"Отмена"</string>
     <string name="credits">"Разработчики"</string>
     <string name="credits_message">"Хотите увидеть свое имя здесь? Пожалуйста, помогите мне перевести это приложение!"</string>
+    <string name="credits_summary">"Кредиты участникам"</string>
     <string name="copyright">"Copyright: %s"</string>
     <string name="delete">"Удалить"</string>
     <string name="delete_question">"Удалить %s?"</string>
@@ -20,6 +21,8 @@
     <string name="export">"Экспорт"</string>
     <string name="export_question">"Экспортировать в хранилище устройства?"</string>
     <string name="export_complete_message">"Выбранный ресурс успешно экспортирован в '%s'!"</string>
+    <string name="exploring">"Изучение% s…"</string>
+    <string name="explore_error_status">"Не удалось исследовать% s!"</string>
     <string name="install">"Установить"</string>
     <string name="install_question">"Установить %s?"</string>
     <string name="installing">"Установка %s…"</string>
@@ -34,18 +37,22 @@
     <string name="rate_us">"Оценить AEE"</string>
     <string name="rate_us_Summary">"Оценить или/и оставить отзыв в Google Play"</string>
     <string name="replace">"Заменить"</string>
+    <string name="replace_question">"Заменить% s на"</string>
     <string name="report_issue">"Сообщить об ошибке"</string>
     <string name="report_issue_summary">"Сообщить об ошибке на GitHub"</string>
     <string name="save">"Сохранить"</string>
     <string name="save_projects_question">"Сохранить проект для будущего использования?"</string>
     <string name="save_question">"Сохранить изменения, сделанные в этом файле?"</string>
+    <string name="save_apk_message">"Вы хотите подготовить подписанный APK с текущими модификациями?"</string>
     <string name="sdcard">"Внутреннее хранилище"</string>
     <string name="search">"Поиск…"</string>
     <string name="share">"Поделиться"</string>
     <string name="share_message">"Поделиться %s?"</string>
     <string name="share_with">"Поделится с помощью"</string>
+    <string name="signing">"Подпись% s…"</string>
     <string name="size">"Размер: %s"</string>
     <string name="source_code">"Исходный код"</string>
+    <string name="source_code_summary">"Ознакомьтесь с исходным кодом AEE"</string>
     <string name="split_apk_installer">"Установщик модулей APK"</string>
     <string name="support_group">"Группа поддержки"</string>
     <string name="support_group_summary">"Присоединиться к группе поддержки"</string>
@@ -53,7 +60,20 @@
     <string name="translate">"Перевести"</string>
     <string name="unknown_file_message">"В данный момент AEE не обрабатывает  '%s'. Если вы знаете этот формат файла, вы можете экспортировать этот файл в хранилище устройства и попытаться отредактировать его с помощью поддерживаемого стороннего приложения. С другой стороны, вы можете попытаться открыть его в виде текстового файла?"</string>
     <string name="unsupported_file">"Неподдерживаемый формат файла"</string>
-    <string name="unsupported_file_arsc">"Вы выбрали 'resources.arsc', который, к сожалению, AEE не может прочитать.\n\nЧто такое resources.arsc?\nresources.arsc-это двоичный файл ресурсов, содержащий специфические конфигурационные значения приложения, такие как целые числа, логические значения и строки, а также ссылки на более сложные ресурсы, такие как макеты пользовательского интерфейса.\n\nКак считать resources.arsc?\nТакие инструменты как Apktool или Android Asset Packaging Tool (AAPT) могут быть использованы для конвертации  resources.arsc в удобочитаемый формат."</string>
+    <string name="unsupported_file_arsc">"Вы выбрали 'resources.arsc', который, к сожалению, AEE не может прочитать.
+
+Что такое resources.arsc?
+resources.arsc-это двоичный файл ресурсов, содержащий специфические конфигурационные значения приложения, такие как целые числа, логические значения и строки, а также ссылки на более сложные ресурсы, такие как макеты пользовательского интерфейса.
+
+Как считать resources.arsc?
+Такие инструменты как Apktool или Android Asset Packaging Tool (AAPT) могут быть использованы для конвертации  resources.arsc в удобочитаемый формат."</string>
+    <string name="unsupported_file_dex">"Вы выбрали файл DEX (.dex), который, к сожалению, не может прочитать AEE.
+
+Что это за файл - DEX?
+Файл Dex содержит код, который в конечном итоге выполняется средой выполнения Android. Каждый APK должен иметь файл classes.dex, который ссылается на любые классы или методы, используемые в приложении. По сути, любое действие, объект или фрагмент, используемые в базе кода, будут преобразованы в байты в файле Dex, который можно запустить как приложение для Android.
+
+Как читать файл DEX?
+Файл DEX должен быть преобразован в формат jar, а затем в файл Java с использованием таких инструментов, как dex2jar и JD-GUI."</string>
     <string name="user">"Пользователь"</string>
     <string name="version">"Версия: %s "</string>
     <string name="bundles">"Пакеты"</string>
@@ -68,6 +88,7 @@
     <string name="signing_custom">"Сконфигурировать кастомный ключ"</string>
     <string name="signing_default">"Подписать дефолтным ключом"</string>
     <string name="signing_message">"AEE использует библиотеку PseudoApkSigner от Aefyr для подписи APK. Это означает что для AEE требуется закрытый ключ в формате pk8, а также файл шаблона RSA, созданный на основе того же ключа. Нажмите здесь, чтобы узнать больше о создании закрытого ключа и шаблона RSA!"</string>
+    <string name="signing_question">"Используйте \"% s\" в качестве нового"</string>
     <string name="signing_title">"Подпись APK"</string>
     <string name="apk_installer">"AEE Установщик APK"</string>
     <string name="bundle_install_question">"Вы действительно хотите установить пакет приложения '%s'?"</string>
@@ -99,7 +120,9 @@
     <string name="apk_corrupted">"APK файл(ы) поврежден(ы)! Завершение."</string>
     <string name="install_resign">"Подпись &amp; Установка"</string>
     <string name="resign_only">"Только подпись"</string>
-    <string name="resigned_apks_path">"Генерируются APK файл(ы) с новой подписью\n\nПуть: '%s'"</string>
+    <string name="resigned_apks_path">"Генерируются APK файл(ы) с новой подписью
+
+Путь: '%s'"</string>
     <string name="resigning_apks">"Подпись выбранных APK…"</string>
     <string name="select_storage">"Выбрать из хранилища"</string>
     <string name="sort_by">"Отсортировать приложения"</string>
@@ -111,9 +134,13 @@
     <string name="clear_cache_message">"Все, кроме экспортированных приложений, будет удалено!"</string>
     <string name="disable">"Отключить"</string>
     <string name="enable">"Включить"</string>
+    <string name="export_options">"При экспорте (APK)"</string>
     <string name="export_path_default">"Внутреннее хранилище/AEE"</string>
     <string name="export_path_download">"Скачать"</string>
     <string name="export_path_resources">"Путь для экспорта (не APK)"</string>
+    <string name="installer_action">"При установке APK-файлов"</string>
+    <string name="project_exist_action">"При выходе из проекта"</string>
+    <string name="prompt">"Подсказка"</string>
     <string name="settings">"Настройки"</string>
     <string name="settings_general">"Основные"</string>
     <string name="settings_misc">"Остальное"</string>
@@ -139,4 +166,7 @@
     <string name="user_interface">"Пользовательский интерфейс"</string>
     <string name="decompiling">"Декомпиляция '%s'…"</string>
     <string name="deleting">"Удаление '%s'…"</string>
+    <string name="file_permission_request_message">"Чтобы эта функция работала в более новых версиях Android (Android R или новее), необходимо предоставить% s разрешение «Доступ ко всем файлам». Пожалуйста, предоставьте разрешение вручную на новом экране, открытом после нажатия кнопки «Предоставить»."</string>
+    <string name="grant">"Грант"</string>
+    <string name="important">"Важный"</string>
 </resources>
