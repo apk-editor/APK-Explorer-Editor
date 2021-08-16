@@ -12,6 +12,7 @@
 * Save/Export individual resource files to device storage.
 * It is also possible to edit text/binary XML files using an in-built text editor (disabled by default in the <b>Settings</b> menu).
 * Delete or replaces resources.
+* Assemble modified smali files into new classes (.dex).
 * Create signed APK's/App Bundles after the above-mentioned processes.
 * Resign APK's/bundles with AEE custom key.
 * Elegantly designed user interface with an auto-dark/light theme.
