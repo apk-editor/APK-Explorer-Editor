@@ -30,7 +30,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    >
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -54,27 +55,50 @@
                                     android:focusable="false" />
                         </LinearLayout>
 
-                        <FrameLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" >
+                            android:layout_height="wrap_content"
+                            android:id="@+id/RecycleConstraintLayout"
+                            >
 
                                 <com.google.android.material.textview.MaterialTextView
                                     android:id="@+id/version"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginEnd="100dp"
+                                    app:layout_constraintWidth_percent="0.6"
+                                    app:layout_constraintEnd_toStartOf="@+id/size"
+                                    app:layout_constraintStart_toStartOf="@+id/RecycleConstraintLayout"
+                                    app:layout_constraintTop_toTopOf="@+id/RecycleConstraintLayout"
+                                    app:layout_constraintBottom_toBottomOf="@+id/RecycleConstraintLayout"
+                                    app:layout_constraintHorizontal_bias="0"
+                                    android:layout="@+id/size"
+                                    android:autoSizeTextType="uniform"
+                                    android:ellipsize="marquee"
                                     android:layout_gravity="start"
                                     android:visibility="gone"
                                     android:textStyle="bold"
-                                    android:maxLines="1" />
+                                    android:maxLines="1"
+                                    />
 
                                 <com.google.android.material.textview.MaterialTextView
                                     android:id="@+id/size"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
+                                    app:layout_constraintWidth_percent="0.4"
+                                    app:layout_constraintStart_toEndOf="@+id/version"
+                                    app:layout_constraintEnd_toStartOf="@+id/RecycleConstraintLayout"
+                                    app:layout_constraintTop_toTopOf="@+id/RecycleConstraintLayout"
+                                    app:layout_constraintBottom_toBottomOf="@+id/RecycleConstraintLayout"
+                                    app:layout_constraintHorizontal_bias="1"
+                                    android:ellipsize="marquee"
+                                    android:maxLines="1"
+                                    android:autoSizeTextType="uniform"
                                     android:layout_gravity="end"
-                                    android:visibility="gone" />
-                        </FrameLayout>
+                                    android:gravity="end"
+                                    android:visibility="gone"
+                                    />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
         </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
