@@ -71,7 +71,7 @@ Các công cụ như Apktool hoặc Android Asset Packaging Tool (AAPT) nên đ�
     <string name="unsupported_file_dex">"Bạn đã chọn một tệp 'DEX' (.dex), không may là AEE không thể đọc nó.
 
 Tệp DEX là gì?
-Một tệp DEX có mã mà cuối cùng sẽ được Android Runtime thực thi. Mọi tệp APK nên có một tệp 'classes.dex', nó nhắc đến bất kỳ class hoặc phương pháp nào được sử dụng trong một ứng dụng. Về bản chất, bất kỳ Hoạt động, Đối tượng, hoặc Phân mảnh nào được sử dụng trong mã sẽ được chuyển thành các byte trong một tệp Dex mà có thể được chạy dưới dạng một ứng dụng Android.
+Một tệp DEX có mã mà cuối cùng sẽ được Android Runtime thực thi. Mọi tệp APK nên có một tệp 'classes.dex', nó nhắc đến bất kỳ class hoặc phương pháp nào được sử dụng trong một ứng dụng. Về bản chất, bất kỳ Activity, Object, hoặc Fragment nào được sử dụng trong mã sẽ được chuyển thành các byte trong một tệp Dex mà có thể được chạy dưới dạng một ứng dụng Android.
 
 Làm thế nào để đọc một tệp DEX?
 Một tệp DEX nên được chuyển thành định dạng 'jar' và lát nữa thành tệp 'Java' bằng cách sử dụng các công cụ như 'dex2jar' và 'JD-GUI'."</string>
@@ -170,4 +170,18 @@ Một tệp DEX nên được chuyển thành định dạng 'jar' và lát nữ
     <string name="file_permission_request_message">"Để tính năng này hoạt động trên các phiên bản Android mới hơn (Android R hoặc mới hơn), cần cấp quyền \"Tất cả quyền truy cập tệp\" cho %s. Vui lòng cấp quyền theo cách thủ công từ màn hình mới được mở sau khi nhấp vào nút \"Cấp\"."</string>
     <string name="grant">"Cấp"</string>
     <string name="important">"Quan trọng"</string>
+    <string name="assembling">"Đang dựng
+'%s'"</string>
+    <string name="build">"Xây dựng"</string>
+    <string name="building">"Đang xây dựng '%s'…"</string>
+    <string name="copying">"Đang sao chép '%s'…"</string>
+    <string name="details">"Chi tiết"</string>
+    <string name="failed">"Thất bại"</string>
+    <string name="failed_smali_message">"Các tệp 'smali' sau không thể dựng!
+
+%s"</string>
+    <string name="open">"Mở"</string>
+    <string name="preparing_source">"Đang chuẩn bị nguồn để xây dựng APK…"</string>
+    <string name="resigned_apks_error">"Đã huỷ xây dựng vì lỗi khi dựng các tệp 'smali'. Vui lòng kiểm tra 'Chi tiết' để tìm hiểu thêm!"</string>
+    <string name="success">"Thành công"</string>
 </resources>
