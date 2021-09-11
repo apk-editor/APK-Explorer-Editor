@@ -158,6 +158,7 @@
     <string name="sort_by_size">Size</string>
     <string name="sort_by_updated">Updated Time</string>
     <string name="sort_order">A-Z</string>
+    <string name="sort_size">Small to Big</string>
     <string name="source_code">Source Code</string>
     <string name="source_code_summary">Checkout the source code of AEE</string>
     <string name="split_apk_installer">AEE Split APK Installer</string>

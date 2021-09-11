@@ -218,8 +218,9 @@ public class ApplicationsFragment extends Fragment {
             sort.add(0, 5, Menu.NONE, getString(R.string.sort_by_size)).setCheckable(true)
                     .setChecked(APKEditorUtils.getBoolean("sort_size", false, activity));
         }
-        menu.add(Menu.NONE, 6, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
-                .setChecked(APKEditorUtils.getBoolean("az_order", true, activity));
+        menu.add(Menu.NONE, 6, Menu.NONE, getString(APKEditorUtils.getBoolean("sort_size", false, activity) ?
+                R.string.sort_size : R.string.sort_order)).setCheckable(true).setChecked(APKEditorUtils.getBoolean(
+                        "az_order", true, activity));
         sort.setGroupCheckable(0, true, true);
         popupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
