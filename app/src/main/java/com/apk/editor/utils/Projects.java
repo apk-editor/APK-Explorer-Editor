@@ -96,6 +96,7 @@ public class Projects {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
                 }
+                Common.isReloading(true);
             }
         }.execute();
     }

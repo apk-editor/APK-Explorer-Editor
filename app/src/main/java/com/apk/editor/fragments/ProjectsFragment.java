@@ -158,7 +158,10 @@ public class ProjectsFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        loadProjects(requireActivity());
+        if (Common.isReloading()) {
+            Common.isReloading(false);
+            loadProjects(requireActivity());
+        }
     }
 
     @Override
