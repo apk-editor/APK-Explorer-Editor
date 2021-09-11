@@ -3,7 +3,6 @@ package com.apk.editor.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,11 +20,12 @@ import com.apk.editor.R;
 import com.apk.editor.activities.APKSignActivity;
 import com.apk.editor.activities.ImageViewActivity;
 import com.apk.editor.activities.TextViewActivity;
-import com.apk.editor.adapters.RecycleViewAPKExplorerAdapter;
+import com.apk.editor.adapters.APKExplorerAdapter;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -41,7 +41,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
 
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
-    private RecycleViewAPKExplorerAdapter mRecycleViewAdapter;
+    private APKExplorerAdapter mRecycleViewAdapter;
 
     @SuppressLint("StringFormatInvalid")
     @Nullable
@@ -93,7 +93,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), APKExplorer.getSpanCount(requireActivity())));
 
         try {
-            mRecycleViewAdapter = new RecycleViewAPKExplorerAdapter(APKExplorer.getData(getFilesList(), true, requireActivity()));
+            mRecycleViewAdapter = new APKExplorerAdapter(APKExplorer.getData(getFilesList(), true, requireActivity()));
             mRecyclerView.setAdapter(mRecycleViewAdapter);
         } catch (NullPointerException ignored) {
             mRecyclerView.setVisibility(View.GONE);
@@ -207,16 +207,19 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
 
     @SuppressLint("StaticFieldLeak")
     private void reload(Activity activity) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTasks() {
+
             @Override
-            protected Void doInBackground(Void... voids) {
-                mRecycleViewAdapter = new RecycleViewAPKExplorerAdapter(APKExplorer.getData(getFilesList(), true, activity));
-                return null;
+            public void onPreExecute() {
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void doInBackground() {
+                mRecycleViewAdapter = new APKExplorerAdapter(APKExplorer.getData(getFilesList(), true, activity));
+            }
+
+            @Override
+            public void onPostExecute() {
                 if (Common.getAppID() != null) {
                     mTitle.setText(Common.getAppID().equals(requireActivity().getCacheDir().getPath() + "/" + (Common.getAppID() != null ?
                             Common.getAppID() : new File(Common.getPath()).getName()) + File.separator) ? AppData.getAppName(Common.getAppID(), activity)

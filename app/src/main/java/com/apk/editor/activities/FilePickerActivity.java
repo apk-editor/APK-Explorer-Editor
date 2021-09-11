@@ -1,13 +1,10 @@
 package com.apk.editor.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -21,16 +18,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
-import com.apk.editor.adapters.RecycleViewFilePickerAdapter;
+import com.apk.editor.adapters.FilePickerAdapter;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.Common;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
-import java.util.List;
 import java.util.Objects;
 
 /*
@@ -38,11 +35,9 @@ import java.util.Objects;
  */
 public class FilePickerActivity extends AppCompatActivity {
 
-    private AsyncTask<Void, Void, List<String>> mLoader;
-    private final Handler mHandler = new Handler();
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
-    private RecycleViewFilePickerAdapter mRecycleViewAdapter;
+    private FilePickerAdapter mRecycleViewAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,14 +59,12 @@ public class FilePickerActivity extends AppCompatActivity {
                     getString(R.string.app_name)) : getString(R.string.permission_denied_message));
             mPermissionLayout.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
-            mPermissionGrant.setOnClickListener(v -> {
-                APKExplorer.requestPermission(this);
-            });
+            mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
             return;
         }
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, APKExplorer.getSpanCount(this)));
-        mRecycleViewAdapter = new RecycleViewFilePickerAdapter(APKExplorer.getData(getFilesList(), true, this));
+        mRecycleViewAdapter = new FilePickerAdapter(APKExplorer.getData(getFilesList(), true, this));
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
         mTitle.setText(Common.getFilePath().equals(Environment.getExternalStorageDirectory().toString() + File.separator) ? getString(R.string.sdcard) : new File(Common.getFilePath()).getName());
@@ -136,39 +129,27 @@ public class FilePickerActivity extends AppCompatActivity {
     }
 
     private void reload(Activity activity) {
-        if (mLoader == null) {
-            mHandler.postDelayed(new Runnable() {
-                @SuppressLint("StaticFieldLeak")
-                @Override
-                public void run() {
-                    mLoader = new AsyncTask<Void, Void, List<String>>() {
-                        @Override
-                        protected void onPreExecute() {
-                            super.onPreExecute();
-                            APKExplorer.getData(getFilesList(), true, activity).clear();
-                            mRecyclerView.setVisibility(View.GONE);
-                        }
+        new AsyncTasks() {
 
-                        @Override
-                        protected List<String> doInBackground(Void... voids) {
-                            mRecycleViewAdapter = new RecycleViewFilePickerAdapter(APKExplorer.getData(getFilesList(), true, activity));
-                            return null;
-                        }
+            @Override
+            public void onPreExecute() {
+                APKExplorer.getData(getFilesList(), true, activity).clear();
+                mRecyclerView.setVisibility(View.GONE);
+            }
 
-                        @Override
-                        protected void onPostExecute(List<String> recyclerViewItems) {
-                            super.onPostExecute(recyclerViewItems);
-                            mRecyclerView.setAdapter(mRecycleViewAdapter);
-                            mTitle.setText(Common.getFilePath().equals(Environment.getExternalStorageDirectory().toString() + File.separator) ? getString(R.string.sdcard)
-                                    : new File(Common.getFilePath()).getName());
-                            mRecyclerView.setVisibility(View.VISIBLE);
-                            mLoader = null;
-                        }
-                    };
-                    mLoader.execute();
-                }
-            }, 250);
-        }
+            @Override
+            public void doInBackground() {
+                mRecycleViewAdapter = new FilePickerAdapter(APKExplorer.getData(getFilesList(), true, activity));
+            }
+
+            @Override
+            public void onPostExecute() {
+                mRecyclerView.setAdapter(mRecycleViewAdapter);
+                mTitle.setText(Common.getFilePath().equals(Environment.getExternalStorageDirectory().toString() + File.separator) ? getString(R.string.sdcard)
+                        : new File(Common.getFilePath()).getName());
+                mRecyclerView.setVisibility(View.VISIBLE);
+            }
+        }.execute();
     }
 
     @Override

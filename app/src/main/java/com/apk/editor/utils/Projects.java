@@ -2,7 +2,6 @@ package com.apk.editor.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.apk.editor.R;
@@ -18,12 +17,10 @@ import java.util.Objects;
  */
 public class Projects {
 
-    private static final List<String> mData = new ArrayList<>();
-
     public static List<String> getData(Context context) {
-        mData.clear();
+        List<String> mData = new ArrayList<>();
         for (File mFile : Objects.requireNonNull(new File(context.getCacheDir().toString()).listFiles())) {
-            if (mFile.exists() && mFile.isDirectory() && !mFile.getName().matches("WebView|splits|aee-signed")) {
+            if (mFile.exists() && mFile.isDirectory() && new File(mFile, "AndroidManifest.xml").exists()) {
                 if (Common.getSearchWord() == null) {
                     mData.add(mFile.getAbsolutePath());
                 } else if (Common.isTextMatched(mFile.getName(), Common.getSearchWord())) {
@@ -47,11 +44,11 @@ public class Projects {
     }
 
     public static void exportProject(File path, String name, Context context) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTasks() {
             private ProgressDialog mProgressDialog;
+
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(context);
                 mProgressDialog.setMessage(context.getString(R.string.exporting, path.getName()));
                 mProgressDialog.setCancelable(false);
@@ -62,14 +59,12 @@ public class Projects {
             }
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void doInBackground() {
                 APKEditorUtils.copyDir(path, new File(getExportPath(context), name));
-                return null;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void onPostExecute() {
                 try {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
@@ -79,11 +74,11 @@ public class Projects {
     }
 
     public static void deleteProject(File path, Context context) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTasks() {
             private ProgressDialog mProgressDialog;
+
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(context);
                 mProgressDialog.setMessage(context.getString(R.string.deleting, path.getName()));
                 mProgressDialog.setCancelable(false);
@@ -91,14 +86,12 @@ public class Projects {
             }
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void doInBackground() {
                 APKEditorUtils.delete(path.getAbsolutePath());
-                return null;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void onPostExecute() {
                 try {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {

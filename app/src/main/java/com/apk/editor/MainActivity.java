@@ -6,13 +6,11 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 
-import com.apk.editor.activities.DocumentationActivity;
 import com.apk.editor.activities.SettingsActivity;
 import com.apk.editor.fragments.ApplicationsFragment;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.BottomNavView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -36,21 +34,6 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new ApplicationsFragment()).commit();
-        }
-
-        if (!APKEditorUtils.getBoolean("welcome_message", false, this)) {
-            new MaterialAlertDialogBuilder(this)
-                    .setIcon(R.mipmap.ic_launcher)
-                    .setTitle(R.string.app_name)
-                    .setMessage(getString(R.string.warning_message))
-                    .setCancelable(false)
-                    .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
-                    })
-                    .setPositiveButton(getString(R.string.documentation), (dialog, id) -> {
-                        Intent documentation = new Intent(this, DocumentationActivity.class);
-                        startActivity(documentation);
-                    }).show();
-            APKEditorUtils.saveBoolean("welcome_message", true, this);
         }
 
         mSettings.setOnClickListener(v -> {

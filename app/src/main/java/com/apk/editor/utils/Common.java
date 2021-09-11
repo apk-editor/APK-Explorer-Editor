@@ -2,6 +2,7 @@ package com.apk.editor.utils;
 
 import android.view.View;
 
+import com.apk.editor.utils.recyclerViewItems.PackageItems;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 public class Common {
 
     private static boolean mBuilding = false, mFinish = false, mPrivateKey = false, mRSATemplate = false;
+    private static List<PackageItems> mPackageData = null;
     private static final List<String> mAPKList = new ArrayList<>(), mErrorList = new ArrayList<>();
     private static int mError = 0, mSuccess = 0;
     private static MaterialCardView mSelect;
@@ -50,6 +52,10 @@ public class Common {
 
     public static int getSuccess() {
         return mSuccess;
+    }
+
+    public static List<PackageItems> getPackageData() {
+        return mPackageData;
     }
 
     public static List<String> getAPKList() {
@@ -134,6 +140,10 @@ public class Common {
 
     public static void setPackageName(String packageName) {
         mPackageName = packageName;
+    }
+
+    public static void setPackageData(List<PackageItems> data) {
+        mPackageData = data;
     }
 
     public static void setPath(String path) {

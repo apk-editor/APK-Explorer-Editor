@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.RecycleViewSettingsItem;
+import com.apk.editor.utils.recyclerViewItems.SettingsItems;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
@@ -20,26 +20,26 @@ import java.util.ArrayList;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 31, 2021
  */
-public class RecycleViewSettingsAdapter extends RecyclerView.Adapter<RecycleViewSettingsAdapter.ViewHolder> {
+public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHolder> {
 
     private static ClickListener clickListener;
 
-    private static ArrayList<RecycleViewSettingsItem> data;
+    private static ArrayList<SettingsItems> data;
 
-    public RecycleViewSettingsAdapter(ArrayList<RecycleViewSettingsItem> data) {
-        RecycleViewSettingsAdapter.data = data;
+    public SettingsAdapter(ArrayList<SettingsItems> data) {
+        SettingsAdapter.data = data;
     }
 
     @NonNull
     @Override
-    public RecycleViewSettingsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SettingsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_about, parent, false);
         return new ViewHolder(rowItem);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
-    public void onBindViewHolder(@NonNull RecycleViewSettingsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SettingsAdapter.ViewHolder holder, int position) {
         holder.Title.setText(data.get(position).getTitle());
         if (data.get(position).getDescription() != null) {
             holder.Description.setText(data.get(position).getDescription());
@@ -81,7 +81,7 @@ public class RecycleViewSettingsAdapter extends RecyclerView.Adapter<RecycleView
     }
 
     public void setOnItemClickListener(ClickListener clickListener) {
-        RecycleViewSettingsAdapter.clickListener = clickListener;
+        SettingsAdapter.clickListener = clickListener;
     }
 
     public interface ClickListener {

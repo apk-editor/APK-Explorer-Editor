@@ -1,4 +1,4 @@
-package com.apk.editor.utils;
+package com.apk.editor.utils.recyclerViewItems;
 
 import android.graphics.drawable.Drawable;
 
@@ -7,12 +7,12 @@ import java.io.Serializable;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
-public class RecycleViewItem implements Serializable {
+public class AboutItems implements Serializable {
 
     private final String mDescription, mTitle, mURL;
     private final Drawable mIcon;
 
-    public RecycleViewItem(String title, String description, Drawable icon, String url) {
+    public AboutItems(String title, String description, Drawable icon, String url) {
         this.mTitle = title;
         this.mDescription = description;
         this.mIcon = icon;

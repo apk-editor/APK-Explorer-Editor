@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageInstaller;
-import android.os.AsyncTask;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.InstallerActivity;
@@ -133,29 +132,29 @@ public class SplitAPKInstaller {
     }
 
     public static void handleAppBundle(String path, Activity activity) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTasks() {
             private ProgressDialog mProgressDialog;
+
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(activity);
                 mProgressDialog.setMessage(activity.getString(R.string.preparing_bundle_install, new File(path).getName()));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
                 APKEditorUtils.delete(activity.getCacheDir().getPath() + "/splits");
             }
+
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void doInBackground() {
                 if (path.endsWith(".apks")) {
                     APKEditorUtils.unzip(path,  activity.getCacheDir().getPath());
                 } else if (path.endsWith(".xapk") || path.endsWith(".apkm")) {
                     APKEditorUtils.unzip(path,  activity.getCacheDir().getPath() + "/splits");
                 }
-                return null;
             }
+
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void onPostExecute() {
                 try {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
@@ -170,10 +169,10 @@ public class SplitAPKInstaller {
     }
 
     public static void installSplitAPKs(List<String> apks, String path, Activity activity) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTasks() {
+
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onPreExecute() {
                 APKEditorUtils.saveString("installationStatus", "waiting", activity);
                 Intent installIntent = new Intent(activity, InstallerActivity.class);
                 installIntent.putExtra(InstallerActivity.HEADING_INTENT, activity.getString(R.string.split_apk_installer));
@@ -182,7 +181,7 @@ public class SplitAPKInstaller {
             }
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void doInBackground() {
                 int sessionId;
                 final InstallParams installParams = makeInstallParams(getTotalSize(path));
                 sessionId = runInstallCreate(installParams, activity);
@@ -206,21 +205,20 @@ public class SplitAPKInstaller {
                     }
                 } catch (NullPointerException ignored) {}
                 doCommitSession(sessionId, activity);
-                return null;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void onPostExecute() {
+
             }
         }.execute();
     }
 
     public static void installAPK(File APK, Activity activity) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTasks() {
+
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onPreExecute() {
                 APKEditorUtils.saveString("installationStatus", "waiting", activity);
                 Intent installIntent = new Intent(activity, InstallerActivity.class);
                 installIntent.putExtra(InstallerActivity.HEADING_INTENT, activity.getString(R.string.apk_installer));
@@ -229,7 +227,7 @@ public class SplitAPKInstaller {
             }
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void doInBackground() {
                 int sessionId;
                 final InstallParams installParams = makeInstallParams(APK.length());
                 sessionId = runInstallCreate(installParams, activity);
@@ -237,12 +235,11 @@ public class SplitAPKInstaller {
                     runInstallWrite(APK.length(), sessionId, APK.getName(), APK.getAbsolutePath(), activity);
                 } catch (NullPointerException ignored) {}
                 doCommitSession(sessionId, activity);
-                return null;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void onPostExecute() {
+
             }
         }.execute();
     }

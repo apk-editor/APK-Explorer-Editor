@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
-import com.apk.editor.adapters.RecycleViewSettingsAdapter;
+import com.apk.editor.adapters.SettingsAdapter;
 import com.apk.editor.utils.AppSettings;
 
 /*
@@ -30,7 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        RecycleViewSettingsAdapter mRecycleViewAdapter = new RecycleViewSettingsAdapter(AppSettings.getData(this));
+        SettingsAdapter mRecycleViewAdapter = new SettingsAdapter(AppSettings.getData(this));
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
         mRecycleViewAdapter.setOnItemClickListener((position, v) ->

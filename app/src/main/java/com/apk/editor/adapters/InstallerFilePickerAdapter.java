@@ -24,26 +24,26 @@ import java.util.List;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 21, 2021
  */
-public class RecycleViewInstallerFilePickerAdapter extends RecyclerView.Adapter<RecycleViewInstallerFilePickerAdapter.ViewHolder> {
+public class InstallerFilePickerAdapter extends RecyclerView.Adapter<InstallerFilePickerAdapter.ViewHolder> {
 
     private static ClickListener clickListener;
 
     private final List<String> data;
 
-    public RecycleViewInstallerFilePickerAdapter(List<String> data) {
+    public InstallerFilePickerAdapter(List<String> data) {
         this.data = data;
     }
 
     @NonNull
     @Override
-    public RecycleViewInstallerFilePickerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public InstallerFilePickerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_installerfilepicker, parent, false);
-        return new RecycleViewInstallerFilePickerAdapter.ViewHolder(rowItem);
+        return new InstallerFilePickerAdapter.ViewHolder(rowItem);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
-    public void onBindViewHolder(@NonNull RecycleViewInstallerFilePickerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull InstallerFilePickerAdapter.ViewHolder holder, int position) {
         try {
             if (new File(this.data.get(position)).isDirectory()) {
                 holder.mIcon.setImageDrawable(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_folder));
@@ -71,14 +71,14 @@ public class RecycleViewInstallerFilePickerAdapter extends RecyclerView.Adapter<
                     }
                     Common.getSelectCard().setVisibility(Common.getAPKList().isEmpty() ? View.GONE : View.VISIBLE);
                 });
-                holder.mSize.setText(AppData.getAPKSize(data.get(position)));
+                holder.mSize.setText(AppData.getAPKSize(new File(data.get(position)).length()));
                 holder.mSize.setVisibility(View.VISIBLE);
                 holder.mCheckBox.setVisibility(View.VISIBLE);
             } else {
                 holder.mIcon.setImageDrawable(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_bundle));
                 holder.mIcon.setColorFilter(APKEditorUtils.isDarkTheme(holder.mIcon.getContext()) ? holder.mIcon.getContext()
                         .getResources().getColor(R.color.colorWhite) : holder.mIcon.getContext().getResources().getColor(R.color.colorBlack));
-                holder.mSize.setText(AppData.getAPKSize(data.get(position)));
+                holder.mSize.setText(AppData.getAPKSize(new File(data.get(position)).length()));
                 holder.mSize.setVisibility(View.VISIBLE);
             }
             holder.mTitle.setText(new File(this.data.get(position)).getName());
@@ -112,7 +112,7 @@ public class RecycleViewInstallerFilePickerAdapter extends RecyclerView.Adapter<
     }
 
     public void setOnItemClickListener(ClickListener clickListener) {
-        RecycleViewInstallerFilePickerAdapter.clickListener = clickListener;
+        InstallerFilePickerAdapter.clickListener = clickListener;
     }
 
     public interface ClickListener {

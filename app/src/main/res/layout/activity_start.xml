@@ -1,0 +1,82 @@
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center" >
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@mipmap/ic_launcher_foreground"
+            android:background="@null" />
+
+        <ProgressBar
+            android:layout_width="150dp"
+            android:layout_height="20dp"
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressBackgroundTint="?attr/colorAccent"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/warning_message"
+            android:textColor="@color/colorBlue"
+            android:textStyle="bold|italic"
+            android:layout_margin="25dp"
+            android:visibility="gone"
+            android:textSize="16sp"
+            android:padding="10dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/start_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/colorBlue"
+            android:layout_marginTop="75dp"
+            app:cardCornerRadius="15dp"
+            android:visibility="gone" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center" >
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold|italic"
+                    android:text="@string/start"
+                    android:textAllCaps="true"
+                    android:clickable="false"
+                    android:textSize="16sp"
+                    android:padding="10dp" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_back"
+                    android:tint="@color/colorWhite"
+                    android:layout_marginEnd="5dp"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:rotation="180" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

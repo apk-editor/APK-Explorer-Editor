@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.view.WindowManager;
 
@@ -16,7 +15,7 @@ import androidx.core.content.FileProvider;
 import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.activities.APKTasksActivity;
-import com.apk.editor.apksigner.ApkSigner;
+import com.apk.editor.utils.apkSigner.ApkSigner;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
@@ -207,12 +206,12 @@ public class APKData {
     }
 
     public static void prepareSignedAPK(Activity activity) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTasks() {
             private final File mTMPZip = new File(activity.getCacheDir(), "tmp.apk");
-            private File mBuilDir;
+            private File mBuildDir;
+
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onPreExecute() {
                 Common.setFinishStatus(false);
                 Common.isBuilding(true);
                 Common.setStatus(null);
@@ -226,18 +225,18 @@ public class APKData {
             }
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void doInBackground() {
                 Common.setStatus(activity.getString(R.string.preparing_source));
                 if (Common.getAppID() != null) {
                     File mExportPath = new File(activity.getCacheDir().getPath(), Common.getAppID());
                     File mBackUpPath = new File(mExportPath, ".aeeBackup");
-                    mBuilDir = new File(mExportPath, ".aeeBuild");
-                    mBuilDir.mkdirs();
-                    prepareSource(mBuilDir, mExportPath, mBackUpPath, activity);
+                    mBuildDir = new File(mExportPath, ".aeeBuild");
+                    mBuildDir.mkdirs();
+                    prepareSource(mBuildDir, mExportPath, mBackUpPath, activity);
                     if (Common.getError() > 0) {
-                        return null;
+                        return;
                     }
-                    APKEditorUtils.zip(mBuilDir, mTMPZip);
+                    APKEditorUtils.zip(mBuildDir, mTMPZip);
                     if (APKData.isAppBundle(AppData.getSourceDir(Common.getAppID(), activity))) {
                         File mParent = new File(getExportAPKsPath(activity), Common.getAppID() + "_aee-signed");
                         mParent.mkdirs();
@@ -262,24 +261,22 @@ public class APKData {
                     }
                     File mExportPath = new File(activity.getCacheDir().getPath() + "/" + new File(Common.getPath()).getName());
                     File mBackUpPath = new File(mExportPath, ".aeeBackup");
-                    mBuilDir = new File(mExportPath, ".aeeBuild");
-                    mBuilDir.mkdirs();
-                    prepareSource(mBuilDir, mExportPath, mBackUpPath, activity);
+                    mBuildDir = new File(mExportPath, ".aeeBuild");
+                    mBuildDir.mkdirs();
+                    prepareSource(mBuildDir, mExportPath, mBackUpPath, activity);
                     if (Common.getError() > 0) {
-                        return null;
+                        return;
                     }
-                    APKEditorUtils.zip(mBuilDir, mTMPZip);
+                    APKEditorUtils.zip(mBuildDir, mTMPZip);
                     Common.setStatus(activity.getString(R.string.signing, new File(getExportAPKsPath(activity), new File(Common.getPath()).getName() + "_aee-signed.apk").getName()));
                     signApks(mTMPZip, new File(getExportAPKsPath(activity), new File(Common.getPath()).getName() + "_aee-signed.apk"), activity);
                 }
-                return null;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void onPostExecute() {
                 APKEditorUtils.delete(mTMPZip.getAbsolutePath());
-                APKEditorUtils.delete(mBuilDir.getAbsolutePath());
+                APKEditorUtils.delete(mBuildDir.getAbsolutePath());
                 if (!Common.isFinished()) {
                     Common.setFinishStatus(true);
                 }
@@ -289,11 +286,11 @@ public class APKData {
     }
 
     public static void signAPK(String packageName, Context context) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTasks() {
             private ProgressDialog mProgressDialog;
+
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(context);
                 mProgressDialog.setMessage(context.getString(R.string.signing, AppData.getAppName(packageName, context)));
                 mProgressDialog.setCancelable(false);
@@ -301,7 +298,7 @@ public class APKData {
             }
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void doInBackground() {
                 if (APKData.isAppBundle(AppData.getSourceDir(packageName, context))) {
                     File mParent = new File(getExportAPKsPath(context),packageName + "_aee-signed");
                     mParent.mkdirs();
@@ -314,12 +311,10 @@ public class APKData {
                     }
                     signApks(new File(AppData.getSourceDir(packageName, context)), new File(getExportAPKsPath(context), packageName + "_aee-signed.apk"), context);
                 }
-                return null;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void onPostExecute() {
                 try {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
@@ -329,12 +324,12 @@ public class APKData {
     }
 
     public static void reSignAPKs(Activity activity) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTasks() {
             private ProgressDialog mProgressDialog;
             private String mPackageName = null, mSignedAPKPath = null;
+
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(activity);
                 mProgressDialog.setMessage(activity.getString(R.string.resigning_apks));
                 mProgressDialog.setCancelable(false);
@@ -347,7 +342,7 @@ public class APKData {
             }
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void doInBackground() {
                 if (mPackageName != null) {
                     if (Common.getAPKList().size() > 1) {
                         File mParent = new File(Projects.getExportPath(activity) + "/" + mPackageName + "_aee-signed");
@@ -362,12 +357,10 @@ public class APKData {
                         signApks(new File(Common.getAPKList().get(0)), new File(Projects.getExportPath(activity) + "/" + mPackageName + "_aee-signed.apk"), activity);
                     }
                 }
-                return null;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void onPostExecute() {
                 try {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
@@ -389,13 +382,13 @@ public class APKData {
     }
 
     public static void reSignAndInstall(Activity activity) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTasks() {
             private File mParent = new File(activity.getCacheDir(), "aee-signed");
             private ProgressDialog mProgressDialog;
             private String mPackageName = null, mSignedAPKPath = null;
+
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(activity);
                 mProgressDialog.setMessage(activity.getString(R.string.resigning_apks));
                 mProgressDialog.setCancelable(false);
@@ -411,7 +404,7 @@ public class APKData {
             }
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void doInBackground() {
                 if (mPackageName != null) {
                     mParent = new File(activity.getCacheDir(), "aee-signed");
                     mParent.mkdirs();
@@ -425,12 +418,10 @@ public class APKData {
                         signApks(new File(Common.getAPKList().get(0)), new File(mParent, "aee-signed.apk"), activity);
                     }
                 }
-                return null;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void onPostExecute() {
                 try {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
@@ -455,11 +446,11 @@ public class APKData {
     }
 
     public static void exportApp(String packageName, Context context) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTasks() {
             private ProgressDialog mProgressDialog;
+
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(context);
                 mProgressDialog.setMessage(context.getString(R.string.exporting, AppData.getAppName(packageName, context)));
                 mProgressDialog.setCancelable(false);
@@ -467,7 +458,7 @@ public class APKData {
             }
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void doInBackground() {
                 if (APKData.isAppBundle(AppData.getSourceDir(packageName, context))) {
                     File mParent = new File(getExportAPKsPath(context) , packageName);
                     mParent.mkdirs();
@@ -482,12 +473,10 @@ public class APKData {
                     }
                     APKEditorUtils.copy(AppData.getSourceDir(packageName, context), getExportAPKsPath(context) + "/" + packageName + ".apk");
                 }
-                return null;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void onPostExecute() {
                 try {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
@@ -497,11 +486,11 @@ public class APKData {
     }
 
     public static void shareAppBundle(String name, String path, Context context) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTasks() {
             private ProgressDialog mProgressDialog;
+
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(context);
                 mProgressDialog.setMessage(context.getString(R.string.preparing_bundle));
                 mProgressDialog.setCancelable(false);
@@ -513,14 +502,12 @@ public class APKData {
             }
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void doInBackground() {
                 APKEditorUtils.zip(new File(path), new File(Projects.getExportPath(context), name + ".xapk"));
-                return null;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void onPostExecute() {
                 try {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {

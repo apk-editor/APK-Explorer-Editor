@@ -20,7 +20,7 @@ import com.apk.editor.R;
 import com.apk.editor.activities.CreditsActivity;
 import com.apk.editor.activities.DocumentationActivity;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.RecycleViewItem;
+import com.apk.editor.utils.recyclerViewItems.AboutItems;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
@@ -28,24 +28,24 @@ import java.util.ArrayList;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
-public class RecycleViewAboutAdapter extends RecyclerView.Adapter<RecycleViewAboutAdapter.ViewHolder> {
+public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> {
 
-    private static ArrayList<RecycleViewItem> data;
+    private static ArrayList<AboutItems> data;
 
-    public RecycleViewAboutAdapter(ArrayList<RecycleViewItem> data) {
-        RecycleViewAboutAdapter.data = data;
+    public AboutAdapter(ArrayList<AboutItems> data) {
+        AboutAdapter.data = data;
     }
 
     @NonNull
     @Override
-    public RecycleViewAboutAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AboutAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_about, parent, false);
-        return new RecycleViewAboutAdapter.ViewHolder(rowItem);
+        return new AboutAdapter.ViewHolder(rowItem);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
-    public void onBindViewHolder(@NonNull RecycleViewAboutAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AboutAdapter.ViewHolder holder, int position) {
         holder.Title.setText(data.get(position).getTitle());
         holder.Description.setText(data.get(position).getDescription());
         if (APKEditorUtils.isDarkTheme(holder.Title.getContext())) {

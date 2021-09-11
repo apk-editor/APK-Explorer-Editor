@@ -19,6 +19,7 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.recyclerViewItems.PackageItems;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -28,43 +29,43 @@ import java.util.List;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
-public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewAppsAdapter.ViewHolder> {
+public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapter.ViewHolder> {
 
-    private static List<String> data;
+    private static List<PackageItems> data;
 
-    public RecycleViewAppsAdapter(List<String> data) {
-        RecycleViewAppsAdapter.data = data;
+    public ApplicationsAdapter(List<PackageItems> data) {
+        ApplicationsAdapter.data = data;
     }
 
     @NonNull
     @Override
-    public RecycleViewAppsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ApplicationsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view, parent, false);
         return new ViewHolder(rowItem);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecycleViewAppsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ApplicationsAdapter.ViewHolder holder, int position) {
         try {
-            holder.mAppIcon.setImageDrawable(AppData.getAppIcon(data.get(position), holder.mAppIcon.getContext()));
-            if (Common.getSearchWord() != null && Common.isTextMatched(data.get(position), Common.getSearchWord())) {
-                holder.mAppID.setText(APKEditorUtils.fromHtml(data.get(position).replace(Common.getSearchWord(), "<b><i><font color=\"" +
+            holder.mAppIcon.setImageDrawable(data.get(position).getAppIcon());
+            if (Common.getSearchWord() != null && Common.isTextMatched(data.get(position).getPackageName(), Common.getSearchWord())) {
+                holder.mAppID.setText(APKEditorUtils.fromHtml(data.get(position).getPackageName().replace(Common.getSearchWord(), "<b><i><font color=\"" +
                         Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
             } else {
-                holder.mAppID.setText(data.get(position));
+                holder.mAppID.setText(data.get(position).getPackageName());
             }
-            if (Common.getSearchWord() != null && Common.isTextMatched(AppData.getAppName(data.get(position), holder.mAppName.getContext()).toString(), Common.getSearchWord())) {
-                holder.mAppName.setText(APKEditorUtils.fromHtml(AppData.getAppName(data.get(position), holder.mAppName.getContext()).toString().replace(Common.getSearchWord(),
+            if (Common.getSearchWord() != null && Common.isTextMatched(data.get(position).getAppName(), Common.getSearchWord())) {
+                holder.mAppName.setText(APKEditorUtils.fromHtml(data.get(position).getAppName().replace(Common.getSearchWord(),
                         "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
             } else {
-                holder.mAppName.setText(AppData.getAppName(data.get(position), holder.mAppName.getContext()));
+                holder.mAppName.setText(data.get(position).getAppName());
             }
-            holder.mVersion.setText(holder.mAppName.getContext().getString(R.string.version, AppData.getVersionName(AppData.getSourceDir(data.get(position), holder.mAppName.getContext()), holder.mAppName.getContext())));
-            holder.mSize.setText(holder.mAppName.getContext().getString(R.string.size, AppData.getAPKSize(AppData.getSourceDir(data.get(position), holder.mAppName.getContext()))));
+            holder.mVersion.setText(holder.mAppName.getContext().getString(R.string.version, data.get(position).getAppVersion()));
+            holder.mSize.setText(holder.mAppName.getContext().getString(R.string.size, AppData.getAPKSize(data.get(position).getAPKSize())));
             holder.mVersion.setTextColor(Color.RED);
             holder.mSize.setTextColor(APKEditorUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
             holder.mAppIcon.setOnClickListener(v -> {
-                Common.setAppID(data.get(position));
+                Common.setAppID(data.get(position).getPackageName());
                 Intent imageView = new Intent(v.getContext(), ImageViewActivity.class);
                 v.getContext().startActivity(imageView);
             });
@@ -85,7 +86,7 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
                                 R.array.export_options), (dialogInterface, i) -> {
                             switch (i) {
                                 case 0:
-                                    APKData.exportApp(data.get(position), v.getContext());
+                                    APKData.exportApp(data.get(position).getPackageName(), v.getContext());
                                     break;
                                 case 1:
                                     if (!APKEditorUtils.getBoolean("firstSigning", false, v.getContext())) {
@@ -94,7 +95,7 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
                                             APKEditorUtils.saveBoolean("firstSigning", true, v.getContext());
                                             switch (ii) {
                                                 case 0:
-                                                    APKData.signAPK(data.get(position), v.getContext());
+                                                    APKData.signAPK(data.get(position).getPackageName(), v.getContext());
                                                     break;
                                                 case 1:
                                                     Intent signing = new Intent(v.getContext(), APKSignActivity.class);
@@ -105,14 +106,14 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
                                                 .setOnDismissListener(dialogInterfacei -> {
                                                 }).show();
                                     } else {
-                                        APKData.signAPK(data.get(position), v.getContext());
+                                        APKData.signAPK(data.get(position).getPackageName(), v.getContext());
                                     }
                                     break;
                             }
                         }).setOnDismissListener(dialogInterface -> {
                         }).show();
                     } else if (APKEditorUtils.getString("exportAPKs", null, v.getContext()).equals(v.getContext().getString(R.string.export_storage))) {
-                        APKData.exportApp(data.get(position), v.getContext());
+                        APKData.exportApp(data.get(position).getPackageName(), v.getContext());
                     } else {
                         if (!APKEditorUtils.getBoolean("firstSigning", false, v.getContext())) {
                             new MaterialAlertDialogBuilder(v.getContext()).setItems(v.getContext().getResources().getStringArray(
@@ -120,7 +121,7 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
                                 APKEditorUtils.saveBoolean("firstSigning", true, v.getContext());
                                 switch (ii) {
                                     case 0:
-                                        APKData.signAPK(data.get(position), v.getContext());
+                                        APKData.signAPK(data.get(position).getPackageName(), v.getContext());
                                         break;
                                     case 1:
                                         Intent signing = new Intent(v.getContext(), APKSignActivity.class);
@@ -131,17 +132,17 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
                                     .setOnDismissListener(dialogInterfacei -> {
                                     }).show();
                         } else {
-                            APKData.signAPK(data.get(position), v.getContext());
+                            APKData.signAPK(data.get(position).getPackageName(), v.getContext());
                         }
                     }
                 } else {
                     new MaterialAlertDialogBuilder(v.getContext())
-                            .setIcon(AppData.getAppIcon(data.get(position), v.getContext()))
-                            .setTitle(AppData.getAppName(data.get(position), v.getContext()))
-                            .setMessage(v.getContext().getString(R.string.export_app_question, AppData.getAppName(data.get(position), v.getContext())))
+                            .setIcon(data.get(position).getAppIcon())
+                            .setTitle(data.get(position).getAppName())
+                            .setMessage(v.getContext().getString(R.string.export_app_question, data.get(position).getAppName()))
                             .setNegativeButton(R.string.cancel, (dialog, id) -> {
                             })
-                            .setPositiveButton(R.string.export, (dialog, id) -> APKData.exportApp(data.get(position), v.getContext())).show();
+                            .setPositiveButton(R.string.export, (dialog, id) -> APKData.exportApp(data.get(position).getPackageName(), v.getContext())).show();
                 }
                 return false;
             });
@@ -171,7 +172,7 @@ public class RecycleViewAppsAdapter extends RecyclerView.Adapter<RecycleViewApps
 
         @Override
         public void onClick(View view) {
-            APKExplorer.exploreAPK(data.get(getAdapterPosition()), view.getContext());
+            APKExplorer.exploreAPK(data.get(getAdapterPosition()).getPackageName(), view.getContext());
         }
     }
 

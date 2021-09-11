@@ -16,9 +16,11 @@ import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.recyclerViewItems.PackageItems;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.io.File;
 import java.util.Objects;
 
 /*
@@ -133,6 +135,17 @@ public class InstallerActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (APKEditorUtils.getString("installationStatus", "waiting", this).equals("waiting")) {
             return;
+        }
+        if (APKEditorUtils.getString("installationStatus", "waiting", this).equals(getString(R.string.installation_status_success))) {
+            Common.getPackageData().add(new PackageItems(
+                    AppData.getAppName(Common.getPackageName(), this).toString(),
+                    Common.getPackageName(),
+                    AppData.getVersionName(AppData.getSourceDir(Common.getPackageName(), this), this),
+                    new File(AppData.getSourceDir(Common.getPackageName(), this)).length(),
+                    Objects.requireNonNull(AppData.getPackageInfo(Common.getPackageName(), this)).firstInstallTime,
+                    Objects.requireNonNull(AppData.getPackageInfo(Common.getPackageName(), this)).lastUpdateTime,
+                    AppData.getAppIcon(Common.getPackageName(), this)
+            ));
         }
         if (APKEditorUtils.exist(getCacheDir().getPath() + "/splits")) {
             APKEditorUtils.delete(getCacheDir().getPath() + "/splits");

@@ -30,26 +30,26 @@ import java.util.List;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
-public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleViewAPKExplorerAdapter.ViewHolder> {
+public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.ViewHolder> {
 
     private static ClickListener clickListener;
 
     private static List<String> data;
 
-    public RecycleViewAPKExplorerAdapter(List<String> data) {
-        RecycleViewAPKExplorerAdapter.data = data;
+    public APKExplorerAdapter(List<String> data) {
+        APKExplorerAdapter.data = data;
     }
 
     @NonNull
     @Override
-    public RecycleViewAPKExplorerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public APKExplorerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_apkexplorer, parent, false);
-        return new RecycleViewAPKExplorerAdapter.ViewHolder(rowItem);
+        return new APKExplorerAdapter.ViewHolder(rowItem);
     }
 
     @SuppressLint({"UseCompatLoadingForDrawables", "NotifyDataSetChanged"})
     @Override
-    public void onBindViewHolder(@NonNull RecycleViewAPKExplorerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull APKExplorerAdapter.ViewHolder holder, int position) {
         if (new File(data.get(position)).isDirectory()) {
             holder.mIcon.setImageDrawable(holder.mTitle.getContext().getResources().getDrawable(R.drawable.ic_folder));
             holder.mIcon.setBackground(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_circle));
@@ -76,7 +76,7 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
             }
         }
         holder.mTitle.setText(new File(data.get(position)).getName());
-        holder.mDescription.setText(AppData.getAPKSize(data.get(position)));
+        holder.mDescription.setText(AppData.getAPKSize(new File(data.get(position)).length()));
         holder.mSettings.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
             Menu menu = popupMenu.getMenu();
@@ -155,7 +155,7 @@ public class RecycleViewAPKExplorerAdapter extends RecyclerView.Adapter<RecycleV
     }
 
     public void setOnItemClickListener(ClickListener clickListener) {
-        RecycleViewAPKExplorerAdapter.clickListener = clickListener;
+        APKExplorerAdapter.clickListener = clickListener;
     }
 
     public interface ClickListener {

@@ -21,26 +21,26 @@ import java.util.List;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 05, 2021
  */
-public class RecycleViewFilePickerAdapter extends RecyclerView.Adapter<RecycleViewFilePickerAdapter.ViewHolder> {
+public class FilePickerAdapter extends RecyclerView.Adapter<FilePickerAdapter.ViewHolder> {
 
     private static ClickListener clickListener;
 
     private final List<String> data;
 
-    public RecycleViewFilePickerAdapter(List<String> data) {
+    public FilePickerAdapter(List<String> data) {
         this.data = data;
     }
 
     @NonNull
     @Override
-    public RecycleViewFilePickerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FilePickerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_filepicker, parent, false);
-        return new RecycleViewFilePickerAdapter.ViewHolder(rowItem);
+        return new FilePickerAdapter.ViewHolder(rowItem);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
-    public void onBindViewHolder(@NonNull RecycleViewFilePickerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FilePickerAdapter.ViewHolder holder, int position) {
         if (new File(this.data.get(position)).isDirectory()) {
             holder.mIcon.setImageDrawable(holder.mTitle.getContext().getResources().getDrawable(R.drawable.ic_folder));
             holder.mIcon.setBackground(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_circle));
@@ -90,7 +90,7 @@ public class RecycleViewFilePickerAdapter extends RecyclerView.Adapter<RecycleVi
     }
 
     public void setOnItemClickListener(ClickListener clickListener) {
-        RecycleViewFilePickerAdapter.clickListener = clickListener;
+        FilePickerAdapter.clickListener = clickListener;
     }
 
     public interface ClickListener {

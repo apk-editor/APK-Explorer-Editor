@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Environment;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -13,7 +12,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import com.apk.editor.MainActivity;
 import com.apk.editor.R;
 import com.apk.editor.activities.APKSignActivity;
-import com.apk.editor.adapters.RecycleViewSettingsAdapter;
+import com.apk.editor.adapters.SettingsAdapter;
+import com.apk.editor.utils.recyclerViewItems.SettingsItems;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
@@ -24,27 +24,27 @@ import java.util.ArrayList;
  */
 public class AppSettings {
 
-    private static final ArrayList <RecycleViewSettingsItem> mData = new ArrayList<>();
+    private static final ArrayList <SettingsItems> mData = new ArrayList<>();
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    public static ArrayList<RecycleViewSettingsItem> getData(Context context) {
+    public static ArrayList<SettingsItems> getData(Context context) {
         mData.clear();
-        mData.add(new RecycleViewSettingsItem(context.getString(R.string.user_interface), null, null));
-        mData.add(new RecycleViewSettingsItem(context.getString(R.string.app_theme), getAppTheme(context), context.getResources().getDrawable(R.drawable.ic_theme)));
-        mData.add(new RecycleViewSettingsItem(context.getString(R.string.language), getLanguage(context), context.getResources().getDrawable(R.drawable.ic_translate)));
-        mData.add(new RecycleViewSettingsItem(context.getString(R.string.settings_general), null, null));
-        mData.add(new RecycleViewSettingsItem(context.getString(R.string.project_exist_action), getProjectExistAction(context), context.getResources().getDrawable(R.drawable.ic_projects)));
-        mData.add(new RecycleViewSettingsItem(context.getString(R.string.export_path_apks), getExportAPKsPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
-        mData.add(new RecycleViewSettingsItem(context.getString(R.string.export_path_resources), getExportPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
+        mData.add(new SettingsItems(context.getString(R.string.user_interface), null, null));
+        mData.add(new SettingsItems(context.getString(R.string.app_theme), getAppTheme(context), context.getResources().getDrawable(R.drawable.ic_theme)));
+        mData.add(new SettingsItems(context.getString(R.string.language), getLanguage(context), context.getResources().getDrawable(R.drawable.ic_translate)));
+        mData.add(new SettingsItems(context.getString(R.string.settings_general), null, null));
+        mData.add(new SettingsItems(context.getString(R.string.project_exist_action), getProjectExistAction(context), context.getResources().getDrawable(R.drawable.ic_projects)));
+        mData.add(new SettingsItems(context.getString(R.string.export_path_apks), getExportAPKsPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
+        mData.add(new SettingsItems(context.getString(R.string.export_path_resources), getExportPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
         if (APKEditorUtils.isFullVersion(context)) {
-            mData.add(new RecycleViewSettingsItem(context.getString(R.string.text_editing), getEditingOptions(context), context.getResources().getDrawable(R.drawable.ic_edit)));
-            mData.add(new RecycleViewSettingsItem(context.getString(R.string.signing_title), null, null));
-            mData.add(new RecycleViewSettingsItem(context.getString(R.string.export_options), getAPKs(context), context.getResources().getDrawable(R.drawable.ic_android)));
-            mData.add(new RecycleViewSettingsItem(context.getString(R.string.installer_action), getInstallerAction(context), context.getResources().getDrawable(R.drawable.ic_installer)));
-            mData.add(new RecycleViewSettingsItem(context.getString(R.string.sign_apk_with), getAPKSign(context), context.getResources().getDrawable(R.drawable.ic_key)));
+            mData.add(new SettingsItems(context.getString(R.string.text_editing), getEditingOptions(context), context.getResources().getDrawable(R.drawable.ic_edit)));
+            mData.add(new SettingsItems(context.getString(R.string.signing_title), null, null));
+            mData.add(new SettingsItems(context.getString(R.string.export_options), getAPKs(context), context.getResources().getDrawable(R.drawable.ic_android)));
+            mData.add(new SettingsItems(context.getString(R.string.installer_action), getInstallerAction(context), context.getResources().getDrawable(R.drawable.ic_installer)));
+            mData.add(new SettingsItems(context.getString(R.string.sign_apk_with), getAPKSign(context), context.getResources().getDrawable(R.drawable.ic_key)));
         }
-        mData.add(new RecycleViewSettingsItem(context.getString(R.string.settings_misc), null, null));
-        mData.add(new RecycleViewSettingsItem(context.getString(R.string.clear_cache), context.getString(R.string.clear_cache_summary), context.getResources().getDrawable(R.drawable.ic_delete)));
+        mData.add(new SettingsItems(context.getString(R.string.settings_misc), null, null));
+        mData.add(new SettingsItems(context.getString(R.string.clear_cache), context.getString(R.string.clear_cache_summary), context.getResources().getDrawable(R.drawable.ic_delete)));
         return mData;
     }
 
@@ -145,7 +145,7 @@ public class AppSettings {
         }
     }
 
-    public static void handleSettingsActions(RecycleViewSettingsAdapter adapter, int position, Activity activity) {
+    public static void handleSettingsActions(SettingsAdapter adapter, int position, Activity activity) {
         if (getData(activity).get(position).getDescription() != null) {
             if (position == 1) {
                 setAppTheme(activity);
@@ -276,19 +276,19 @@ public class AppSettings {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private static void setExportAPKsPath(RecycleViewSettingsAdapter adapter, int position, Activity activity) {
+    private static void setExportAPKsPath(SettingsAdapter adapter, int position, Activity activity) {
         new MaterialAlertDialogBuilder(activity).setItems(activity.getResources().getStringArray(
                 R.array.export_path_apk), (dialogInterface, i) -> {
             switch (i) {
                 case 0:
                     APKEditorUtils.saveString("exportAPKsPath", "externalFiles", activity);
-                    mData.set(position, new RecycleViewSettingsItem(activity.getString(R.string.export_path_apks), getExportAPKsPath(activity), activity.getResources().getDrawable(R.drawable.ic_export)));
+                    mData.set(position, new SettingsItems(activity.getString(R.string.export_path_apks), getExportAPKsPath(activity), activity.getResources().getDrawable(R.drawable.ic_export)));
                     adapter.notifyItemChanged(position);
                     transferExportedApps(activity);
                     break;
                 case 1:
                     APKEditorUtils.saveString("exportAPKsPath", "internalStorage", activity);
-                    mData.set(position, new RecycleViewSettingsItem(activity.getString(R.string.export_path_apks), getExportAPKsPath(activity), activity.getResources().getDrawable(R.drawable.ic_export)));
+                    mData.set(position, new SettingsItems(activity.getString(R.string.export_path_apks), getExportAPKsPath(activity), activity.getResources().getDrawable(R.drawable.ic_export)));
                     adapter.notifyItemChanged(position);
                     transferExportedApps(activity);
                     break;
@@ -298,23 +298,23 @@ public class AppSettings {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private static void setExportPath(RecycleViewSettingsAdapter adapter, int position, Context context) {
+    private static void setExportPath(SettingsAdapter adapter, int position, Context context) {
         new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
                 R.array.export_path), (dialogInterface, i) -> {
             switch (i) {
                 case 0:
                     APKEditorUtils.saveString("exportPath", Environment.getExternalStorageDirectory().toString(), context);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.export_path_resources), getExportPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.export_path_resources), getExportPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
                     adapter.notifyItemChanged(position);
                     break;
                 case 1:
                     APKEditorUtils.saveString("exportPath", null, context);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.export_path_resources), getExportPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.export_path_resources), getExportPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
                     adapter.notifyItemChanged(position);
                     break;
                 case 2:
                     APKEditorUtils.saveString("exportPath", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString(), context);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.export_path_resources), getExportPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.export_path_resources), getExportPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
                     adapter.notifyItemChanged(position);
                     break;
             }
@@ -323,23 +323,23 @@ public class AppSettings {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private static void setAPKs(RecycleViewSettingsAdapter adapter, int position, Context context) {
+    private static void setAPKs(SettingsAdapter adapter, int position, Context context) {
         new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
                 R.array.export_apk), (dialogInterface, i) -> {
             switch (i) {
                 case 0:
                     APKEditorUtils.saveString("exportAPKs", context.getString(R.string.export_storage), context);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.export_options), getAPKs(context), context.getResources().getDrawable(R.drawable.ic_android)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.export_options), getAPKs(context), context.getResources().getDrawable(R.drawable.ic_android)));
                     adapter.notifyItemChanged(position);
                     break;
                 case 1:
                     APKEditorUtils.saveString("exportAPKs", context.getString(R.string.export_resign), context);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.export_options), getAPKs(context), context.getResources().getDrawable(R.drawable.ic_android)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.export_options), getAPKs(context), context.getResources().getDrawable(R.drawable.ic_android)));
                     adapter.notifyItemChanged(position);
                     break;
                 case 2:
                     APKEditorUtils.saveString("exportAPKs", null, context);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.export_options), getAPKs(context), context.getResources().getDrawable(R.drawable.ic_android)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.export_options), getAPKs(context), context.getResources().getDrawable(R.drawable.ic_android)));
                     adapter.notifyItemChanged(position);
                     break;
             }
@@ -348,23 +348,23 @@ public class AppSettings {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private static void setProjectExistAction(RecycleViewSettingsAdapter adapter, int position, Context context) {
+    private static void setProjectExistAction(SettingsAdapter adapter, int position, Context context) {
         new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
                 R.array.project_options), (dialogInterface, i) -> {
             switch (i) {
                 case 0:
                     APKEditorUtils.saveString("projectAction", context.getString(R.string.save), context);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.project_exist_action), getProjectExistAction(context), context.getResources().getDrawable(R.drawable.ic_projects)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.project_exist_action), getProjectExistAction(context), context.getResources().getDrawable(R.drawable.ic_projects)));
                     adapter.notifyItemChanged(position);
                     break;
                 case 1:
                     APKEditorUtils.saveString("projectAction", context.getString(R.string.delete), context);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.project_exist_action), getProjectExistAction(context), context.getResources().getDrawable(R.drawable.ic_projects)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.project_exist_action), getProjectExistAction(context), context.getResources().getDrawable(R.drawable.ic_projects)));
                     adapter.notifyItemChanged(position);
                     break;
                 case 2:
                     APKEditorUtils.saveString("projectAction", null, context);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.project_exist_action), getProjectExistAction(context), context.getResources().getDrawable(R.drawable.ic_projects)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.project_exist_action), getProjectExistAction(context), context.getResources().getDrawable(R.drawable.ic_projects)));
                     adapter.notifyItemChanged(position);
                     break;
             }
@@ -373,13 +373,13 @@ public class AppSettings {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private static void setEditingOptions(RecycleViewSettingsAdapter adapter, int position, Context context) {
+    private static void setEditingOptions(SettingsAdapter adapter, int position, Context context) {
         new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
                 R.array.editing_options), (dialogInterface, i) -> {
             switch (i) {
                 case 0:
                     APKEditorUtils.saveBoolean("editText", false, context);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.text_editing), getEditingOptions(context), context.getResources().getDrawable(R.drawable.ic_edit)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.text_editing), getEditingOptions(context), context.getResources().getDrawable(R.drawable.ic_edit)));
                     adapter.notifyItemChanged(position);
                     break;
                 case 1:
@@ -391,7 +391,7 @@ public class AppSettings {
                             })
                             .setPositiveButton(context.getString(R.string.enable), (dialog, id) -> {
                                 APKEditorUtils.saveBoolean("editText", true, context);
-                                mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.text_editing), getEditingOptions(context), context.getResources().getDrawable(R.drawable.ic_edit)));
+                                mData.set(position, new SettingsItems(context.getString(R.string.text_editing), getEditingOptions(context), context.getResources().getDrawable(R.drawable.ic_edit)));
                                 adapter.notifyItemChanged(position);
                             }).show();
                     break;
@@ -401,23 +401,23 @@ public class AppSettings {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private static void setInstallerAction(RecycleViewSettingsAdapter adapter, int position, Context context) {
+    private static void setInstallerAction(SettingsAdapter adapter, int position, Context context) {
         new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
                 R.array.installer_options), (dialogInterface, i) -> {
             switch (i) {
                 case 0:
                     APKEditorUtils.saveString("installerAction", context.getString(R.string.install), context);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.installer_action), getInstallerAction(context), context.getResources().getDrawable(R.drawable.ic_installer)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.installer_action), getInstallerAction(context), context.getResources().getDrawable(R.drawable.ic_installer)));
                     adapter.notifyItemChanged(position);
                     break;
                 case 1:
                     APKEditorUtils.saveString("installerAction", context.getString(R.string.install_resign), context);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.installer_action), getInstallerAction(context), context.getResources().getDrawable(R.drawable.ic_installer)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.installer_action), getInstallerAction(context), context.getResources().getDrawable(R.drawable.ic_installer)));
                     adapter.notifyItemChanged(position);
                     break;
                 case 2:
                     APKEditorUtils.saveString("installerAction", null, context);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.installer_action), getInstallerAction(context), context.getResources().getDrawable(R.drawable.ic_installer)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.installer_action), getInstallerAction(context), context.getResources().getDrawable(R.drawable.ic_installer)));
                     adapter.notifyItemChanged(position);
                     break;
             }
@@ -426,7 +426,7 @@ public class AppSettings {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private static void setAPKSign(RecycleViewSettingsAdapter adapter, int position, Context context) {
+    private static void setAPKSign(SettingsAdapter adapter, int position, Context context) {
         new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
                 R.array.signing_options), (dialogInterface, i) -> {
             switch (i) {
@@ -436,14 +436,14 @@ public class AppSettings {
                         new File(context.getFilesDir(), "signing/APKEditor.pk8").delete();
                         APKEditorUtils.saveString("RSATemplate", null, context);
                         new File(context.getFilesDir(), "signing/APKEditor").delete();
-                        mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.sign_apk_with), getAPKSign(context), context.getResources().getDrawable(R.drawable.ic_key)));
+                        mData.set(position, new SettingsItems(context.getString(R.string.sign_apk_with), getAPKSign(context), context.getResources().getDrawable(R.drawable.ic_key)));
                         adapter.notifyItemChanged(position);
                     }
                     break;
                 case 1:
                     Intent signing = new Intent(context, APKSignActivity.class);
                     context.startActivity(signing);
-                    mData.set(position, new RecycleViewSettingsItem(context.getString(R.string.sign_apk_with), getAPKSign(context), context.getResources().getDrawable(R.drawable.ic_key)));
+                    mData.set(position, new SettingsItems(context.getString(R.string.sign_apk_with), getAPKSign(context), context.getResources().getDrawable(R.drawable.ic_key)));
                     adapter.notifyItemChanged(position);
                     break;
             }
@@ -470,12 +470,12 @@ public class AppSettings {
     }
 
     private static void transferExportedApps(Context context) {
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTasks() {
             private File sourceDir;
             private ProgressDialog mProgressDialog;
+
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(context);
                 mProgressDialog.setMessage(context.getString(R.string.transfer_exported_apk));
                 mProgressDialog.setCancelable(false);
@@ -483,7 +483,7 @@ public class AppSettings {
             }
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void doInBackground() {
                 File destDir;
                 if (APKEditorUtils.getString("exportAPKsPath", "externalFiles", context).equals("internalStorage")) {
                     sourceDir = context.getExternalFilesDir("");
@@ -493,12 +493,10 @@ public class AppSettings {
                     sourceDir = new File(Environment.getExternalStorageDirectory(), "/AEE/exportedAPKs");
                 }
                 APKEditorUtils.copyDir(sourceDir, destDir);
-                return null;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void onPostExecute() {
                 APKEditorUtils.delete(sourceDir.getAbsolutePath());
                 try {
                     mProgressDialog.dismiss();

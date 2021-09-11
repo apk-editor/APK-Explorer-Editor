@@ -1,4 +1,4 @@
-package com.apk.editor.apksigner;
+package com.apk.editor.utils.apkSigner;
 
 import android.util.Base64;
 

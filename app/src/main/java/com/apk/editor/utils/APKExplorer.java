@@ -11,7 +11,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
@@ -126,7 +125,7 @@ public class APKExplorer {
                     .setTitle(activity.getString(R.string.important))
                     .setMessage(activity.getString(R.string.file_permission_request_message, activity.getString(R.string.app_name)))
                     .setCancelable(false)
-                    .setNegativeButton(activity.getString(R.string.cancel), (dialogInterfacei, ii) -> {
+                    .setNegativeButton(activity.getString(R.string.cancel), (dialog1, id1) -> {
                     })
                     .setPositiveButton(activity.getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission(activity)).show();
         } else {
@@ -287,12 +286,11 @@ public class APKExplorer {
     }
 
     public static void exploreAPK(String packageName, Context context) {
-        new AsyncTask<Void, Void, Void>() {
-            private File mExplorePath;
-            private File mBackUpPath;
+        new AsyncTasks() {
+            private File mBackUpPath, mExplorePath;
+
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
+            public void onPreExecute() {
                 Common.setAppID(packageName);
                 mExplorePath = new File(context.getCacheDir().getPath(), packageName);
                 mBackUpPath = new File(mExplorePath, ".aeeBackup");
@@ -305,8 +303,9 @@ public class APKExplorer {
                     Common.setStatus(context.getString(R.string.exploring, AppData.getAppName(packageName, context)));
                 }
             }
+
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void doInBackground() {
                 if (!mExplorePath.exists()) {
                     mExplorePath.mkdirs();
                     APKEditorUtils.unzip(AppData.getSourceDir(packageName, context), mExplorePath.getAbsolutePath());
@@ -323,11 +322,10 @@ public class APKExplorer {
                         }
                     }
                 }
-                return null;
             }
+
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            public void onPostExecute() {
                 if (!Common.isFinished()) {
                     Common.setFinishStatus(true);
                 }

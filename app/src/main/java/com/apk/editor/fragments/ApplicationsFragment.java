@@ -1,8 +1,7 @@
 package com.apk.editor.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -24,14 +23,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
-import com.apk.editor.adapters.RecycleViewAppsAdapter;
+import com.apk.editor.adapters.ApplicationsAdapter;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.Common;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.util.List;
 import java.util.Objects;
 
 /*
@@ -41,13 +40,12 @@ public class ApplicationsFragment extends Fragment {
 
     private AppCompatEditText mSearchWord;
     private AppCompatImageButton mSortButton;
-    private AsyncTask<Void, Void, List<String>> mLoader;
     private boolean mExit;
     private final Handler mHandler = new Handler();
     private LinearLayout mProgress;
     private MaterialTextView mAppTitle;
     private RecyclerView mRecyclerView;
-    private RecycleViewAppsAdapter mRecycleViewAdapter;
+    private ApplicationsAdapter mRecycleViewAdapter;
 
     @Nullable
     @Override
@@ -180,51 +178,49 @@ public class ApplicationsFragment extends Fragment {
     }
 
     private void loadApps(Activity activity) {
-        if (mLoader == null) {
-            mHandler.postDelayed(new Runnable() {
-                @SuppressLint("StaticFieldLeak")
-                @Override
-                public void run() {
-                    mLoader = new AsyncTask<Void, Void, List<String>>() {
-                        @Override
-                        protected void onPreExecute() {
-                            super.onPreExecute();
-                            mRecyclerView.setVisibility(View.GONE);
-                            mProgress.setVisibility(View.VISIBLE);
-                            mRecyclerView.removeAllViews();
-                        }
+        new AsyncTasks() {
 
-                        @Override
-                        protected List<String> doInBackground(Void... voids) {
-                            mRecycleViewAdapter = new RecycleViewAppsAdapter(AppData.getData(activity));
-                            return null;
-                        }
+            @Override
+            public void onPreExecute() {
+                mRecyclerView.setVisibility(View.GONE);
+                mProgress.setVisibility(View.VISIBLE);
+                mRecyclerView.removeAllViews();
+            }
 
-                        @Override
-                        protected void onPostExecute(List<String> recyclerViewItems) {
-                            super.onPostExecute(recyclerViewItems);
-                            mRecyclerView.setAdapter(mRecycleViewAdapter);
-                            mRecyclerView.setVisibility(View.VISIBLE);
-                            mProgress.setVisibility(View.GONE);
-                            mLoader = null;
-                        }
-                    };
-                    mLoader.execute();
-                }
-            }, 250);
-        }
+            @Override
+            public void doInBackground() {
+                mRecycleViewAdapter = new ApplicationsAdapter(AppData.getData(activity));
+            }
+
+            @Override
+            public void onPostExecute() {
+                mRecyclerView.setAdapter(mRecycleViewAdapter);
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mProgress.setVisibility(View.GONE);
+            }
+        }.execute();
     }
 
     private void sortMenu(Activity activity) {
         PopupMenu popupMenu = new PopupMenu(activity, mSortButton);
         Menu menu = popupMenu.getMenu();
         SubMenu sort = menu.addSubMenu(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_by));
-        sort.add(Menu.NONE, 1, Menu.NONE, getString(R.string.sort_by_name)).setCheckable(true)
+
+        sort.add(0, 1, Menu.NONE, getString(R.string.sort_by_name)).setCheckable(true)
                 .setChecked(APKEditorUtils.getBoolean("sort_name", false, activity));
-        sort.add(Menu.NONE, 2, Menu.NONE, getString(R.string.sort_by_id)).setCheckable(true)
+        sort.add(0, 2, Menu.NONE, getString(R.string.sort_by_id)).setCheckable(true)
                 .setChecked(APKEditorUtils.getBoolean("sort_id", true, activity));
-        menu.add(Menu.NONE, 3, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            sort.add(0, 3, Menu.NONE, getString(R.string.sort_by_installed)).setCheckable(true)
+                    .setChecked(APKEditorUtils.getBoolean("sort_installed", false, activity));
+            sort.add(0, 4, Menu.NONE, getString(R.string.sort_by_updated)).setCheckable(true)
+                    .setChecked(APKEditorUtils.getBoolean("sort_updated", false, activity));
+            sort.add(0, 5, Menu.NONE, getString(R.string.sort_by_size)).setCheckable(true)
+                    .setChecked(APKEditorUtils.getBoolean("sort_size", false, activity));
+        }
+        menu.add(Menu.NONE, 6, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
                 .setChecked(APKEditorUtils.getBoolean("az_order", true, activity));
+        sort.setGroupCheckable(0, true, true);
         popupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case 0:
@@ -233,17 +229,53 @@ public class ApplicationsFragment extends Fragment {
                     if (!APKEditorUtils.getBoolean("sort_name", false, activity)) {
                         APKEditorUtils.saveBoolean("sort_name", true, activity);
                         APKEditorUtils.saveBoolean("sort_id", false, activity);
+                        APKEditorUtils.saveBoolean("sort_installed", false, activity);
+                        APKEditorUtils.saveBoolean("sort_updated", false, activity);
+                        APKEditorUtils.saveBoolean("sort_size", false, activity);
                         loadApps(activity);
                     }
                     break;
                 case 2:
                     if (!APKEditorUtils.getBoolean("sort_id", true, activity)) {
-                        APKEditorUtils.saveBoolean("sort_id", true, activity);
                         APKEditorUtils.saveBoolean("sort_name", false, activity);
+                        APKEditorUtils.saveBoolean("sort_id", true, activity);
+                        APKEditorUtils.saveBoolean("sort_installed", false, activity);
+                        APKEditorUtils.saveBoolean("sort_updated", false, activity);
+                        APKEditorUtils.saveBoolean("sort_size", false, activity);
                         loadApps(activity);
                     }
                     break;
                 case 3:
+                    if (!APKEditorUtils.getBoolean("sort_installed", false, activity)) {
+                        APKEditorUtils.saveBoolean("sort_name", false, activity);
+                        APKEditorUtils.saveBoolean("sort_id", false, activity);
+                        APKEditorUtils.saveBoolean("sort_installed", true, activity);
+                        APKEditorUtils.saveBoolean("sort_updated", false, activity);
+                        APKEditorUtils.saveBoolean("sort_size", false, activity);
+                        loadApps(activity);
+                    }
+                    break;
+                case 4:
+                    if (!APKEditorUtils.getBoolean("sort_updated", false, activity)) {
+                        APKEditorUtils.saveBoolean("sort_name", false, activity);
+                        APKEditorUtils.saveBoolean("sort_id", false, activity);
+                        APKEditorUtils.saveBoolean("sort_installed", false, activity);
+                        APKEditorUtils.saveBoolean("sort_updated", true, activity);
+                        APKEditorUtils.saveBoolean("sort_size", false, activity);
+                        loadApps(activity);
+                    }
+                    break;
+                case 5:
+                    if (!APKEditorUtils.getBoolean("sort_size", false, activity)) {
+                        APKEditorUtils.saveBoolean("sort_name", false, activity);
+                        APKEditorUtils.saveBoolean("sort_id", false, activity);
+                        APKEditorUtils.saveBoolean("sort_installed", false, activity);
+                        APKEditorUtils.saveBoolean("sort_updated", false, activity);
+                        APKEditorUtils.saveBoolean("sort_size", true, activity);
+                        loadApps(activity);
+                    }
+                    break;
+                case 6:
                     APKEditorUtils.saveBoolean("az_order", !APKEditorUtils.getBoolean("az_order", true, activity), activity);
                     loadApps(activity);
                     break;

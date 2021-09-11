@@ -1,9 +1,7 @@
 package com.apk.editor.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -26,17 +24,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.InstallerFilePickerActivity;
-import com.apk.editor.adapters.RecycleViewApksAdapter;
+import com.apk.editor.adapters.APKsAdapter;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.Common;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.util.List;
 import java.util.Objects;
 
 /*
@@ -45,13 +43,12 @@ import java.util.Objects;
 public class APKsFragment extends Fragment {
 
     private AppCompatEditText mSearchWord;
-    private AsyncTask<Void, Void, List<String>> mLoader;
     private boolean mExit;
     private final Handler mHandler = new Handler();
     private LinearLayout mProgress;
     private MaterialTextView mAppTitle;
     private RecyclerView mRecyclerView;
-    private RecycleViewApksAdapter mRecycleViewAdapter;
+    private APKsAdapter mRecycleViewAdapter;
 
     @Nullable
     @Override
@@ -219,39 +216,27 @@ public class APKsFragment extends Fragment {
     }
 
     private void loadAPKs(Activity activity) {
-        if (mLoader == null) {
-            mHandler.postDelayed(new Runnable() {
-                @SuppressLint("StaticFieldLeak")
-                @Override
-                public void run() {
-                    mLoader = new AsyncTask<Void, Void, List<String>>() {
-                        @Override
-                        protected void onPreExecute() {
-                            super.onPreExecute();
-                            mRecyclerView.setVisibility(View.GONE);
-                            mProgress.setVisibility(View.VISIBLE);
-                            mRecyclerView.removeAllViews();
-                        }
+        new AsyncTasks() {
 
-                        @Override
-                        protected List<String> doInBackground(Void... voids) {
-                            mRecycleViewAdapter = new RecycleViewApksAdapter(APKData.getData(activity));
-                            return null;
-                        }
+            @Override
+            public void onPreExecute() {
+                mRecyclerView.setVisibility(View.GONE);
+                mProgress.setVisibility(View.VISIBLE);
+                mRecyclerView.removeAllViews();
+            }
 
-                        @Override
-                        protected void onPostExecute(List<String> recyclerViewItems) {
-                            super.onPostExecute(recyclerViewItems);
-                            mRecyclerView.setAdapter(mRecycleViewAdapter);
-                            mRecyclerView.setVisibility(View.VISIBLE);
-                            mProgress.setVisibility(View.GONE);
-                            mLoader = null;
-                        }
-                    };
-                    mLoader.execute();
-                }
-            }, 250);
-        }
+            @Override
+            public void doInBackground() {
+                mRecycleViewAdapter = new APKsAdapter(APKData.getData(activity));
+            }
+
+            @Override
+            public void onPostExecute() {
+                mRecyclerView.setAdapter(mRecycleViewAdapter);
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mProgress.setVisibility(View.GONE);
+            }
+        }.execute();
     }
 
     @Override

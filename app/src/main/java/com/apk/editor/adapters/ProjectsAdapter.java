@@ -30,24 +30,24 @@ import java.util.List;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 06, 2021
  */
-public class RecycleViewProjectsAdapter extends RecyclerView.Adapter<RecycleViewProjectsAdapter.ViewHolder> {
+public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
 
     private static List<String> data;
 
-    public RecycleViewProjectsAdapter(List<String> data) {
-        RecycleViewProjectsAdapter.data = data;
+    public ProjectsAdapter(List<String> data) {
+        ProjectsAdapter.data = data;
     }
 
     @NonNull
     @Override
-    public RecycleViewProjectsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProjectsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_apks, parent, false);
         return new ViewHolder(rowItem);
     }
 
     @SuppressLint({"UseCompatLoadingForDrawables", "NotifyDataSetChanged"})
     @Override
-    public void onBindViewHolder(@NonNull RecycleViewProjectsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProjectsAdapter.ViewHolder holder, int position) {
         try {
             if (AppData.isAppInstalled(new File(data.get(position)).getName(), holder.mAppIcon.getContext())) {
                 holder.mAppIcon.setImageDrawable(AppData.getAppIcon(new File(data.get(position)).getName(), holder.mAppIcon.getContext()));

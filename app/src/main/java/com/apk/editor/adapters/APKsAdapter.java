@@ -33,24 +33,24 @@ import java.util.Objects;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
-public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApksAdapter.ViewHolder> {
+public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
 
     private static List<String> data;
 
-    public RecycleViewApksAdapter(List<String> data) {
-        RecycleViewApksAdapter.data = data;
+    public APKsAdapter(List<String> data) {
+        APKsAdapter.data = data;
     }
 
     @NonNull
     @Override
-    public RecycleViewApksAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public APKsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_apks, parent, false);
         return new ViewHolder(rowItem);
     }
 
     @SuppressLint({"UseCompatLoadingForDrawables", "NotifyDataSetChanged"})
     @Override
-    public void onBindViewHolder(@NonNull RecycleViewApksAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull APKsAdapter.ViewHolder holder, int position) {
         try {
             if (new File(data.get(position)).isDirectory()) {
                 if (APKData.getAppIcon(data.get(position) + "/base.apk", holder.mAppName.getContext()) != null) {
@@ -121,7 +121,7 @@ public class RecycleViewApksAdapter extends RecyclerView.Adapter<RecycleViewApks
                 if (APKData.getVersionName(data.get(position), holder.mAppName.getContext()) != null) {
                     holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.version, APKData.getVersionName(data.get(position), holder.mAppName.getContext())));
                 }
-                holder.mSize.setText(holder.mSize.getContext().getString(R.string.size, AppData.getAPKSize(data.get(position))));
+                holder.mSize.setText(holder.mSize.getContext().getString(R.string.size, AppData.getAPKSize(new File(data.get(position)).length())));
                 holder.mSize.setTextColor(APKEditorUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
                 holder.mSize.setVisibility(View.VISIBLE);
                 holder.mCard.setOnClickListener(v -> {
