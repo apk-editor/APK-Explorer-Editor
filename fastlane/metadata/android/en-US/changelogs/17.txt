@@ -1,7 +1,0 @@
-* Implemented building classes (.dex) files from modified "smali" files.
-* Brand-new apk exploring and building view.
-* Fixed crashing exploring some apps.
-* Theme switching will now work without app restart.
-* APK/Split APK installer will now show an Open button after successful installation.
-* Updated translations.
-* Miscellaneous changes.

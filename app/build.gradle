@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 17
-        versionName "v0.17"
+        versionCode 18
+        versionName "v0.18"
         vectorDrawables.useSupportLibrary = true
         testFunctionalTest = false
         testHandleProfiling = false
@@ -49,7 +49,7 @@ android {
 dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'net.dongliu:apk-parser:2.6.10'
-    implementation 'net.lingala.zip4j:zip4j:2.8.0'
+    implementation 'net.lingala.zip4j:zip4j:2.9.0'
     implementation 'org.smali:baksmali:2.5.2'
     implementation 'org.smali:smali:2.5.2'
 }
