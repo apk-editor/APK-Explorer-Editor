@@ -49,7 +49,7 @@ public class APKExplorer {
                     mDir.add(mFile.getAbsolutePath());
                 }
             }
-            Collections.sort(mDir);
+            Collections.sort(mDir, String.CASE_INSENSITIVE_ORDER);
             if (!APKEditorUtils.getBoolean("az_order", true, activity)) {
                 Collections.reverse(mDir);
             }
@@ -65,7 +65,7 @@ public class APKExplorer {
 
                 }
             }
-            Collections.sort(mFiles);
+            Collections.sort(mFiles, String.CASE_INSENSITIVE_ORDER);
             if (!APKEditorUtils.getBoolean("az_order", true, activity)) {
                 Collections.reverse(mFiles);
             }
