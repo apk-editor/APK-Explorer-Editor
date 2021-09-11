@@ -37,9 +37,10 @@ import java.util.Objects;
  */
 public class InstallerFilePickerActivity extends AppCompatActivity {
 
+    private LinearLayout mProgressLayout;
+    private InstallerFilePickerAdapter mRecycleViewAdapter;
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
-    private InstallerFilePickerAdapter mRecycleViewAdapter;
     public static final String TITLE_INTENT = "title";
 
     @SuppressLint("StringFormatInvalid")
@@ -52,6 +53,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
         mTitle = findViewById(R.id.title);
         AppCompatImageButton mSortButton = findViewById(R.id.sort);
         Common.initializeView(findViewById(android.R.id.content), R.id.select);
+        mProgressLayout = findViewById(R.id.progress_layout);
         mRecyclerView = findViewById(R.id.recycler_view);
 
         mBack.setOnClickListener(v -> super.onBackPressed());
@@ -136,6 +138,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
             @Override
             public void onPreExecute() {
                 APKExplorer.getData(getFilesList(), false, activity).clear();
+                mProgressLayout.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);
             }
 
@@ -159,6 +162,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                     Common.getSelectCard().setVisibility(View.VISIBLE);
                 }
                 mRecyclerView.setVisibility(View.VISIBLE);
+                mProgressLayout.setVisibility(View.GONE);
             }
         }.execute();
     }

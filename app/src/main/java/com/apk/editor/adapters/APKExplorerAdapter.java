@@ -52,7 +52,9 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
     public void onBindViewHolder(@NonNull APKExplorerAdapter.ViewHolder holder, int position) {
         if (new File(data.get(position)).isDirectory()) {
             holder.mIcon.setImageDrawable(holder.mTitle.getContext().getResources().getDrawable(R.drawable.ic_folder));
-            holder.mIcon.setBackground(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_circle));
+            if (APKEditorUtils.isDarkTheme(holder.mIcon.getContext())) {
+                holder.mIcon.setBackground(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_circle));
+            }
             holder.mIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mTitle.getContext()));
             holder.mSettings.setVisibility(View.GONE);
             holder.mDescription.setVisibility(View.GONE);

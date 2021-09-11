@@ -35,9 +35,10 @@ import java.util.Objects;
  */
 public class FilePickerActivity extends AppCompatActivity {
 
+    private FilePickerAdapter mRecycleViewAdapter;
+    private LinearLayout mProgressLayout;
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
-    private FilePickerAdapter mRecycleViewAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class FilePickerActivity extends AppCompatActivity {
         AppCompatImageButton mBack = findViewById(R.id.back);
         mTitle = findViewById(R.id.title);
         AppCompatImageButton mSortButton = findViewById(R.id.sort);
+        mProgressLayout = findViewById(R.id.progress_layout);
         mRecyclerView = findViewById(R.id.recycler_view);
 
         mBack.setOnClickListener(v -> super.onBackPressed());
@@ -134,6 +136,7 @@ public class FilePickerActivity extends AppCompatActivity {
             @Override
             public void onPreExecute() {
                 APKExplorer.getData(getFilesList(), true, activity).clear();
+                mProgressLayout.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);
             }
 
@@ -147,6 +150,7 @@ public class FilePickerActivity extends AppCompatActivity {
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mTitle.setText(Common.getFilePath().equals(Environment.getExternalStorageDirectory().toString() + File.separator) ? getString(R.string.sdcard)
                         : new File(Common.getFilePath()).getName());
+                mProgressLayout.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.VISIBLE);
             }
         }.execute();

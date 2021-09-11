@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
@@ -40,6 +41,7 @@ import java.util.Objects;
 public class APKExplorerFragment extends androidx.fragment.app.Fragment {
 
     private MaterialTextView mTitle;
+    private LinearLayout mProgressLayout;
     private RecyclerView mRecyclerView;
     private APKExplorerAdapter mRecycleViewAdapter;
 
@@ -54,6 +56,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         AppCompatImageButton mSortButton = mRootView.findViewById(R.id.sort);
         mTitle = mRootView.findViewById(R.id.title);
         MaterialTextView mError = mRootView.findViewById(R.id.error_status);
+        mProgressLayout = mRootView.findViewById(R.id.progress_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
         mTitle.setText(Common.getAppID() != null ? AppData.getAppName(Common.getAppID(), requireActivity()) : new File(Common.getPath()).getName());
@@ -211,6 +214,8 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
 
             @Override
             public void onPreExecute() {
+                mRecyclerView.setVisibility(View.GONE);
+                mProgressLayout.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -226,6 +231,8 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                             : new File(Common.getPath()).getName());
                 }
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
+                mProgressLayout.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
             }
         }.execute();
     }

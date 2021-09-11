@@ -43,7 +43,9 @@ public class FilePickerAdapter extends RecyclerView.Adapter<FilePickerAdapter.Vi
     public void onBindViewHolder(@NonNull FilePickerAdapter.ViewHolder holder, int position) {
         if (new File(this.data.get(position)).isDirectory()) {
             holder.mIcon.setImageDrawable(holder.mTitle.getContext().getResources().getDrawable(R.drawable.ic_folder));
-            holder.mIcon.setBackground(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_circle));
+            if (APKEditorUtils.isDarkTheme(holder.mIcon.getContext())) {
+                holder.mIcon.setBackground(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_circle));
+            }
             holder.mIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mTitle.getContext()));
         } else {
             if (APKExplorer.isImageFile(data.get(position))) {
