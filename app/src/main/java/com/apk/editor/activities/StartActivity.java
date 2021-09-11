@@ -26,6 +26,8 @@ public class StartActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Initialize app theme
+        APKEditorUtils.initializeAppTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 

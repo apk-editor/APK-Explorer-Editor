@@ -19,8 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Initialize app theme
-        APKEditorUtils.initializeAppTheme(this);
         super.onCreate(savedInstanceState);
         // Set App Language
         APKEditorUtils.setLanguage(this);
