@@ -55,11 +55,7 @@ public class InstallerFilePickerAdapter extends RecyclerView.Adapter<InstallerFi
                 holder.mSize.setVisibility(View.GONE);
                 holder.mCheckBox.setVisibility(View.GONE);
             } else if (this.data.get(position).endsWith(".apk")) {
-                if (APKData.getAppIcon(data.get(position), holder.mIcon.getContext()) != null) {
-                    holder.mIcon.setImageDrawable(APKData.getAppIcon(data.get(position), holder.mIcon.getContext()));
-                } else {
-                    APKExplorer.setIcon(holder.mIcon, holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_android), holder.mIcon.getContext());
-                }
+                holder.mIcon.setImageDrawable(APKData.getAppIcon(data.get(position), holder.mIcon.getContext()));
                 if (APKData.getAppID(data.get(position), holder.mIcon.getContext()) != null) {
                     holder.mDescription.setText(APKData.getAppID(data.get(position), holder.mIcon.getContext()));
                     holder.mDescription.setVisibility(View.VISIBLE);

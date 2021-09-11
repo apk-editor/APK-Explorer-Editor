@@ -1,5 +1,6 @@
 package com.apk.editor.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -28,7 +29,7 @@ import java.util.Objects;
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
 public class APKData {
-    
+
     public static List<String> getData(Context context) {
         List<String> mData = new ArrayList<>();
         for (File mFile : getAPKList(context)) {
@@ -99,7 +100,11 @@ public class APKData {
         if (getPackageInfo(path, context) != null) {
             return getPackageInfo(path, context).applicationInfo.loadIcon(AppData.getPackageManager(context));
         } else {
-            return null;
+            @SuppressLint("UseCompatLoadingForDrawables")
+            Drawable drawable = context.getResources().getDrawable(R.drawable.ic_android);
+            drawable.setTint(context.getResources().getColor(APKEditorUtils.isDarkTheme(context) ?
+                    R.color.colorWhite : R.color.colorBlack));
+            return drawable;
         }
     }
 
