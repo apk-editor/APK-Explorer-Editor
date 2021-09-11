@@ -219,7 +219,7 @@ public class APKExplorer {
                                     APKEditorUtils.saveBoolean("firstSigning", true, activity);
                                     switch (ii) {
                                         case 0:
-                                            APKData.reSignAndInstall(activity);
+                                            APKData.reSignAPKs(null, true, activity);
                                             break;
                                         case 1:
                                             Intent signing = new Intent(activity, APKSignActivity.class);
@@ -230,7 +230,7 @@ public class APKExplorer {
                                         .setOnDismissListener(dialogInterfacei -> {
                                         }).show();
                             } else {
-                                APKData.reSignAndInstall(activity);
+                                APKData.reSignAPKs(null,true, activity);
                             }
                             break;
                         case 2:
@@ -240,7 +240,7 @@ public class APKExplorer {
                                     APKEditorUtils.saveBoolean("firstSigning", true, activity);
                                     switch (ii) {
                                         case 0:
-                                            APKData.reSignAPKs(activity);
+                                            APKData.reSignAPKs(null,false, activity);
                                             break;
                                         case 1:
                                             Intent signing = new Intent(activity, APKSignActivity.class);
@@ -251,7 +251,7 @@ public class APKExplorer {
                                         .setOnDismissListener(dialogInterfacei -> {
                                         }).show();
                             } else {
-                                APKData.reSignAPKs(activity);
+                                APKData.reSignAPKs(null,false, activity);
                             }
                             break;
                     }
@@ -266,7 +266,7 @@ public class APKExplorer {
                         APKEditorUtils.saveBoolean("firstSigning", true, activity);
                         switch (i) {
                             case 0:
-                                APKData.reSignAndInstall(activity);
+                                APKData.reSignAPKs(null,true, activity);
                                 break;
                             case 1:
                                 Intent signing = new Intent(activity, APKSignActivity.class);
@@ -277,7 +277,7 @@ public class APKExplorer {
                             .setOnDismissListener(dialogInterface -> {
                             }).show();
                 } else {
-                    APKData.reSignAndInstall(activity);
+                    APKData.reSignAPKs(null,true, activity);
                 }
             }
         } else {

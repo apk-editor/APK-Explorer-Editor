@@ -240,6 +240,16 @@ public class APKsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        if (Common.isReloading()) {
+            Common.isReloading(false);
+            loadAPKs(requireActivity());
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
 

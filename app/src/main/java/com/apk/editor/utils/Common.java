@@ -13,7 +13,8 @@ import java.util.List;
  */
 public class Common {
 
-    private static boolean mBuilding = false, mFinish = false, mPrivateKey = false, mRSATemplate = false;
+    private static boolean mBuilding = false, mFinish = false, mPrivateKey = false,
+            mReloading = false, mRSATemplate = false;
     private static List<PackageItems> mPackageData = null;
     private static final List<String> mAPKList = new ArrayList<>(), mErrorList = new ArrayList<>();
     private static int mError = 0, mSuccess = 0;
@@ -27,6 +28,10 @@ public class Common {
 
     public static boolean isFinished() {
         return mFinish;
+    }
+
+    public static boolean isReloading() {
+        return mReloading;
     }
 
     public static boolean isTextMatched(String searchText, String searchWord) {
@@ -108,6 +113,10 @@ public class Common {
 
     public static void isBuilding(boolean b) {
         mBuilding = b;
+    }
+
+    public static void isReloading(boolean b) {
+        mReloading = b;
     }
 
     public static void setFinishStatus(boolean b) {

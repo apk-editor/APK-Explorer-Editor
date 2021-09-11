@@ -133,6 +133,7 @@ public class SplitAPKInstaller {
 
     public static void handleAppBundle(String path, Activity activity) {
         new AsyncTasks() {
+            private final File mSplits = new File(activity.getCacheDir(), "splits");
             private ProgressDialog mProgressDialog;
 
             @Override
@@ -141,15 +142,17 @@ public class SplitAPKInstaller {
                 mProgressDialog.setMessage(activity.getString(R.string.preparing_bundle_install, new File(path).getName()));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
-                APKEditorUtils.delete(activity.getCacheDir().getPath() + "/splits");
+                if (mSplits.exists()) {
+                    APKEditorUtils.delete(mSplits.getAbsolutePath());
+                }
             }
 
             @Override
             public void doInBackground() {
                 if (path.endsWith(".apks")) {
-                    APKEditorUtils.unzip(path,  activity.getCacheDir().getPath());
+                    APKEditorUtils.unzip(path,  activity.getCacheDir().getAbsolutePath());
                 } else if (path.endsWith(".xapk") || path.endsWith(".apkm")) {
-                    APKEditorUtils.unzip(path,  activity.getCacheDir().getPath() + "/splits");
+                    APKEditorUtils.unzip(path,  mSplits.getAbsolutePath());
                 }
             }
 
@@ -160,7 +163,7 @@ public class SplitAPKInstaller {
                 } catch (IllegalArgumentException ignored) {
                 }
                 Common.getAPKList().clear();
-                Common.setPath(activity.getCacheDir().getPath() + "/splits");
+                Common.setPath(mSplits.getAbsolutePath());
                 Intent installer = new Intent(activity, InstallerFilePickerActivity.class);
                 installer.putExtra(InstallerFilePickerActivity.TITLE_INTENT, activity.getString(R.string.select_apk));
                 activity.startActivity(installer);

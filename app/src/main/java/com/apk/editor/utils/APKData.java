@@ -28,11 +28,9 @@ import java.util.Objects;
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
 public class APKData {
-
-    private static final List<String> mData = new ArrayList<>();
-
+    
     public static List<String> getData(Context context) {
-        mData.clear();
+        List<String> mData = new ArrayList<>();
         for (File mFile : getAPKList(context)) {
             if (APKEditorUtils.getString("apkTypes", "apks", context).equals("bundles")) {
                 if (mFile.exists() && mFile.isDirectory() && APKEditorUtils.exist(mFile.toString() + "/base.apk")) {
@@ -207,8 +205,10 @@ public class APKData {
 
     public static void prepareSignedAPK(Activity activity) {
         new AsyncTasks() {
-            private final File mTMPZip = new File(activity.getCacheDir(), "tmp.apk");
-            private File mBuildDir;
+            private File mBackUpPath = null, mBuildDir = null;
+            private final File mExportPath = new File(activity.getCacheDir(), Common.getAppID() != null ?
+                    Common.getAppID() : new File(Common.getPath()).getName()), mTMPZip = new File(activity
+                    .getCacheDir(), "tmp.apk");
 
             @Override
             public void onPreExecute() {
@@ -219,6 +219,14 @@ public class APKData {
                 activity.startActivity(apkTasks);
                 Common.setStatus(activity.getString(R.string.preparing_apk, (Common.getAppID() != null ? Common.getAppID() :
                         new File(Common.getPath()).getName())));
+
+                mBuildDir = new File(mExportPath, ".aeeBuild");
+                mBackUpPath = new File(mExportPath, ".aeeBackup");
+                if (mBuildDir.exists()) {
+                    APKEditorUtils.delete(mBuildDir.getAbsolutePath());
+                }
+                mBuildDir.mkdirs();
+
                 if (mTMPZip.exists()) {
                     APKEditorUtils.delete(mTMPZip.getAbsolutePath());
                 }
@@ -227,49 +235,33 @@ public class APKData {
             @Override
             public void doInBackground() {
                 Common.setStatus(activity.getString(R.string.preparing_source));
-                if (Common.getAppID() != null) {
-                    File mExportPath = new File(activity.getCacheDir().getPath(), Common.getAppID());
-                    File mBackUpPath = new File(mExportPath, ".aeeBackup");
-                    mBuildDir = new File(mExportPath, ".aeeBuild");
-                    mBuildDir.mkdirs();
-                    prepareSource(mBuildDir, mExportPath, mBackUpPath, activity);
-                    if (Common.getError() > 0) {
-                        return;
+                prepareSource(mBuildDir, mExportPath, mBackUpPath, activity);
+                if (Common.getError() > 0) {
+                    return;
+                }
+                APKEditorUtils.zip(mBuildDir, mTMPZip);
+                if (Common.getAppID() != null && APKData.isAppBundle(AppData.getSourceDir(Common.getAppID(), activity))) {
+                    File mParent = new File(getExportAPKsPath(activity), Common.getAppID() + "_aee-signed");
+                    if (mParent.exists()) {
+                        APKEditorUtils.delete(mParent.getAbsolutePath());
                     }
-                    APKEditorUtils.zip(mBuildDir, mTMPZip);
-                    if (APKData.isAppBundle(AppData.getSourceDir(Common.getAppID(), activity))) {
-                        File mParent = new File(getExportAPKsPath(activity), Common.getAppID() + "_aee-signed");
-                        mParent.mkdirs();
-                        for (String mSplits : splitApks(AppData.getSourceDir(Common.getAppID(), activity))) {
-                            if (!new File(mSplits).getName().equals("base.apk")) {
-                                Common.setStatus(activity.getString(R.string.signing, new File(mSplits).getName()));
-                                signApks(new File(mSplits), new File(mParent.toString() + "/" + new File(mSplits).getName()), activity);
-                            }
+                    mParent.mkdirs();
+                    for (String mSplits : splitApks(AppData.getSourceDir(Common.getAppID(), activity))) {
+                        if (!new File(mSplits).getName().equals("base.apk")) {
+                            Common.setStatus(activity.getString(R.string.signing, new File(mSplits).getName()));
+                            signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), activity);
                         }
-                        Common.setStatus(activity.getString(R.string.signing, "base.apk"));
-                        signApks(mTMPZip, new File(mParent.toString() + "/base.apk"), activity);
-                    } else {
-                        if (!getExportAPKsPath(activity).exists()) {
-                            getExportAPKsPath(activity).mkdirs();
-                        }
-                        Common.setStatus(activity.getString(R.string.signing, new File(getExportAPKsPath(activity), Common.getAppID() + "_aee-signed.apk").getName()));
-                        signApks(mTMPZip, new File(getExportAPKsPath(activity), Common.getAppID() + "_aee-signed.apk"), activity);
                     }
+                    Common.setStatus(activity.getString(R.string.signing, "base.apk"));
+                    signApks(mTMPZip, new File(mParent, "base.apk"), activity);
                 } else {
-                    if (!getExportAPKsPath(activity).exists()) {
-                        getExportAPKsPath(activity).mkdirs();
+                    File mParent = new File(getExportAPKsPath(activity), (Common.getAppID() != null ? Common.getAppID() :
+                            new File(Common.getPath()).getName()) + "_aee-signed.apk");
+                    if (mParent.exists()) {
+                        APKEditorUtils.delete(mParent.getAbsolutePath());
                     }
-                    File mExportPath = new File(activity.getCacheDir().getPath() + "/" + new File(Common.getPath()).getName());
-                    File mBackUpPath = new File(mExportPath, ".aeeBackup");
-                    mBuildDir = new File(mExportPath, ".aeeBuild");
-                    mBuildDir.mkdirs();
-                    prepareSource(mBuildDir, mExportPath, mBackUpPath, activity);
-                    if (Common.getError() > 0) {
-                        return;
-                    }
-                    APKEditorUtils.zip(mBuildDir, mTMPZip);
-                    Common.setStatus(activity.getString(R.string.signing, new File(getExportAPKsPath(activity), new File(Common.getPath()).getName() + "_aee-signed.apk").getName()));
-                    signApks(mTMPZip, new File(getExportAPKsPath(activity), new File(Common.getPath()).getName() + "_aee-signed.apk"), activity);
+                    Common.setStatus(activity.getString(R.string.signing, mParent.getName()));
+                    signApks(mTMPZip, mParent, activity);
                 }
             }
 
@@ -285,137 +277,68 @@ public class APKData {
         }.execute();
     }
 
-    public static void signAPK(String packageName, Context context) {
+    public static void reSignAPKs(String packageName, boolean install, Activity activity) {
         new AsyncTasks() {
+            private File mParent = null;
             private ProgressDialog mProgressDialog;
-
-            @Override
-            public void onPreExecute() {
-                mProgressDialog = new ProgressDialog(context);
-                mProgressDialog.setMessage(context.getString(R.string.signing, AppData.getAppName(packageName, context)));
-                mProgressDialog.setCancelable(false);
-                mProgressDialog.show();
-            }
-
-            @Override
-            public void doInBackground() {
-                if (APKData.isAppBundle(AppData.getSourceDir(packageName, context))) {
-                    File mParent = new File(getExportAPKsPath(context),packageName + "_aee-signed");
-                    mParent.mkdirs();
-                    for (String mSplits : splitApks(AppData.getSourceDir(packageName, context))) {
-                        signApks(new File(mSplits), new File(mParent.toString() + "/" + new File(mSplits).getName()), context);
-                    }
-                } else {
-                    if (!getExportAPKsPath(context).exists()) {
-                        getExportAPKsPath(context).mkdirs();
-                    }
-                    signApks(new File(AppData.getSourceDir(packageName, context)), new File(getExportAPKsPath(context), packageName + "_aee-signed.apk"), context);
-                }
-            }
-
-            @Override
-            public void onPostExecute() {
-                try {
-                    mProgressDialog.dismiss();
-                } catch (IllegalArgumentException ignored) {
-                }
-            }
-        }.execute();
-    }
-
-    public static void reSignAPKs(Activity activity) {
-        new AsyncTasks() {
-            private ProgressDialog mProgressDialog;
-            private String mPackageName = null, mSignedAPKPath = null;
+            private String mPackageName = null;
 
             @Override
             public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(activity);
-                mProgressDialog.setMessage(activity.getString(R.string.resigning_apks));
+                mProgressDialog.setMessage(packageName != null ? activity.getString(R.string.signing, AppData.getAppName(
+                        packageName, activity)) : activity.getString(R.string.resigning_apks));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
 
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-                // Find package name from the selected APK's
-                mPackageName = findPackageName(activity);
+                if (packageName == null) {
+                    // Find package name from the selected APK's
+                    mPackageName = findPackageName(activity);
+                }
             }
 
             @Override
             public void doInBackground() {
-                if (mPackageName != null) {
-                    if (Common.getAPKList().size() > 1) {
-                        File mParent = new File(Projects.getExportPath(activity) + "/" + mPackageName + "_aee-signed");
-                        mParent.mkdirs();
-                        mSignedAPKPath = mParent.getAbsolutePath();
-                        for (String mSplits : Common.getAPKList()) {
-                            signApks(new File(mSplits), new File(mParent.toString() + "/" + new File(mSplits).getName()), activity);
-                        }
+                if (packageName != null) {
+                    Common.getAPKList().clear();
+                    if (APKData.isAppBundle(AppData.getSourceDir(packageName, activity))) {
+                        Common.getAPKList().addAll(splitApks(AppData.getSourceDir(packageName, activity)));
                     } else {
-                        new File(Projects.getExportPath(activity)).mkdirs();
-                        mSignedAPKPath = Projects.getExportPath(activity) + "/" + mPackageName + "_aee-signed.apk";
-                        signApks(new File(Common.getAPKList().get(0)), new File(Projects.getExportPath(activity) + "/" + mPackageName + "_aee-signed.apk"), activity);
+                        Common.getAPKList().add(AppData.getSourceDir(packageName, activity));
                     }
                 }
-            }
-
-            @Override
-            public void onPostExecute() {
-                try {
-                    mProgressDialog.dismiss();
-                } catch (IllegalArgumentException ignored) {
-                }
-                if (mPackageName == null) {
-                    APKEditorUtils.snackbar(activity.findViewById(android.R.id.content), activity.getString(R.string.installation_status_bad_apks));
-                } else {
-                    new MaterialAlertDialogBuilder(activity)
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(mPackageName)
-                            .setMessage(activity.getString(
-                                    R.string.resigned_apks_path, mSignedAPKPath))
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.cancel, (dialog, id) -> activity.finish()).show();
-                }
-                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            }
-        }.execute();
-    }
-
-    public static void reSignAndInstall(Activity activity) {
-        new AsyncTasks() {
-            private File mParent = new File(activity.getCacheDir(), "aee-signed");
-            private ProgressDialog mProgressDialog;
-            private String mPackageName = null, mSignedAPKPath = null;
-
-            @Override
-            public void onPreExecute() {
-                mProgressDialog = new ProgressDialog(activity);
-                mProgressDialog.setMessage(activity.getString(R.string.resigning_apks));
-                mProgressDialog.setCancelable(false);
-                mProgressDialog.show();
-
-                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-                // Find package name from the selected APK's
-                mPackageName = findPackageName(activity);
-                if (mParent.exists()) {
-                    mParent.delete();
-                }
-            }
-
-            @Override
-            public void doInBackground() {
-                if (mPackageName != null) {
-                    mParent = new File(activity.getCacheDir(), "aee-signed");
-                    mParent.mkdirs();
+                if (mPackageName != null || packageName != null) {
+                    String apkNameString;
+                    if (packageName != null) {
+                        apkNameString = packageName;
+                    } else {
+                        apkNameString = mPackageName;
+                    }
                     if (Common.getAPKList().size() > 1) {
-                        mSignedAPKPath = mParent.getAbsolutePath();
+                        if (install) {
+                            mParent = new File(activity.getCacheDir(), "aee-signed");
+                        } else {
+                            mParent = new File(getExportAPKsPath(activity), apkNameString + "_aee-signed");
+                        }
+                        if (mParent.exists()) {
+                            APKEditorUtils.delete(mParent.getAbsolutePath());
+                        }
+                        mParent.mkdirs();
                         for (String mSplits : Common.getAPKList()) {
                             signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), activity);
                         }
                     } else {
-                        mSignedAPKPath = mParent.toString() + "/" + "aee-signed.apk";
-                        signApks(new File(Common.getAPKList().get(0)), new File(mParent, "aee-signed.apk"), activity);
+                        if (install) {
+                            mParent = new File(activity.getCacheDir(), "aee-signed.apk");
+                        } else {
+                            mParent = new File(getExportAPKsPath(activity), apkNameString + "_aee-signed.apk");
+                        }
+                        if (mParent.exists()) {
+                            APKEditorUtils.delete(mParent.getAbsolutePath());
+                        }
+                        signApks(new File(Common.getAPKList().get(0)), mParent, activity);
                     }
                 }
             }
@@ -426,21 +349,39 @@ public class APKData {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
                 }
-                if (mPackageName == null) {
+                if (mPackageName == null && packageName == null) {
                     APKEditorUtils.snackbar(activity.findViewById(android.R.id.content), activity.getString(R.string.installation_status_bad_apks));
                 } else {
-                    if (Common.getAPKList().size() > 1) {
-                        List<String> signedAPKs = new ArrayList<>();
-                        for (String mAPKs : Common.getAPKList()) {
-                            signedAPKs.add(mSignedAPKPath + "/" + new File(mAPKs).getName());
+                    if (packageName == null) {
+                        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                        if (install) {
+                            if (Common.getAPKList().size() > 1) {
+                                List<String> signedAPKs = new ArrayList<>();
+                                for (File apkFile : Objects.requireNonNull(mParent.listFiles())) {
+                                    signedAPKs.add(apkFile.getAbsolutePath());
+                                }
+                                SplitAPKInstaller.installSplitAPKs(signedAPKs, null, activity);
+                            } else {
+                                SplitAPKInstaller.installAPK(mParent, activity);
+                            }
+                            if (!Common.isFinished()) {
+                                Common.setFinishStatus(true);
+                            }
+                        } else {
+                            new MaterialAlertDialogBuilder(activity)
+                                    .setIcon(R.mipmap.ic_launcher)
+                                    .setTitle(mPackageName)
+                                    .setMessage(activity.getString(
+                                            R.string.resigned_apks_path, mParent.getAbsolutePath()))
+                                    .setCancelable(false)
+                                    .setPositiveButton(R.string.cancel, (dialog, id) -> {
+                                        Common.isReloading(true);
+                                        activity.finish();
+                                    }).show();
                         }
-                        SplitAPKInstaller.installSplitAPKs(signedAPKs, null, activity);
-                    } else {
-                        SplitAPKInstaller.installAPK(new File(mSignedAPKPath), activity);
                     }
                 }
-                Common.setFinishStatus(true);
-                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
             }
         }.execute();
     }
@@ -455,23 +396,27 @@ public class APKData {
                 mProgressDialog.setMessage(context.getString(R.string.exporting, AppData.getAppName(packageName, context)));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
+                if (!getExportAPKsPath(context).exists()) {
+                    getExportAPKsPath(context).mkdirs();
+                }
             }
 
             @Override
             public void doInBackground() {
                 if (APKData.isAppBundle(AppData.getSourceDir(packageName, context))) {
                     File mParent = new File(getExportAPKsPath(context) , packageName);
-                    mParent.mkdirs();
+                    if (mParent.exists()) {
+                        APKEditorUtils.delete(mParent.getAbsolutePath());
+                    } else {
+                        mParent.mkdirs();
+                    }
                     for (String mSplits : splitApks(AppData.getSourceDir(packageName, context))) {
                         if (mSplits.endsWith(".apk")) {
-                            APKEditorUtils.copy(mSplits, mParent.toString() + "/" + new File(mSplits).getName());
+                            APKEditorUtils.copy(mSplits, new File(mParent, new File(mSplits).getName()).getAbsolutePath());
                         }
                     }
                 } else {
-                    if (!getExportAPKsPath(context).exists()) {
-                        getExportAPKsPath(context).mkdirs();
-                    }
-                    APKEditorUtils.copy(AppData.getSourceDir(packageName, context), getExportAPKsPath(context) + "/" + packageName + ".apk");
+                    APKEditorUtils.copy(AppData.getSourceDir(packageName, context), new File(getExportAPKsPath(context),  packageName + ".apk").getAbsolutePath());
                 }
             }
 

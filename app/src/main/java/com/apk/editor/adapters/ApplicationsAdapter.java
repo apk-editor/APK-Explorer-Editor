@@ -95,7 +95,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                                             APKEditorUtils.saveBoolean("firstSigning", true, v.getContext());
                                             switch (ii) {
                                                 case 0:
-                                                    APKData.signAPK(data.get(position).getPackageName(), v.getContext());
+                                                    APKData.reSignAPKs(data.get(position).getPackageName(),false, (Activity) v.getContext());
                                                     break;
                                                 case 1:
                                                     Intent signing = new Intent(v.getContext(), APKSignActivity.class);
@@ -106,7 +106,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                                                 .setOnDismissListener(dialogInterfacei -> {
                                                 }).show();
                                     } else {
-                                        APKData.signAPK(data.get(position).getPackageName(), v.getContext());
+                                        APKData.reSignAPKs(data.get(position).getPackageName(), false, (Activity) v.getContext());
                                     }
                                     break;
                             }
@@ -121,7 +121,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                                 APKEditorUtils.saveBoolean("firstSigning", true, v.getContext());
                                 switch (ii) {
                                     case 0:
-                                        APKData.signAPK(data.get(position).getPackageName(), v.getContext());
+                                        APKData.reSignAPKs(data.get(position).getPackageName(), false, (Activity) v.getContext());
                                         break;
                                     case 1:
                                         Intent signing = new Intent(v.getContext(), APKSignActivity.class);
@@ -132,7 +132,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                                     .setOnDismissListener(dialogInterfacei -> {
                                     }).show();
                         } else {
-                            APKData.signAPK(data.get(position).getPackageName(), v.getContext());
+                            APKData.reSignAPKs(data.get(position).getPackageName(), false, (Activity) v.getContext());
                         }
                     }
                 } else {
