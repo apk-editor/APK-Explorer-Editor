@@ -16,12 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:supportsRtl="true"
-        tools:targetApi="q" >
+        android:supportsRtl="true" >
 
         <activity android:name=".activities.StartActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
-            tools:ignore="IntentFilterExportedReceiver" >
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,14 +31,16 @@
         <activity android:name=".MainActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="@string/app_name_short"
-            tools:ignore="IntentFilterExportedReceiver" />
+            android:exported="false" />
 
-        <activity android:name=".activities.APKExploreActivity" />
+        <activity android:name=".activities.APKExploreActivity"
+            android:exported="false" />
 
         <activity android:name=".activities.APKInstallerActivity"
             android:label="@string/split_apk_installer"
-            tools:ignore="IntentFilterExportedReceiver" >
-            <intent-filter tools:ignore="AppLinkUrlError" >
+            tools:ignore="AppLinkUrlError"
+            android:exported="true" >
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/vnd.android.package-archive" />
@@ -49,30 +50,40 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.APKSignActivity" />
-        <activity android:name=".activities.APKTasksActivity" />
-        <activity android:name=".activities.CreditsActivity" />
-        <activity android:name=".activities.DocumentationActivity" />
-        <activity android:name=".activities.FilePickerActivity" />
+        <activity android:name=".activities.APKSignActivity"
+            android:exported="false" />
+        <activity android:name=".activities.APKTasksActivity"
+            android:exported="false" />
+        <activity android:name=".activities.CreditsActivity"
+            android:exported="false" />
+        <activity android:name=".activities.DocumentationActivity"
+            android:exported="false" />
+        <activity android:name=".activities.FilePickerActivity"
+            android:exported="false" />
 
         <activity android:name=".activities.ImageViewActivity"
             android:label="@string/image_viewer"
-            tools:ignore="IntentFilterExportedReceiver" >
-            <intent-filter tools:ignore="AppLinkUrlError" >
+            tools:ignore="AppLinkUrlError"
+            android:exported="true" >
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.InstallerActivity" />
-        <activity android:name=".activities.InstallerFilePickerActivity" />
-        <activity android:name=".activities.SettingsActivity" />
+        <activity android:name=".activities.InstallerActivity"
+            android:exported="false" />
+        <activity android:name=".activities.InstallerFilePickerActivity"
+            android:exported="false" />
+        <activity android:name=".activities.SettingsActivity"
+            android:exported="false" />
 
         <activity android:name=".activities.TextEditorActivity"
             android:label="@string/text_editor"
-            tools:ignore="IntentFilterExportedReceiver" >
-            <intent-filter tools:ignore="AppLinkUrlError" >
+            tools:ignore="AppLinkUrlError"
+            android:exported="true" >
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/ecmascript" />
@@ -86,8 +97,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.TextViewActivity" />
+        <activity android:name=".activities.TextViewActivity"
+            android:exported="false" />
 
-        <service android:name=".services.InstallerService" />
+        <service android:name=".services.InstallerService"
+            android:exported="false" />
     </application>
 </manifest>
