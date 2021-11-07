@@ -48,7 +48,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
         return new APKExplorerAdapter.ViewHolder(rowItem);
     }
 
-    @SuppressLint({"UseCompatLoadingForDrawables", "NotifyDataSetChanged"})
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull APKExplorerAdapter.ViewHolder holder, int position) {
         if (new File(data.get(position)).isDirectory()) {
@@ -59,19 +59,22 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
             holder.mIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mTitle.getContext()));
             holder.mSettings.setVisibility(View.GONE);
             holder.mDescription.setVisibility(View.GONE);
-        } else if (APKExplorer.isImageFile(data.get(position))) {
-            if (APKExplorer.getIconFromPath(data.get(position)) != null) {
-                holder.mIcon.setImageURI(APKExplorer.getIconFromPath(data.get(position)));
-            } else {
-                APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_file), holder.mIcon.getContext());
-            }
-        } else if (data.get(position).endsWith(".apk")) {
-            holder.mIcon.setImageDrawable(APKData.getAppIcon(data.get(position), holder.mIcon.getContext()));
         } else {
-            if (data.get(position).endsWith(".xml")) {
-                APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_xml), holder.mIcon.getContext());
+            holder.mSettings.setVisibility(View.VISIBLE);
+            if (APKExplorer.isImageFile(data.get(position))) {
+                if (APKExplorer.getIconFromPath(data.get(position)) != null) {
+                    holder.mIcon.setImageURI(APKExplorer.getIconFromPath(data.get(position)));
+                } else {
+                    APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_file), holder.mIcon.getContext());
+                }
+            } else if (data.get(position).endsWith(".apk")) {
+                holder.mIcon.setImageDrawable(APKData.getAppIcon(data.get(position), holder.mIcon.getContext()));
             } else {
-                APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_file), holder.mIcon.getContext());
+                if (data.get(position).endsWith(".xml")) {
+                    APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_xml), holder.mIcon.getContext());
+                } else {
+                    APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_file), holder.mIcon.getContext());
+                }
             }
         }
         holder.mTitle.setText(new File(data.get(position)).getName());

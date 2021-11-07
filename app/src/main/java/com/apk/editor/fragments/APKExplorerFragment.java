@@ -64,6 +64,8 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         mBack.setOnClickListener(v -> retainDialog());
 
         mSave.setOnClickListener(v -> new MaterialAlertDialogBuilder(requireActivity())
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle(R.string.app_name)
                 .setMessage(R.string.save_apk_message)
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                 })

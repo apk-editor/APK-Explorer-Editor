@@ -2,7 +2,7 @@
 
     <string name="about">About</string>
     <string name="all">All</string>
-    <string name="apk_corrupted">APK file(s) is corrupted! Aborting.</string>
+    <string name="apk_corrupted">APK file(s) is corrupted. Aborting.</string>
     <string name="apk_installer">AEE APK Installer</string>
     <string name="apks">APK\'s</string>
     <string name="app_name_short" translatable="false">AEE</string>
@@ -21,9 +21,9 @@
     <string name="cancel">Cancel</string>
     <string name="clear_cache">Clear Cache</string>
     <string name="clear_cache_summary">Delete internal settings of AEE</string>
-    <string name="clear_cache_message">Everything, except the exported applications, will be removed!</string>
+    <string name="clear_cache_message">Everything, except the exported applications, will be removed.</string>
     <string name="credits">Credits</string>
-    <string name="credits_message">Want to see your name here? Then, please help me to translate this application!</string>
+    <string name="credits_message">Want to see your name here? Then, please help me to translate this application.</string>
     <string name="credits_summary">Credits to contributors</string>
     <string name="copying">Copying \'%s\'…</string>
     <string name="copyright">Copyright: © %s</string>
@@ -43,10 +43,10 @@
     <string name="enable">Enable</string>
     <string name="export">Export</string>
     <string name="export_app_question">Export \'%s\' to device storage?</string>
-    <string name="export_complete_message">The selected resource is successfully exported into \'%s\'!</string>
+    <string name="export_complete_message">The selected resource is successfully exported into \'%s\'</string>
     <string name="export_options">On Exporting (APK\'s)</string>
     <string name="export_project_question">Make a copy of this project folder into device storage?</string>
-    <string name="export_project_replace">\'%s\' already exists! Do you want to replace it?</string>
+    <string name="export_project_replace">\'%s\' already exists. Do you want to replace it?</string>
     <string name="export_path_apks">Export Path (APK\'s)</string>
     <string name="export_path_default">Internal Storage/AEE</string>
     <string name="export_path_download">Download</string>
@@ -57,10 +57,10 @@
     <string name="export_storage">Export to storage</string>
     <string name="exporting">Exporting %s…</string>
     <string name="exploring">Exploring %s…</string>
-    <string name="explore_error_status">Failed to explore %s!</string>
+    <string name="explore_error_status">Failed to explore %s</string>
     <string name="failed">Failed</string>
-    <string name="failed_smali_message">The following \'smali\' files are failed to assemble!\n\n%s</string>
-    <string name="file_path_error">Failed to get file path from external File Manager!</string>
+    <string name="failed_smali_message">The following \'smali\' files are failed to assemble.\n\n%s</string>
+    <string name="file_path_error">Failed to get file path from external File Manager</string>
     <string name="grant">Grant</string>
     <string name="got_it">Got It</string>
     <string name="image_viewer">AEE Image Viewer</string>
@@ -77,10 +77,10 @@
     <string name="installation_status_bad_apks">Invalid APK files selected</string>
     <string name="installation_status_blocked">Installation was blocked</string>
     <string name="installation_status_conflict">Unable to install the app because it conflicts with an already installed app with same package name</string>
-    <string name="installation_status_failed">Installation Failed!</string>
+    <string name="installation_status_failed">Installation Failed</string>
     <string name="installation_status_incompatible">Application is incompatible with this device</string>
     <string name="installation_status_storage">Not enough storage space to install the application</string>
-    <string name="installation_status_success">Installation Completed Successfully!</string>
+    <string name="installation_status_success">Installation Completed Successfully</string>
     <string name="installing">Installing %s…</string>
     <string name="invite_friends">Invite Friends</string>
     <string name="invite_friends_Summary">Invite your friends to try AEE</string>
@@ -96,17 +96,17 @@
     <string name="language_vi" translatable="false">Tiếng Việt</string>
     <string name="language_zh" translatable="false">中文（简体）</string>
     <string name="last_modified">Last Modified: %s</string>
-    <string name="name_empty">Name shouldn\'t be empty! Aborting.</string>
+    <string name="name_empty">Name shouldn\'t be empty. Aborting.</string>
     <string name="ok">OK</string>
     <string name="open">Open</string>
     <string name="open_as_text">Open as text</string>
-    <string name="permission_denied_message">Permission denied for accessing device storage!</string>
+    <string name="permission_denied_message">Permission denied for accessing device storage</string>
     <string name="preparing_apk">Preparing %s APK…</string>
     <string name="preparing_bundle">Preparing app bundle for sharing…</string>
     <string name="preparing_bundle_install">Preparing \'%s\' for installation…</string>
     <string name="preparing_installation">Preparing for installation…</string>
     <string name="preparing_source">Preparing source for APK building…</string>
-    <string name="press_back">Press Back Button Again to close APK Explorer!</string>
+    <string name="press_back">Press Back Button Again to close APK Explorer</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_policy_summary">Read Privacy Policy</string>
     <string name="private_key">Private Key</string>
@@ -121,15 +121,15 @@
     <string name="report_issue">Report Issue</string>
     <string name="report_issue_summary">Raise an issue at GitHub</string>
     <string name="resign_only">Re-sign Only</string>
-    <string name="resigned_apks_error">Building is aborted due to errors in assembling \'smali\' files. Please check the \'Details\' to find out more!</string>
-    <string name="resigned_apks_path">Re-signed APK file(s) are generated!\n\nPath: \'%s\'</string>
+    <string name="resigned_apks_error">Building is aborted due to errors in assembling \'smali\' files. Please check the \'Details\' to find out more.</string>
+    <string name="resigned_apks_path">Re-signed APK file(s) are generated.\n\nPath: \'%s\'</string>
     <string name="resigning_apks">Re-signing selected APK\'s…</string>
     <string name="rsa_template">RSA Template</string>
     <string name="rsa_template_summary">Select custom RSA template</string>
     <string name="save">Save</string>
+    <string name="save_apk_message">Do you want to prepare a signed APK with the current modifications?</string>
     <string name="save_projects_question">Save project for future use?</string>
     <string name="save_question">Save changes made on this file?</string>
-    <string name="save_apk_message">Do you want to prepare a signed APK with the current modifications?</string>
     <string name="sdcard">Internal Storage</string>
     <string name="search">Search…</string>
     <string name="select">Select</string>
@@ -144,11 +144,11 @@
     <string name="sign_apk_custom">Custom Key</string>
     <string name="sign_apk_default">Default Key</string>
     <string name="sign_apk_with">Sign APK\'s with</string>
-    <string name="signature_warning">It is important to uninstall the old version (if exist) of the app before installing an AEE signed APK/App bundle to avoid installation failure due to signature mismatch!</string>
+    <string name="signature_warning">It is important to uninstall the old version (if exist) of the app before installing an AEE signed APK/App bundle to avoid installation failure due to signature mismatch.</string>
     <string name="signing">Signing \'%s\'…</string>
     <string name="signing_custom">Configure custom Key</string>
     <string name="signing_default">Sign with default Key</string>
-    <string name="signing_message">AEE uses PseudoApkSigner library by Aefyr to sign APK\'s. As a result, AEE requires a private key in pk8 format as well as an RSA template file created from the same key. Click here to read more about creating a private key and RSA template!</string>
+    <string name="signing_message">AEE uses PseudoApkSigner library by Aefyr to sign APK\'s. As a result, AEE requires a private key in pk8 format as well as an RSA template file created from the same key. Click here to read more about creating a private key and RSA template.</string>
     <string name="signing_question">Use \'%s\' as the new</string>
     <string name="signing_select_question">Use selected file as the new %s?</string>
     <string name="signing_title">APK Signing</string>

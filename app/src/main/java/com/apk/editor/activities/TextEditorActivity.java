@@ -49,7 +49,7 @@ public class TextEditorActivity extends AppCompatActivity {
     public static final String PATH_INTENT = "path";
     private String mExternalFile = null, mTextContents = null;
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint({"UseCompatLoadingForDrawables", "Range"})
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,6 +178,8 @@ public class TextEditorActivity extends AppCompatActivity {
 
     private void saveDialog(String text, String path) {
         new MaterialAlertDialogBuilder(this)
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle(R.string.app_name)
                 .setMessage(R.string.save_question)
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                 })

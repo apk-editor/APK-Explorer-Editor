@@ -166,7 +166,7 @@ public class AppSettings {
 
     private static String getExportAPKsPath(Context context) {
         String exportAPKPath = APKEditorUtils.getString("exportAPKsPath", "externalFiles", context);
-        if (Build.VERSION.SDK_INT < 29 && exportAPKPath.equals("internalStorage")) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && exportAPKPath.equals("internalStorage")) {
             return context.getString(R.string.export_path_default);
         } else {
             return context.getString(R.string.export_path_files_dir);
@@ -174,7 +174,7 @@ public class AppSettings {
     }
 
     private static String getExportPath(Context context) {
-        if (Build.VERSION.SDK_INT < 29) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             if (APKEditorUtils.getString("exportPath", null, context) != null && APKEditorUtils.getString("exportPath", null, context).equals(Environment.getExternalStorageDirectory().toString())) {
                 return context.getString(R.string.sdcard);
             } else if (APKEditorUtils.getString("exportPath", null, context) != null && APKEditorUtils.getString("exportPath", null, context).equals(Environment.getExternalStorageDirectory().toString() + "/AEE")) {
@@ -403,7 +403,7 @@ public class AppSettings {
     }
 
     private static void setExportAPKsPath(SettingsAdapter adapter, int position, Activity activity) {
-        if (Build.VERSION.SDK_INT < 29) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             new MaterialAlertDialogBuilder(activity)
                     .setSingleChoiceItems(getAPKExportPathMenu(activity), getExportAPKsPathPosition(activity), (dialog, itemPosition) -> {
                         if (itemPosition == 0) {
@@ -423,7 +423,7 @@ public class AppSettings {
     }
 
     private static void setExportPath(SettingsAdapter adapter, int position, Context context) {
-        if (Build.VERSION.SDK_INT < 29) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             new MaterialAlertDialogBuilder(context)
                     .setSingleChoiceItems(getExportPathMenu(context), getExportPathPosition(context), (dialog, itemPosition) -> {
                         if (itemPosition == 0) {

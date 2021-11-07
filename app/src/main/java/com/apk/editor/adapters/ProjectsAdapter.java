@@ -83,6 +83,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
             holder.mCard.setOnLongClickListener(v -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) return false;
                 new MaterialAlertDialogBuilder(v.getContext())
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setTitle(R.string.app_name)
                         .setMessage(v.getContext().getString(R.string.export_project_question))
                         .setNegativeButton(R.string.cancel, (dialog, id) -> {
                         })
@@ -118,6 +120,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                 return false;
             });
             holder.mDelete.setOnClickListener(v -> new MaterialAlertDialogBuilder(v.getContext())
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(R.string.app_name)
                     .setMessage(v.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))
                     .setNegativeButton(R.string.cancel, (dialog, id) -> {
                     })

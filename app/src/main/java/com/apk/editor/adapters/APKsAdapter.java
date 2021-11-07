@@ -49,7 +49,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
         return new ViewHolder(rowItem);
     }
 
-    @SuppressLint({"UseCompatLoadingForDrawables", "NotifyDataSetChanged"})
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull APKsAdapter.ViewHolder holder, int position) {
         try {
@@ -86,6 +86,8 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 });
                 holder.mCard.setOnLongClickListener(v -> {
                     new MaterialAlertDialogBuilder(v.getContext())
+                            .setIcon(R.mipmap.ic_launcher)
+                            .setTitle(R.string.app_name)
                             .setMessage(v.getContext().getString(R.string.share_message, new File(data.get(position)).getName()))
                             .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
                             })
@@ -130,6 +132,8 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                         APKData.showSignatureErrorDialog(v.getContext());
                     } else {
                         new MaterialAlertDialogBuilder(v.getContext())
+                                .setIcon(R.mipmap.ic_launcher)
+                                .setTitle(R.string.app_name)
                                 .setMessage(v.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
@@ -138,6 +142,8 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 });
                 holder.mCard.setOnLongClickListener(v -> {
                     new MaterialAlertDialogBuilder(v.getContext())
+                            .setIcon(R.mipmap.ic_launcher)
+                            .setTitle(R.string.app_name)
                             .setMessage(v.getContext().getString(R.string.share_message, APKData.getAppName(data.get(position), v.getContext())))
                             .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
                             })
@@ -159,6 +165,8 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
         } catch (NullPointerException ignored) {
         }
         holder.mDelete.setOnClickListener(v -> new MaterialAlertDialogBuilder(v.getContext())
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle(R.string.app_name)
                 .setMessage(v.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))
                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                 })
