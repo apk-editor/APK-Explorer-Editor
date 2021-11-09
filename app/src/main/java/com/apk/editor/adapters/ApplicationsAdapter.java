@@ -77,7 +77,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
             holder.mCard.setOnLongClickListener(v -> {
                 if (APKExplorer.isPermissionDenied(v.getContext()) && APKEditorUtils.getString("exportAPKsPath", "externalFiles",
                         v.getContext()).equals("internalStorage")) {
-                    APKExplorer.launchPermissionDialog((Activity) v.getContext());
+                    APKExplorer.requestPermission((Activity) v.getContext());
                     return true;
                 }
                 if (APKEditorUtils.isFullVersion(v.getContext())) {

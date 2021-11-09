@@ -21,7 +21,6 @@ import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.SplitAPKInstaller;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,8 +43,6 @@ public class APKInstallerActivity extends AppCompatActivity {
         if (APKExplorer.isPermissionDenied(this)) {
             LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
             MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
-            MaterialTextView mPermissionText = findViewById(R.id.permission_text);
-            mPermissionText.setText(getString(R.string.permission_denied_message));
             mPermissionLayout.setVisibility(View.VISIBLE);
             mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
             return;

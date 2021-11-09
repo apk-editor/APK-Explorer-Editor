@@ -64,9 +64,6 @@ public class ImageViewActivity extends AppCompatActivity {
             if (APKExplorer.isPermissionDenied(this)) {
                 LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
                 MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
-                MaterialTextView mPermissionText = findViewById(R.id.permission_text);
-                mPermissionText.setText(Build.VERSION.SDK_INT >= 30 ? getString(R.string.file_permission_request_message,
-                        getString(R.string.app_name)) : getString(R.string.permission_denied_message));
                 mPermissionLayout.setVisibility(View.VISIBLE);
                 mMainLayout.setVisibility(View.GONE);
                 mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
@@ -81,7 +78,8 @@ public class ImageViewActivity extends AppCompatActivity {
 
             assert uri != null;
             if (APKEditorUtils.isDocumentsUI(uri)) {
-                @SuppressLint("Recycle") Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+                @SuppressLint("Recycle")
+                Cursor cursor = getContentResolver().query(uri, null, null, null, null);
                 if (cursor != null && cursor.moveToFirst()) {
                     mFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
                             cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)));
@@ -112,14 +110,18 @@ public class ImageViewActivity extends AppCompatActivity {
             mImage.setImageDrawable(AppData.getAppIcon(Common.getAppID(), this));
         }
 
-        if (mFile != null) {
-            mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_settings));
+        if (Build.VERSION.SDK_INT >= 29) {
+            mMenu.setVisibility(View.GONE);
         } else {
-            mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_export));
+            if (mFile != null && mFile.exists()) {
+                mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_settings));
+            } else {
+                mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_export));
+            }
         }
 
         mMenu.setOnClickListener(v -> {
-            if (mFile != null) {
+            if (mFile != null && mFile.exists()) {
                 PopupMenu popupMenu = new PopupMenu(this, mMenu);
                 Menu menu = popupMenu.getMenu();
                 menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.share));
@@ -157,7 +159,7 @@ public class ImageViewActivity extends AppCompatActivity {
                         })
                         .setPositiveButton(getString(R.string.export), (dialog, id) -> {
                             if (APKExplorer.isPermissionDenied(this)) {
-                                APKExplorer.launchPermissionDialog(this);
+                                APKExplorer.requestPermission(this);
                             } else {
                                 APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + Common.getAppID());
                                 if (path != null) {

@@ -109,7 +109,7 @@ public class TextViewActivity extends AppCompatActivity {
                 })
                 .setPositiveButton(getString(R.string.export), (dialog, id) -> {
                     if (APKExplorer.isPermissionDenied(this)) {
-                        APKExplorer.launchPermissionDialog(this);
+                        APKExplorer.requestPermission(this);
                     } else {
                         APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + Common.getAppID());
                         APKEditorUtils.copy(mPath, Projects.getExportPath(this) + "/" + Common.getAppID() + "/" + new File(mPath).getName());

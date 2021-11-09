@@ -166,7 +166,6 @@ Caminho: '%s'"</string>
     <string name="user_interface">"Interface do Usuário"</string>
     <string name="decompiling">"Decompilando '%s'…"</string>
     <string name="deleting">"Apagando '%s'…"</string>
-    <string name="file_permission_request_message">"Para que este recurso funcione em versões mais recentes do Android (Android R ou mais recente), é necessário conceder a permissão \"Acesso a todos os arquivos\" para %s. Conceda a permissão manualmente na nova tela aberta clicando no botão \"Conceder\"."</string>
     <string name="grant">"Conceder"</string>
     <string name="important">"Importante"</string>
 </resources>

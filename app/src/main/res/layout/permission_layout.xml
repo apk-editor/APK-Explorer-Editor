@@ -9,11 +9,10 @@
     android:gravity="center" >
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/permission_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlue"
-            android:text="@string/file_permission_request_message"
+            android:text="@string/permission_denied_message"
             android:layout_marginStart="10dp"
             android:gravity="center_vertical"
             android:layout_marginEnd="10dp"

@@ -152,7 +152,6 @@
     <string name="user_interface">"用户界面"</string>
     <string name="decompiling">"反编译 %s …"</string>
     <string name="deleting">"正在删除 %s  …"</string>
-    <string name="file_permission_request_message">"为了在较新的 Android 版本（Android R 或更新版本）上使用此功能，必须将“所有文件访问”权限授予 %s。"</string>
     <string name="grant">"授予"</string>
     <string name="important">"重要"</string>
 </resources>

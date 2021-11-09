@@ -71,9 +71,6 @@ public class TextEditorActivity extends AppCompatActivity {
             if (APKExplorer.isPermissionDenied(this)) {
                 LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
                 MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
-                MaterialTextView mPermissionText = findViewById(R.id.permission_text);
-                mPermissionText.setText(Build.VERSION.SDK_INT >= 30 ? getString(R.string.file_permission_request_message,
-                        getString(R.string.app_name)) : getString(R.string.permission_denied_message));
                 mPermissionLayout.setVisibility(View.VISIBLE);
                 mMainLayout.setVisibility(View.GONE);
                 mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
@@ -94,7 +91,8 @@ public class TextEditorActivity extends AppCompatActivity {
                 Uri uri = getIntent().getData();
                 assert uri != null;
                 if (APKEditorUtils.isDocumentsUI(uri)) {
-                    @SuppressLint("Recycle") Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+                    @SuppressLint("Recycle")
+                    Cursor cursor = getContentResolver().query(uri, null, null, null, null);
                     if (cursor != null && cursor.moveToFirst()) {
                         mFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
                                 cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)));
@@ -102,15 +100,20 @@ public class TextEditorActivity extends AppCompatActivity {
                 } else {
                     mFile = new File(APKEditorUtils.getPath(getIntent().getData().getPath()));
                 }
-                if (mFile != null && mFile.exists()) {
-                    mTitle.setText(mFile.getName());
-                    mSave.setImageDrawable(getResources().getDrawable(R.drawable.ic_save));
-                    mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_dots));
-                    mSave.setVisibility(View.VISIBLE);
-                    mMenu.setVisibility(View.VISIBLE);
-                } else {
-                    mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_save));
+                if (Build.VERSION.SDK_INT >= 29) {
+                    mMenu.setVisibility(View.GONE);
                     mSave.setVisibility(View.GONE);
+                } else {
+                    if (mFile != null && mFile.exists()) {
+                        mTitle.setText(mFile.getName());
+                        mSave.setImageDrawable(getResources().getDrawable(R.drawable.ic_save));
+                        mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_dots));
+                        mSave.setVisibility(View.VISIBLE);
+                        mMenu.setVisibility(View.VISIBLE);
+                    } else {
+                        mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_save));
+                        mSave.setVisibility(View.GONE);
+                    }
                 }
                 mText.setText(mExternalFile);
                 mTextContents = mExternalFile;

@@ -166,7 +166,6 @@ resources.arsc-это двоичный файл ресурсов, содержа
     <string name="user_interface">"Пользовательский интерфейс"</string>
     <string name="decompiling">"Декомпиляция '%s'…"</string>
     <string name="deleting">"Удаление '%s'…"</string>
-    <string name="file_permission_request_message">"Чтобы эта функция работала в более новых версиях Android (Android R или новее), необходимо предоставить% s разрешение «Доступ ко всем файлам». Пожалуйста, предоставьте разрешение вручную на новом экране, открытом после нажатия кнопки «Предоставить»."</string>
     <string name="grant">"Грант"</string>
     <string name="important">"Важный"</string>
 </resources>

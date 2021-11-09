@@ -167,7 +167,6 @@ Một tệp DEX nên được chuyển thành định dạng 'jar' và lát nữ
     <string name="user_interface">"Giao diện người dùng"</string>
     <string name="decompiling">"Đang dịch ngược lại '%s'…"</string>
     <string name="deleting">"Đang xoá '%s'…"</string>
-    <string name="file_permission_request_message">"Để tính năng này hoạt động trên các phiên bản Android mới hơn (Android R hoặc mới hơn), cần cấp quyền \"Tất cả quyền truy cập tệp\" cho %s. Vui lòng cấp quyền theo cách thủ công từ màn hình mới được mở sau khi nhấp vào nút \"Cấp\"."</string>
     <string name="grant">"Cấp"</string>
     <string name="important">"Quan trọng"</string>
     <string name="assembling">"Đang dựng

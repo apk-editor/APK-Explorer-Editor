@@ -149,7 +149,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                         })
                         .setNegativeButton(getString(R.string.export), (dialog, id) -> {
                             if (APKExplorer.isPermissionDenied(requireActivity())) {
-                                APKExplorer.launchPermissionDialog(requireActivity());
+                                APKExplorer.requestPermission(requireActivity());
                             } else {
                                 APKEditorUtils.mkdir(Projects.getExportPath(requireActivity()) + "/" + Common.getAppID());
                                 APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position), Projects.getExportPath(requireActivity()) + "/" + Common.getAppID() + "/"

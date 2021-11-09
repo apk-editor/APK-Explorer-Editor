@@ -166,7 +166,6 @@ Localização: '%s'"</string>
     <string name="user_interface">"Interface do usuário"</string>
     <string name="decompiling">"Desmontando '%s'…"</string>
     <string name="deleting">"Excluindo '%s'…"</string>
-    <string name="file_permission_request_message">"Para que esta funcionalidade funcione em novas versões do Android (Android R ou mais novo), é necessário conceder a permissão de \"Acesso a todos os arquivos\" para %s. Por favor, conceda a permissão manualmente na nova tela que abrirá após clicar no botão \"Permitir\"."</string>
     <string name="grant">"Permitir"</string>
     <string name="important">"Importante"</string>
 </resources>

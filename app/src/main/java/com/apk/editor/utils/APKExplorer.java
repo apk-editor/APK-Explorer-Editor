@@ -94,41 +94,19 @@ public class APKExplorer {
     }
 
     public static boolean isPermissionDenied(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            return !Environment.isExternalStorageManager();
-        } else {
+        if (Build.VERSION.SDK_INT < 29) {
             String permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
             return (context.checkCallingOrSelfPermission(permission) != PackageManager.PERMISSION_GRANTED);
+        } else {
+            return false;
         }
     }
 
     public static void requestPermission(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Intent intent = new Intent();
-            intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-            Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
-            intent.setData(uri);
-            activity.startActivity(intent);
-            activity.finish();
-        } else {
+        if (Build.VERSION.SDK_INT < 29) {
             ActivityCompat.requestPermissions(activity, new String[] {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             APKEditorUtils.snackbar(activity.findViewById(android.R.id.content), activity.getString(R.string.permission_denied_message));
-        }
-    }
-
-    public static void launchPermissionDialog(Activity activity) {
-        if (Build.VERSION.SDK_INT >= 30) {
-            new MaterialAlertDialogBuilder(activity)
-                    .setIcon(R.mipmap.ic_launcher)
-                    .setTitle(activity.getString(R.string.important))
-                    .setMessage(activity.getString(R.string.file_permission_request_message, activity.getString(R.string.app_name)))
-                    .setCancelable(false)
-                    .setNegativeButton(activity.getString(R.string.cancel), (dialog1, id1) -> {
-                    })
-                    .setPositiveButton(activity.getString(R.string.grant), (dialog1, id1) -> APKExplorer.requestPermission(activity)).show();
-        } else {
-            APKExplorer.requestPermission(activity);
         }
     }
 

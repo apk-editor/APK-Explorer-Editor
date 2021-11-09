@@ -79,7 +79,8 @@
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:layout_margin="10dp" >
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/text"

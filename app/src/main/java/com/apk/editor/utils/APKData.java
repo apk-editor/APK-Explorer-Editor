@@ -81,9 +81,9 @@ public class APKData {
     }
 
     public static CharSequence getAppName(String path, Context context) {
-        if (getPackageInfo(path, context) != null) {
+        try {
             return getPackageInfo(path, context).applicationInfo.loadLabel(AppData.getPackageManager(context));
-        } else {
+        } catch (Exception ignored) {
             return null;
         }
     }

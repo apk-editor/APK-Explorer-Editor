@@ -56,9 +56,6 @@ public class FilePickerActivity extends AppCompatActivity {
         if (APKExplorer.isPermissionDenied(this)) {
             LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
             MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
-            MaterialTextView mPermissionText = findViewById(R.id.permission_text);
-            mPermissionText.setText(Build.VERSION.SDK_INT >= 30 ? getString(R.string.file_permission_request_message,
-                    getString(R.string.app_name)) : getString(R.string.permission_denied_message));
             mPermissionLayout.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
             mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));

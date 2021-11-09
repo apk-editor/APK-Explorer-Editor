@@ -155,13 +155,13 @@ public class AppSettings {
                 setProjectExistAction(adapter, position,activity);
             } else if (position == 5) {
                 if (APKExplorer.isPermissionDenied(activity)) {
-                    APKExplorer.launchPermissionDialog(activity);
+                    APKExplorer.requestPermission(activity);
                 } else {
                     setExportAPKsPath(adapter, position, activity);
                 }
             } else if (position == 6) {
                 if (APKExplorer.isPermissionDenied(activity)) {
-                    APKExplorer.launchPermissionDialog(activity);
+                    APKExplorer.requestPermission(activity);
                 } else {
                     setExportPath(adapter, position, activity);
                 }

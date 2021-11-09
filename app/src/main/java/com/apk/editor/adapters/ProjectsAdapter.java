@@ -85,7 +85,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                         })
                         .setPositiveButton(R.string.export, (dialog, id) -> {
                             if (APKExplorer.isPermissionDenied(v.getContext())) {
-                                APKExplorer.launchPermissionDialog((Activity) v.getContext());
+                                APKExplorer.requestPermission((Activity) v.getContext());
                             } else {
                                 APKEditorUtils.dialogEditText(null,
                                         (dialogInterface, i) -> {

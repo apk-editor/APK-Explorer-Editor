@@ -105,7 +105,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                                 })
                                 .setPositiveButton(v.getContext().getString(R.string.export), (dialog, id) -> {
                                     if (APKExplorer.isPermissionDenied(v.getContext())) {
-                                        APKExplorer.launchPermissionDialog((Activity) v.getContext());
+                                        APKExplorer.requestPermission((Activity) v.getContext());
                                     } else {
                                         APKEditorUtils.mkdir(Projects.getExportPath(v.getContext()) + "/" + Common.getAppID());
                                         APKEditorUtils.copy(data.get(position), Projects.getExportPath(v.getContext()) + "/" + Common.getAppID() + "/" + new File(data.get(position)).getName());

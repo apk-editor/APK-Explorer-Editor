@@ -61,7 +61,6 @@
     <string name="failed">Failed</string>
     <string name="failed_smali_message">The following \'smali\' files are failed to assemble!\n\n%s</string>
     <string name="file_path_error">Failed to get file path from external File Manager!</string>
-    <string name="file_permission_request_message">In order to get this feature working on newer Android versions (Android R or newer), it is necessary to grant \"All files access\" permission to %s. Kindly grant the permission manually from the new screen opened after clicking the \"Grant\" button.</string>
     <string name="grant">Grant</string>
     <string name="got_it">Got It</string>
     <string name="image_viewer">AEE Image Viewer</string>
