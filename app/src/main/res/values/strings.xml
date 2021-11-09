@@ -130,6 +130,8 @@
     <string name="save_apk_message">Do you want to prepare a signed APK with the current modifications?</string>
     <string name="save_projects_question">Save project for future use?</string>
     <string name="save_question">Save changes made on this file?</string>
+    <string name="save_to_downloads">Save to Downloads</string>
+    <string name="saving">Saving…</string>
     <string name="sdcard">Internal Storage</string>
     <string name="search">Search…</string>
     <string name="select">Select</string>

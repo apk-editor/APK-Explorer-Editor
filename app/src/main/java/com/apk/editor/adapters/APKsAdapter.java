@@ -2,21 +2,20 @@ package com.apk.editor.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.net.Uri;
+import android.os.Build;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
@@ -78,6 +77,8 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                         APKData.showSignatureErrorDialog(v.getContext());
                     } else {
                         new MaterialAlertDialogBuilder(v.getContext())
+                                .setIcon(R.mipmap.ic_launcher)
+                                .setTitle(R.string.app_name)
                                 .setMessage(v.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
@@ -85,13 +86,26 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                     }
                 });
                 holder.mCard.setOnLongClickListener(v -> {
-                    new MaterialAlertDialogBuilder(v.getContext())
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(R.string.app_name)
-                            .setMessage(v.getContext().getString(R.string.share_message, new File(data.get(position)).getName()))
-                            .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
-                            })
-                            .setPositiveButton(v.getContext().getString(R.string.share), (dialog, id) -> APKData.shareAppBundle(new File(data.get(position)).getName(), data.get(position), holder.mCard.getContext())).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+                        Menu menu = popupMenu.getMenu();
+                        menu.add(Menu.NONE, 0, Menu.NONE, R.string.share);
+                        menu.add(Menu.NONE, 1, Menu.NONE, R.string.save_to_downloads);
+                        popupMenu.setOnMenuItemClickListener(item -> {
+                            switch (item.getItemId()) {
+                                case 0:
+                                    APKData.shareAppBundleDialog(data.get(position), holder.mCard.getContext()).show();
+                                    break;
+                                case 1:
+                                    APKData.shareAppBundle(data.get(position), true, v.getContext()).execute();
+                                    break;
+                            }
+                            return false;
+                        });
+                        popupMenu.show();
+                    } else {
+                        APKData.shareAppBundleDialog(data.get(position), holder.mCard.getContext()).show();
+                    }
                     return false;
                 });
             } else {
@@ -141,22 +155,26 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                     }
                 });
                 holder.mCard.setOnLongClickListener(v -> {
-                    new MaterialAlertDialogBuilder(v.getContext())
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(R.string.app_name)
-                            .setMessage(v.getContext().getString(R.string.share_message, APKData.getAppName(data.get(position), v.getContext())))
-                            .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
-                            })
-                            .setPositiveButton(v.getContext().getString(R.string.share), (dialog, id) -> {
-                                Uri uriFile = FileProvider.getUriForFile(v.getContext(),
-                                        BuildConfig.APPLICATION_ID + ".provider", new File(data.get(position)));
-                                Intent share = new Intent(Intent.ACTION_SEND);
-                                share.setType("application/java-archive");
-                                share.putExtra(Intent.EXTRA_TEXT, v.getContext().getString(R.string.share_summary, BuildConfig.VERSION_NAME));
-                                share.putExtra(Intent.EXTRA_STREAM, uriFile);
-                                share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                v.getContext().startActivity(Intent.createChooser(share, v.getContext().getString(R.string.share_with)));
-                            }).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+                        Menu menu = popupMenu.getMenu();
+                        menu.add(Menu.NONE, 0, Menu.NONE, R.string.share);
+                        menu.add(Menu.NONE, 1, Menu.NONE, R.string.save_to_downloads);
+                        popupMenu.setOnMenuItemClickListener(item -> {
+                            switch (item.getItemId()) {
+                                case 0:
+                                    APKData.shareAPK(data.get(position), v.getContext()).show();
+                                    break;
+                                case 1:
+                                    APKData.saveToDownloads(new File(data.get(position)), v.getContext()).execute();
+                                    break;
+                            }
+                            return false;
+                        });
+                        popupMenu.show();
+                    } else {
+                        APKData.shareAPK(data.get(position), v.getContext()).show();
+                    }
                     return false;
                 });
             }

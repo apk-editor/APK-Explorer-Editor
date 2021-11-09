@@ -2,6 +2,7 @@ package com.apk.editor.utils;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -9,8 +10,10 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.WindowManager;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
@@ -21,6 +24,10 @@ import com.apk.editor.utils.apkSigner.ApkSigner;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -441,25 +448,59 @@ public class APKData {
         }.execute();
     }
 
-    public static void shareAppBundle(String name, String path, Context context) {
-        new AsyncTasks() {
+    public static MaterialAlertDialogBuilder shareAPK(String apkPath, Context context) {
+        return new MaterialAlertDialogBuilder(context)
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle(R.string.app_name)
+                .setMessage(context.getString(R.string.share_message, APKData.getAppName(apkPath, context)))
+                .setNegativeButton(context.getString(R.string.cancel), (dialog, id) -> {
+                })
+                .setPositiveButton(context.getString(R.string.share), (dialog, id) -> {
+                    Uri uriFile = FileProvider.getUriForFile(context,
+                            BuildConfig.APPLICATION_ID + ".provider", new File(apkPath));
+                    Intent share = new Intent(Intent.ACTION_SEND);
+                    share.setType("application/java-archive");
+                    share.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_summary, BuildConfig.VERSION_NAME));
+                    share.putExtra(Intent.EXTRA_STREAM, uriFile);
+                    share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    context.startActivity(Intent.createChooser(share, context.getString(R.string.share_with)));
+                });
+    }
+
+    public static MaterialAlertDialogBuilder shareAppBundleDialog(String path, Context context) {
+        return new MaterialAlertDialogBuilder(context)
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle(R.string.app_name)
+                .setMessage(context.getString(R.string.share_message, new File(path).getName()))
+                .setNegativeButton(context.getString(R.string.cancel), (dialog, id) -> {
+                })
+                .setPositiveButton(context.getString(R.string.share), (dialog, id) ->
+                        shareAppBundle(path, false, context).execute());
+    }
+
+    public static AsyncTasks shareAppBundle(String path, boolean exportOnly, Context context) {
+        return new AsyncTasks() {
+            private File mFile;
             private ProgressDialog mProgressDialog;
 
             @Override
             public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(context);
-                mProgressDialog.setMessage(context.getString(R.string.preparing_bundle));
+                mProgressDialog.setMessage(context.getString(exportOnly ? R.string.saving : R.string.preparing_bundle));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
                 if (!APKEditorUtils.exist(Projects.getExportPath(context))) {
                     APKEditorUtils.mkdir(Projects.getExportPath(context));
                 }
-                new File(Projects.getExportPath(context), name + ".xapk").delete();
+                mFile = new File(Projects.getExportPath(context), new File(path).getName() + ".xapk");
             }
 
             @Override
             public void doInBackground() {
-                APKEditorUtils.zip(new File(path), new File(Projects.getExportPath(context), name + ".xapk"));
+                if (mFile.exists()) {
+                    mFile.delete();
+                }
+                APKEditorUtils.zip(new File(path), mFile);
             }
 
             @Override
@@ -468,16 +509,56 @@ public class APKData {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
                 }
-                Uri uriFile = FileProvider.getUriForFile(context,
-                        BuildConfig.APPLICATION_ID + ".provider", new File(Projects.getExportPath(context), name + ".xapk"));
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.setType("application/zip");
-                share.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_summary, BuildConfig.VERSION_NAME));
-                share.putExtra(Intent.EXTRA_STREAM, uriFile);
-                share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                context.startActivity(Intent.createChooser(share, context.getString(R.string.share_with)));
+                if (!exportOnly) {
+                    Uri uriFile = FileProvider.getUriForFile(context,
+                            BuildConfig.APPLICATION_ID + ".provider", mFile);
+                    Intent share = new Intent(Intent.ACTION_SEND);
+                    share.setType("application/zip");
+                    share.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_summary, BuildConfig.VERSION_NAME));
+                    share.putExtra(Intent.EXTRA_STREAM, uriFile);
+                    share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    context.startActivity(Intent.createChooser(share, context.getString(R.string.share_with)));
+                }
             }
-        }.execute();
+        };
+    }
+
+    public static AsyncTasks saveToDownloads(File file, Context context) {
+        return new AsyncTasks() {
+            private ProgressDialog mProgressDialog;
+
+            @Override
+            public void onPreExecute() {
+                mProgressDialog = new ProgressDialog(context);
+                mProgressDialog.setMessage(context.getString(R.string.saving));
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.Q)
+            @Override
+            public void doInBackground() {
+                try {
+                    InputStream inputStream = new FileInputStream(file);
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.MediaColumns.DISPLAY_NAME, file.getName());
+                    values.put(MediaStore.MediaColumns.MIME_TYPE, "*/*");
+                    values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+                    Uri uri = context.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
+                    OutputStream outputStream = context.getContentResolver().openOutputStream(uri);
+                    APKEditorUtils.copyStream(inputStream, outputStream);
+                } catch (IOException ignored) {
+                }
+            }
+
+            @Override
+            public void onPostExecute() {
+                try {
+                    mProgressDialog.dismiss();
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
+        };
     }
 
 }
