@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -71,14 +70,6 @@ public class APKInstallerActivity extends AppCompatActivity {
         mCancel = findViewById(R.id.cancel);
         mTabLayout = findViewById(R.id.tab_Layout);
         mViewPager = findViewById(R.id.view_pager);
-
-        if (APKExplorer.isPermissionDenied(this)) {
-            LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
-            MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
-            mPermissionLayout.setVisibility(View.VISIBLE);
-            mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
-            return;
-        }
 
         if (getIntent().getData() != null) {
             manageInstallation(getIntent().getData(), this).execute();
