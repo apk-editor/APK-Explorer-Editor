@@ -19,6 +19,8 @@ import java.util.List;
  */
 public class ExternalAPKData {
 
+    private static boolean mFMInstall = false;
+    private static File mAPKFile = null;
     private static List<String> mPermissions = null;
     private static String mCertificate = null, mManifest = null, mMinSDKVersion = null, mSDKVersion = null,
             mSize = null, mVersion = null;
@@ -36,6 +38,14 @@ public class ExternalAPKData {
         } catch (IOException ignored) {
         }
         return null;
+    }
+
+    public static boolean isFMInstall() {
+        return mFMInstall;
+    }
+
+    public static File getAPKFile() {
+        return mAPKFile;
     }
 
     public static List<String> getData() {
@@ -148,6 +158,14 @@ public class ExternalAPKData {
             default:
                 return sdkVersion;
         }
+    }
+
+    public static void isFMInstall(boolean b) {
+        mFMInstall = b;
+    }
+
+    public static void setAPKFile(File file) {
+        mAPKFile = file;
     }
 
     public static void setCertificate(String certificate) {

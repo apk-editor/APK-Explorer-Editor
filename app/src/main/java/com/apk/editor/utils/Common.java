@@ -5,7 +5,6 @@ import android.view.View;
 import com.apk.editor.utils.recyclerViewItems.PackageItems;
 import com.google.android.material.card.MaterialCardView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +13,8 @@ import java.util.List;
  */
 public class Common {
 
-    private static boolean mBuilding = false, mFinish = false, mFileMangerInstall = false, mPrivateKey = false,
+    private static boolean mBuilding = false, mFinish = false, mPrivateKey = false,
             mReloading = false, mRSATemplate = false;
-    private static File mAPKFile = null;
     private static List<PackageItems> mPackageData = null;
     private static final List<String> mAPKList = new ArrayList<>(), mErrorList = new ArrayList<>();
     private static int mError = 0, mSuccess = 0;
@@ -30,10 +28,6 @@ public class Common {
 
     public static boolean isFinished() {
         return mFinish;
-    }
-
-    public static boolean isFMInstall() {
-        return mFileMangerInstall;
     }
 
     public static boolean isReloading() {
@@ -55,10 +49,6 @@ public class Common {
 
     public static boolean hasRASATemplate() {
         return mRSATemplate;
-    }
-
-    public static File getAPKFile() {
-        return mAPKFile;
     }
 
     public static int getError() {
@@ -125,16 +115,8 @@ public class Common {
         mBuilding = b;
     }
 
-    public static void isFMInstall(boolean b) {
-        mFileMangerInstall = b;
-    }
-
     public static void isReloading(boolean b) {
         mReloading = b;
-    }
-
-    public static void setAPKFile(File file) {
-        mAPKFile = file;
     }
 
     public static void setFinishStatus(boolean b) {

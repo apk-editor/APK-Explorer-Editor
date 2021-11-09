@@ -176,8 +176,8 @@ public class SplitAPKInstaller {
 
             @Override
             public void onPreExecute() {
-                if (Common.isFMInstall()) {
-                    Common.isFMInstall(false);
+                if (ExternalAPKData.isFMInstall()) {
+                    ExternalAPKData.isFMInstall(false);
                     activity.finish();
                 }
                 APKEditorUtils.saveString("installationStatus", "waiting", activity);
@@ -226,8 +226,8 @@ public class SplitAPKInstaller {
 
             @Override
             public void onPreExecute() {
-                if (Common.isFMInstall()) {
-                    Common.isFMInstall(false);
+                if (ExternalAPKData.isFMInstall()) {
+                    ExternalAPKData.isFMInstall(false);
                     activity.finish();
                 }
                 APKEditorUtils.saveString("installationStatus", "waiting", activity);

@@ -122,7 +122,7 @@ public class APKExplorer {
     public static List<String> getTextViewData(String path, Context context) {
         List<String> mData = new ArrayList<>();
         String text;
-        if (Common.isFMInstall()) {
+        if (ExternalAPKData.isFMInstall()) {
             text = path;
         } else if (Common.getAppID() != null && APKExplorer.isBinaryXML(path)) {
             text = ExternalAPKData.readXMLFromAPK(AppData.getSourceDir(Common.getAppID(), context), path.replace(

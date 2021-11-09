@@ -99,6 +99,7 @@ public class APKInstallerActivity extends AppCompatActivity {
                 APKEditorUtils.delete(getExternalFilesDir("APK").getAbsolutePath());
                 mExtension = MimeTypeMap.getFileExtensionFromUrl(uri.getPath());
                 mFile = new File(getExternalFilesDir("APK"), "tmp." + mExtension);
+                Common.getAPKList().clear();
             }
 
             @Override
@@ -142,7 +143,7 @@ public class APKInstallerActivity extends AppCompatActivity {
                             if (mAPKData.getMinSDKVersion() != null) {
                                 ExternalAPKData.setMinSDKVersion(mAPKData.getMinSDKVersion(), activity);
                             }
-                            ExternalAPKData.setSize(getString(R.string.size, AppData.getAPKSize(Common.getAPKFile().length())) + " (" + Common.getAPKFile().length() + " bytes)");
+                            ExternalAPKData.setSize(getString(R.string.size, AppData.getAPKSize(ExternalAPKData.getAPKFile().length())) + " (" + ExternalAPKData.getAPKFile().length() + " bytes)");
                         } catch (Exception ignored) {
                         }
                     }
@@ -158,8 +159,8 @@ public class APKInstallerActivity extends AppCompatActivity {
                 if (mFile.exists()) {
                     if (mExtension.equals("apk")) {
                         if (mName != null || mPackageName != null || mIcon != null) {
-                            Common.setAPKFile(mFile);
-                            Common.isFMInstall(true);
+                            ExternalAPKData.setAPKFile(mFile);
+                            ExternalAPKData.isFMInstall(true);
                             loadAPKDetails(activity);
                         } else {
                             finish();
