@@ -213,7 +213,6 @@ public class APKExplorer {
         if (APKEditorUtils.isFullVersion(activity)) {
             if (APKEditorUtils.getString("installerAction", null, activity) == null) {
                 new MaterialAlertDialogBuilder(activity)
-                        .setCancelable(false)
                         .setItems(getInstallerMenu(activity), (dialog, itemPosition) -> {
                             if (itemPosition == 0) {
                                 installAPKs(activity);
