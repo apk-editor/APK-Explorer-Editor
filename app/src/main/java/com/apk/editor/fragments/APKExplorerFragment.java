@@ -147,13 +147,9 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                             if (APKExplorer.isPermissionDenied(requireActivity())) {
                                 APKExplorer.requestPermission(requireActivity());
                             } else {
-                                APKEditorUtils.mkdir(Projects.getExportPath(requireActivity()) + "/" + Common.getAppID());
-                                APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position), Projects.getExportPath(requireActivity()) + "/" + Common.getAppID() + "/"
-                                        + new File(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position)).getName());
-                                new MaterialAlertDialogBuilder(requireActivity())
-                                        .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(requireActivity()) + "/" + Common.getAppID()))
-                                        .setPositiveButton(getString(R.string.cancel), (dialog2, id2) -> {
-                                        }).show();
+                                Projects.exportToStorage(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position),
+                                        new File(APKExplorer.getData(getFilesList(),true, requireActivity()).get(position)).getName(),
+                                        Common.getAppID(), requireActivity()).execute();
                             }
                         })
                         .setPositiveButton(getString(R.string.open_as_text), (dialog1, id1) -> {

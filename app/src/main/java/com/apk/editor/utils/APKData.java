@@ -1,6 +1,5 @@
 package com.apk.editor.utils;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,6 +11,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.view.WindowManager;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.apk.editor.BuildConfig;
@@ -101,10 +101,11 @@ public class APKData {
         if (getPackageInfo(path, context) != null) {
             return getPackageInfo(path, context).applicationInfo.loadIcon(AppData.getPackageManager(context));
         } else {
-            @SuppressLint("UseCompatLoadingForDrawables")
-            Drawable drawable = context.getResources().getDrawable(R.drawable.ic_android);
-            drawable.setTint(context.getResources().getColor(APKEditorUtils.isDarkTheme(context) ?
-                    R.color.colorWhite : R.color.colorBlack));
+            Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_android);
+            if (drawable != null) {
+                drawable.setTint(ContextCompat.getColor(context, APKEditorUtils.isDarkTheme(context) ?
+                        R.color.colorWhite : R.color.colorBlack));
+            }
             return drawable;
         }
     }

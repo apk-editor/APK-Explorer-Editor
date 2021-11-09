@@ -100,6 +100,8 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                         break;
                     case 1:
                         new MaterialAlertDialogBuilder(v.getContext())
+                                .setIcon(R.mipmap.ic_launcher)
+                                .setTitle(R.string.app_name)
                                 .setMessage(R.string.export_question)
                                 .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
                                 })
@@ -107,12 +109,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                                     if (APKExplorer.isPermissionDenied(v.getContext())) {
                                         APKExplorer.requestPermission((Activity) v.getContext());
                                     } else {
-                                        APKEditorUtils.mkdir(Projects.getExportPath(v.getContext()) + "/" + Common.getAppID());
-                                        APKEditorUtils.copy(data.get(position), Projects.getExportPath(v.getContext()) + "/" + Common.getAppID() + "/" + new File(data.get(position)).getName());
-                                        new MaterialAlertDialogBuilder(v.getContext())
-                                                .setMessage(v.getContext().getString(R.string.export_complete_message, Projects.getExportPath(v.getContext()) + "/" + Common.getAppID()))
-                                                .setPositiveButton(v.getContext().getString(R.string.cancel), (dialog1, id1) -> {
-                                                }).show();
+                                        Projects.exportToStorage(data.get(position), new File(data.get(position)).getName(), Common.getAppID(), v.getContext()).execute();
                                     }
                                 }).show();
                         break;

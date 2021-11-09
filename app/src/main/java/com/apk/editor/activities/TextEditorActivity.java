@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.apk.editor.BuildConfig;
@@ -100,20 +101,20 @@ public class TextEditorActivity extends AppCompatActivity {
                 } else {
                     mFile = new File(APKEditorUtils.getPath(getIntent().getData().getPath()));
                 }
-                if (Build.VERSION.SDK_INT >= 29) {
-                    mMenu.setVisibility(View.GONE);
-                    mSave.setVisibility(View.GONE);
-                } else {
-                    if (mFile != null && mFile.exists()) {
-                        mTitle.setText(mFile.getName());
-                        mSave.setImageDrawable(getResources().getDrawable(R.drawable.ic_save));
-                        mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_dots));
+                if (mFile != null && mFile.exists()) {
+                    mTitle.setText(mFile.getName());
+                    if (Build.VERSION.SDK_INT >= 29) {
+                        mMenu.setVisibility(View.GONE);
+                        mSave.setVisibility(View.GONE);
+                    } else {
+                        mSave.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_save));
+                        mMenu.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_dots));
                         mSave.setVisibility(View.VISIBLE);
                         mMenu.setVisibility(View.VISIBLE);
-                    } else {
-                        mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_save));
-                        mSave.setVisibility(View.GONE);
                     }
+                } else {
+                    mMenu.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_save));
+                    mSave.setVisibility(View.GONE);
                 }
                 mText.setText(mExternalFile);
                 mTextContents = mExternalFile;
@@ -129,7 +130,7 @@ public class TextEditorActivity extends AppCompatActivity {
             mTitle.setText(new File(mPath).getName());
             mText.setText(APKEditorUtils.read(mPath));
             mTextContents = APKEditorUtils.read(mPath);
-            mSave.setImageDrawable(getResources().getDrawable(R.drawable.ic_save));
+            mSave.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_save));
             mSave.setVisibility(View.VISIBLE);
         }
 

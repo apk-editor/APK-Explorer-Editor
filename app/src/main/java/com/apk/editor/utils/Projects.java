@@ -1,13 +1,19 @@
 package com.apk.editor.utils;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 
 import com.apk.editor.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +40,50 @@ public class Projects {
             Collections.reverse(mData);
         }
         return mData;
+    }
+
+    public static AsyncTasks exportToStorage(String source, String name, String folder, Context context) {
+        return new AsyncTasks() {
+            private String mExportPath;
+            @Override
+            public void onPreExecute() {
+            }
+
+            @Override
+            public void doInBackground() {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                    APKEditorUtils.mkdir(getExportPath(context) + "/" + folder);
+                    mExportPath = getExportPath(context) + "/" + Common.getAppID();
+                } else {
+                    mExportPath = getExportPath(context);
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    try {
+                        ContentValues values = new ContentValues();
+                        values.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
+                        values.put(MediaStore.MediaColumns.MIME_TYPE, "*/*");
+                        values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+                        Uri uri = context.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
+                        OutputStream outputStream = context.getContentResolver().openOutputStream(uri);
+                        outputStream.write(Objects.requireNonNull(APKEditorUtils.read(source)).getBytes());
+                        outputStream.close();
+                    } catch (IOException ignored) {
+                    }
+                } else {
+                    APKEditorUtils.copy(source, new File(mExportPath, name).getAbsolutePath());
+                }
+            }
+
+            @Override
+            public void onPostExecute() {
+                new MaterialAlertDialogBuilder(context)
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setTitle(R.string.app_name)
+                        .setMessage(context.getString(R.string.export_complete_message, mExportPath))
+                        .setPositiveButton(context.getString(R.string.cancel), (dialog1, id1) -> {
+                        }).show();
+            }
+        };
     }
 
     public static String getExportPath(Context context) {

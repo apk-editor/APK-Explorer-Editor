@@ -2,6 +2,7 @@ package com.apk.editor.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -111,12 +112,7 @@ public class TextViewActivity extends AppCompatActivity {
                     if (APKExplorer.isPermissionDenied(this)) {
                         APKExplorer.requestPermission(this);
                     } else {
-                        APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + Common.getAppID());
-                        APKEditorUtils.copy(mPath, Projects.getExportPath(this) + "/" + Common.getAppID() + "/" + new File(mPath).getName());
-                        new MaterialAlertDialogBuilder(this)
-                                .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(this) + "/" + Common.getAppID()))
-                                .setPositiveButton(getString(R.string.cancel), (dialog1, id1) -> {
-                                }).show();
+                        Projects.exportToStorage(mPath, new File(mPath).getName(), Common.getAppID(), this).execute();
                     }
                 }).show());
 

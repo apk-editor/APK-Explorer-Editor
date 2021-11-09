@@ -2,6 +2,7 @@ package com.apk.editor.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,6 +13,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
 
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.ActivityCompat;
@@ -26,6 +29,7 @@ import net.dongliu.apk.parser.ApkFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -135,12 +139,22 @@ public class APKExplorer {
         return null;
     }
 
-    public static void saveImage(Bitmap bitmap, String path) {
+    public static void saveImage(Bitmap bitmap, String dest, Context context) {
         try {
-            FileOutputStream out = new FileOutputStream(path);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            out.flush();
-            out.close();
+            OutputStream imageOutStream;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.MediaColumns.DISPLAY_NAME, new File(dest).getName());
+                values.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+                Uri uri = context.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
+                imageOutStream = context.getContentResolver().openOutputStream(uri);
+            } else {
+                File image = new File(dest);
+                imageOutStream = new FileOutputStream(image);
+            }
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, imageOutStream);
+            imageOutStream.close();
         } catch(Exception ignored) {
         }
     }
@@ -270,4 +284,5 @@ public class APKExplorer {
             }
         }.execute();
     }
+
 }

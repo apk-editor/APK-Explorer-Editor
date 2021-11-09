@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.apk.editor.BuildConfig;
@@ -101,23 +102,23 @@ public class ImageViewActivity extends AppCompatActivity {
 
             if (mFile != null && mFile.exists()) {
                 mTitle.setText(mFile.getName());
-            }
-        } else if (path != null) {
-            mTitle.setText(new File(path).getName());
-            mImage.setImageURI(APKExplorer.getIconFromPath(path));
-        } else {
-            mTitle.setText(AppData.getAppName(Common.getAppID(), this));
-            mImage.setImageDrawable(AppData.getAppIcon(Common.getAppID(), this));
-        }
-
-        if (Build.VERSION.SDK_INT >= 29) {
-            mMenu.setVisibility(View.GONE);
-        } else {
-            if (mFile != null && mFile.exists()) {
-                mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_settings));
+                if (Build.VERSION.SDK_INT >= 29) {
+                    mMenu.setVisibility(View.GONE);
+                } else {
+                    mMenu.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_settings));
+                }
             } else {
-                mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_export));
+                mMenu.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_export));
             }
+        } else {
+            if (path != null) {
+                mTitle.setText(new File(path).getName());
+                mImage.setImageURI(APKExplorer.getIconFromPath(path));
+            } else {
+                mTitle.setText(AppData.getAppName(Common.getAppID(), this));
+                mImage.setImageDrawable(AppData.getAppIcon(Common.getAppID(), this));
+            }
+            mMenu.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_export));
         }
 
         mMenu.setOnClickListener(v -> {
@@ -161,14 +162,20 @@ public class ImageViewActivity extends AppCompatActivity {
                             if (APKExplorer.isPermissionDenied(this)) {
                                 APKExplorer.requestPermission(this);
                             } else {
-                                APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + Common.getAppID());
-                                if (path != null) {
-                                    APKExplorer.saveImage(BitmapFactory.decodeFile(path), Projects.getExportPath(this) + "/" + Common.getAppID() + "/" + new File(path).getName());
+                                String mExportPath;
+                                if (Build.VERSION.SDK_INT < 29) {
+                                    APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + Common.getAppID());
+                                    mExportPath = Projects.getExportPath(this) + "/" + Common.getAppID();
                                 } else {
-                                    APKExplorer.saveImage(APKExplorer.drawableToBitmap(mImage.getDrawable()), Projects.getExportPath(this) + "/" + Common.getAppID() + "/icon.png");
+                                    mExportPath = Projects.getExportPath(this);
+                                }
+                                if (path != null) {
+                                    APKExplorer.saveImage(BitmapFactory.decodeFile(path), mExportPath + "/" + new File(path).getName(), this);
+                                } else {
+                                    APKExplorer.saveImage(APKExplorer.drawableToBitmap(mImage.getDrawable()), mExportPath + "/icon.png", this);
                                 }
                                 new MaterialAlertDialogBuilder(this)
-                                        .setMessage(getString(R.string.export_complete_message, Projects.getExportPath(this) + "/" + Common.getAppID()))
+                                        .setMessage(getString(R.string.export_complete_message, mExportPath))
                                         .setPositiveButton(getString(R.string.cancel), (dialog1, id1) -> {
                                         }).show();
                             }
