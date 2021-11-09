@@ -154,4 +154,14 @@
     <string name="deleting">"正在删除 %s  …"</string>
     <string name="grant">"授予"</string>
     <string name="important">"重要"</string>
+    <string name="build">"构建"</string>
+    <string name="building">"构建'%s'…"</string>
+    <string name="copying">"复制 '%s'…"</string>
+    <string name="details">"详情"</string>
+    <string name="failed">"失败"</string>
+    <string name="open">"打开"</string>
+    <string name="sort_by_installed">"安装时间"</string>
+    <string name="sort_by_size">"大小"</string>
+    <string name="sort_by_updated">"更新时间"</string>
+    <string name="start">"开始"</string>
 </resources>

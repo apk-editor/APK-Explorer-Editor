@@ -30,9 +30,9 @@
     <string name="invite_friends_Summary">"Lade deine Freunde zu AEE ein"</string>
     <string name="last_modified">"Zuletzt geändert: %s"</string>
     <string name="open_as_text">"Als Text öffnen"</string>
-    <string name="permission_denied_message">"Fehlende Berechtigungen beim schreiben auf den Speicher!"</string>
-    <string name="preparing_apk">"Vorbereite %s APK…"</string>
-    <string name="press_back">"Drücke den nochmal den Zurück-Knopf um APK Explorer zu beenden!"</string>
+    <string name="permission_denied_message">"Fehlende Berechtigungen beim Schreiben auf den Speicher!"</string>
+    <string name="preparing_apk">"Bereite APK %s vor…"</string>
+    <string name="press_back">"Drücke den Zurück-Knopf nochmal, um APK Explorer zu beenden!"</string>
     <string name="projects">"Projekte"</string>
     <string name="rate_us">"AEE bewerten"</string>
     <string name="rate_us_Summary">"Bewerte AEE in Google Play"</string>
@@ -52,26 +52,38 @@
     <string name="signing">"Signiere %s…"</string>
     <string name="size">"Größe: %s"</string>
     <string name="source_code">"Quellcode"</string>
-    <string name="source_code_summary">"Schau dir den Quelcode von AEE an"</string>
+    <string name="source_code_summary">"Schau dir den Quellcode von AEE an"</string>
     <string name="split_apk_installer">"AEE Geteilte APK Installer"</string>
     <string name="support_group">"Support-Gruppe"</string>
-    <string name="support_group_summary">"Beitrete der AEE Support-Gruppe"</string>
+    <string name="support_group_summary">"Trete der AEE Support-Gruppe bei"</string>
     <string name="system">"System"</string>
     <string name="translate">"Übersetzen"</string>
     <string name="unknown_file_message">"AEE kann im Moment nicht mit '%s' umgehen. Wenn Sie dieses Dateiformat kennen, können Sie diese Datei in den Gerätespeicher exportieren und versuchen, sie mit einer unterstützten Drittanbieteranwendung zu bearbeiten. Alternativ können Sie auch versuchen, die Datei als Textdatei zu öffnen?"</string>
-    <string name="unsupported_file">"Nicht unterstüßte Datei"</string>
-    <string name="unsupported_file_arsc">"Sie haben 'resources.arsc' ausgewählt, was für AEE leider nicht lesbar ist.\n\nWas ist resources.arsc?\nresources.arsc ist eine binäre Ressourcendatei, die konfigurationsspezifischen Werte einer App enthält, wie z. B. Integer, Booleans und Strings, sowie Verweise auf komplexere Ressourcen, wie UI-Layouts.\n\nWie kann man resources.arsc lesen?\nTools wie Apktool oder Android Asset Packaging Tool (AAPT) sind zu verwenden, um den Inhalt von resources.arsc in ein für Menschen lesbares Format auszugeben."</string>
-    <string name="unsupported_file_dex">"Sie haben eine 'DEX'-Datei (.dex) ausgewählt, die von AEE leider nicht gelesen werden kann.\n\nWas ist eine DEX-Datei?\nEine Dex-Datei enthält Code, der letztendlich von der Android Runtime ausgeführt wird. Jede APK sollte eine 'classes.dex'-Datei haben, die alle Klassen oder Methoden referenziert, die innerhalb einer App verwendet werden. Im Wesentlichen wird jede Activity, jedes Objekt oder Fragment, das innerhalb der Codebasis verwendet wird, in einer Dex-Datei in Bytes umgewandelt, die als Android-App ausgeführt werden können.\n\nWie liest man eine DEX-Datei?\nEine DEX-Datei muss mit Tools wie 'dex2jar' und 'JD-GUI' in das 'jar'-Format und später in eine 'Java'-Datei konvertiert werden."</string>
+    <string name="unsupported_file">"Nicht unterstützte Datei"</string>
+    <string name="unsupported_file_arsc">"Sie haben 'resources.arsc' ausgewählt, was für AEE leider nicht lesbar ist.
+
+        Was ist resources.arsc?
+        resources.arsc ist eine binäre Ressourcendatei, die konfigurationsspezifischen Werte einer App enthält, wie z. B. Integer, Booleans und Strings, sowie Verweise auf komplexere Ressourcen, wie UI-Layouts.
+
+        Wie kann man resources.arsc lesen?
+        Tools wie Apktool oder Android Asset Packaging Tool (AAPT) sind zu verwenden, um den Inhalt von resources.arsc in ein für Menschen lesbares Format auszugeben."</string>
+    <string name="unsupported_file_dex">"Sie haben eine 'DEX'-Datei (.dex) ausgewählt, die von AEE leider nicht gelesen werden kann.
+
+        Was ist eine DEX-Datei?
+        Eine Dex-Datei enthält Code, der letztendlich von der Android Runtime ausgeführt wird. Jede APK sollte eine 'classes.dex'-Datei haben, die alle Klassen oder Methoden referenziert, die innerhalb einer App verwendet werden. Im Wesentlichen wird jede Activity, jedes Objekt oder Fragment, das innerhalb der Codebasis verwendet wird, in einer Dex-Datei in Bytes umgewandelt, die als Android-App ausgeführt werden können.
+
+        Wie liest man eine DEX-Datei?
+        Eine DEX-Datei muss mit Tools wie 'dex2jar' und 'JD-GUI' in das 'jar'-Format und später in eine 'Java'-Datei konvertiert werden."</string>
     <string name="user">"Nutzer"</string>
     <string name="version">"Version: %s"</string>
     <string name="bundles">"Bündel"</string>
-    <string name="preparing_bundle">"App-Bundle für das teilen vorbereiten…"</string>
+    <string name="preparing_bundle">"App-Bundle für das Teilen vorbereiten…"</string>
     <string name="privacy_policy">"Datenschutzrichtlinie"</string>
     <string name="privacy_policy_summary">"Datenschutzrichtlinie lesen"</string>
     <string name="private_key">"Privater Schlüssel"</string>
     <string name="private_key_summary">"Benutzerdefinierten privaten Schlüssel auswählen"</string>
     <string name="rsa_template">"RSA Vorlage"</string>
-    <string name="rsa_template_summary">"Benutzerdefinierten RSA Vorlage auswählen"</string>
+    <string name="rsa_template_summary">"Benutzerdefinierte RSA Vorlage auswählen"</string>
     <string name="select">"Auswählen"</string>
     <string name="signing_custom">"Privaten Schlüssel konfigurieren"</string>
     <string name="signing_default">"Mit Standard-Schlüssel signieren"</string>
@@ -103,19 +115,22 @@
     <string name="preparing_bundle_install">"Vorbereiten von '%s' für die Installation…"</string>
     <string name="select_apk">"Wählen Sie geteilte APKs"</string>
     <string name="signature_warning">"Es ist wichtig, die alte Version (falls vorhanden) der App zu deinstallieren, bevor Sie eine AEE-signierte APK/App-Bundle installieren, um einen Installationsfehler aufgrund einer fehlenden Signatur zu vermeiden!"</string>
+
     <string name="wrong_extension">"Bitte wählen Sie eine Datei mit der %s-Endung."</string>
     <string name="yes">"Ja"</string>
     <string name="apk_corrupted">"APK-Datei(en) ist/sind beschädigt! Abbruch."</string>
     <string name="install_resign">"Neu signieren &amp; installieren"</string>
     <string name="resign_only">"Nur neu signieren"</string>
-    <string name="resigned_apks_path">"Re-signierte APK-Datei(en) wurde generiert!\n\nPfad: '%s'"</string>
+    <string name="resigned_apks_path">"Re-signierte APK-Datei(en) wurde generiert!
+
+        Pfad: '%s'"</string>
     <string name="resigning_apks">"Neu-Signieren ausgewählter APK's…"</string>
     <string name="select_storage">"Wählen Sie aus dem Speicher"</string>
     <string name="sort_by">"Apps sortieren"</string>
     <string name="sort_by_name">"Name"</string>
     <string name="sort_by_id">"Package ID"</string>
     <string name="sort_order">"A-Z"</string>
-    <string name="clear_cache">"Cache entfernen"</string>
+    <string name="clear_cache">"Cache leeren"</string>
     <string name="clear_cache_summary">"Interne Einstellungen von AEE löschen"</string>
     <string name="clear_cache_message">"Alles, außer den exportierten Anwendungen, werden entfernt!"</string>
     <string name="disable">"Deaktivieren"</string>
@@ -127,7 +142,7 @@
     <string name="installer_action">"Bei der Installation von APKs"</string>
     <string name="project_exist_action">"Beim Beenden eines Projekts"</string>
     <string name="prompt">"Aufforderung"</string>
-    <string name="settings">"Einsteullungen"</string>
+    <string name="settings">"Einstellungen"</string>
     <string name="settings_general">"Allgemein"</string>
     <string name="settings_misc">"Sonstiges"</string>
     <string name="sign_apk_custom">"Benutzerdefinierter Schlüssel"</string>
@@ -136,4 +151,34 @@
     <string name="text_editing">"Aktivieren der Textbearbeitung"</string>
     <string name="text_editing_summary">"Der AEE-Texteditor ist noch sehr einfach und ein wenig fehlerhaft. APKs, die nach der Bearbeitung von binären Textdateien erstellt wurden, funktionieren möglicherweise nicht richtig. Bitte verwenden Sie ihn mit äußerster Vorsicht."</string>
     <string name="warning">"Warnung"</string>
+    <string name="file_path_error">"Dateipfad konnte nicht vom externen Dateimanager geladen werden!"</string>
+    <string name="app_theme">"Theme"</string>
+    <string name="app_theme_auto">"Automatisch"</string>
+    <string name="app_theme_dark">"Dunkel"</string>
+    <string name="app_theme_light">"Hell"</string>
+    <string name="discard">"Verwerfen"</string>
+    <string name="discard_message">"Änderungen an dieser Datei verwerfen?"</string>
+    <string name="export_path_apks">"Export Pfad (APKs)"</string>
+    <string name="export_path_files_dir">"Export Pfad für Dateien"</string>
+    <string name="language">"Sprache"</string>
+    <string name="transfer_exported_apk">"Zu neuem Ort exportieren"</string>
+    <string name="user_interface">"User Interface"</string>
+    <string name="decompiling">"Dekompiliere '%s'…"</string>
+    <string name="deleting">"Lösche '%s'…"</string>
+    <string name="grant">"Erteilen"</string>
+    <string name="important">"Wichtig"</string>
+    <string name="copying">"Kopiere '%s'…"</string>
+    <string name="details">"Details"</string>
+    <string name="failed">"Fehler"</string>
+    <string name="failed_smali_message">"Die folgenden 'Smali' Dateien konnten nicht assembliert werden!
+
+        %s"</string>
+    <string name="open">"Öffnen"</string>
+    <string name="preparing_source">"Bereite Quell-APK zum Bauen vor…"</string>
+    <string name="resigned_apks_error">"Bauen wegen Fehlern beim Assemblieren abgebrochen. Siehe 'Details' für mehr Infos!"</string>
+    <string name="success">"Erfolgreich"</string>
+    <string name="sort_by_installed">"Installationszeit"</string>
+    <string name="sort_by_size">"Größe"</string>
+    <string name="sort_by_updated">"Updatezeit"</string>
+    <string name="sort_size">"Größe"</string>
 </resources>

@@ -62,18 +62,18 @@
     <string name="unsupported_file">"Fichier non supporté"</string>
     <string name="unsupported_file_arsc">"Vous avez sélectionné  'resources.arsc', que malheureusement AEE ne peut pas lire.
 
-Qu'est-ce que resources.arsc ?
-resources.arsc  est une fichier ressource binaire qui contient les valeurs spécifiques de configuration d'une application, comme des entiers, des booléens, mais aussi des références à des ressources plus complexes, comme la disposition de l'interface utilisateur.
+        Qu'est-ce que resources.arsc ?
+        resources.arsc  est une fichier ressource binaire qui contient les valeurs spécifiques de configuration d'une application, comme des entiers, des booléens, mais aussi des références à des ressources plus complexes, comme la disposition de l'interface utilisateur.
 
-Comment lire resources.arsc ?
-Des outils comme Apktool ou Android Asset Packaging Tool (AAPT) peuvent être utilisés pour afficher le contenu de ressources.arsc dans un format lisible par l'humain."</string>
+        Comment lire resources.arsc ?
+        Des outils comme Apktool ou Android Asset Packaging Tool (AAPT) peuvent être utilisés pour afficher le contenu de ressources.arsc dans un format lisible par l'humain."</string>
     <string name="unsupported_file_dex">"Vous avez sélectionné un fichier 'DEX' (.dex) qui ne peut malheureusement pas être lu par AEE.
 
-Qu'est-ce qu'un fichier DEX ?
-Un fichier DEX a du code qui est exécuté a la fin par le Runtime Android. Chaque APK devrait avoir un fichier 'classes.dex' qui référence toutes les classes et les méthodes utilisées dans l'application. Essentiellement, tout Activity, Object ou Fragment utilisé dans le code vont être transformés en octets dans le fichier DEX afin d'être exécuté comme une application Android.
+        Qu'est-ce qu'un fichier DEX ?
+        Un fichier DEX a du code qui est exécuté a la fin par le Runtime Android. Chaque APK devrait avoir un fichier 'classes.dex' qui référence toutes les classes et les méthodes utilisées dans l'application. Essentiellement, tout Activity, Object ou Fragment utilisé dans le code vont être transformés en octets dans le fichier DEX afin d'être exécuté comme une application Android.
 
-Comment lire un fichier DEX ?
-Un fichier DEX doit être converti au format 'jar' et ensuite en fichier 'Java' avec des outils tels que 'dex2jar' ou 'JD-GUI'."</string>
+        Comment lire un fichier DEX ?
+        Un fichier DEX doit être converti au format 'jar' et ensuite en fichier 'Java' avec des outils tels que 'dex2jar' ou 'JD-GUI'."</string>
     <string name="user">"Utilisateur"</string>
     <string name="version">"Version : %s"</string>
     <string name="bundles">"Lots"</string>
@@ -122,7 +122,7 @@ Un fichier DEX doit être converti au format 'jar' et ensuite en fichier 'Java' 
     <string name="resign_only">"Re-signer seulement"</string>
     <string name="resigned_apks_path">"Le(s) APK re-signé(s) a/ont été généré(s) !
 
-Chemin : '%s'"</string>
+        Chemin : '%s'"</string>
     <string name="resigning_apks">"Re-signer les APK sélectionnés…"</string>
     <string name="select_storage">"Sélectionner depuis le stockage"</string>
     <string name="sort_by">"Trier les applications"</string>
@@ -168,4 +168,21 @@ Chemin : '%s'"</string>
     <string name="deleting">"Suppression de '%s'"</string>
     <string name="grant">"Accorder"</string>
     <string name="important">"Important"</string>
+    <string name="assembling">"Assemblage de '%s'"</string>
+    <string name="build">"Création"</string>
+    <string name="building">"Creation de '%s'"</string>
+    <string name="copying">"Copie de '%s'"</string>
+    <string name="details">"Détails "</string>
+    <string name="failed">"Échoué"</string>
+    <string name="failed_smali_message">"Le fichiers 'smali' suivant n'ont pas pu être  assemblés !
+
+        %s"</string>
+    <string name="open">"Ouvrir"</string>
+    <string name="preparing_source">"Préparation de la source pour la construction"</string>
+    <string name="resigned_apks_error">"La construction a été arrêtée suite à des erreurs dans l'assemblage des fichiers 'smali'. Regardez les 'Détails' pour en savoir plus !"</string>
+    <string name="success">"Succès"</string>
+    <string name="sort_by_installed">"Date d'installation"</string>
+    <string name="sort_by_size">"Taille"</string>
+    <string name="sort_by_updated">"Date de mise à jour"</string>
+    <string name="sort_size">"Croissant"</string>
 </resources>
