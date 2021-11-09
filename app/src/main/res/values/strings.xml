@@ -19,6 +19,7 @@
     <string name="bundle_install_question">Are you sure to install app bundle \'%s\'?</string>
     <string name="bundles">Bundles</string>
     <string name="cancel">Cancel</string>
+    <string name="certificate">Certificate</string>
     <string name="clear_cache">Clear Cache</string>
     <string name="clear_cache_summary">Delete internal settings of AEE</string>
     <string name="clear_cache_message">Everything, except the exported applications, will be removed.</string>
@@ -96,11 +97,13 @@
     <string name="language_vi" translatable="false">Tiếng Việt</string>
     <string name="language_zh" translatable="false">中文（简体）</string>
     <string name="last_modified">Last Modified: %s</string>
+    <string name="manifest">Manifest</string>
     <string name="name_empty">Name shouldn\'t be empty. Aborting.</string>
     <string name="ok">OK</string>
     <string name="open">Open</string>
     <string name="open_as_text">Open as text</string>
     <string name="permission_denied_message">Permission denied for accessing device storage</string>
+    <string name="permissions">Permissions</string>
     <string name="preparing_apk">Preparing %s APK…</string>
     <string name="preparing_bundle">Preparing app bundle for sharing…</string>
     <string name="preparing_bundle_install">Preparing \'%s\' for installation…</string>
@@ -133,6 +136,8 @@
     <string name="save_to_downloads">Save to Downloads</string>
     <string name="saving">Saving…</string>
     <string name="sdcard">Internal Storage</string>
+    <string name="sdk_compile">Compile SDK: %s</string>
+    <string name="sdk_minimum">Minimum SDK: %s</string>
     <string name="search">Search…</string>
     <string name="select">Select</string>
     <string name="select_apk">Select Split APK\'s</string>

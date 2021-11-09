@@ -13,15 +13,27 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.viewpager.widget.ViewPager;
 
 import com.apk.editor.R;
+import com.apk.editor.adapters.PagerAdapter;
+import com.apk.editor.fragments.APKDetailsFragment;
+import com.apk.editor.fragments.CertificateFragment;
+import com.apk.editor.fragments.ManifestFragment;
+import com.apk.editor.fragments.PermissionsFragment;
+import com.apk.editor.utils.APKCertificate;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SplitAPKInstaller;
+import com.apk.editor.utils.recyclerViewItems.APKItems;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,13 +45,29 @@ import java.io.InputStream;
  */
 public class APKInstallerActivity extends AppCompatActivity {
 
+    private AppCompatImageView mAppIcon;
     private File mFile = null;
+    private LinearLayoutCompat mMainLayout, mIconsLayout;
+    private MaterialCardView mCancel, mInstall;
+    private MaterialTextView mAppName, mPackageID;
     private String mExtension = null;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.permission_layout);
+        setContentView(R.layout.activity_apkdetails);
+
+        mAppIcon = findViewById(R.id.app_image);
+        mAppName = findViewById(R.id.app_title);
+        mPackageID = findViewById(R.id.package_id);
+        mMainLayout = findViewById(R.id.main_layout);
+        mIconsLayout = findViewById(R.id.icons_layout);
+        mInstall = findViewById(R.id.install);
+        mCancel = findViewById(R.id.cancel);
+        mTabLayout = findViewById(R.id.tab_Layout);
+        mViewPager = findViewById(R.id.view_pager);
 
         if (APKExplorer.isPermissionDenied(this)) {
             LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
@@ -89,9 +117,9 @@ public class APKInstallerActivity extends AppCompatActivity {
                 }
                 if (mFile.exists()) {
                     if (mExtension.equals("apk")) {
-                        Common.getAPKList().add(mFile.getAbsolutePath());
+                        Common.setAPKFile(mFile);
                         Common.isFMInstall(true);
-                        APKExplorer.handleAPKs(activity);
+                        loadAPKDetails(activity);
                     } else if (mExtension.equals("apkm") || mExtension.equals("apks") || mExtension.equals("xapk")) {
                         new MaterialAlertDialogBuilder(activity)
                                 .setIcon(R.mipmap.ic_launcher)
@@ -121,6 +149,49 @@ public class APKInstallerActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    private void loadAPKDetails(Activity activity) {
+        APKItems apkData = APKExplorer.getAPKData(mFile.getAbsolutePath(), activity);
+        if (apkData != null) {
+            mMainLayout.setVisibility(View.VISIBLE);
+            mIconsLayout.setVisibility(View.VISIBLE);
+
+            PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
+            try {
+                if (apkData.getAppName() != null) {
+                    mAppName.setText(apkData.getAppName());
+                    mAppName.setVisibility(View.VISIBLE);
+                }
+                if (apkData.getPackageName() != null) {
+                    mPackageID.setText(apkData.getPackageName());
+                    mPackageID.setVisibility(View.VISIBLE);
+                }
+                if (apkData.getIcon() != null) {
+                    mAppIcon.setImageDrawable(apkData.getIcon());
+                }
+
+                adapter.AddFragment(new APKDetailsFragment(), getString(R.string.details));
+                if (apkData.getPermissions() != null) {
+                    adapter.AddFragment(new PermissionsFragment(), getString(R.string.permissions));
+                }
+                if (apkData.getManifest() != null) {
+                    adapter.AddFragment(new ManifestFragment(), getString(R.string.manifest));
+                }
+                if (APKCertificate.getCertificateDetails(mFile.getAbsolutePath(), activity) != null) {
+                    adapter.AddFragment(new CertificateFragment(), getString(R.string.certificate));
+                }
+            } catch (Exception ignored) {}
+
+            mViewPager.setAdapter(adapter);
+            mTabLayout.setupWithViewPager(mViewPager);
+        }
+
+        mCancel.setOnClickListener(v -> finish());
+        mInstall.setOnClickListener(v -> {
+            Common.getAPKList().add(mFile.getAbsolutePath());
+            APKExplorer.handleAPKs(activity);
+        });
     }
 
     @Override

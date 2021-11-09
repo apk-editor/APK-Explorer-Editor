@@ -5,6 +5,7 @@ import android.view.View;
 import com.apk.editor.utils.recyclerViewItems.PackageItems;
 import com.google.android.material.card.MaterialCardView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class Common {
 
     private static boolean mBuilding = false, mFinish = false, mFileMangerInstall = false, mPrivateKey = false,
             mReloading = false, mRSATemplate = false;
+    private static File mAPKFile = null;
     private static List<PackageItems> mPackageData = null;
     private static final List<String> mAPKList = new ArrayList<>(), mErrorList = new ArrayList<>();
     private static int mError = 0, mSuccess = 0;
@@ -53,6 +55,10 @@ public class Common {
 
     public static boolean hasRASATemplate() {
         return mRSATemplate;
+    }
+
+    public static File getAPKFile() {
+        return mAPKFile;
     }
 
     public static int getError() {
@@ -125,6 +131,10 @@ public class Common {
 
     public static void isReloading(boolean b) {
         mReloading = b;
+    }
+
+    public static void setAPKFile(File file) {
+        mAPKFile = file;
     }
 
     public static void setFinishStatus(boolean b) {

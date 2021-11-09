@@ -109,7 +109,7 @@ public class AppData {
     }
 
     public static PackageManager getPackageManager(Context context) {
-        return context.getApplicationContext().getPackageManager();
+        return context.getPackageManager();
     }
 
     public static ApplicationInfo getAppInfo(String packageName, Context context) {

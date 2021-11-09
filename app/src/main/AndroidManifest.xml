@@ -37,6 +37,7 @@
             android:exported="false" />
 
         <activity android:name=".activities.APKInstallerActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="@string/split_apk_installer"
             tools:ignore="AppLinkUrlError"
             android:exported="true" >
