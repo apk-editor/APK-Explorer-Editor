@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
 
 import androidx.activity.OnBackPressedCallback;
@@ -35,6 +34,7 @@ import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.ExternalAPKData;
 import com.apk.editor.utils.SplitAPKInstaller;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -273,7 +273,7 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void doInBackground() {
-                mExtension = MimeTypeMap.getFileExtensionFromUrl(uriFile.getPath());
+                mExtension = ExternalAPKData.getExtension(uriFile, requireActivity());
                 mFile = new File(activity.getExternalFilesDir("APK"), "APK." + mExtension);
                 try (FileOutputStream outputStream = new FileOutputStream(mFile, false)) {
                     InputStream inputStream = activity.getContentResolver().openInputStream(uriFile);
@@ -329,7 +329,7 @@ public class APKsFragment extends Fragment {
             @Override
             public void doInBackground() {
                 for (int i = 0; i < uriFiles.getItemCount(); i++) {
-                    String mExtension = MimeTypeMap.getFileExtensionFromUrl(uriFiles.getItemAt(i).getUri().getPath());
+                    String mExtension = ExternalAPKData.getExtension(uriFiles.getItemAt(i).getUri(), requireActivity());
                     File mFile = new File(activity.getExternalFilesDir("APK"), "APK" + i + "." + mExtension);
                     try (FileOutputStream outputStream = new FileOutputStream(mFile, false)) {
                         InputStream inputStream = activity.getContentResolver().openInputStream(uriFiles.getItemAt(i).getUri());
@@ -339,7 +339,7 @@ public class APKsFragment extends Fragment {
                             outputStream.write(bytes, 0, read);
                         }
                         // In this case, we don't really care about app bundles!
-                        if (mExtension.equals("apk")) {
+                        if (Objects.equals(mExtension, "apk")) {
                             Common.getAPKList().add(mFile.getAbsolutePath());
                         }
                     } catch (IOException ignored) {
