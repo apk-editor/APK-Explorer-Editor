@@ -18,7 +18,6 @@ import androidx.core.app.ActivityCompat;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
-import com.apk.editor.activities.APKSignActivity;
 import com.apk.editor.activities.APKTasksActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -195,41 +194,13 @@ public class APKExplorer {
                                 installAPKs(activity);
                             } else if (itemPosition == 1) {
                                 if (!APKEditorUtils.getBoolean("firstSigning", false, activity)) {
-                                    new MaterialAlertDialogBuilder(activity).setItems(activity.getResources().getStringArray(
-                                            R.array.signing), (dialogInterfacei, ii) -> {
-                                        APKEditorUtils.saveBoolean("firstSigning", true, activity);
-                                        switch (ii) {
-                                            case 0:
-                                                APKData.reSignAPKs(null, true, activity);
-                                                break;
-                                            case 1:
-                                                Intent signing = new Intent(activity, APKSignActivity.class);
-                                                activity.startActivity(signing);
-                                                break;
-                                        }
-                                    }).setCancelable(false)
-                                            .setOnDismissListener(dialogInterfacei -> {
-                                            }).show();
+                                    AppData.getSigningOptionsMenu(null, activity).show();
                                 } else {
                                     APKData.reSignAPKs(null, true, activity);
                                 }
                             } else {
                                 if (!APKEditorUtils.getBoolean("firstSigning", false, activity)) {
-                                    new MaterialAlertDialogBuilder(activity).setItems(activity.getResources().getStringArray(
-                                            R.array.signing), (dialogInterfacei, ii) -> {
-                                        APKEditorUtils.saveBoolean("firstSigning", true, activity);
-                                        switch (ii) {
-                                            case 0:
-                                                APKData.reSignAPKs(null, false, activity);
-                                                break;
-                                            case 1:
-                                                Intent signing = new Intent(activity, APKSignActivity.class);
-                                                activity.startActivity(signing);
-                                                break;
-                                        }
-                                    }).setCancelable(false)
-                                            .setOnDismissListener(dialogInterfacei -> {
-                                            }).show();
+                                    AppData.getSigningOptionsMenu(null, activity).show();
                                 } else {
                                     APKData.reSignAPKs(null, false, activity);
                                 }
@@ -240,21 +211,7 @@ public class APKExplorer {
                 installAPKs(activity);
             } else {
                 if (!APKEditorUtils.getBoolean("firstSigning", false, activity)) {
-                    new MaterialAlertDialogBuilder(activity).setItems(activity.getResources().getStringArray(
-                            R.array.signing), (dialogInterface, i) -> {
-                        APKEditorUtils.saveBoolean("firstSigning", true, activity);
-                        switch (i) {
-                            case 0:
-                                APKData.reSignAPKs(null,true, activity);
-                                break;
-                            case 1:
-                                Intent signing = new Intent(activity, APKSignActivity.class);
-                                activity.startActivity(signing);
-                                break;
-                        }
-                    }).setCancelable(false)
-                            .setOnDismissListener(dialogInterface -> {
-                            }).show();
+                    AppData.getSigningOptionsMenu(null, activity).show();
                 } else {
                     APKData.reSignAPKs(null,true, activity);
                 }

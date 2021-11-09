@@ -2,6 +2,7 @@ package com.apk.editor.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Environment;
 
 import com.apk.editor.R;
@@ -36,10 +37,10 @@ public class Projects {
     }
 
     public static String getExportPath(Context context) {
-        if (APKEditorUtils.getString("exportPath", null, context) != null) {
+        if (Build.VERSION.SDK_INT < 29 && APKEditorUtils.getString("exportPath", null, context) != null) {
             return APKEditorUtils.getString("exportPath", null, context);
         } else {
-            return Environment.getExternalStorageDirectory().toString() + "/AEE";
+            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
         }
     }
 

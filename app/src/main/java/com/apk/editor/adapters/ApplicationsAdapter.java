@@ -12,7 +12,6 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
-import com.apk.editor.activities.APKSignActivity;
 import com.apk.editor.activities.ImageViewActivity;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
@@ -82,55 +81,12 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                 }
                 if (APKEditorUtils.isFullVersion(v.getContext())) {
                     if (APKEditorUtils.getString("exportAPKs", null, v.getContext()) == null) {
-                        new MaterialAlertDialogBuilder(v.getContext()).setItems(v.getContext().getResources().getStringArray(
-                                R.array.export_options), (dialogInterface, i) -> {
-                            switch (i) {
-                                case 0:
-                                    APKData.exportApp(data.get(position).getPackageName(), v.getContext());
-                                    break;
-                                case 1:
-                                    if (!APKEditorUtils.getBoolean("firstSigning", false, v.getContext())) {
-                                        new MaterialAlertDialogBuilder(v.getContext()).setItems(v.getContext().getResources().getStringArray(
-                                                R.array.signing), (dialogInterfacei, ii) -> {
-                                            APKEditorUtils.saveBoolean("firstSigning", true, v.getContext());
-                                            switch (ii) {
-                                                case 0:
-                                                    APKData.reSignAPKs(data.get(position).getPackageName(),false, (Activity) v.getContext());
-                                                    break;
-                                                case 1:
-                                                    Intent signing = new Intent(v.getContext(), APKSignActivity.class);
-                                                    v.getContext().startActivity(signing);
-                                                    break;
-                                            }
-                                        }).setCancelable(false)
-                                                .setOnDismissListener(dialogInterfacei -> {
-                                                }).show();
-                                    } else {
-                                        APKData.reSignAPKs(data.get(position).getPackageName(), false, (Activity) v.getContext());
-                                    }
-                                    break;
-                            }
-                        }).setOnDismissListener(dialogInterface -> {
-                        }).show();
+                        AppData.getExportOptionsMenu(data.get(position).getPackageName(), v.getContext()).show();
                     } else if (APKEditorUtils.getString("exportAPKs", null, v.getContext()).equals(v.getContext().getString(R.string.export_storage))) {
                         APKData.exportApp(data.get(position).getPackageName(), v.getContext());
                     } else {
                         if (!APKEditorUtils.getBoolean("firstSigning", false, v.getContext())) {
-                            new MaterialAlertDialogBuilder(v.getContext()).setItems(v.getContext().getResources().getStringArray(
-                                    R.array.signing), (dialogInterfacei, ii) -> {
-                                APKEditorUtils.saveBoolean("firstSigning", true, v.getContext());
-                                switch (ii) {
-                                    case 0:
-                                        APKData.reSignAPKs(data.get(position).getPackageName(), false, (Activity) v.getContext());
-                                        break;
-                                    case 1:
-                                        Intent signing = new Intent(v.getContext(), APKSignActivity.class);
-                                        v.getContext().startActivity(signing);
-                                        break;
-                                }
-                            }).setCancelable(false)
-                                    .setOnDismissListener(dialogInterfacei -> {
-                                    }).show();
+                            AppData.getSigningOptionsMenu(data.get(position).getPackageName(), v.getContext()).show();
                         } else {
                             APKData.reSignAPKs(data.get(position).getPackageName(), false, (Activity) v.getContext());
                         }

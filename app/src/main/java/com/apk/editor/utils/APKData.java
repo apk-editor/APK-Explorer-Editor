@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.view.WindowManager;
 
@@ -69,7 +70,7 @@ public class APKData {
     }
 
     public static File getExportAPKsPath(Context context) {
-        if (APKEditorUtils.getString("exportAPKsPath", "externalFiles", context).equals("internalStorage")) {
+        if (Build.VERSION.SDK_INT < 29 && APKEditorUtils.getString("exportAPKsPath", "externalFiles", context).equals("internalStorage")) {
             return new File(Environment.getExternalStorageDirectory(), "/AEE/exportedAPKs");
         } else {
             return context.getExternalFilesDir("");

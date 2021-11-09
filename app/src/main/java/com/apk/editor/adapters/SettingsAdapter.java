@@ -2,6 +2,8 @@ package com.apk.editor.adapters;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +56,10 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
             holder.mIcon.setImageDrawable(data.get(position).getIcon());
         } else {
             holder.mIcon.setVisibility(View.GONE);
+        }
+        if (Build.VERSION.SDK_INT >= 29 && (position == 5 || position == 6)) {
+            holder.Title.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.Description.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         }
     }
 

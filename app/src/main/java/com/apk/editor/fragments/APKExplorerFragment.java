@@ -69,25 +69,21 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                 })
                 .setPositiveButton(getString(R.string.build), (dialog, id) -> {
                     if (!APKEditorUtils.getBoolean("firstSigning", false, requireActivity())) {
-                        new MaterialAlertDialogBuilder(requireActivity()).setItems(requireActivity().getResources().getStringArray(
-                                R.array.signing), (dialogInterface, i) -> {
-                            APKEditorUtils.saveBoolean("firstSigning", true, requireActivity());
-                            switch (i) {
-                                case 0:
-                                    APKData.prepareSignedAPK(requireActivity());
-                                    break;
-                                case 1:
-                                    Intent signing = new Intent(requireActivity(), APKSignActivity.class);
-                                    startActivity(signing);
-                                    break;
-                            }}).setCancelable(false)
-                                .setOnDismissListener(dialogInterface -> {
+                        new MaterialAlertDialogBuilder(requireActivity())
+                                .setItems(AppData.getSigningOptionsMenu(requireActivity()), (d, itemPosition) -> {
+                                    APKEditorUtils.saveBoolean("firstSigning", true, requireActivity());
+                                    if (itemPosition == 0) {
+                                        APKData.prepareSignedAPK(requireActivity());
+                                    } else {
+                                        Intent signing = new Intent(requireActivity(), APKSignActivity.class);
+                                        startActivity(signing);
+                                    }
+                                    dialog.dismiss();
                                 }).show();
                     } else {
                         APKData.prepareSignedAPK(requireActivity());
                     }
-                })
-                .show());
+                }).show());
 
         if (APKEditorUtils.isFullVersion(requireActivity())) {
             mSave.setVisibility(View.VISIBLE);

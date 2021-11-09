@@ -1,13 +1,14 @@
 package com.apk.editor.utils;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Environment;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 
 import com.apk.editor.MainActivity;
 import com.apk.editor.R;
@@ -26,26 +27,103 @@ public class AppSettings {
 
     private static final ArrayList <SettingsItems> mData = new ArrayList<>();
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     public static ArrayList<SettingsItems> getData(Context context) {
         mData.clear();
         mData.add(new SettingsItems(context.getString(R.string.user_interface), null, null));
-        mData.add(new SettingsItems(context.getString(R.string.app_theme), getAppTheme(context), context.getResources().getDrawable(R.drawable.ic_theme)));
-        mData.add(new SettingsItems(context.getString(R.string.language), getLanguage(context), context.getResources().getDrawable(R.drawable.ic_translate)));
+        mData.add(new SettingsItems(context.getString(R.string.app_theme), getAppTheme(context), ContextCompat.getDrawable(context, R.drawable.ic_theme)));
+        mData.add(new SettingsItems(context.getString(R.string.language), getLanguage(context), ContextCompat.getDrawable(context, R.drawable.ic_translate)));
         mData.add(new SettingsItems(context.getString(R.string.settings_general), null, null));
-        mData.add(new SettingsItems(context.getString(R.string.project_exist_action), getProjectExistAction(context), context.getResources().getDrawable(R.drawable.ic_projects)));
-        mData.add(new SettingsItems(context.getString(R.string.export_path_apks), getExportAPKsPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
-        mData.add(new SettingsItems(context.getString(R.string.export_path_resources), getExportPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
+        mData.add(new SettingsItems(context.getString(R.string.project_exist_action), getProjectExistAction(context), ContextCompat.getDrawable(context, R.drawable.ic_projects)));
+        mData.add(new SettingsItems(context.getString(R.string.export_path_apks), getExportAPKsPath(context), ContextCompat.getDrawable(context, R.drawable.ic_export)));
+        mData.add(new SettingsItems(context.getString(R.string.export_path_resources), getExportPath(context), ContextCompat.getDrawable(context, R.drawable.ic_export)));
         if (APKEditorUtils.isFullVersion(context)) {
-            mData.add(new SettingsItems(context.getString(R.string.text_editing), getEditingOptions(context), context.getResources().getDrawable(R.drawable.ic_edit)));
+            mData.add(new SettingsItems(context.getString(R.string.text_editing), getEditingOptions(context), ContextCompat.getDrawable(context, R.drawable.ic_edit)));
             mData.add(new SettingsItems(context.getString(R.string.signing_title), null, null));
-            mData.add(new SettingsItems(context.getString(R.string.export_options), getAPKs(context), context.getResources().getDrawable(R.drawable.ic_android)));
-            mData.add(new SettingsItems(context.getString(R.string.installer_action), getInstallerAction(context), context.getResources().getDrawable(R.drawable.ic_installer)));
-            mData.add(new SettingsItems(context.getString(R.string.sign_apk_with), getAPKSign(context), context.getResources().getDrawable(R.drawable.ic_key)));
+            mData.add(new SettingsItems(context.getString(R.string.export_options), getAPKs(context), ContextCompat.getDrawable(context, R.drawable.ic_android)));
+            mData.add(new SettingsItems(context.getString(R.string.installer_action), getInstallerAction(context), ContextCompat.getDrawable(context, R.drawable.ic_installer)));
+            mData.add(new SettingsItems(context.getString(R.string.sign_apk_with), getAPKSign(context), ContextCompat.getDrawable(context, R.drawable.ic_key)));
         }
         mData.add(new SettingsItems(context.getString(R.string.settings_misc), null, null));
-        mData.add(new SettingsItems(context.getString(R.string.clear_cache), context.getString(R.string.clear_cache_summary), context.getResources().getDrawable(R.drawable.ic_delete)));
+        mData.add(new SettingsItems(context.getString(R.string.clear_cache), context.getString(R.string.clear_cache_summary), ContextCompat.getDrawable(context, R.drawable.ic_delete)));
         return mData;
+    }
+
+    private static int getAPKSignPosition(Context context) {
+        if (isCustomKey(context)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private static int getAppThemePosition(Context context) {
+        for (int i = 0; i < getAppThemeMenu(context).length; i++) {
+            if (getAppTheme(context).equals(getAppThemeMenu(context)[i])) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private static int getAppLanguagePosition(Context context) {
+        for (int i = 0; i < getAppLanguageMenu(context).length; i++) {
+            if (getLanguage(context).equals(getAppLanguageMenu(context)[i])) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private static int getEditingOptionsPosition(Context context) {
+        if (APKEditorUtils.getBoolean("editText", false, context)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private static int getProjectExitingMenuPosition(Context context) {
+        for (int i = 0; i < getProjectExitingMenu(context).length; i++) {
+            if (getProjectExistAction(context).equals(getProjectExitingMenu(context)[i])) {
+                return i;
+            }
+        }
+        return 2;
+    }
+
+    private static int getExportAPKsPathPosition(Context context) {
+        if (getExportAPKsPath(context).equals(context.getString(R.string.export_path_default))) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private static int getExportPathPosition(Context context) {
+        for (int i = 0; i < getExportPathMenu(context).length; i++) {
+            if (getExportPath(context).equals(getExportPathMenu(context)[i])) {
+                return i;
+            }
+        }
+        return 2;
+    }
+
+    private static int getExportingAPKsPosition(Context context) {
+        for (int i = 0; i < getExportingAPKMenu(context).length; i++) {
+            if (getAPKs(context).equals(getExportingAPKMenu(context)[i])) {
+                return i;
+            }
+        }
+        return 2;
+    }
+
+    private static int getInstallerMenuPosition(Context context) {
+        for (int i = 0; i < getInstallerMenu(context).length; i++) {
+            if (getInstallerAction(context).equals(getInstallerMenu(context)[i])) {
+                return i;
+            }
+        }
+        return 2;
     }
 
     private static String getAppTheme(Context context) {
@@ -88,7 +166,7 @@ public class AppSettings {
 
     private static String getExportAPKsPath(Context context) {
         String exportAPKPath = APKEditorUtils.getString("exportAPKsPath", "externalFiles", context);
-        if (exportAPKPath.equals("internalStorage")) {
+        if (Build.VERSION.SDK_INT < 29 && exportAPKPath.equals("internalStorage")) {
             return context.getString(R.string.export_path_default);
         } else {
             return context.getString(R.string.export_path_files_dir);
@@ -96,12 +174,16 @@ public class AppSettings {
     }
 
     private static String getExportPath(Context context) {
-        if (APKEditorUtils.getString("exportPath", null, context) != null && APKEditorUtils.getString("exportPath", null, context).equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())) {
-            return context.getString(R.string.export_path_download);
-        } else if (APKEditorUtils.getString("exportPath", null, context) != null && APKEditorUtils.getString("exportPath", null, context).equals(Environment.getExternalStorageDirectory().toString())) {
-            return context.getString(R.string.sdcard);
+        if (Build.VERSION.SDK_INT < 29) {
+            if (APKEditorUtils.getString("exportPath", null, context) != null && APKEditorUtils.getString("exportPath", null, context).equals(Environment.getExternalStorageDirectory().toString())) {
+                return context.getString(R.string.sdcard);
+            } else if (APKEditorUtils.getString("exportPath", null, context) != null && APKEditorUtils.getString("exportPath", null, context).equals(Environment.getExternalStorageDirectory().toString() + "/AEE")) {
+                return context.getString(R.string.export_path_default);
+            } else {
+                return context.getString(R.string.export_path_download);
+            }
         } else {
-            return context.getString(R.string.export_path_default);
+            return context.getString(R.string.export_path_download);
         }
     }
 
@@ -145,6 +227,89 @@ public class AppSettings {
         }
     }
 
+    private static String[] getAPKSignMenu(Context context) {
+        return new String[] {
+                context.getString(R.string.sign_apk_default),
+                context.getString(R.string.sign_apk_custom)
+        };
+    }
+
+    private static String[] getAppThemeMenu(Context context) {
+        return new String[] {
+                context.getString(R.string.app_theme_auto),
+                context.getString(R.string.app_theme_dark),
+                context.getString(R.string.app_theme_light)
+        };
+    }
+
+    private static String[] getAppLanguageMenu(Context context) {
+        return new String[] {
+                context.getString(R.string.app_theme_auto),
+                context.getString(R.string.language_ar),
+                context.getString(R.string.language_zh),
+                context.getString(R.string.language_cs),
+                context.getString(R.string.language_de),
+                context.getString(R.string.language_en),
+                context.getString(R.string.language_fr),
+                context.getString(R.string.language_es),
+                context.getString(R.string.language_ru),
+                context.getString(R.string.language_tr),
+                context.getString(R.string.language_vi)
+        };
+    }
+
+    private static String[] getEditingOptionsMenu(Context context) {
+        return new String[] {
+                context.getString(R.string.disable),
+                context.getString(R.string.enable)
+        };
+    }
+
+    private static String[] getProjectExitingMenu(Context context) {
+        return new String[] {
+                context.getString(R.string.save),
+                context.getString(R.string.delete),
+                context.getString(R.string.prompt)
+        };
+    }
+
+    private static String[] getAPKExportPathMenu(Context context) {
+        return new String[] {
+                context.getString(R.string.export_path_files_dir),
+                context.getString(R.string.export_path_default)
+        };
+    }
+
+    private static String[] getExportPathMenu(Context context) {
+        if (Build.VERSION.SDK_INT < 29) {
+            return new String[]{
+                    context.getString(R.string.sdcard),
+                    context.getString(R.string.export_path_default),
+                    context.getString(R.string.export_path_download)
+            };
+        } else {
+            return new String[]{
+                    context.getString(R.string.export_path_download)
+            };
+        }
+    }
+
+    private static String[] getExportingAPKMenu(Context context) {
+        return new String[] {
+                context.getString(R.string.export_storage),
+                context.getString(R.string.export_resign),
+                context.getString(R.string.prompt)
+        };
+    }
+
+    private static String[] getInstallerMenu(Context context) {
+        return new String[] {
+                context.getString(R.string.install),
+                context.getString(R.string.install_resign),
+                context.getString(R.string.prompt)
+        };
+    }
+
     public static void handleSettingsActions(SettingsAdapter adapter, int position, Activity activity) {
         if (getData(activity).get(position).getDescription() != null) {
             if (position == 1) {
@@ -180,275 +345,209 @@ public class AppSettings {
     }
 
     private static void setAppTheme(Context context) {
-        new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
-                R.array.app_theme), (dialogInterface, i) -> {
-            switch (i) {
-                case 0:
-                    APKEditorUtils.saveString("appTheme", "Auto", context);
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                    break;
-                case 1:
-                    APKEditorUtils.saveString("appTheme", "Dark", context);
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    break;
-                case 2:
-                    APKEditorUtils.saveString("appTheme", "Light", context);
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    break;
-            }
-        }).setOnDismissListener(dialogInterface -> {
-        }).show();
+        new MaterialAlertDialogBuilder(context)
+                .setSingleChoiceItems(getAppThemeMenu(context), getAppThemePosition(context), (dialog, itemPosition) -> {
+                    if (itemPosition == 0) {
+                        APKEditorUtils.saveString("appTheme", "Auto", context);
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                    } else if (itemPosition == 1) {
+                        APKEditorUtils.saveString("appTheme", "Dark", context);
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    } else {
+                        APKEditorUtils.saveString("appTheme", "Light", context);
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    }
+                    dialog.dismiss();
+                }).show();
     }
 
     private static void setLanguage(Context context) {
-        new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
-                R.array.app_language), (dialogInterface, i) -> {
-            switch (i) {
-                case 0:
-                    if (!APKEditorUtils.getLanguage(context).equals(java.util.Locale.getDefault().getLanguage())) {
+        new MaterialAlertDialogBuilder(context)
+                .setSingleChoiceItems(getAppLanguageMenu(context), getAppLanguagePosition(context), (dialog, itemPosition) -> {
+                    if (itemPosition == 0) {
                         APKEditorUtils.saveString("appLanguage", java.util.Locale.getDefault().getLanguage(), context);
                         restartApp(context);
-                    }
-                    break;
-                case 1:
-                    if (!APKEditorUtils.getLanguage(context).equals("ar")) {
+                    } else if (itemPosition == 1) {
                         APKEditorUtils.saveString("appLanguage", "ar", context);
                         restartApp(context);
-                    }
-                    break;
-                case 2:
-                    if (!APKEditorUtils.getLanguage(context).equals("zh")) {
+                    } else if (itemPosition == 2) {
                         APKEditorUtils.saveString("appLanguage", "zh", context);
                         restartApp(context);
-                    }
-                    break;
-                case 3:
-                    if (!APKEditorUtils.getLanguage(context).equals("cs")) {
+                    } else if (itemPosition == 3) {
                         APKEditorUtils.saveString("appLanguage", "cs", context);
                         restartApp(context);
-                    }
-                    break;
-                case 4:
-                    if (!APKEditorUtils.getLanguage(context).equals("de")) {
+                    } else if (itemPosition == 4) {
                         APKEditorUtils.saveString("appLanguage", "de", context);
                         restartApp(context);
-                    }
-                    break;
-                case 5:
-                    if (!APKEditorUtils.getLanguage(context).equals("en_US")) {
+                    } else if (itemPosition == 5) {
                         APKEditorUtils.saveString("appLanguage", "en_US", context);
                         restartApp(context);
-                    }
-                    break;
-                case 6:
-                    if (!APKEditorUtils.getLanguage(context).equals("fr")) {
+                    } else if (itemPosition == 6) {
                         APKEditorUtils.saveString("appLanguage", "fr", context);
                         restartApp(context);
-                    }
-                    break;
-                case 7:
-                    if (!APKEditorUtils.getLanguage(context).equals("es")) {
+                    } else if (itemPosition == 7) {
                         APKEditorUtils.saveString("appLanguage", "es", context);
                         restartApp(context);
-                    }
-                    break;
-                case 8:
-                    if (!APKEditorUtils.getLanguage(context).equals("ru")) {
+                    } else if (itemPosition == 8) {
                         APKEditorUtils.saveString("appLanguage", "ru", context);
                         restartApp(context);
-                    }
-                    break;
-                case 9:
-                    if (!APKEditorUtils.getLanguage(context).equals("tr")) {
+                    } else if (itemPosition == 9) {
                         APKEditorUtils.saveString("appLanguage", "tr", context);
                         restartApp(context);
-                    }
-                    break;
-                case 10:
-                    if (!APKEditorUtils.getLanguage(context).equals("vi")) {
+                    } else if (itemPosition == 10) {
                         APKEditorUtils.saveString("appLanguage", "vi", context);
                         restartApp(context);
                     }
-                    break;
-            }
-        }).setOnDismissListener(dialogInterface -> {
-        }).show();
+                    dialog.dismiss();
+                }).show();
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     private static void setExportAPKsPath(SettingsAdapter adapter, int position, Activity activity) {
-        new MaterialAlertDialogBuilder(activity).setItems(activity.getResources().getStringArray(
-                R.array.export_path_apk), (dialogInterface, i) -> {
-            switch (i) {
-                case 0:
-                    APKEditorUtils.saveString("exportAPKsPath", "externalFiles", activity);
-                    mData.set(position, new SettingsItems(activity.getString(R.string.export_path_apks), getExportAPKsPath(activity), activity.getResources().getDrawable(R.drawable.ic_export)));
-                    adapter.notifyItemChanged(position);
-                    transferExportedApps(activity);
-                    break;
-                case 1:
-                    APKEditorUtils.saveString("exportAPKsPath", "internalStorage", activity);
-                    mData.set(position, new SettingsItems(activity.getString(R.string.export_path_apks), getExportAPKsPath(activity), activity.getResources().getDrawable(R.drawable.ic_export)));
-                    adapter.notifyItemChanged(position);
-                    transferExportedApps(activity);
-                    break;
-            }
-        }).setOnDismissListener(dialogInterface -> {
-        }).show();
+        if (Build.VERSION.SDK_INT < 29) {
+            new MaterialAlertDialogBuilder(activity)
+                    .setSingleChoiceItems(getAPKExportPathMenu(activity), getExportAPKsPathPosition(activity), (dialog, itemPosition) -> {
+                        if (itemPosition == 0) {
+                            APKEditorUtils.saveString("exportAPKsPath", "externalFiles", activity);
+                            mData.set(position, new SettingsItems(activity.getString(R.string.export_path_apks), getExportAPKsPath(activity), ContextCompat.getDrawable(activity, R.drawable.ic_export)));
+                            adapter.notifyItemChanged(position);
+                            transferExportedApps(activity);
+                        } else if (itemPosition == 1) {
+                            APKEditorUtils.saveString("exportAPKsPath", "internalStorage", activity);
+                            mData.set(position, new SettingsItems(activity.getString(R.string.export_path_apks), getExportAPKsPath(activity), ContextCompat.getDrawable(activity, R.drawable.ic_export)));
+                            adapter.notifyItemChanged(position);
+                            transferExportedApps(activity);
+                        }
+                        dialog.dismiss();
+                    }).show();
+        }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     private static void setExportPath(SettingsAdapter adapter, int position, Context context) {
-        new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
-                R.array.export_path), (dialogInterface, i) -> {
-            switch (i) {
-                case 0:
-                    APKEditorUtils.saveString("exportPath", Environment.getExternalStorageDirectory().toString(), context);
-                    mData.set(position, new SettingsItems(context.getString(R.string.export_path_resources), getExportPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
-                    adapter.notifyItemChanged(position);
-                    break;
-                case 1:
-                    APKEditorUtils.saveString("exportPath", null, context);
-                    mData.set(position, new SettingsItems(context.getString(R.string.export_path_resources), getExportPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
-                    adapter.notifyItemChanged(position);
-                    break;
-                case 2:
-                    APKEditorUtils.saveString("exportPath", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString(), context);
-                    mData.set(position, new SettingsItems(context.getString(R.string.export_path_resources), getExportPath(context), context.getResources().getDrawable(R.drawable.ic_export)));
-                    adapter.notifyItemChanged(position);
-                    break;
-            }
-        }).setOnDismissListener(dialogInterface -> {
-        }).show();
+        if (Build.VERSION.SDK_INT < 29) {
+            new MaterialAlertDialogBuilder(context)
+                    .setSingleChoiceItems(getExportPathMenu(context), getExportPathPosition(context), (dialog, itemPosition) -> {
+                        if (itemPosition == 0) {
+                            APKEditorUtils.saveString("exportPath", Environment.getExternalStorageDirectory().toString(), context);
+                            mData.set(position, new SettingsItems(context.getString(R.string.export_path_resources), getExportPath(context), ContextCompat.getDrawable(context, R.drawable.ic_export)));
+                            adapter.notifyItemChanged(position);
+                        } else if (itemPosition == 1) {
+                            APKEditorUtils.saveString("exportPath", Environment.getExternalStorageDirectory().toString() + "/AEE", context);
+                            mData.set(position, new SettingsItems(context.getString(R.string.export_path_resources), getExportPath(context), ContextCompat.getDrawable(context, R.drawable.ic_export)));
+                            adapter.notifyItemChanged(position);
+                        } else {
+                            APKEditorUtils.saveString("exportPath", null, context);
+                            mData.set(position, new SettingsItems(context.getString(R.string.export_path_resources), getExportPath(context), ContextCompat.getDrawable(context, R.drawable.ic_export)));
+                            adapter.notifyItemChanged(position);
+                        }
+                        dialog.dismiss();
+                    }).show();
+        }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     private static void setAPKs(SettingsAdapter adapter, int position, Context context) {
-        new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
-                R.array.export_apk), (dialogInterface, i) -> {
-            switch (i) {
-                case 0:
-                    APKEditorUtils.saveString("exportAPKs", context.getString(R.string.export_storage), context);
-                    mData.set(position, new SettingsItems(context.getString(R.string.export_options), getAPKs(context), context.getResources().getDrawable(R.drawable.ic_android)));
-                    adapter.notifyItemChanged(position);
-                    break;
-                case 1:
-                    APKEditorUtils.saveString("exportAPKs", context.getString(R.string.export_resign), context);
-                    mData.set(position, new SettingsItems(context.getString(R.string.export_options), getAPKs(context), context.getResources().getDrawable(R.drawable.ic_android)));
-                    adapter.notifyItemChanged(position);
-                    break;
-                case 2:
-                    APKEditorUtils.saveString("exportAPKs", null, context);
-                    mData.set(position, new SettingsItems(context.getString(R.string.export_options), getAPKs(context), context.getResources().getDrawable(R.drawable.ic_android)));
-                    adapter.notifyItemChanged(position);
-                    break;
-            }
-        }).setOnDismissListener(dialogInterface -> {
-        }).show();
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private static void setProjectExistAction(SettingsAdapter adapter, int position, Context context) {
-        new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
-                R.array.project_options), (dialogInterface, i) -> {
-            switch (i) {
-                case 0:
-                    APKEditorUtils.saveString("projectAction", context.getString(R.string.save), context);
-                    mData.set(position, new SettingsItems(context.getString(R.string.project_exist_action), getProjectExistAction(context), context.getResources().getDrawable(R.drawable.ic_projects)));
-                    adapter.notifyItemChanged(position);
-                    break;
-                case 1:
-                    APKEditorUtils.saveString("projectAction", context.getString(R.string.delete), context);
-                    mData.set(position, new SettingsItems(context.getString(R.string.project_exist_action), getProjectExistAction(context), context.getResources().getDrawable(R.drawable.ic_projects)));
-                    adapter.notifyItemChanged(position);
-                    break;
-                case 2:
-                    APKEditorUtils.saveString("projectAction", null, context);
-                    mData.set(position, new SettingsItems(context.getString(R.string.project_exist_action), getProjectExistAction(context), context.getResources().getDrawable(R.drawable.ic_projects)));
-                    adapter.notifyItemChanged(position);
-                    break;
-            }
-        }).setOnDismissListener(dialogInterface -> {
-        }).show();
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private static void setEditingOptions(SettingsAdapter adapter, int position, Context context) {
-        new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
-                R.array.editing_options), (dialogInterface, i) -> {
-            switch (i) {
-                case 0:
-                    APKEditorUtils.saveBoolean("editText", false, context);
-                    mData.set(position, new SettingsItems(context.getString(R.string.text_editing), getEditingOptions(context), context.getResources().getDrawable(R.drawable.ic_edit)));
-                    adapter.notifyItemChanged(position);
-                    break;
-                case 1:
-                    new MaterialAlertDialogBuilder(context)
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(R.string.warning)
-                            .setMessage(context.getString(R.string.text_editing_summary))
-                            .setNegativeButton(context.getString(R.string.cancel), (dialog, id) -> {
-                            })
-                            .setPositiveButton(context.getString(R.string.enable), (dialog, id) -> {
-                                APKEditorUtils.saveBoolean("editText", true, context);
-                                mData.set(position, new SettingsItems(context.getString(R.string.text_editing), getEditingOptions(context), context.getResources().getDrawable(R.drawable.ic_edit)));
-                                adapter.notifyItemChanged(position);
-                            }).show();
-                    break;
-            }
-        }).setOnDismissListener(dialogInterface -> {
-        }).show();
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private static void setInstallerAction(SettingsAdapter adapter, int position, Context context) {
-        new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
-                R.array.installer_options), (dialogInterface, i) -> {
-            switch (i) {
-                case 0:
-                    APKEditorUtils.saveString("installerAction", context.getString(R.string.install), context);
-                    mData.set(position, new SettingsItems(context.getString(R.string.installer_action), getInstallerAction(context), context.getResources().getDrawable(R.drawable.ic_installer)));
-                    adapter.notifyItemChanged(position);
-                    break;
-                case 1:
-                    APKEditorUtils.saveString("installerAction", context.getString(R.string.install_resign), context);
-                    mData.set(position, new SettingsItems(context.getString(R.string.installer_action), getInstallerAction(context), context.getResources().getDrawable(R.drawable.ic_installer)));
-                    adapter.notifyItemChanged(position);
-                    break;
-                case 2:
-                    APKEditorUtils.saveString("installerAction", null, context);
-                    mData.set(position, new SettingsItems(context.getString(R.string.installer_action), getInstallerAction(context), context.getResources().getDrawable(R.drawable.ic_installer)));
-                    adapter.notifyItemChanged(position);
-                    break;
-            }
-        }).setOnDismissListener(dialogInterface -> {
-        }).show();
-    }
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private static void setAPKSign(SettingsAdapter adapter, int position, Context context) {
-        new MaterialAlertDialogBuilder(context).setItems(context.getResources().getStringArray(
-                R.array.signing_options), (dialogInterface, i) -> {
-            switch (i) {
-                case 0:
-                    if (isCustomKey(context)) {
-                        APKEditorUtils.saveString("PrivateKey", null, context);
-                        new File(context.getFilesDir(), "signing/APKEditor.pk8").delete();
-                        APKEditorUtils.saveString("RSATemplate", null, context);
-                        new File(context.getFilesDir(), "signing/APKEditor").delete();
-                        mData.set(position, new SettingsItems(context.getString(R.string.sign_apk_with), getAPKSign(context), context.getResources().getDrawable(R.drawable.ic_key)));
+        new MaterialAlertDialogBuilder(context)
+                .setSingleChoiceItems(getExportingAPKMenu(context), getExportingAPKsPosition(context), (dialog, itemPosition) -> {
+                    if (itemPosition == 0) {
+                        APKEditorUtils.saveString("exportAPKs", context.getString(R.string.export_storage), context);
+                        mData.set(position, new SettingsItems(context.getString(R.string.export_options), getAPKs(context), ContextCompat.getDrawable(context, R.drawable.ic_android)));
+                        adapter.notifyItemChanged(position);
+                    } else if (itemPosition == 1) {
+                        APKEditorUtils.saveString("exportAPKs", context.getString(R.string.export_resign), context);
+                        mData.set(position, new SettingsItems(context.getString(R.string.export_options), getAPKs(context), ContextCompat.getDrawable(context, R.drawable.ic_android)));
+                        adapter.notifyItemChanged(position);
+                    } else {
+                        APKEditorUtils.saveString("exportAPKs", null, context);
+                        mData.set(position, new SettingsItems(context.getString(R.string.export_options), getAPKs(context), ContextCompat.getDrawable(context, R.drawable.ic_android)));
                         adapter.notifyItemChanged(position);
                     }
-                    break;
-                case 1:
-                    Intent signing = new Intent(context, APKSignActivity.class);
-                    context.startActivity(signing);
-                    mData.set(position, new SettingsItems(context.getString(R.string.sign_apk_with), getAPKSign(context), context.getResources().getDrawable(R.drawable.ic_key)));
-                    adapter.notifyItemChanged(position);
-                    break;
-            }
-        }).setOnDismissListener(dialogInterface -> {
-        }).show();
+                    dialog.dismiss();
+                }).show();
+    }
+
+    private static void setProjectExistAction(SettingsAdapter adapter, int position, Context context) {
+        new MaterialAlertDialogBuilder(context)
+                .setSingleChoiceItems(getProjectExitingMenu(context), getProjectExitingMenuPosition(context), (dialog, itemPosition) -> {
+                    if (itemPosition == 0) {
+                        APKEditorUtils.saveString("projectAction", context.getString(R.string.save), context);
+                        mData.set(position, new SettingsItems(context.getString(R.string.project_exist_action), getProjectExistAction(context), ContextCompat.getDrawable(context, R.drawable.ic_projects)));
+                        adapter.notifyItemChanged(position);
+                    } else if (itemPosition == 1) {
+                        APKEditorUtils.saveString("projectAction", context.getString(R.string.delete), context);
+                        mData.set(position, new SettingsItems(context.getString(R.string.project_exist_action), getProjectExistAction(context), ContextCompat.getDrawable(context, R.drawable.ic_projects)));
+                        adapter.notifyItemChanged(position);
+                    } else {
+                        APKEditorUtils.saveString("projectAction", null, context);
+                        mData.set(position, new SettingsItems(context.getString(R.string.project_exist_action), getProjectExistAction(context), ContextCompat.getDrawable(context, R.drawable.ic_projects)));
+                        adapter.notifyItemChanged(position);
+                    }
+                    dialog.dismiss();
+                }).show();
+    }
+
+    private static void setEditingOptions(SettingsAdapter adapter, int position, Context context) {
+        new MaterialAlertDialogBuilder(context)
+                .setSingleChoiceItems(getEditingOptionsMenu(context), getEditingOptionsPosition(context), (dialog, itemPosition) -> {
+                    if (itemPosition == 0) {
+                        APKEditorUtils.saveBoolean("editText", false, context);
+                        mData.set(position, new SettingsItems(context.getString(R.string.text_editing), getEditingOptions(context), ContextCompat.getDrawable(context, R.drawable.ic_edit)));
+                        adapter.notifyItemChanged(position);
+                    } else {
+                        new MaterialAlertDialogBuilder(context)
+                                .setIcon(R.mipmap.ic_launcher)
+                                .setTitle(R.string.warning)
+                                .setMessage(context.getString(R.string.text_editing_summary))
+                                .setNegativeButton(context.getString(R.string.cancel), (d, id) -> {
+                                })
+                                .setPositiveButton(context.getString(R.string.enable), (d, id) -> {
+                                    APKEditorUtils.saveBoolean("editText", true, context);
+                                    mData.set(position, new SettingsItems(context.getString(R.string.text_editing), getEditingOptions(context), ContextCompat.getDrawable(context, R.drawable.ic_edit)));
+                                    adapter.notifyItemChanged(position);
+                                }).show();
+                    }
+                    dialog.dismiss();
+                }).show();
+    }
+
+    private static void setInstallerAction(SettingsAdapter adapter, int position, Context context) {
+        new MaterialAlertDialogBuilder(context)
+                .setSingleChoiceItems(getInstallerMenu(context), getInstallerMenuPosition(context), (dialog, itemPosition) -> {
+                    if (itemPosition == 0) {
+                        APKEditorUtils.saveString("installerAction", context.getString(R.string.install), context);
+                        mData.set(position, new SettingsItems(context.getString(R.string.installer_action), getInstallerAction(context), ContextCompat.getDrawable(context, R.drawable.ic_installer)));
+                        adapter.notifyItemChanged(position);
+                    } else if (itemPosition == 1) {
+                        APKEditorUtils.saveString("installerAction", context.getString(R.string.install_resign), context);
+                        mData.set(position, new SettingsItems(context.getString(R.string.installer_action), getInstallerAction(context), ContextCompat.getDrawable(context, R.drawable.ic_installer)));
+                        adapter.notifyItemChanged(position);
+                    } else {
+                        APKEditorUtils.saveString("installerAction", null, context);
+                        mData.set(position, new SettingsItems(context.getString(R.string.installer_action), getInstallerAction(context), ContextCompat.getDrawable(context, R.drawable.ic_installer)));
+                        adapter.notifyItemChanged(position);
+                    }
+                    dialog.dismiss();
+                }).show();
+    }
+
+    private static void setAPKSign(SettingsAdapter adapter, int position, Context context) {
+        new MaterialAlertDialogBuilder(context)
+                .setSingleChoiceItems(getAPKSignMenu(context), getAPKSignPosition(context), (dialog, itemPosition) -> {
+                    if (itemPosition == 0) {
+                        if (isCustomKey(context)) {
+                            APKEditorUtils.saveString("PrivateKey", null, context);
+                            new File(context.getFilesDir(), "signing/APKEditor.pk8").delete();
+                            APKEditorUtils.saveString("RSATemplate", null, context);
+                            new File(context.getFilesDir(), "signing/APKEditor").delete();
+                            mData.set(position, new SettingsItems(context.getString(R.string.sign_apk_with), getAPKSign(context), ContextCompat.getDrawable(context, R.drawable.ic_key)));
+                            adapter.notifyItemChanged(position);
+                        }
+                    } else {
+                        Intent signing = new Intent(context, APKSignActivity.class);
+                        context.startActivity(signing);
+                        mData.set(position, new SettingsItems(context.getString(R.string.sign_apk_with), getAPKSign(context), ContextCompat.getDrawable(context, R.drawable.ic_key)));
+                        adapter.notifyItemChanged(position);
+                    }
+                    dialog.dismiss();
+                }).show();
     }
 
     private static void deleteAppSettings(Activity activity) {

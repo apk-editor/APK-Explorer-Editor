@@ -1,6 +1,8 @@
 package com.apk.editor.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -10,7 +12,10 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
+import com.apk.editor.R;
+import com.apk.editor.activities.APKSignActivity;
 import com.apk.editor.utils.recyclerViewItems.PackageItems;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -120,8 +125,52 @@ public class AppData {
                 packageName, context)));
     }
 
+    private static CharSequence[] getExportOptionsMenu(Context context) {
+        return new CharSequence[] {
+                context.getString(R.string.export_storage),
+                context.getString(R.string.export_resign)
+        };
+    }
+
+    public static CharSequence[] getSigningOptionsMenu(Context context) {
+        return new CharSequence[] {
+                context.getString(R.string.signing_default),
+                context.getString(R.string.signing_custom)
+        };
+    }
+
     public static Drawable getAppIcon(String packageName, Context context) {
         return getPackageManager(context).getApplicationIcon(Objects.requireNonNull(getAppInfo(packageName, context)));
+    }
+
+    public static MaterialAlertDialogBuilder getExportOptionsMenu(String packageName, Context context) {
+        return new MaterialAlertDialogBuilder(context)
+                .setItems(getExportOptionsMenu(context), (dialog, itemPosition) -> {
+                    if (itemPosition == 0) {
+                        APKData.exportApp(packageName, context);
+                    } else {
+                        if (!APKEditorUtils.getBoolean("firstSigning", false, context)) {
+                            getSigningOptionsMenu(packageName, context).show();
+                        } else {
+                            APKData.reSignAPKs(packageName, false, (Activity) context);
+                        }
+                    }
+                    dialog.dismiss();
+                });
+    }
+
+    public static MaterialAlertDialogBuilder getSigningOptionsMenu(String packageName, Context context) {
+        return new MaterialAlertDialogBuilder(context)
+                .setItems(getSigningOptionsMenu(context), (dialog, itemPosition) -> {
+                    APKEditorUtils.saveBoolean("firstSigning", true, context);
+                    if (itemPosition == 0) {
+                        APKData.reSignAPKs(packageName,false, (Activity) context);
+                    } else {
+                        Intent signing = new Intent(context, APKSignActivity.class);
+                        context.startActivity(signing);
+                    }
+                    dialog.dismiss();
+                });
     }
 
     public static String getSourceDir(String packageName, Context context) {
