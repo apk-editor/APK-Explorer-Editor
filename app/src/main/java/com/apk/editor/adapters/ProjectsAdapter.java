@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
@@ -46,7 +47,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
         return new ViewHolder(rowItem);
     }
 
-    @SuppressLint({"UseCompatLoadingForDrawables", "NotifyDataSetChanged"})
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull ProjectsAdapter.ViewHolder holder, int position) {
         try {
@@ -59,7 +60,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                     holder.mAppName.setText(AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()));
                 }
             } else {
-                holder.mAppIcon.setImageDrawable(holder.mAppIcon.getContext().getResources().getDrawable(R.drawable.ic_projects));
+                holder.mAppIcon.setImageDrawable(ContextCompat.getDrawable(holder.mAppIcon.getContext(), R.drawable.ic_projects));
                 if (Common.getSearchWord() != null && Common.isTextMatched(new File(data.get(position)).getName(), Common.getSearchWord())) {
                     holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().replace(Common.getSearchWord(),
                             "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
@@ -80,6 +81,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                 v.getContext().startActivity(explorer);
             });
             holder.mCard.setOnLongClickListener(v -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) return false;
                 new MaterialAlertDialogBuilder(v.getContext())
                         .setMessage(v.getContext().getString(R.string.export_project_question))
                         .setNegativeButton(R.string.cancel, (dialog, id) -> {
