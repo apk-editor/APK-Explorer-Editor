@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apk.editor.R;
 import com.apk.editor.adapters.TextViewAdapter;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.Common;
-import com.apk.editor.utils.recyclerViewItems.APKItems;
+import com.apk.editor.utils.ExternalAPKData;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on November 07, 2021
@@ -29,12 +28,9 @@ public class ManifestFragment extends Fragment {
         RecyclerView mRecyclerView = mRootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        APKItems apkData = APKExplorer.getAPKData(Common.getAPKFile().getAbsolutePath(), requireActivity());
-        if (apkData != null) {
+        if (ExternalAPKData.getManifest() != null) {
             try {
-                if (apkData.getManifest() != null) {
-                    mRecyclerView.setAdapter(new TextViewAdapter(APKExplorer.getTextViewData(apkData.getManifest(), requireActivity())));
-                }
+                mRecyclerView.setAdapter(new TextViewAdapter(APKExplorer.getTextViewData(ExternalAPKData.getManifest(), requireActivity())));
             } catch (Exception ignored) {
             }
         }

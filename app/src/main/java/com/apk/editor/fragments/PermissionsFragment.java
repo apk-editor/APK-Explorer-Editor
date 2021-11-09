@@ -9,9 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.apk.editor.R;
-import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.Common;
-import com.apk.editor.utils.recyclerViewItems.APKItems;
+import com.apk.editor.utils.ExternalAPKData;
 import com.google.android.material.textview.MaterialTextView;
 
 /*
@@ -26,11 +24,10 @@ public class PermissionsFragment extends Fragment {
 
         MaterialTextView mText = mRootView.findViewById(R.id.text);
 
-        APKItems apkData = APKExplorer.getAPKData(Common.getAPKFile().getAbsolutePath(), requireActivity());
-        if (apkData != null) {
+        if (ExternalAPKData.getPermissions() != null) {
             try {
                 StringBuilder sb = new StringBuilder();
-                for (String permission : apkData.getPermissions()) {
+                for (String permission : ExternalAPKData.getPermissions()) {
                     sb.append(permission).append("\n\n");
                 }
                 mText.setText(sb.toString());

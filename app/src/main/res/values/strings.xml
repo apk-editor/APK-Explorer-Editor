@@ -2,6 +2,7 @@
 
     <string name="about">About</string>
     <string name="all">All</string>
+    <string name="android_version">Android %s</string>
     <string name="apk_corrupted">APK file(s) is corrupted. Aborting.</string>
     <string name="apk_installer">AEE APK Installer</string>
     <string name="apks">APK\'s</string>
@@ -97,6 +98,7 @@
     <string name="language_vi" translatable="false">Tiếng Việt</string>
     <string name="language_zh" translatable="false">中文（简体）</string>
     <string name="last_modified">Last Modified: %s</string>
+    <string name="loading">Loading…</string>
     <string name="manifest">Manifest</string>
     <string name="name_empty">Name shouldn\'t be empty. Aborting.</string>
     <string name="ok">OK</string>
@@ -107,7 +109,6 @@
     <string name="preparing_apk">Preparing %s APK…</string>
     <string name="preparing_bundle">Preparing app bundle for sharing…</string>
     <string name="preparing_bundle_install">Preparing \'%s\' for installation…</string>
-    <string name="preparing_installation">Preparing for installation…</string>
     <string name="preparing_source">Preparing source for APK building…</string>
     <string name="press_back">Press Back Button Again to close APK Explorer</string>
     <string name="privacy_policy">Privacy Policy</string>

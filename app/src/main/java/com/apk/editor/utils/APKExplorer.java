@@ -23,15 +23,10 @@ import androidx.core.content.ContextCompat;
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.activities.APKTasksActivity;
-import com.apk.editor.utils.recyclerViewItems.APKItems;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import net.dongliu.apk.parser.ApkFile;
-import net.dongliu.apk.parser.bean.ApkMeta;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -124,38 +119,13 @@ public class APKExplorer {
         return APKEditorUtils.getOrientation(activity) == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1;
     }
 
-    public static String readXMLFromAPK(String apk, String path) {
-        try (ApkFile apkFile = new ApkFile(new File(apk))) {
-            String xmlData = apkFile.transBinaryXml(path);
-            apkFile.close();
-            return xmlData;
-        } catch (IOException ignored) {
-        }
-        return null;
-    }
-
-    public static APKItems getAPKData(String apk, Context context) {
-        try (ApkFile apkFile = new ApkFile(new File(apk))) {
-            ApkMeta apkMeta = apkFile.getApkMeta();
-            APKItems mAPKData = new APKItems(apkMeta.getLabel(), apkMeta.getPackageName(),
-                    apkMeta.getVersionName(), readXMLFromAPK(apk, "AndroidManifest.xml"),
-                    apkMeta.getCompileSdkVersion(), apkMeta.getMinSdkVersion(),
-                    APKData.getAppIcon(apk, context), apkMeta.getVersionCode(),
-                    apkMeta.getUsesPermissions());
-            apkFile.close();
-            return mAPKData;
-        } catch (IOException ignored) {
-        }
-        return null;
-    }
-
     public static List<String> getTextViewData(String path, Context context) {
         List<String> mData = new ArrayList<>();
         String text;
         if (Common.isFMInstall()) {
             text = path;
         } else if (Common.getAppID() != null && APKExplorer.isBinaryXML(path)) {
-            text = APKExplorer.readXMLFromAPK(AppData.getSourceDir(Common.getAppID(), context), path.replace(
+            text = ExternalAPKData.readXMLFromAPK(AppData.getSourceDir(Common.getAppID(), context), path.replace(
                     context.getCacheDir().getPath() + "/" + Common.getAppID() + "/", ""));
         } else {
             text = APKEditorUtils.read(path);

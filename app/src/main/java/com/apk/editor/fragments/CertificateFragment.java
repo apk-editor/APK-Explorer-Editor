@@ -10,9 +10,8 @@ import androidx.fragment.app.Fragment;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKCertificate;
-import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.recyclerViewItems.APKItems;
+import com.apk.editor.utils.ExternalAPKData;
 import com.google.android.material.textview.MaterialTextView;
 
 /*
@@ -27,11 +26,10 @@ public class CertificateFragment extends Fragment {
 
         MaterialTextView mText = mRootView.findViewById(R.id.text);
 
-        APKItems apkData = APKExplorer.getAPKData(Common.getAPKFile().getAbsolutePath(), requireActivity());
-        if (apkData != null) {
+        if (ExternalAPKData.getCertificate() != null) {
             try {
                 if (APKCertificate.getCertificateDetails(Common.getAPKFile().getAbsolutePath(), requireActivity()) != null) {
-                    mText.setText(APKCertificate.getCertificateDetails(Common.getAPKFile().getAbsolutePath(), requireActivity()));
+                    mText.setText(ExternalAPKData.getCertificate());
                 }
             } catch (Exception ignored) {
             }
