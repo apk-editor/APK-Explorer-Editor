@@ -1,6 +1,7 @@
 package com.apk.editor.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -44,7 +45,7 @@ public class APKInstallerActivity extends AppCompatActivity {
             LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
             MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
             MaterialTextView mPermissionText = findViewById(R.id.permission_text);
-            mPermissionText.setText(Build.VERSION.SDK_INT >= 30 ? getString(R.string.file_permission_request_message, getString(R.string.app_name)) : getString(R.string.permission_denied_message));
+            mPermissionText.setText(getString(R.string.permission_denied_message));
             mPermissionLayout.setVisibility(View.VISIBLE);
             mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
             return;
@@ -57,9 +58,14 @@ public class APKInstallerActivity extends AppCompatActivity {
 
     private AsyncTasks manageInstallation(Uri uri, Activity activity) {
         return new AsyncTasks() {
+            private ProgressDialog mProgressDialog;
 
             @Override
             public void onPreExecute() {
+                mProgressDialog = new ProgressDialog(activity);
+                mProgressDialog.setMessage(activity.getString(R.string.preparing_installation));
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
                 APKEditorUtils.delete(getExternalFilesDir("APK").getAbsolutePath());
                 mExtension = MimeTypeMap.getFileExtensionFromUrl(uri.getPath());
                 mFile = new File(getExternalFilesDir("APK"), "tmp." + mExtension);
@@ -79,6 +85,10 @@ public class APKInstallerActivity extends AppCompatActivity {
 
             @Override
             public void onPostExecute() {
+                try {
+                    mProgressDialog.dismiss();
+                } catch (IllegalArgumentException ignored) {
+                }
                 if (mFile.exists()) {
                     if (mExtension.equals("apk")) {
                         SplitAPKInstaller.installAPK(mFile, activity);
@@ -87,7 +97,7 @@ public class APKInstallerActivity extends AppCompatActivity {
                         new MaterialAlertDialogBuilder(activity)
                                 .setIcon(R.mipmap.ic_launcher)
                                 .setTitle(R.string.split_apk_installer)
-                                .setMessage(getString(R.string.bundle_install_question, ""))
+                                .setMessage(getString(R.string.install_bundle_question))
                                 .setCancelable(false)
                                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> finish())
                                 .setPositiveButton(R.string.install, (dialogInterface, i) -> {

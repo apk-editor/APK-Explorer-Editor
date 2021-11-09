@@ -67,6 +67,7 @@
     <string name="image_viewer">AEE Image Viewer</string>
     <string name="important">Important</string>
     <string name="install">Install</string>
+    <string name="install_bundle_question">Are you sure to install selected app bundle?</string>
     <string name="install_question">Install %s?</string>
     <string name="install_resign">Re-sign &amp; Install</string>
     <string name="install_storage">Install from Storage</string>
@@ -104,6 +105,7 @@
     <string name="preparing_apk">Preparing %s APK…</string>
     <string name="preparing_bundle">Preparing app bundle for sharing…</string>
     <string name="preparing_bundle_install">Preparing \'%s\' for installation…</string>
+    <string name="preparing_installation">Preparing for installation…</string>
     <string name="preparing_source">Preparing source for APK building…</string>
     <string name="press_back">Press Back Button Again to close APK Explorer!</string>
     <string name="privacy_policy">Privacy Policy</string>
