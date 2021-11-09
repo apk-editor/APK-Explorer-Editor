@@ -48,12 +48,6 @@
         <item>@string/enable</item>
     </string-array>
 
-    <string-array name="install_options">
-        <item>@string/install</item>
-        <item>@string/install_resign</item>
-        <item>@string/resign_only</item>
-    </string-array>
-
     <string-array name="installer_options">
         <item>@string/install</item>
         <item>@string/install_resign</item>

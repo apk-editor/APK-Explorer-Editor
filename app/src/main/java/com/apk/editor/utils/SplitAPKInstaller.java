@@ -176,6 +176,10 @@ public class SplitAPKInstaller {
 
             @Override
             public void onPreExecute() {
+                if (Common.isFMInstall()) {
+                    Common.isFMInstall(false);
+                    activity.finish();
+                }
                 APKEditorUtils.saveString("installationStatus", "waiting", activity);
                 Intent installIntent = new Intent(activity, InstallerActivity.class);
                 installIntent.putExtra(InstallerActivity.HEADING_INTENT, activity.getString(R.string.split_apk_installer));
@@ -222,6 +226,10 @@ public class SplitAPKInstaller {
 
             @Override
             public void onPreExecute() {
+                if (Common.isFMInstall()) {
+                    Common.isFMInstall(false);
+                    activity.finish();
+                }
                 APKEditorUtils.saveString("installationStatus", "waiting", activity);
                 Intent installIntent = new Intent(activity, InstallerActivity.class);
                 installIntent.putExtra(InstallerActivity.HEADING_INTENT, activity.getString(R.string.apk_installer));

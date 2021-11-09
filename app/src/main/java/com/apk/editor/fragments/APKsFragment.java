@@ -31,6 +31,7 @@ import com.apk.editor.activities.InstallerFilePickerActivity;
 import com.apk.editor.adapters.APKsAdapter;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.Common;
@@ -267,6 +268,7 @@ public class APKsFragment extends Fragment {
             public void onPreExecute() {
                 mProgress.setVisibility(View.VISIBLE);
                 APKEditorUtils.delete(activity.getExternalFilesDir("APK").getAbsolutePath());
+                Common.getAPKList().clear();
             }
 
             @Override
@@ -287,7 +289,9 @@ public class APKsFragment extends Fragment {
             @Override
             public void onPostExecute() {
                 if (mExtension.equals("apk")) {
-                    SplitAPKInstaller.installAPK(mFile, activity);
+                    Common.getAPKList().add(mFile.getAbsolutePath());
+                    Common.setFinishStatus(true);
+                    APKExplorer.handleAPKs(activity);
                 } else if (mExtension.equals("apkm") || mExtension.equals("apks") || mExtension.equals("xapk")) {
                     new MaterialAlertDialogBuilder(activity)
                             .setIcon(R.mipmap.ic_launcher)
@@ -314,7 +318,6 @@ public class APKsFragment extends Fragment {
 
     private AsyncTasks handleMultipleAPKs(ClipData uriFiles, Activity activity) {
         return new AsyncTasks() {
-            private File mFile = null;
 
             @Override
             public void onPreExecute() {
@@ -327,7 +330,7 @@ public class APKsFragment extends Fragment {
             public void doInBackground() {
                 for (int i = 0; i < uriFiles.getItemCount(); i++) {
                     String mExtension = MimeTypeMap.getFileExtensionFromUrl(uriFiles.getItemAt(i).getUri().getPath());
-                    mFile = new File(activity.getExternalFilesDir("APK"), "APK" + i + "." + mExtension);
+                    File mFile = new File(activity.getExternalFilesDir("APK"), "APK" + i + "." + mExtension);
                     try (FileOutputStream outputStream = new FileOutputStream(mFile, false)) {
                         InputStream inputStream = activity.getContentResolver().openInputStream(uriFiles.getItemAt(i).getUri());
                         int read;
@@ -346,11 +349,7 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void onPostExecute() {
-                if (Common.getAPKList().size() == 0) {
-                    SplitAPKInstaller.installAPK(mFile, activity);
-                } else if (uriFiles != null) {
-                    SplitAPKInstaller.installSplitAPKs(Common.getAPKList(), null, activity);
-                }
+                APKExplorer.handleAPKs(activity);
                 mProgress.setVisibility(View.GONE);
             }
         };

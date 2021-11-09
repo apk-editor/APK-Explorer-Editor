@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Common {
 
-    private static boolean mBuilding = false, mFinish = false, mPrivateKey = false,
+    private static boolean mBuilding = false, mFinish = false, mFileMangerInstall = false, mPrivateKey = false,
             mReloading = false, mRSATemplate = false;
     private static List<PackageItems> mPackageData = null;
     private static final List<String> mAPKList = new ArrayList<>(), mErrorList = new ArrayList<>();
@@ -28,6 +28,10 @@ public class Common {
 
     public static boolean isFinished() {
         return mFinish;
+    }
+
+    public static boolean isFMInstall() {
+        return mFileMangerInstall;
     }
 
     public static boolean isReloading() {
@@ -113,6 +117,10 @@ public class Common {
 
     public static void isBuilding(boolean b) {
         mBuilding = b;
+    }
+
+    public static void isFMInstall(boolean b) {
+        mFileMangerInstall = b;
     }
 
     public static void isReloading(boolean b) {

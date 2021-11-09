@@ -381,7 +381,11 @@ public class APKData {
                                     .setCancelable(false)
                                     .setPositiveButton(R.string.cancel, (dialog, id) -> {
                                         Common.isReloading(true);
-                                        activity.finish();
+                                        if (Common.isFinished()) {
+                                            Common.setFinishStatus(false);
+                                        } else {
+                                            activity.finish();
+                                        }
                                     }).show();
                         }
                     }

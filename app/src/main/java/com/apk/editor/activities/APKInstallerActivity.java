@@ -18,6 +18,7 @@ import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AsyncTasks;
+import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SplitAPKInstaller;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -88,8 +89,9 @@ public class APKInstallerActivity extends AppCompatActivity {
                 }
                 if (mFile.exists()) {
                     if (mExtension.equals("apk")) {
-                        SplitAPKInstaller.installAPK(mFile, activity);
-                        finish();
+                        Common.getAPKList().add(mFile.getAbsolutePath());
+                        Common.isFMInstall(true);
+                        APKExplorer.handleAPKs(activity);
                     } else if (mExtension.equals("apkm") || mExtension.equals("apks") || mExtension.equals("xapk")) {
                         new MaterialAlertDialogBuilder(activity)
                                 .setIcon(R.mipmap.ic_launcher)
