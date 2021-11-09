@@ -159,6 +159,10 @@ public class AppSettings {
                 return context.getString(R.string.language_es);
             case "ru":
                 return context.getString(R.string.language_ru);
+            case "pl":
+                return context.getString(R.string.language_pl);
+            case "in":
+                return context.getString(R.string.language_in);
             default:
                 return context.getString(R.string.app_theme_auto);
         }
@@ -254,7 +258,9 @@ public class AppSettings {
                 context.getString(R.string.language_es),
                 context.getString(R.string.language_ru),
                 context.getString(R.string.language_tr),
-                context.getString(R.string.language_vi)
+                context.getString(R.string.language_vi),
+                context.getString(R.string.language_pl),
+                context.getString(R.string.language_in)
         };
     }
 
@@ -396,6 +402,12 @@ public class AppSettings {
                         restartApp(context);
                     } else if (itemPosition == 10) {
                         APKEditorUtils.saveString("appLanguage", "vi", context);
+                        restartApp(context);
+                    } else if (itemPosition == 11) {
+                        APKEditorUtils.saveString("appLanguage", "pl", context);
+                        restartApp(context);
+                    } else if (itemPosition == 12) {
+                        APKEditorUtils.saveString("appLanguage", "in", context);
                         restartApp(context);
                     }
                     dialog.dismiss();
