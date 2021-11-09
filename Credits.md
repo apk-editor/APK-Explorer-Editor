@@ -26,5 +26,7 @@ APK Explorer & Editor (AEE) is, and as always, an open-source project which is r
 * tommynok & Alexander Steiner - Russian Translation
 * [mezysinc](https://github.com/mezysinc) - Portuguese (Brazilian) Translation
 * Andreaugustoqueiroz999 - Portuguese (Portugal) Translation
+* Dodi Studio - Indonesian Translation
+* Cooky - Polish Translation
 
 _If you think I missed your name, please let me know._
