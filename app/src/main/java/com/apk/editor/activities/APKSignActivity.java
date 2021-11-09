@@ -1,7 +1,10 @@
 package com.apk.editor.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -13,9 +16,13 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.Common;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 19, 2021
@@ -47,15 +54,31 @@ public class APKSignActivity extends AppCompatActivity {
         setStatus();
 
         mKey.setOnClickListener(v -> {
-            Common.setPrivateKeyStatus(true);
-            Intent filePicker = new Intent(this, FilePickerActivity.class);
-            startActivity(filePicker);
+            if (Build.VERSION.SDK_INT >= 29) {
+                Intent installer = new Intent(Intent.ACTION_GET_CONTENT);
+                installer.setType("*/*");
+                installer.addCategory(Intent.CATEGORY_OPENABLE);
+                installer.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
+                startActivityForResult(installer, 0);
+            } else {
+                Common.setPrivateKeyStatus(true);
+                Intent filePicker = new Intent(this, FilePickerActivity.class);
+                startActivity(filePicker);
+            }
         });
 
         mRSA.setOnClickListener(v -> {
-            Common.setRSATemplateStatus(true);
-            Intent filePicker = new Intent(this, FilePickerActivity.class);
-            startActivity(filePicker);
+            if (Build.VERSION.SDK_INT >= 29) {
+                Intent installer = new Intent(Intent.ACTION_GET_CONTENT);
+                installer.setType("*/*");
+                installer.addCategory(Intent.CATEGORY_OPENABLE);
+                installer.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
+                startActivityForResult(installer, 1);
+            } else {
+                Common.setRSATemplateStatus(true);
+                Intent filePicker = new Intent(this, FilePickerActivity.class);
+                startActivity(filePicker);
+            }
         });
 
         mBack.setOnClickListener(v -> finish());
@@ -88,6 +111,44 @@ public class APKSignActivity extends AppCompatActivity {
             });
         } else {
             mClearRSA.setVisibility(View.GONE);
+        }
+    }
+
+    private void writeFile(File file, Uri uri) {
+        try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            int read;
+            byte[] bytes = new byte[8192];
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+        } catch (IOException ignored) {}
+        setStatus();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            Uri uri = data.getData();
+
+            if (uri != null) {
+                new MaterialAlertDialogBuilder(this)
+                        .setMessage(getString(R.string.signing_select_question, requestCode == 0 ? getString(R.string.private_key) : getString(R.string.rsa_template)))
+                        .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                        })
+                        .setPositiveButton(R.string.select, (dialog, id) -> {
+                            if (requestCode == 0) {
+                                APKEditorUtils.saveString("PrivateKey", new File(getFilesDir(), "signing/APKEditor.pk8").getAbsolutePath(), this);
+                                writeFile(new File(getFilesDir(), "signing/APKEditor.pk8"), uri);
+                            } else if (requestCode == 1) {
+                                APKEditorUtils.saveString("RSATemplate", new File(getFilesDir(), "signing/APKEditor").getAbsolutePath(), this);
+                                writeFile(new File(getFilesDir(), "signing/APKEditor"), uri);
+                            }
+
+                        }).show();
+            }
         }
     }
 
