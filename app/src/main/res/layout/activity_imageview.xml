@@ -36,6 +36,7 @@
                 android:layout_gravity="start"
                 android:layout_marginStart="30dp"
                 android:textColor="?attr/colorAccent"
+                android:text="@string/app_name"
                 android:layout_marginEnd="50dp"
                 android:textSize="18sp"
                 android:padding="10dp" />

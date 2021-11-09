@@ -4,11 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.view.Menu;
 import android.view.View;
@@ -34,15 +36,16 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
-import java.util.Objects;
+import java.io.IOException;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
 public class ImageViewActivity extends AppCompatActivity {
 
+    private Bitmap mBitmap = null;
+    private File mFile = null;
     public static final String PATH_INTENT = "path";
-    private String mExternalFile = null;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -70,20 +73,25 @@ public class ImageViewActivity extends AppCompatActivity {
                 return;
             }
             Uri uri = getIntent().getData();
+
+            try {
+                mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getIntent().getData());
+            } catch (IOException ignored) {
+            }
+
             assert uri != null;
-            File file = new File(Objects.requireNonNull(uri.getPath()));
             if (APKEditorUtils.isDocumentsUI(uri)) {
                 @SuppressLint("Recycle") Cursor cursor = getContentResolver().query(uri, null, null, null, null);
                 if (cursor != null && cursor.moveToFirst()) {
-                    mExternalFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" +
-                            cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                    mFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                            cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)));
                 }
             } else {
-                mExternalFile = APKEditorUtils.getPath(file);
+                mFile = new File(APKEditorUtils.getPath(uri.getPath()));
             }
-            if (mExternalFile != null && APKEditorUtils.exist(mExternalFile)) {
-                mTitle.setText(new File(mExternalFile).getName());
-                mImage.setImageURI(APKExplorer.getIconFromPath(mExternalFile));
+
+            if (mBitmap != null) {
+                mImage.setImageBitmap(mBitmap);
             } else {
                 new MaterialAlertDialogBuilder(this)
                         .setIcon(R.mipmap.ic_launcher)
@@ -91,6 +99,10 @@ public class ImageViewActivity extends AppCompatActivity {
                         .setMessage(getString(R.string.file_path_error))
                         .setCancelable(false)
                         .setPositiveButton(R.string.cancel, (dialogInterface, i) -> finish()).show();
+            }
+
+            if (mFile != null && mFile.exists()) {
+                mTitle.setText(mFile.getName());
             }
         } else if (path != null) {
             mTitle.setText(new File(path).getName());
@@ -100,14 +112,14 @@ public class ImageViewActivity extends AppCompatActivity {
             mImage.setImageDrawable(AppData.getAppIcon(Common.getAppID(), this));
         }
 
-        if (mExternalFile != null) {
+        if (mFile != null) {
             mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_settings));
         } else {
             mMenu.setImageDrawable(getResources().getDrawable(R.drawable.ic_export));
         }
 
         mMenu.setOnClickListener(v -> {
-            if (mExternalFile != null) {
+            if (mFile != null) {
                 PopupMenu popupMenu = new PopupMenu(this, mMenu);
                 Menu menu = popupMenu.getMenu();
                 menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.share));
@@ -116,7 +128,7 @@ public class ImageViewActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case 0:
                             Uri uriFile = FileProvider.getUriForFile(this,
-                                    BuildConfig.APPLICATION_ID + ".provider", new File(mExternalFile));
+                                    BuildConfig.APPLICATION_ID + ".provider", mFile);
                             Intent share = new Intent(Intent.ACTION_SEND);
                             share.setType("image/*");
                             share.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_summary, BuildConfig.VERSION_NAME));
@@ -126,11 +138,11 @@ public class ImageViewActivity extends AppCompatActivity {
                             break;
                         case 1:
                             new MaterialAlertDialogBuilder(this)
-                                    .setMessage(getString(R.string.delete_question, new File(mExternalFile).getName()))
+                                    .setMessage(getString(R.string.delete_question, mFile))
                                     .setNegativeButton(getString(R.string.cancel), (dialog1, id1) -> {
                                     })
                                     .setPositiveButton(R.string.delete, (dialogInterface, i) -> {
-                                        APKEditorUtils.delete(mExternalFile);
+                                        mFile.delete();
                                         finish();
                                     }).show();
                             break;

@@ -29,7 +29,6 @@ import net.dongliu.apk.parser.ApkFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -162,13 +161,13 @@ public class APKExplorer {
     }
 
     public static void saveImage(Bitmap bitmap, String path) {
-        File file = new File(path);
         try {
-            OutputStream outStream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-            outStream.flush();
-            outStream.close();
-        } catch (IOException ignored) {}
+            FileOutputStream out = new FileOutputStream(path);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+        } catch(Exception ignored) {
+        }
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {

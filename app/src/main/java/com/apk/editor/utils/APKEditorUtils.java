@@ -291,8 +291,7 @@ public class APKEditorUtils {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 
-    public static String getPath(File file) {
-        String path = file.getAbsolutePath();
+    public static String getPath(String path) {
         if (path.startsWith("/document/raw:")) {
             path = path.replace("/document/raw:", "");
         } else if (path.startsWith("/document/primary:")) {
