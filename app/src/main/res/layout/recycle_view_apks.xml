@@ -26,7 +26,7 @@
                     android:scaleType="fitCenter"
                     android:layout_marginEnd="10dp" />
 
-                <LinearLayout
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="45dp"
@@ -62,7 +62,7 @@
                                     android:layout_gravity="end"
                                     android:visibility="gone" />
                         </FrameLayout>
-                </LinearLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/delete"

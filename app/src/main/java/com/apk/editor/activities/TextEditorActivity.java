@@ -12,13 +12,13 @@ import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.view.Menu;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -58,7 +58,7 @@ public class TextEditorActivity extends AppCompatActivity {
         AppCompatImageButton mBack = findViewById(R.id.back);
         AppCompatImageButton mMenu = findViewById(R.id.menu);
         AppCompatImageButton mSave = findViewById(R.id.save);
-        LinearLayout mMainLayout = findViewById(R.id.main_layout);
+        LinearLayoutCompat mMainLayout = findViewById(R.id.main_layout);
         MaterialTextView mTitle = findViewById(R.id.title);
         mText = findViewById(R.id.text);
 
@@ -70,7 +70,7 @@ public class TextEditorActivity extends AppCompatActivity {
 
         if (getIntent().getData() != null) {
             if (APKExplorer.isPermissionDenied(this)) {
-                LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
+                LinearLayoutCompat mPermissionLayout = findViewById(R.id.permission_layout);
                 MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
                 mPermissionLayout.setVisibility(View.VISIBLE);
                 mMainLayout.setVisibility(View.GONE);

@@ -1,4 +1,4 @@
-<LinearLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -41,4 +41,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="-10dp" />
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

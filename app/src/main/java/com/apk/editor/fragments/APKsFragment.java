@@ -14,12 +14,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -55,7 +55,7 @@ public class APKsFragment extends Fragment {
     private AppCompatEditText mSearchWord;
     private boolean mExit;
     private final Handler mHandler = new Handler();
-    private LinearLayout mProgress;
+    private LinearLayoutCompat mProgress;
     private MaterialTextView mAppTitle;
     private RecyclerView mRecyclerView;
     private APKsAdapter mRecycleViewAdapter;

@@ -9,10 +9,10 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.BuildConfig;
@@ -89,7 +89,7 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final AppCompatImageButton mIcon;
         private final MaterialTextView Description, Title;
-        private final LinearLayout mRVLayout;
+        private final LinearLayoutCompat mRVLayout;
 
         public ViewHolder(View view) {
             super(view);

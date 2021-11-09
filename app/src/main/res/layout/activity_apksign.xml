@@ -1,4 +1,4 @@
-<LinearLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -61,7 +61,7 @@
                     android:background="@null"
                     android:clickable="false" />
 
-                <LinearLayout
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -86,7 +86,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/private_key_summary"
                             android:textStyle="bold|italic" />
-                </LinearLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/clear_key"
@@ -113,7 +113,7 @@
                     android:background="@null"
                     android:clickable="false" />
 
-                <LinearLayout
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -138,7 +138,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/rsa_template_summary"
                             android:textStyle="bold|italic" />
-                </LinearLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/clear_rsa"
@@ -149,4 +149,4 @@
                     android:src="@drawable/ic_delete"
                     android:background="@null" />
         </FrameLayout>
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

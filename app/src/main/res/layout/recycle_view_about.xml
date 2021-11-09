@@ -1,4 +1,4 @@
-<LinearLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     android:id="@+id/rv_about"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
             android:layout_gravity="center_vertical"
             android:background="@null" />
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -39,5 +39,5 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold|italic"
                     android:focusable="false" />
-        </LinearLayout>
-</LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

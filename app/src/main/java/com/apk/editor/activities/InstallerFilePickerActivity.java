@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,7 +37,7 @@ import java.util.Objects;
  */
 public class InstallerFilePickerActivity extends AppCompatActivity {
 
-    private LinearLayout mProgressLayout;
+    private LinearLayoutCompat mProgressLayout;
     private InstallerFilePickerAdapter mRecycleViewAdapter;
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
@@ -59,7 +59,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
         mBack.setOnClickListener(v -> super.onBackPressed());
 
         if (APKExplorer.isPermissionDenied(this)) {
-            LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
+            LinearLayoutCompat mPermissionLayout = findViewById(R.id.permission_layout);
             MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
             mPermissionLayout.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);

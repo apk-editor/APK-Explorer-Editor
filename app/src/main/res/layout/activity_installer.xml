@@ -14,7 +14,7 @@
             android:textSize="18sp"
             android:padding="10dp" />
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -31,7 +31,7 @@
                     android:scaleType="fitCenter"
                     android:layout_marginEnd="10dp" />
 
-                <LinearLayout
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -58,10 +58,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical" />
-                </LinearLayout>
-        </LinearLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -110,5 +110,5 @@
                             android:layout_margin="10dp"
                             android:textSize="17sp" />
                 </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 </RelativeLayout>

@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,7 +41,7 @@
                 android:textSize="18sp"
                 android:padding="10dp" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
@@ -69,7 +69,7 @@
                     android:src="@drawable/ic_settings"
                     android:tint="?attr/colorAccent"
                     android:visibility="gone" />
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
         </FrameLayout>
 
         <com.google.android.material.card.MaterialCardView
@@ -91,7 +91,7 @@
                     android:textSize="15sp" />
             </androidx.core.widget.NestedScrollView>
         </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <include layout="@layout/permission_layout" />
 </RelativeLayout>

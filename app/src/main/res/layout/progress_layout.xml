@@ -1,4 +1,4 @@
-<LinearLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     android:id="@+id/progress_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,4 +16,4 @@
         android:indeterminate="true"
         android:paddingStart="15dp"
         android:paddingEnd="15dp" />
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

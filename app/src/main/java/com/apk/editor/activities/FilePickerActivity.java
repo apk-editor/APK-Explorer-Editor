@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +37,7 @@ import java.util.Objects;
 public class FilePickerActivity extends AppCompatActivity {
 
     private FilePickerAdapter mRecycleViewAdapter;
-    private LinearLayout mProgressLayout;
+    private LinearLayoutCompat mProgressLayout;
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
 

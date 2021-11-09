@@ -1,4 +1,4 @@
-<LinearLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -49,7 +49,7 @@
                     android:src="@mipmap/ic_launcher_round"
                     android:layout_gravity="start" />
 
-                <LinearLayout
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="60dp"
@@ -74,7 +74,7 @@
                             android:layout_gravity="start"
                             android:textIsSelectable="true"
                             android:textSize="13sp" />
-                </LinearLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
         </FrameLayout>
 
         <com.google.android.material.textview.MaterialTextView
@@ -94,4 +94,4 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp" />
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

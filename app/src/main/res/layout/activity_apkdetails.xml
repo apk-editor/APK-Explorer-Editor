@@ -25,7 +25,7 @@
                 android:layout_gravity="center"
                 android:padding="10dp" />
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -52,7 +52,7 @@
                     android:visibility="gone"
                     android:gravity="start"
                     android:textSize="15sp" />
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <com.google.android.material.tabs.TabLayout

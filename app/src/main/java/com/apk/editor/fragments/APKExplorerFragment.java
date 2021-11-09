@@ -8,11 +8,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +41,7 @@ import java.util.Objects;
 public class APKExplorerFragment extends androidx.fragment.app.Fragment {
 
     private MaterialTextView mTitle;
-    private LinearLayout mProgressLayout;
+    private LinearLayoutCompat mProgressLayout;
     private RecyclerView mRecyclerView;
     private APKExplorerAdapter mRecycleViewAdapter;
 

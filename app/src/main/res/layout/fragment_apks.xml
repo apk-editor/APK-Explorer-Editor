@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="50dp"
@@ -21,7 +21,7 @@
             android:paddingEnd="10dp"
             android:paddingTop="5dp" >
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -51,7 +51,7 @@
                     android:visibility="gone"
                     android:gravity="center"
                     android:maxLines="1" />
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/search_button"
@@ -90,9 +90,9 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -131,5 +131,5 @@
                 android:textSize="17sp"
                 android:gravity="center" />
         </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </RelativeLayout>

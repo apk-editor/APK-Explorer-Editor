@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center" >
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -64,7 +64,7 @@
                 android:padding="10dp"
                 android:layout_gravity="center" />
         </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <include layout="@layout/permission_layout" />
 </RelativeLayout>
