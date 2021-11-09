@@ -18,6 +18,7 @@ import android.provider.MediaStore;
 
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
@@ -113,8 +114,8 @@ public class APKExplorer {
 
     public static void setIcon(AppCompatImageButton icon, Drawable drawable, Context context) {
         icon.setImageDrawable(drawable);
-        icon.setColorFilter(APKEditorUtils.isDarkTheme(context) ? context.getResources().getColor(R.color.colorWhite) :
-                context.getResources().getColor(R.color.colorBlack));
+        icon.setColorFilter(APKEditorUtils.isDarkTheme(context) ? ContextCompat.getColor(context, R.color.colorWhite) :
+                ContextCompat.getColor(context, R.color.colorBlack));
     }
 
     public static int getSpanCount(Activity activity) {

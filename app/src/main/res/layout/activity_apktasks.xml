@@ -91,7 +91,6 @@
                     android:padding="10dp">
 
                         <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/details_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -99,6 +98,7 @@
                             android:textStyle="bold|italic"
                             android:text="@string/details"
                             android:layout_margin="10dp"
+                            android:clickable="false"
                             android:textSize="17sp" />
                 </com.google.android.material.card.MaterialCardView>
 

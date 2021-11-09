@@ -178,13 +178,15 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
     private void retainDialog() {
         if (APKEditorUtils.getString("projectAction", null, requireActivity()) == null) {
             new MaterialAlertDialogBuilder(requireActivity())
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(R.string.app_name)
                     .setMessage(R.string.save_projects_question)
-                    .setNeutralButton(getString(R.string.delete), (dialog, id) -> {
+                    .setNeutralButton(getString(R.string.cancel), (dialog, id) -> {
+                    })
+                    .setNegativeButton(getString(R.string.delete), (dialog, id) -> {
                         Projects.deleteProject(new File(requireActivity().getCacheDir().getPath(), Common.getAppID() != null ? Common.getAppID() :
                                 new File(Common.getPath()).getName()), requireActivity());
                         requireActivity().finish();
-                    })
-                    .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                     })
                     .setPositiveButton(getString(R.string.save), (dialog, id) -> requireActivity().finish()).show();
         } else if (APKEditorUtils.getString("projectAction", null, requireActivity()).equals(getString(R.string.delete))) {

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,7 +57,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 if (APKData.getAppIcon(data.get(position) + "/base.apk", holder.mAppName.getContext()) != null) {
                     holder.mAppIcon.setImageDrawable(APKData.getAppIcon(data.get(position) + "/base.apk", holder.mAppName.getContext()));
                 } else {
-                    holder.mAppIcon.setImageDrawable(holder.mAppIcon.getResources().getDrawable(R.drawable.ic_android));
+                    holder.mAppIcon.setImageDrawable(ContextCompat.getDrawable(holder.mAppIcon.getContext(), R.drawable.ic_android));
                     holder.mAppIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mAppIcon.getContext()));
                 }
                 if (Common.getSearchWord() != null && Common.isTextMatched(new File(data.get(position)).getName(), Common.getSearchWord())) {
@@ -95,7 +96,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 if (APKData.getAppIcon(data.get(position), holder.mAppName.getContext()) != null) {
                     holder.mAppIcon.setImageDrawable(APKData.getAppIcon(data.get(position), holder.mAppName.getContext()));
                 } else {
-                    holder.mAppIcon.setImageDrawable(holder.mAppIcon.getResources().getDrawable(R.drawable.ic_android));
+                    holder.mAppIcon.setImageDrawable(ContextCompat.getDrawable(holder.mAppIcon.getContext(), R.drawable.ic_android));
                     holder.mAppIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mAppIcon.getContext()));
                 }
                 if (APKData.getAppName(data.get(position), holder.mAppName.getContext()) != null) {

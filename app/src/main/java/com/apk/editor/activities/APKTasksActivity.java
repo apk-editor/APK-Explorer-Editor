@@ -1,6 +1,7 @@
 package com.apk.editor.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
@@ -40,7 +42,6 @@ public class APKTasksActivity extends AppCompatActivity {
         mProgress = findViewById(R.id.progress);
         mCancel = findViewById(R.id.cancel);
         mDetails = findViewById(R.id.details);
-        MaterialTextView mDetailsText = findViewById(R.id.details_title);
         mError = findViewById(R.id.error);
         mOutputPath = findViewById(R.id.output_path);
         mTaskSummary = findViewById(R.id.task_summary);
@@ -50,10 +51,10 @@ public class APKTasksActivity extends AppCompatActivity {
         mSuccess.setTextColor(Color.GREEN);
 
         if (Common.isBuilding()) {
-            mIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_build));
+            mIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_build));
         } else {
-            mIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_explore));
-            mIcon.setColorFilter(getResources().getColor(R.color.colorBlue));
+            mIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_explore));
+            mIcon.setColorFilter(ContextCompat.getColor(this, R.color.colorBlue));
         }
 
         mOutputPath.setText(getString(R.string.resigned_apks_path, APKData.getExportAPKsPath(this)));
@@ -73,12 +74,12 @@ public class APKTasksActivity extends AppCompatActivity {
 
         mCancel.setOnClickListener(v -> onBackPressed());
 
-        refreshStatus();
+        refreshStatus(this);
     }
 
-    public void refreshStatus() {
+    public void refreshStatus(Activity activity) {
         new Thread() {
-            @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
+            @SuppressLint("SetTextI18n")
             @Override
             public void run() {
                 try {
@@ -110,11 +111,11 @@ public class APKTasksActivity extends AppCompatActivity {
                                     mCancel.setVisibility(View.VISIBLE);
                                     mOutputPath.setVisibility(View.VISIBLE);
                                     if (Common.getError() > 0) {
-                                        mIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_clear));
+                                        mIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_clear));
                                         mIcon.setColorFilter(Color.RED);
                                         mDetails.setVisibility(View.VISIBLE);
                                     } else {
-                                        mIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_check));
+                                        mIcon.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_check));
                                         mIcon.setColorFilter(Color.GREEN);
                                     }
                                     mTaskSummary.setVisibility(View.GONE);

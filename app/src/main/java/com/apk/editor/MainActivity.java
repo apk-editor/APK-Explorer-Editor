@@ -11,6 +11,7 @@ import com.apk.editor.fragments.ApplicationsFragment;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.BottomNavView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView mBottomNav = findViewById(R.id.bottom_navigation);
         AppCompatImageButton mSettings = findViewById(R.id.settings_menu);
 
-        mBottomNav.setOnNavigationItemSelectedListener(navListener);
+        mBottomNav.setOnItemSelectedListener(navListener);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private final BottomNavigationView.OnNavigationItemSelectedListener navListener
+    private final NavigationBarView.OnItemSelectedListener navListener
             = menuItem -> {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 BottomNavView.getNavMenu(menuItem)).commit();

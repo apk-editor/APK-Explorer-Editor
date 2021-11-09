@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -46,9 +46,9 @@ public class InstallerFilePickerAdapter extends RecyclerView.Adapter<InstallerFi
     public void onBindViewHolder(@NonNull InstallerFilePickerAdapter.ViewHolder holder, int position) {
         try {
             if (new File(this.data.get(position)).isDirectory()) {
-                holder.mIcon.setImageDrawable(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_folder));
+                holder.mIcon.setImageDrawable(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_folder));
                 if (APKEditorUtils.isDarkTheme(holder.mIcon.getContext())) {
-                    holder.mIcon.setBackground(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_circle));
+                    holder.mIcon.setBackground(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_circle));
                 }
                 holder.mIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mIcon.getContext()));
                 holder.mDescription.setVisibility(View.GONE);
@@ -73,9 +73,9 @@ public class InstallerFilePickerAdapter extends RecyclerView.Adapter<InstallerFi
                 holder.mSize.setVisibility(View.VISIBLE);
                 holder.mCheckBox.setVisibility(View.VISIBLE);
             } else {
-                holder.mIcon.setImageDrawable(holder.mIcon.getContext().getResources().getDrawable(R.drawable.ic_bundle));
-                holder.mIcon.setColorFilter(APKEditorUtils.isDarkTheme(holder.mIcon.getContext()) ? holder.mIcon.getContext()
-                        .getResources().getColor(R.color.colorWhite) : holder.mIcon.getContext().getResources().getColor(R.color.colorBlack));
+                holder.mIcon.setImageDrawable(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_bundle));
+                holder.mIcon.setColorFilter(APKEditorUtils.isDarkTheme(holder.mIcon.getContext()) ? ContextCompat.getColor(
+                        holder.mIcon.getContext(), R.color.colorWhite) : ContextCompat.getColor(holder.mIcon.getContext(), R.color.colorBlack));
                 holder.mSize.setText(AppData.getAPKSize(new File(data.get(position)).length()));
                 holder.mSize.setVisibility(View.VISIBLE);
             }
