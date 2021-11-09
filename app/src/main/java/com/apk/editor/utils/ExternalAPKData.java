@@ -1,6 +1,12 @@
 package com.apk.editor.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.OpenableColumns;
+import android.webkit.MimeTypeMap;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.recyclerViewItems.APKItems;
@@ -74,6 +80,20 @@ public class ExternalAPKData {
 
     public static String getCertificate() {
         return mCertificate;
+    }
+
+    public static String getExtension(Uri uri, Context context) {
+        if (APKEditorUtils.isDocumentsUI(uri)) {
+            @SuppressLint("Recycle")
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+               return   MimeTypeMap.getFileExtensionFromUrl(Environment.getExternalStorageDirectory().toString() + "/Download/" + cursor.getString(nameIndex));
+            }
+        } else {
+            return MimeTypeMap.getFileExtensionFromUrl(uri.getPath());
+        }
+        return null;
     }
 
     public static String getManifest() {

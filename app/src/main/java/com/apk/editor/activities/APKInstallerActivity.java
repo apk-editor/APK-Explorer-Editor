@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -97,7 +96,7 @@ public class APKInstallerActivity extends AppCompatActivity {
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
                 APKEditorUtils.delete(getExternalFilesDir("APK").getAbsolutePath());
-                mExtension = MimeTypeMap.getFileExtensionFromUrl(uri.getPath());
+                mExtension = ExternalAPKData.getExtension(uri, activity);
                 mFile = new File(getExternalFilesDir("APK"), "tmp." + mExtension);
                 Common.getAPKList().clear();
             }
@@ -112,41 +111,39 @@ public class APKInstallerActivity extends AppCompatActivity {
                         outputStream.write(bytes, 0, read);
                     }
                 } catch (IOException ignored) {}
-                if (mExtension.equals("apk")) {
+                try {
                     APKItems mAPKData = ExternalAPKData.getAPKData(mFile.getAbsolutePath(), activity);
                     if (mAPKData != null) {
-                        try {
-                            if (mAPKData.getAppName() != null) {
-                                mName = mAPKData.getAppName();
-                            }
-                            if (mAPKData.getPackageName() != null) {
-                                mPackageName = mAPKData.getPackageName();
-                            }
-                            if (mAPKData.getIcon() != null) {
-                                mIcon = mAPKData.getIcon();
-                            }
-                            if (mAPKData.getPermissions() != null) {
-                                ExternalAPKData.setPermissions(mAPKData.getPermissions());
-                            }
-                            if (mAPKData.getManifest() != null) {
-                                ExternalAPKData.setManifest(mAPKData.getManifest());
-                            }
-                            if (APKCertificate.getCertificateDetails(mFile.getAbsolutePath(), activity) != null) {
-                                ExternalAPKData.setCertificate(APKCertificate.getCertificateDetails(mFile.getAbsolutePath(), activity));
-                            }
-                            if (mAPKData.getVersionName() != null) {
-                                ExternalAPKData.setVersionInfo(getString(R.string.version, mAPKData.getVersionName() + " (" + mAPKData.getVersionCode() + ")"));
-                            }
-                            if (mAPKData.getSDKVersion() != null) {
-                                ExternalAPKData.setSDKVersion(mAPKData.getSDKVersion(), activity);
-                            }
-                            if (mAPKData.getMinSDKVersion() != null) {
-                                ExternalAPKData.setMinSDKVersion(mAPKData.getMinSDKVersion(), activity);
-                            }
-                            ExternalAPKData.setSize(getString(R.string.size, AppData.getAPKSize(ExternalAPKData.getAPKFile().length())) + " (" + ExternalAPKData.getAPKFile().length() + " bytes)");
-                        } catch (Exception ignored) {
+                        if (mAPKData.getAppName() != null) {
+                            mName = mAPKData.getAppName();
                         }
+                        if (mAPKData.getPackageName() != null) {
+                            mPackageName = mAPKData.getPackageName();
+                        }
+                        if (mAPKData.getIcon() != null) {
+                            mIcon = mAPKData.getIcon();
+                        }
+                        if (mAPKData.getPermissions() != null) {
+                            ExternalAPKData.setPermissions(mAPKData.getPermissions());
+                        }
+                        if (mAPKData.getManifest() != null) {
+                            ExternalAPKData.setManifest(mAPKData.getManifest());
+                        }
+                        if (APKCertificate.getCertificateDetails(mFile.getAbsolutePath(), activity) != null) {
+                            ExternalAPKData.setCertificate(APKCertificate.getCertificateDetails(mFile.getAbsolutePath(), activity));
+                        }
+                        if (mAPKData.getVersionName() != null) {
+                            ExternalAPKData.setVersionInfo(getString(R.string.version, mAPKData.getVersionName() + " (" + mAPKData.getVersionCode() + ")"));
+                        }
+                        if (mAPKData.getSDKVersion() != null) {
+                            ExternalAPKData.setSDKVersion(mAPKData.getSDKVersion(), activity);
+                        }
+                        if (mAPKData.getMinSDKVersion() != null) {
+                            ExternalAPKData.setMinSDKVersion(mAPKData.getMinSDKVersion(), activity);
+                        }
+                        ExternalAPKData.setSize(getString(R.string.size, AppData.getAPKSize(mFile.length())) + " (" + mFile.length() + " bytes)");
                     }
+                } catch (Exception ignored) {
                 }
             }
 
@@ -157,14 +154,10 @@ public class APKInstallerActivity extends AppCompatActivity {
                 } catch (IllegalArgumentException ignored) {
                 }
                 if (mFile.exists()) {
-                    if (mExtension.equals("apk")) {
-                        if (mName != null || mPackageName != null || mIcon != null) {
-                            ExternalAPKData.setAPKFile(mFile);
-                            ExternalAPKData.isFMInstall(true);
-                            loadAPKDetails(activity);
-                        } else {
-                            finish();
-                        }
+                    if (mName != null || mPackageName != null || mIcon != null) {
+                        ExternalAPKData.setAPKFile(mFile);
+                        ExternalAPKData.isFMInstall(true);
+                        loadAPKDetails(activity);
                     } else if (mExtension.equals("apkm") || mExtension.equals("apks") || mExtension.equals("xapk")) {
                         new MaterialAlertDialogBuilder(activity)
                                 .setIcon(R.mipmap.ic_launcher)
@@ -180,7 +173,7 @@ public class APKInstallerActivity extends AppCompatActivity {
                         new MaterialAlertDialogBuilder(activity)
                                 .setIcon(R.mipmap.ic_launcher)
                                 .setTitle(R.string.split_apk_installer)
-                                .setMessage(getString(R.string.wrong_extension, ".apks/.apkm/.xapk"))
+                                .setMessage(getString(R.string.wrong_extension, ".apks/.apkm/.xapk" + mExtension))
                                 .setCancelable(false)
                                 .setPositiveButton(R.string.cancel, (dialogInterface, i) -> finish()).show();
                     }
