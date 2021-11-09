@@ -1,0 +1,7 @@
+* Largely improved APK Installation from file picker with a Brand-New APK details view.
+* AEE now use system file picker in Android 10 and above (it will sadly breaks some comfort features in Settings).
+* Settings page menu's are now visually better.
+* Now targets SDK 31 (Android 12).
+* Added Polish & Indonesian Translations & Updated French, German and Chinese translations.
+* Updated build tools and dependencies.
+* Miscellaneous changes.

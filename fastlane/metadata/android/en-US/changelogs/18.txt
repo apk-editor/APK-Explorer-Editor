@@ -1,5 +1,0 @@
-* Largely improved app loading and UI response.
-* Added option to sort apps by size, installed and updated times.
-* Fixed several issues related with APK signing.
-* Other minor UI updates.
-* Miscellaneous changes.
