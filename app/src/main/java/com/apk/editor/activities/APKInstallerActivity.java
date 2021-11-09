@@ -1,14 +1,12 @@
 package com.apk.editor.activities;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.OpenableColumns;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -18,20 +16,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.SplitAPKInstaller;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
-import java.util.Objects;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 27, 2021
  */
 public class APKInstallerActivity extends AppCompatActivity {
 
-    private String mPath;
+    private File mFile = null;
+    private String mExtension = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,50 +51,67 @@ public class APKInstallerActivity extends AppCompatActivity {
         }
 
         if (getIntent().getData() != null) {
-            Uri uri = getIntent().getData();
-            assert uri != null;
-            File file = new File(Objects.requireNonNull(uri.getPath()));
-            if (APKEditorUtils.isDocumentsUI(uri)) {
-                @SuppressLint("Recycle") Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-                if (cursor != null && cursor.moveToFirst()) {
-                    mPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" +
-                            cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                }
-            } else {
-                mPath = APKEditorUtils.getPath(file);
+            manageInstallation(getIntent().getData(), this).execute();
+        }
+    }
+
+    private AsyncTasks manageInstallation(Uri uri, Activity activity) {
+        return new AsyncTasks() {
+
+            @Override
+            public void onPreExecute() {
+                APKEditorUtils.delete(getExternalFilesDir("APK").getAbsolutePath());
+                mExtension = MimeTypeMap.getFileExtensionFromUrl(uri.getPath());
+                mFile = new File(getExternalFilesDir("APK"), "tmp." + mExtension);
             }
-            if (mPath != null && APKEditorUtils.exist(mPath)) {
-                if (mPath.endsWith(".apk")) {
-                    SplitAPKInstaller.installAPK(new File(mPath), this);
-                    finish();
-                } else if (mPath.endsWith(".apkm") || mPath.endsWith(".apks") || mPath.endsWith(".xapk")) {
-                    new MaterialAlertDialogBuilder(this)
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(R.string.split_apk_installer)
-                            .setMessage(getString(R.string.bundle_install_question, new File(mPath).getName()))
-                            .setCancelable(false)
-                            .setNegativeButton(R.string.cancel, (dialogInterface, i) -> finish())
-                            .setPositiveButton(R.string.install, (dialogInterface, i) -> {
-                                SplitAPKInstaller.handleAppBundle(mPath, this);
-                                finish();
-                            }).show();
+
+            @Override
+            public void doInBackground() {
+                try (FileOutputStream outputStream = new FileOutputStream(mFile, false)) {
+                    InputStream inputStream = getContentResolver().openInputStream(uri);
+                    int read;
+                    byte[] bytes = new byte[8192];
+                    while ((read = inputStream.read(bytes)) != -1) {
+                        outputStream.write(bytes, 0, read);
+                    }
+                } catch (IOException ignored) {}
+            }
+
+            @Override
+            public void onPostExecute() {
+                if (mFile.exists()) {
+                    if (mExtension.equals("apk")) {
+                        SplitAPKInstaller.installAPK(mFile, activity);
+                        finish();
+                    } else if (mExtension.equals("apkm") || mExtension.equals("apks") || mExtension.equals("xapk")) {
+                        new MaterialAlertDialogBuilder(activity)
+                                .setIcon(R.mipmap.ic_launcher)
+                                .setTitle(R.string.split_apk_installer)
+                                .setMessage(getString(R.string.bundle_install_question, ""))
+                                .setCancelable(false)
+                                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> finish())
+                                .setPositiveButton(R.string.install, (dialogInterface, i) -> {
+                                    SplitAPKInstaller.handleAppBundle(mFile.getAbsolutePath(), activity);
+                                    finish();
+                                }).show();
+                    } else {
+                        new MaterialAlertDialogBuilder(activity)
+                                .setIcon(R.mipmap.ic_launcher)
+                                .setTitle(R.string.split_apk_installer)
+                                .setMessage(getString(R.string.wrong_extension, ".apks/.apkm/.xapk"))
+                                .setCancelable(false)
+                                .setPositiveButton(R.string.cancel, (dialogInterface, i) -> finish()).show();
+                    }
                 } else {
-                    new MaterialAlertDialogBuilder(this)
+                    new MaterialAlertDialogBuilder(activity)
                             .setIcon(R.mipmap.ic_launcher)
                             .setTitle(R.string.split_apk_installer)
-                            .setMessage(getString(R.string.wrong_extension, ".apks/.apkm/.xapk"))
+                            .setMessage(getString(R.string.file_path_error))
                             .setCancelable(false)
                             .setPositiveButton(R.string.cancel, (dialogInterface, i) -> finish()).show();
                 }
-            } else {
-                new MaterialAlertDialogBuilder(this)
-                        .setIcon(R.mipmap.ic_launcher)
-                        .setTitle(R.string.split_apk_installer)
-                        .setMessage(getString(R.string.file_path_error))
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.cancel, (dialogInterface, i) -> finish()).show();
             }
-        }
+        };
     }
 
     @Override
