@@ -1,17 +1,21 @@
 package com.apk.editor;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.viewpager.widget.ViewPager;
 
 import com.apk.editor.activities.SettingsActivity;
+import com.apk.editor.fragments.APKsFragment;
+import com.apk.editor.fragments.AboutFragment;
 import com.apk.editor.fragments.ApplicationsFragment;
-import com.apk.editor.utils.BottomNavView;
+import com.apk.editor.fragments.ProjectsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
+import in.sunilpaulmathew.sCommon.Adapters.sPagerAdapter;
 import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
@@ -19,6 +23,7 @@ import in.sunilpaulmathew.sCommon.Utils.sUtils;
  */
 public class MainActivity extends AppCompatActivity {
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,12 +33,39 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView mBottomNav = findViewById(R.id.bottom_navigation);
         AppCompatImageButton mSettings = findViewById(R.id.settings_menu);
+        ViewPager mViewPager = findViewById(R.id.view_pager);
 
-        mBottomNav.setOnItemSelectedListener(navListener);
+        sPagerAdapter adapter = new sPagerAdapter(getSupportFragmentManager());
+
+        adapter.AddFragment(new ApplicationsFragment(), null);
+        adapter.AddFragment(new ProjectsFragment(), null);
+        adapter.AddFragment(new APKsFragment(), null);
+        adapter.AddFragment(new AboutFragment(), null);
+
+        mViewPager.setAdapter(adapter);
+
+        mBottomNav.setOnItemSelectedListener(
+                menuItem -> {
+                    switch (menuItem.getItemId()) {
+                        case R.id.nav_apps:
+                            mViewPager.setCurrentItem(0);
+                            break;
+                        case R.id.nav_projects:
+                            mViewPager.setCurrentItem(1);
+                            break;
+                        case R.id.nav_apks:
+                            mViewPager.setCurrentItem(2);
+                            break;
+                        case R.id.nav_about:
+                            mViewPager.setCurrentItem(3);
+                            break;
+                    }
+                    return false;
+                }
+        );
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new ApplicationsFragment()).commit();
+            mViewPager.setCurrentItem(0);
         }
 
         mSettings.setOnClickListener(v -> {
@@ -41,12 +73,5 @@ public class MainActivity extends AppCompatActivity {
             startActivity(settings);
         });
     }
-
-    private final NavigationBarView.OnItemSelectedListener navListener
-            = menuItem -> {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                BottomNavView.getNavMenu(menuItem)).commit();
-        return true;
-    };
 
 }

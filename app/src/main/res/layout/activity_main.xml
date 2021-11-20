@@ -10,12 +10,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <FrameLayout
-            android:id="@+id/fragment_container"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="75dp" >
-        </FrameLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="75dp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <FrameLayout
