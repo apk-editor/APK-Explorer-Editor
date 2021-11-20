@@ -1,6 +1,5 @@
 package com.apk.editor.adapters;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,22 +16,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
-import com.apk.editor.activities.CreditsActivity;
 import com.apk.editor.activities.DocumentationActivity;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.recyclerViewItems.AboutItems;
+import com.apk.editor.utils.AppSettings;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.util.ArrayList;
+import java.util.List;
+
+import in.sunilpaulmathew.sCommon.Utils.sCreditsUtils;
+import in.sunilpaulmathew.sCommon.Utils.sSerializableItems;
+import in.sunilpaulmathew.sCommon.Utils.sTranslatorUtils;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
 public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> {
 
-    private static ArrayList<AboutItems> data;
+    private static List<sSerializableItems> data;
 
-    public AboutAdapter(ArrayList<AboutItems> data) {
+    public AboutAdapter(List<sSerializableItems> data) {
         AboutAdapter.data = data;
     }
 
@@ -43,21 +46,20 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
         return new AboutAdapter.ViewHolder(rowItem);
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull AboutAdapter.ViewHolder holder, int position) {
-        holder.Title.setText(data.get(position).getTitle());
-        holder.Description.setText(data.get(position).getDescription());
-        if (APKEditorUtils.isDarkTheme(holder.Title.getContext())) {
+        holder.Title.setText(data.get(position).getTextOne());
+        holder.Description.setText(data.get(position).getTextTwo());
+        if (sUtils.isDarkTheme(holder.Title.getContext())) {
             holder.Title.setTextColor(APKEditorUtils.getThemeAccentColor(holder.Title.getContext()));
         }
         if (position != 0) {
-            holder.mIcon.setColorFilter(APKEditorUtils.isDarkTheme(holder.Title.getContext()) ? Color.WHITE : Color.BLACK);
+            holder.mIcon.setColorFilter(sUtils.isDarkTheme(holder.Title.getContext()) ? Color.WHITE : Color.BLACK);
         }
         holder.mIcon.setImageDrawable(data.get(position).getIcon());
         holder.mRVLayout.setOnClickListener(v -> {
-            if (data.get(position).getURL() != null) {
-                APKEditorUtils.launchUrl(data.get(position).getURL(), (Activity) v.getContext());
+            if (data.get(position).getTextThree() != null) {
+                sUtils.launchUrl(data.get(position).getTextThree(), (Activity) v.getContext());
             } else if (position == 0) {
                 Intent settings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 settings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -68,8 +70,15 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
                 Intent documentation = new Intent(v.getContext(), DocumentationActivity.class);
                 v.getContext().startActivity(documentation);
             } else if (position == 6) {
-                Intent credits = new Intent(v.getContext(), CreditsActivity.class);
-                v.getContext().startActivity(credits);
+                new sTranslatorUtils(v.getContext().getString(R.string.app_name_short), "https://poeditor.com/join/project?hash=QztabxONOp",
+                        (Activity) v.getContext()).show();
+            } else if (position == 7) {
+                new sCreditsUtils(AppSettings.getCredits(v.getContext()),
+                        sUtils.getDrawable(R.mipmap.ic_launcher, v.getContext()),
+                        sUtils.getDrawable(R.drawable.ic_back, v.getContext()),
+                        sUtils.getColor(R.color.colorBlue, v.getContext()),
+                        18, v.getContext().getString(R.string.app_name), "2021-2022, APK Explorer & Editor",
+                        BuildConfig.VERSION_NAME).launchCredits(v.getContext());
             } else {
                 Intent share_app = new Intent();
                 share_app.setAction(Intent.ACTION_SEND);

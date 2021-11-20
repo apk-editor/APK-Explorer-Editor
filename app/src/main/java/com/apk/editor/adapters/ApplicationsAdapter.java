@@ -25,6 +25,11 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
 
+import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
+import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
+
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
@@ -60,32 +65,36 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                 holder.mAppName.setText(data.get(position).getAppName());
             }
             holder.mVersion.setText(holder.mAppName.getContext().getString(R.string.version, data.get(position).getAppVersion()));
-            holder.mSize.setText(holder.mAppName.getContext().getString(R.string.size, AppData.getAPKSize(data.get(position).getAPKSize())));
+            holder.mSize.setText(holder.mAppName.getContext().getString(R.string.size, sAPKUtils.getAPKSize(sPackageUtils
+                    .getSourceDir(data.get(position).getPackageName(), holder.mAppName.getContext()))));
             holder.mVersion.setTextColor(Color.RED);
-            holder.mSize.setTextColor(APKEditorUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
+            holder.mSize.setTextColor(sUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
             holder.mAppIcon.setOnClickListener(v -> {
                 Common.setAppID(data.get(position).getPackageName());
                 Intent imageView = new Intent(v.getContext(), ImageViewActivity.class);
                 v.getContext().startActivity(imageView);
             });
-            if (!APKEditorUtils.isDarkTheme(holder.mCard.getContext())) {
+            if (!sUtils.isDarkTheme(holder.mCard.getContext())) {
                 holder.mCard.setCardBackgroundColor(Color.LTGRAY);
             }
             holder.mSize.setVisibility(View.VISIBLE);
             holder.mVersion.setVisibility(View.VISIBLE);
             holder.mCard.setOnLongClickListener(v -> {
-                if (APKExplorer.isPermissionDenied(v.getContext()) && APKEditorUtils.getString("exportAPKsPath", "externalFiles",
+                if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext()) && sUtils.getString("exportAPKsPath", "externalFiles",
                         v.getContext()).equals("internalStorage")) {
-                    APKExplorer.requestPermission((Activity) v.getContext());
+                    sPermissionUtils.requestPermission(
+                            new String[] {
+                                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            },(Activity) v.getContext());
                     return true;
                 }
                 if (APKEditorUtils.isFullVersion(v.getContext())) {
-                    if (APKEditorUtils.getString("exportAPKs", null, v.getContext()) == null) {
+                    if (sUtils.getString("exportAPKs", null, v.getContext()) == null) {
                         AppData.getExportOptionsMenu(data.get(position).getPackageName(), v.getContext()).show();
-                    } else if (APKEditorUtils.getString("exportAPKs", null, v.getContext()).equals(v.getContext().getString(R.string.export_storage))) {
+                    } else if (sUtils.getString("exportAPKs", null, v.getContext()).equals(v.getContext().getString(R.string.export_storage))) {
                         APKData.exportApp(data.get(position).getPackageName(), v.getContext());
                     } else {
-                        if (!APKEditorUtils.getBoolean("firstSigning", false, v.getContext())) {
+                        if (!sUtils.getBoolean("firstSigning", false, v.getContext())) {
                             AppData.getSigningOptionsMenu(data.get(position).getPackageName(), v.getContext()).show();
                         } else {
                             APKData.reSignAPKs(data.get(position).getPackageName(), false, (Activity) v.getContext());

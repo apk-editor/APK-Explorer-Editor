@@ -20,9 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.adapters.FilePickerAdapter;
-import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.Common;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -30,6 +28,10 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.util.Objects;
+
+import in.sunilpaulmathew.sCommon.Utils.sExecutor;
+import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 05, 2021
@@ -54,12 +56,15 @@ public class FilePickerActivity extends AppCompatActivity {
 
         mBack.setOnClickListener(v -> super.onBackPressed());
 
-        if (APKExplorer.isPermissionDenied(this)) {
+        if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,this)) {
             LinearLayout mPermissionLayout = findViewById(R.id.permission_layout);
             MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
             mPermissionLayout.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
-            mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
+            mPermissionGrant.setOnClickListener(v -> sPermissionUtils.requestPermission(
+                    new String[] {
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },this));
             return;
         }
 
@@ -83,17 +88,17 @@ public class FilePickerActivity extends AppCompatActivity {
                         })
                         .setPositiveButton(Common.getFileToReplace() != null ? R.string.replace : R.string.select, (dialog, id) -> {
                             if (Common.getFileToReplace() != null) {
-                                APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, this).get(position), Common.getFileToReplace());
+                                sUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(Common.getFileToReplace()));
                                 Common.setFileToReplace(null);
                             }  else {
                                 new File(getFilesDir(), "signing").mkdirs();
                                 if (Common.hasPrivateKey()) {
-                                    APKEditorUtils.saveString("PrivateKey", APKExplorer.getData(getFilesList(), true, this).get(position), this);
-                                    APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, this).get(position), getFilesDir()+ "/signing/APKEditor.pk8");
+                                    sUtils.saveString("PrivateKey", APKExplorer.getData(getFilesList(), true, this).get(position), this);
+                                    sUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(getFilesDir(), "signing/APKEditor.pk8"));
                                     Common.setPrivateKeyStatus(false);
                                 } else {
-                                    APKEditorUtils.saveString("RSATemplate", APKExplorer.getData(getFilesList(), true, this).get(position), this);
-                                    APKEditorUtils.copy(APKExplorer.getData(getFilesList(), true, this).get(position), getFilesDir()+ "/signing/APKEditor");
+                                    sUtils.saveString("RSATemplate", APKExplorer.getData(getFilesList(), true, this).get(position), this);
+                                    sUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(getFilesDir(), "signing/APKEditor"));
                                     Common.setRSATemplateStatus(false);
                                 }
                             }
@@ -106,10 +111,10 @@ public class FilePickerActivity extends AppCompatActivity {
             PopupMenu popupMenu = new PopupMenu(this, mSortButton);
             Menu menu = popupMenu.getMenu();
             menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
-                    .setChecked(APKEditorUtils.getBoolean("az_order", true, this));
+                    .setChecked(sUtils.getBoolean("az_order", true, this));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
-                    APKEditorUtils.saveBoolean("az_order", !APKEditorUtils.getBoolean("az_order", true, this), this);
+                    sUtils.saveBoolean("az_order", !sUtils.getBoolean("az_order", true, this), this);
                     reload(this);
                 }
                 return false;
@@ -129,7 +134,7 @@ public class FilePickerActivity extends AppCompatActivity {
     }
 
     private void reload(Activity activity) {
-        new AsyncTasks() {
+        new sExecutor() {
 
             @Override
             public void onPreExecute() {

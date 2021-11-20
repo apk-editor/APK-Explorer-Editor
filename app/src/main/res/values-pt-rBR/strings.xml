@@ -7,13 +7,8 @@
     <string name="apps_exported">"APK exportados"</string>
     <string name="apps_installed">"Apps instalados"</string>
     <string name="cancel">"Cancelar"</string>
-    <string name="credits">"Crédito"</string>
-    <string name="credits_message">"Quer ver seu nome aqui? Então, por favor, me ajude a traduzir este App!"</string>
-    <string name="credits_summary">"Créditos aos colaboradores"</string>
-    <string name="copyright">"Direitos autorais: © %s"</string>
     <string name="delete">"Excluir"</string>
     <string name="delete_question">"Excluir %s?"</string>
-    <string name="dismiss">"Descartar"</string>
     <string name="documentation">"Documentação"</string>
     <string name="documentation_summary">"Confira a documentação do AEE"</string>
     <string name="donations">"Doações"</string>
@@ -57,7 +52,6 @@
     <string name="support_group">"Grupo de suporte"</string>
     <string name="support_group_summary">"Participe no grupo de suporte do AEE"</string>
     <string name="system">"Sistema"</string>
-    <string name="translate">"Traduzir"</string>
     <string name="unknown_file_message">"O AEE não tem suporte ao '%s' neste momento. Se você conhece este formato de arquivo, pode exportar este arquivo ao armazenamento do dispositivo e tentar editá-lo usando um app de terceiros. Alternativamente, você pode tentar abri-lo como um arquivo de texto?"</string>
     <string name="unsupported_file">"Arquivo sem suporte"</string>
     <string name="unsupported_file_arsc">"Você selecionou 'resources.arsc', que infelizmente não pode ser aberto por AEE.
@@ -75,7 +69,6 @@ O arquivo Dex tem código que é executado pelo Android Runtime. Cada APKs dever
 Como abrir o arquivo DEX?
 O arquivo DEX deveria ser convertido para o formato 'jar' e depois em arquivo 'Java' usando ferramenta tipo 'dex2jar' e 'JD-GUI'."</string>
     <string name="user">"Usuário"</string>
-    <string name="version">"Versão: %s"</string>
     <string name="bundles">"Pacote"</string>
     <string name="preparing_bundle">"Preparando o pacote de apps para compartilhar…"</string>
     <string name="privacy_policy">"Política de Privacidade"</string>
@@ -102,14 +95,6 @@ O arquivo DEX deveria ser convertido para o formato 'jar' e depois em arquivo 'J
     <string name="install_storage">"Instalar do armazenamento"</string>
     <string name="installer_message">"O AEE instalador de APKs tem supote aos APKs normais, APKs divididos assim como pacotes do App 'xapk', 'apks' e 'apkm'. Para inicializar uma instalação, basta selecionar o(s) arquivo(s) de instalação na tela seguinte e ler as instruções de lá."</string>
     <string name="installation_cancel_message">"Você tem certeza de quer cancelar a instalação?"</string>
-    <string name="installation_status_aborted">"A instalação foi cancelada pelo usuário"</string>
-    <string name="installation_status_bad_apks">"Os arquivos de APK selecionados são inválidos"</string>
-    <string name="installation_status_blocked">"A instalação foi bloqueada"</string>
-    <string name="installation_status_conflict">"Não foi possível instalar o App porque ele está num conflito com o app de pacote com o mesmo nome já instalado"</string>
-    <string name="installation_status_failed">"Instalação não concluída!"</string>
-    <string name="installation_status_incompatible">"O App é incompatível com este dispositivo"</string>
-    <string name="installation_status_storage">"Não há espaço suficiente no armazenamento para instalar o App"</string>
-    <string name="installation_status_success">"Instalação concluída com sucesso!"</string>
     <string name="name_empty">"O nome não pode estar vazio! Abortando."</string>
     <string name="ok">"OK"</string>
     <string name="preparing_bundle_install">"Preparando '%s' para instalação…"</string>
@@ -153,10 +138,6 @@ Localização: '%s'"</string>
     <string name="file_path_error">"Falha ao obter a localização do arquivo via Gerenciador de arquivos!"</string>
     <string name="image_viewer">"AEE visualizador de imagens"</string>
     <string name="text_editor">"AEE Editor de texto"</string>
-    <string name="app_theme">"Tema do App"</string>
-    <string name="app_theme_auto">"Autom."</string>
-    <string name="app_theme_dark">"Escuro"</string>
-    <string name="app_theme_light">"Claro"</string>
     <string name="discard">"Descartar"</string>
     <string name="discard_message">"Descartar as alterações feitas neste arquivo?"</string>
     <string name="export_path_apks">"Local de exportação (APKs)"</string>

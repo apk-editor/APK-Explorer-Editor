@@ -55,8 +55,6 @@
             android:exported="false" />
         <activity android:name=".activities.APKTasksActivity"
             android:exported="false" />
-        <activity android:name=".activities.CreditsActivity"
-            android:exported="false" />
         <activity android:name=".activities.DocumentationActivity"
             android:exported="false" />
         <activity android:name=".activities.FilePickerActivity"

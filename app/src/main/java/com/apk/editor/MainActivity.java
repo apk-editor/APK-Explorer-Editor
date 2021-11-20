@@ -8,10 +8,11 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.apk.editor.activities.SettingsActivity;
 import com.apk.editor.fragments.ApplicationsFragment;
-import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.BottomNavView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Set App Language
-        APKEditorUtils.setLanguage(this);
+        sUtils.setLanguage(this);
         setContentView(R.layout.activity_main);
 
         BottomNavigationView mBottomNav = findViewById(R.id.bottom_navigation);

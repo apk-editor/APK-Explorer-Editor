@@ -25,8 +25,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+
+import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -104,8 +104,11 @@ public class TextViewActivity extends AppCompatActivity {
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                 })
                 .setPositiveButton(getString(R.string.export), (dialog, id) -> {
-                    if (APKExplorer.isPermissionDenied(this)) {
-                        APKExplorer.requestPermission(this);
+                    if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,this)) {
+                        sPermissionUtils.requestPermission(
+                                new String[] {
+                                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                },this);
                     } else {
                         Projects.exportToStorage(mPath, new File(mPath).getName(), Common.getAppID(), this).execute();
                     }

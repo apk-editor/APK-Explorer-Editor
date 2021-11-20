@@ -15,6 +15,8 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
 
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
+
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on November 07, 2021
  */
@@ -49,13 +51,13 @@ public class TextViewAdapter extends RecyclerView.Adapter<TextViewAdapter.ViewHo
         } else if (data.get(position).contains("<uses-permission")) {
             holder.mText.setTextColor(Color.RED);
         } else if (data.get(position).contains("<activity") || data.get(position).startsWith(".method") || data.get(position).startsWith(".annotation")) {
-            holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.GREEN : Color.MAGENTA);
+            holder.mText.setTextColor(sUtils.isDarkTheme(holder.mText.getContext()) ? Color.GREEN : Color.MAGENTA);
         } else if (data.get(position).contains("<service") || data.get(position).startsWith(".end method") || data.get(position).startsWith(".end annotation")) {
-            holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.MAGENTA : Color.BLUE);
+            holder.mText.setTextColor(sUtils.isDarkTheme(holder.mText.getContext()) ? Color.MAGENTA : Color.BLUE);
         } else if (data.get(position).contains("<provider") || data.get(position).contains("</provider>")) {
-            holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.LTGRAY : Color.DKGRAY);
+            holder.mText.setTextColor(sUtils.isDarkTheme(holder.mText.getContext()) ? Color.LTGRAY : Color.DKGRAY);
         } else {
-            holder.mText.setTextColor(APKEditorUtils.isDarkTheme(holder.mText.getContext()) ? Color.WHITE : Color.BLACK);
+            holder.mText.setTextColor(sUtils.isDarkTheme(holder.mText.getContext()) ? Color.WHITE : Color.BLACK);
         }
         if (data.get(position).startsWith("#")) {
             holder.mText.setAlpha((float) 0.5);

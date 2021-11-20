@@ -26,7 +26,6 @@ import androidx.core.content.FileProvider;
 import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -38,6 +37,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
+
+import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 25, 2021
@@ -66,15 +68,18 @@ public class TextEditorActivity extends AppCompatActivity {
 
         String mPath = getIntent().getStringExtra(PATH_INTENT);
 
-        mText.setTextColor(APKEditorUtils.isDarkTheme(this) ? Color.WHITE : Color.BLACK);
+        mText.setTextColor(sUtils.isDarkTheme(this) ? Color.WHITE : Color.BLACK);
 
         if (getIntent().getData() != null) {
-            if (APKExplorer.isPermissionDenied(this)) {
+            if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,this)) {
                 LinearLayoutCompat mPermissionLayout = findViewById(R.id.permission_layout);
                 MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
                 mPermissionLayout.setVisibility(View.VISIBLE);
                 mMainLayout.setVisibility(View.GONE);
-                mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
+                mPermissionGrant.setOnClickListener(v -> sPermissionUtils.requestPermission(
+                        new String[] {
+                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        },this));
                 return;
             }
 
@@ -106,6 +111,7 @@ public class TextEditorActivity extends AppCompatActivity {
                     if (Build.VERSION.SDK_INT >= 29) {
                         mMenu.setVisibility(View.GONE);
                         mSave.setVisibility(View.GONE);
+                        mText.setFocusable(false);
                     } else {
                         mSave.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_save));
                         mMenu.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_dots));
@@ -126,10 +132,10 @@ public class TextEditorActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .setPositiveButton(R.string.cancel, (dialogInterface, i) -> finish()).show();
             }
-        } else if (mPath != null && APKEditorUtils.exist(mPath)) {
+        } else if (mPath != null && sUtils.exist(new File(mPath))) {
             mTitle.setText(new File(mPath).getName());
-            mText.setText(APKEditorUtils.read(mPath));
-            mTextContents = APKEditorUtils.read(mPath);
+            mText.setText(sUtils.read(new File(mPath)));
+            mTextContents = sUtils.read(new File(mPath));
             mSave.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_save));
             mSave.setVisibility(View.VISIBLE);
         }
@@ -184,11 +190,11 @@ public class TextEditorActivity extends AppCompatActivity {
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                 })
                 .setPositiveButton(getString(R.string.save), (dialog, id) -> {
-                    APKEditorUtils.create(text, path);
+                    sUtils.create(text, new File(path));
                     if (mExternalFile == null && path.contains("classes") && path.contains(".dex")) {
                         String parentPath = path.split(".dex")[0] + ".dex";
-                        if (!APKEditorUtils.exist(new File(parentPath, "edited").getAbsolutePath())) {
-                            APKEditorUtils.create("# Edited", new File(parentPath, "edited").getAbsolutePath());
+                        if (!sUtils.exist(new File(parentPath, "edited"))) {
+                            sUtils.create("# Edited", new File(parentPath, "edited"));
                         }
                     }
                     finish();

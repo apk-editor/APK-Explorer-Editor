@@ -24,14 +24,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.adapters.ApplicationsAdapter;
-import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppData;
-import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.Common;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Objects;
+
+import in.sunilpaulmathew.sCommon.Utils.sExecutor;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -74,23 +75,23 @@ public class ApplicationsFragment extends Fragment {
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                String mStatus = APKEditorUtils.getString("appTypes", "all", requireActivity());
+                String mStatus = sUtils.getString("appTypes", "all", requireActivity());
                 switch (tab.getPosition()) {
                     case 0:
                         if (!mStatus.equals("all")) {
-                            APKEditorUtils.saveString("appTypes", "all", requireActivity());
+                            sUtils.saveString("appTypes", "all", requireActivity());
                             loadApps(requireActivity());
                         }
                         break;
                     case 1:
                         if (!mStatus.equals("system")) {
-                            APKEditorUtils.saveString("appTypes", "system", requireActivity());
+                            sUtils.saveString("appTypes", "system", requireActivity());
                             loadApps(requireActivity());
                         }
                         break;
                     case 2:
                         if (!mStatus.equals("user")) {
-                            APKEditorUtils.saveString("appTypes", "user", requireActivity());
+                            sUtils.saveString("appTypes", "user", requireActivity());
                             loadApps(requireActivity());
                         }
                         break;
@@ -156,7 +157,7 @@ public class ApplicationsFragment extends Fragment {
                     mExit = false;
                     requireActivity().finish();
                 } else {
-                    APKEditorUtils.snackbar(requireActivity().findViewById(android.R.id.content), getString(R.string.press_back));
+                    sUtils.snackBar(requireActivity().findViewById(android.R.id.content), getString(R.string.press_back)).show();
                     mExit = true;
                     mHandler.postDelayed(() -> mExit = false, 2000);
                 }
@@ -167,7 +168,7 @@ public class ApplicationsFragment extends Fragment {
     }
 
     private int getTabPosition(Activity activity) {
-        String mStatus = APKEditorUtils.getString("appTypes", "all", activity);
+        String mStatus = sUtils.getString("appTypes", "all", activity);
         if (mStatus.equals("user")) {
             return 2;
         } else if (mStatus.equals("system")) {
@@ -178,7 +179,7 @@ public class ApplicationsFragment extends Fragment {
     }
 
     private void loadApps(Activity activity) {
-        new AsyncTasks() {
+        new sExecutor() {
 
             @Override
             public void onPreExecute() {
@@ -207,19 +208,19 @@ public class ApplicationsFragment extends Fragment {
         SubMenu sort = menu.addSubMenu(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_by));
 
         sort.add(0, 1, Menu.NONE, getString(R.string.sort_by_name)).setCheckable(true)
-                .setChecked(APKEditorUtils.getBoolean("sort_name", false, activity));
+                .setChecked(sUtils.getBoolean("sort_name", false, activity));
         sort.add(0, 2, Menu.NONE, getString(R.string.sort_by_id)).setCheckable(true)
-                .setChecked(APKEditorUtils.getBoolean("sort_id", true, activity));
+                .setChecked(sUtils.getBoolean("sort_id", true, activity));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             sort.add(0, 3, Menu.NONE, getString(R.string.sort_by_installed)).setCheckable(true)
-                    .setChecked(APKEditorUtils.getBoolean("sort_installed", false, activity));
+                    .setChecked(sUtils.getBoolean("sort_installed", false, activity));
             sort.add(0, 4, Menu.NONE, getString(R.string.sort_by_updated)).setCheckable(true)
-                    .setChecked(APKEditorUtils.getBoolean("sort_updated", false, activity));
+                    .setChecked(sUtils.getBoolean("sort_updated", false, activity));
             sort.add(0, 5, Menu.NONE, getString(R.string.sort_by_size)).setCheckable(true)
-                    .setChecked(APKEditorUtils.getBoolean("sort_size", false, activity));
+                    .setChecked(sUtils.getBoolean("sort_size", false, activity));
         }
-        menu.add(Menu.NONE, 6, Menu.NONE, getString(APKEditorUtils.getBoolean("sort_size", false, activity) ?
-                R.string.sort_size : R.string.sort_order)).setCheckable(true).setChecked(APKEditorUtils.getBoolean(
+        menu.add(Menu.NONE, 6, Menu.NONE, getString(sUtils.getBoolean("sort_size", false, activity) ?
+                R.string.sort_size : R.string.sort_order)).setCheckable(true).setChecked(sUtils.getBoolean(
                         "az_order", true, activity));
         sort.setGroupCheckable(0, true, true);
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -227,57 +228,57 @@ public class ApplicationsFragment extends Fragment {
                 case 0:
                     break;
                 case 1:
-                    if (!APKEditorUtils.getBoolean("sort_name", false, activity)) {
-                        APKEditorUtils.saveBoolean("sort_name", true, activity);
-                        APKEditorUtils.saveBoolean("sort_id", false, activity);
-                        APKEditorUtils.saveBoolean("sort_installed", false, activity);
-                        APKEditorUtils.saveBoolean("sort_updated", false, activity);
-                        APKEditorUtils.saveBoolean("sort_size", false, activity);
+                    if (!sUtils.getBoolean("sort_name", false, activity)) {
+                        sUtils.saveBoolean("sort_name", true, activity);
+                        sUtils.saveBoolean("sort_id", false, activity);
+                        sUtils.saveBoolean("sort_installed", false, activity);
+                        sUtils.saveBoolean("sort_updated", false, activity);
+                        sUtils.saveBoolean("sort_size", false, activity);
                         loadApps(activity);
                     }
                     break;
                 case 2:
-                    if (!APKEditorUtils.getBoolean("sort_id", true, activity)) {
-                        APKEditorUtils.saveBoolean("sort_name", false, activity);
-                        APKEditorUtils.saveBoolean("sort_id", true, activity);
-                        APKEditorUtils.saveBoolean("sort_installed", false, activity);
-                        APKEditorUtils.saveBoolean("sort_updated", false, activity);
-                        APKEditorUtils.saveBoolean("sort_size", false, activity);
+                    if (!sUtils.getBoolean("sort_id", true, activity)) {
+                        sUtils.saveBoolean("sort_name", false, activity);
+                        sUtils.saveBoolean("sort_id", true, activity);
+                        sUtils.saveBoolean("sort_installed", false, activity);
+                        sUtils.saveBoolean("sort_updated", false, activity);
+                        sUtils.saveBoolean("sort_size", false, activity);
                         loadApps(activity);
                     }
                     break;
                 case 3:
-                    if (!APKEditorUtils.getBoolean("sort_installed", false, activity)) {
-                        APKEditorUtils.saveBoolean("sort_name", false, activity);
-                        APKEditorUtils.saveBoolean("sort_id", false, activity);
-                        APKEditorUtils.saveBoolean("sort_installed", true, activity);
-                        APKEditorUtils.saveBoolean("sort_updated", false, activity);
-                        APKEditorUtils.saveBoolean("sort_size", false, activity);
+                    if (!sUtils.getBoolean("sort_installed", false, activity)) {
+                        sUtils.saveBoolean("sort_name", false, activity);
+                        sUtils.saveBoolean("sort_id", false, activity);
+                        sUtils.saveBoolean("sort_installed", true, activity);
+                        sUtils.saveBoolean("sort_updated", false, activity);
+                        sUtils.saveBoolean("sort_size", false, activity);
                         loadApps(activity);
                     }
                     break;
                 case 4:
-                    if (!APKEditorUtils.getBoolean("sort_updated", false, activity)) {
-                        APKEditorUtils.saveBoolean("sort_name", false, activity);
-                        APKEditorUtils.saveBoolean("sort_id", false, activity);
-                        APKEditorUtils.saveBoolean("sort_installed", false, activity);
-                        APKEditorUtils.saveBoolean("sort_updated", true, activity);
-                        APKEditorUtils.saveBoolean("sort_size", false, activity);
+                    if (!sUtils.getBoolean("sort_updated", false, activity)) {
+                        sUtils.saveBoolean("sort_name", false, activity);
+                        sUtils.saveBoolean("sort_id", false, activity);
+                        sUtils.saveBoolean("sort_installed", false, activity);
+                        sUtils.saveBoolean("sort_updated", true, activity);
+                        sUtils.saveBoolean("sort_size", false, activity);
                         loadApps(activity);
                     }
                     break;
                 case 5:
-                    if (!APKEditorUtils.getBoolean("sort_size", false, activity)) {
-                        APKEditorUtils.saveBoolean("sort_name", false, activity);
-                        APKEditorUtils.saveBoolean("sort_id", false, activity);
-                        APKEditorUtils.saveBoolean("sort_installed", false, activity);
-                        APKEditorUtils.saveBoolean("sort_updated", false, activity);
-                        APKEditorUtils.saveBoolean("sort_size", true, activity);
+                    if (!sUtils.getBoolean("sort_size", false, activity)) {
+                        sUtils.saveBoolean("sort_name", false, activity);
+                        sUtils.saveBoolean("sort_id", false, activity);
+                        sUtils.saveBoolean("sort_installed", false, activity);
+                        sUtils.saveBoolean("sort_updated", false, activity);
+                        sUtils.saveBoolean("sort_size", true, activity);
                         loadApps(activity);
                     }
                     break;
                 case 6:
-                    APKEditorUtils.saveBoolean("az_order", !APKEditorUtils.getBoolean("az_order", true, activity), activity);
+                    sUtils.saveBoolean("az_order", !sUtils.getBoolean("az_order", true, activity), activity);
                     loadApps(activity);
                     break;
             }

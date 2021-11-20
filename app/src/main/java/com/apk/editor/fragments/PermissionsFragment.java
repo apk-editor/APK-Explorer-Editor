@@ -12,6 +12,8 @@ import com.apk.editor.R;
 import com.apk.editor.utils.ExternalAPKData;
 import com.google.android.material.textview.MaterialTextView;
 
+import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
+
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on November 07, 2021
  */
@@ -28,7 +30,8 @@ public class PermissionsFragment extends Fragment {
             try {
                 StringBuilder sb = new StringBuilder();
                 for (String permission : ExternalAPKData.getPermissions()) {
-                    sb.append(permission).append("\n\n");
+                    sb.append(permission).append("\n").append(sPermissionUtils.getDescription(permission.replace(
+                            "android.permission.",""), requireActivity())).append("\n\n");
                 }
                 mText.setText(sb.toString());
             } catch (Exception ignored) {

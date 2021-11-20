@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.apk.editor.R;
-import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.Common;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -23,6 +22,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 19, 2021
@@ -85,12 +86,12 @@ public class APKSignActivity extends AppCompatActivity {
     }
 
     private void setStatus() {
-        if (APKEditorUtils.getString("PrivateKey", null, this) != null) {
-            mKeySummary.setText(APKEditorUtils.getString("PrivateKey", null, this));
+        if (sUtils.getString("PrivateKey", null, this) != null) {
+            mKeySummary.setText(sUtils.getString("PrivateKey", null, this));
             mClearKey.setColorFilter(Color.RED);
             mClearKey.setVisibility(View.VISIBLE);
             mClearKey.setOnClickListener(v -> {
-                APKEditorUtils.saveString("PrivateKey", null, this);
+                sUtils.saveString("PrivateKey", null, this);
                 new File(getFilesDir(), "signing/APKEditor.pk8").delete();
                 mKeySummary.setText(getString(R.string.private_key_summary));
                 mClearKey.setVisibility(View.GONE);
@@ -99,12 +100,12 @@ public class APKSignActivity extends AppCompatActivity {
             mClearKey.setVisibility(View.GONE);
         }
 
-        if (APKEditorUtils.getString("RSATemplate", null, this) != null) {
-            mRSASummary.setText(APKEditorUtils.getString("RSATemplate", null, this));
+        if (sUtils.getString("RSATemplate", null, this) != null) {
+            mRSASummary.setText(sUtils.getString("RSATemplate", null, this));
             mClearRSA.setColorFilter(Color.RED);
             mClearRSA.setVisibility(View.VISIBLE);
             mClearRSA.setOnClickListener(v -> {
-                APKEditorUtils.saveString("RSATemplate", null, this);
+                sUtils.saveString("RSATemplate", null, this);
                 new File(getFilesDir(), "signing/APKEditor").delete();
                 mRSASummary.setText(getString(R.string.rsa_template_summary));
                 mClearRSA.setVisibility(View.GONE);
@@ -140,10 +141,10 @@ public class APKSignActivity extends AppCompatActivity {
                         })
                         .setPositiveButton(R.string.select, (dialog, id) -> {
                             if (requestCode == 0) {
-                                APKEditorUtils.saveString("PrivateKey", new File(getFilesDir(), "signing/APKEditor.pk8").getAbsolutePath(), this);
+                                sUtils.saveString("PrivateKey", new File(getFilesDir(), "signing/APKEditor.pk8").getAbsolutePath(), this);
                                 writeFile(new File(getFilesDir(), "signing/APKEditor.pk8"), uri);
                             } else if (requestCode == 1) {
-                                APKEditorUtils.saveString("RSATemplate", new File(getFilesDir(), "signing/APKEditor").getAbsolutePath(), this);
+                                sUtils.saveString("RSATemplate", new File(getFilesDir(), "signing/APKEditor").getAbsolutePath(), this);
                                 writeFile(new File(getFilesDir(), "signing/APKEditor"), uri);
                             }
 

@@ -29,7 +29,6 @@ import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.card.MaterialCardView;
@@ -38,6 +37,10 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.io.IOException;
+
+import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
+import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -48,7 +51,7 @@ public class ImageViewActivity extends AppCompatActivity {
     private File mFile = null;
     public static final String PATH_INTENT = "path";
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint({"UseCompatLoadingForDrawables", "Range"})
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,12 +65,15 @@ public class ImageViewActivity extends AppCompatActivity {
         String path = getIntent().getStringExtra(PATH_INTENT);
 
         if (getIntent().getData() != null) {
-            if (APKExplorer.isPermissionDenied(this)) {
+            if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
                 LinearLayoutCompat mPermissionLayout = findViewById(R.id.permission_layout);
                 MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
                 mPermissionLayout.setVisibility(View.VISIBLE);
                 mMainLayout.setVisibility(View.GONE);
-                mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
+                mPermissionGrant.setOnClickListener(v -> sPermissionUtils.requestPermission(
+                        new String[] {
+                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        },this));
                 return;
             }
             Uri uri = getIntent().getData();
@@ -115,8 +121,8 @@ public class ImageViewActivity extends AppCompatActivity {
                 mTitle.setText(new File(path).getName());
                 mImage.setImageURI(APKExplorer.getIconFromPath(path));
             } else {
-                mTitle.setText(AppData.getAppName(Common.getAppID(), this));
-                mImage.setImageDrawable(AppData.getAppIcon(Common.getAppID(), this));
+                mTitle.setText(sPackageUtils.getAppName(Common.getAppID(), this));
+                mImage.setImageDrawable(sPackageUtils.getAppIcon(Common.getAppID(), this));
             }
             mMenu.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_export));
         }
@@ -159,12 +165,15 @@ public class ImageViewActivity extends AppCompatActivity {
                         .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                         })
                         .setPositiveButton(getString(R.string.export), (dialog, id) -> {
-                            if (APKExplorer.isPermissionDenied(this)) {
-                                APKExplorer.requestPermission(this);
+                            if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,this)) {
+                                sPermissionUtils.requestPermission(
+                                        new String[] {
+                                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                        },this);
                             } else {
                                 String mExportPath;
                                 if (Build.VERSION.SDK_INT < 29) {
-                                    APKEditorUtils.mkdir(Projects.getExportPath(this) + "/" + Common.getAppID());
+                                    sUtils.mkdir(new File(Projects.getExportPath(this), Common.getAppID()));
                                     mExportPath = Projects.getExportPath(this) + "/" + Common.getAppID();
                                 } else {
                                     mExportPath = Projects.getExportPath(this);

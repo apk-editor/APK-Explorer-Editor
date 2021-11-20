@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.inputmethod.InputMethodManager;
 
@@ -15,7 +14,6 @@ import androidx.appcompat.widget.AppCompatEditText;
 import com.apk.editor.R;
 import com.apk.editor.activities.APKSignActivity;
 import com.apk.editor.utils.recyclerViewItems.PackageItems;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,6 +22,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
+import in.sunilpaulmathew.sCommon.Utils.sSingleItemDialog;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
+
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
@@ -31,16 +34,16 @@ public class AppData {
 
     public static List<PackageItems> getRawData(Context context) {
         List<PackageItems> mData = new ArrayList<>();
-        List<ApplicationInfo> packages = getPackageManager(context).getInstalledApplications(PackageManager.GET_META_DATA);
+        List<ApplicationInfo> packages = context.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
         for (ApplicationInfo packageInfo: packages) {
             mData.add(new PackageItems(
-                    getAppName(packageInfo.packageName, context).toString(),
+                    sPackageUtils.getAppName(packageInfo.packageName, context).toString(),
                     packageInfo.packageName,
-                    getVersionName(getSourceDir(packageInfo.packageName, context), context),
-                    new File(getSourceDir(packageInfo.packageName, context)).length(),
+                    sAPKUtils.getVersionName(sPackageUtils.getSourceDir(packageInfo.packageName, context), context),
+                    new File(sPackageUtils.getSourceDir(packageInfo.packageName, context)).length(),
                     Objects.requireNonNull(getPackageInfo(packageInfo.packageName, context)).firstInstallTime,
                     Objects.requireNonNull(getPackageInfo(packageInfo.packageName, context)).lastUpdateTime,
-                    getAppIcon(packageInfo.packageName, context)
+                    sPackageUtils.getAppIcon(packageInfo.packageName, context)
             ));
         }
         return mData;
@@ -51,10 +54,10 @@ public class AppData {
         try {
             boolean mAppType;
             for (PackageItems packageItem : Common.getPackageData()) {
-                if (APKEditorUtils.getString("appTypes", "all", context).equals("system")) {
-                    mAppType = isSystemApp(packageItem.getPackageName(), context);
-                } else if (APKEditorUtils.getString("appTypes", "all", context).equals("user")) {
-                    mAppType = !isSystemApp(packageItem.getPackageName(), context);
+                if (sUtils.getString("appTypes", "all", context).equals("system")) {
+                    mAppType = sPackageUtils.isSystemApp(packageItem.getPackageName(), context);
+                } else if (sUtils.getString("appTypes", "all", context).equals("user")) {
+                    mAppType = !sPackageUtils.isSystemApp(packageItem.getPackageName(), context);
                 } else {
                     mAppType = true;
                 }
@@ -67,18 +70,18 @@ public class AppData {
                     }
                 }
             }
-            if (APKEditorUtils.getBoolean("sort_name", false, context)) {
+            if (sUtils.getBoolean("sort_name", false, context)) {
                 Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getAppName(), rhs.getAppName()));
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && APKEditorUtils.getBoolean("sort_size", false, context)) {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sUtils.getBoolean("sort_size", false, context)) {
                 Collections.sort(mData, Comparator.comparingLong(PackageItems::getAPKSize));
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && APKEditorUtils.getBoolean("sort_installed", false, context)) {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sUtils.getBoolean("sort_installed", false, context)) {
                 Collections.sort(mData, Comparator.comparingLong(PackageItems::getInstalledTime));
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && APKEditorUtils.getBoolean("sort_updated", false, context)) {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sUtils.getBoolean("sort_updated", false, context)) {
                 Collections.sort(mData, Comparator.comparingLong(PackageItems::getUpdatedTime));
             } else {
                 Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getPackageName(), rhs.getPackageName()));
             }
-            if (!APKEditorUtils.getBoolean("az_order", true, context)) {
+            if (!sUtils.getBoolean("az_order", true, context)) {
                 Collections.reverse(mData);
             }
         } catch (NullPointerException ignored) {}
@@ -87,7 +90,7 @@ public class AppData {
 
     public static PackageInfo getPackageInfo(String packageName, Context context) {
         try {
-            return getPackageManager(context).getPackageInfo(packageName, PackageManager.GET_PERMISSIONS);
+            return context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_PERMISSIONS);
         } catch (Exception ignored) {
         }
         return null;
@@ -108,103 +111,51 @@ public class AppData {
         }
     }
 
-    public static PackageManager getPackageManager(Context context) {
-        return context.getPackageManager();
-    }
-
-    public static ApplicationInfo getAppInfo(String packageName, Context context) {
-        try {
-            return getPackageManager(context).getApplicationInfo(packageName, PackageManager.GET_META_DATA);
-        } catch (Exception ignored) {
-        }
-        return null;
-    }
-
-    public static CharSequence getAppName(String packageName, Context context) {
-        return getPackageManager(context).getApplicationLabel(Objects.requireNonNull(getAppInfo(
-                packageName, context)));
-    }
-
-    private static CharSequence[] getExportOptionsMenu(Context context) {
-        return new CharSequence[] {
-                context.getString(R.string.export_storage),
-                context.getString(R.string.export_resign)
-        };
-    }
-
-    public static CharSequence[] getSigningOptionsMenu(Context context) {
-        return new CharSequence[] {
+    public static String[] getSigningOptionsMenu(Context context) {
+        return new String[] {
                 context.getString(R.string.signing_default),
                 context.getString(R.string.signing_custom)
         };
     }
 
-    public static Drawable getAppIcon(String packageName, Context context) {
-        return getPackageManager(context).getApplicationIcon(Objects.requireNonNull(getAppInfo(packageName, context)));
-    }
+    public static sSingleItemDialog getExportOptionsMenu(String packageName, Context context) {
+        return new sSingleItemDialog(0, null, new String[] {
+                context.getString(R.string.export_storage),
+                context.getString(R.string.export_resign)
+        }, context) {
 
-    public static MaterialAlertDialogBuilder getExportOptionsMenu(String packageName, Context context) {
-        return new MaterialAlertDialogBuilder(context)
-                .setItems(getExportOptionsMenu(context), (dialog, itemPosition) -> {
-                    if (itemPosition == 0) {
-                        APKData.exportApp(packageName, context);
+            @Override
+            public void onItemSelected(int itemPosition) {
+                if (itemPosition == 0) {
+                    APKData.exportApp(packageName, context);
+                } else {
+                    if (!sUtils.getBoolean("firstSigning", false, context)) {
+                        getSigningOptionsMenu(packageName, context).show();
                     } else {
-                        if (!APKEditorUtils.getBoolean("firstSigning", false, context)) {
-                            getSigningOptionsMenu(packageName, context).show();
-                        } else {
-                            APKData.reSignAPKs(packageName, false, (Activity) context);
-                        }
+                        APKData.reSignAPKs(packageName, false, (Activity) context);
                     }
-                    dialog.dismiss();
-                });
+                }
+            }
+        };
     }
 
-    public static MaterialAlertDialogBuilder getSigningOptionsMenu(String packageName, Context context) {
-        return new MaterialAlertDialogBuilder(context)
-                .setItems(getSigningOptionsMenu(context), (dialog, itemPosition) -> {
-                    APKEditorUtils.saveBoolean("firstSigning", true, context);
-                    if (itemPosition == 0) {
-                        APKData.reSignAPKs(packageName,false, (Activity) context);
-                    } else {
-                        Intent signing = new Intent(context, APKSignActivity.class);
-                        context.startActivity(signing);
-                    }
-                    dialog.dismiss();
-                });
-    }
+    public static sSingleItemDialog getSigningOptionsMenu(String packageName, Context context) {
+        return new sSingleItemDialog(0, null, new String[] {
+                context.getString(R.string.signing_default),
+                context.getString(R.string.signing_custom)
+        }, context) {
 
-    public static String getSourceDir(String packageName, Context context) {
-        return Objects.requireNonNull(getAppInfo(packageName, context)).sourceDir;
-    }
-
-    public static boolean isAppInstalled(String packageName, Context context) {
-        try {
-            getPackageManager(context).getApplicationInfo(packageName, 0);
-            return true;
-        } catch (PackageManager.NameNotFoundException ignored) {
-            return false;
-        }
-    }
-
-    public static boolean isSystemApp(String packageName, Context context) {
-        try {
-            return (Objects.requireNonNull(getAppInfo(packageName, context)).flags & ApplicationInfo.FLAG_SYSTEM) != 0;
-        } catch (NullPointerException ignored) {}
-        return false;
-    }
-
-    public static String getAPKSize(long apkSize) {
-        long size = apkSize / 1024;
-        long decimal = (size - 1024) / 1024;
-        if (size > 1024) {
-            return size / 1024 + "." + decimal + " MB";
-        } else {
-            return size  + " KB";
-        }
-    }
-
-    public static String getVersionName(String path, Context context) {
-        return getPackageManager(context).getPackageArchiveInfo(path, 0).versionName;
+            @Override
+            public void onItemSelected(int itemPosition) {
+                sUtils.saveBoolean("firstSigning", true, context);
+                if (itemPosition == 0) {
+                    APKData.reSignAPKs(packageName,false, (Activity) context);
+                } else {
+                    Intent signing = new Intent(context, APKSignActivity.class);
+                    context.startActivity(signing);
+                }
+            }
+        };
     }
 
 }

@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.card.MaterialCardView;
@@ -28,6 +26,10 @@ import com.google.android.material.textview.MaterialTextView;
 import java.io.File;
 import java.text.DateFormat;
 import java.util.List;
+
+import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
+import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 06, 2021
@@ -51,13 +53,13 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ProjectsAdapter.ViewHolder holder, int position) {
         try {
-            if (AppData.isAppInstalled(new File(data.get(position)).getName(), holder.mAppIcon.getContext())) {
-                holder.mAppIcon.setImageDrawable(AppData.getAppIcon(new File(data.get(position)).getName(), holder.mAppIcon.getContext()));
-                if (Common.getSearchWord() != null && Common.isTextMatched(AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString(), Common.getSearchWord())) {
-                    holder.mAppName.setText(APKEditorUtils.fromHtml(AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString().replace(Common.getSearchWord(),
+            if (sPackageUtils.isPackageInstalled(new File(data.get(position)).getName(), holder.mAppIcon.getContext())) {
+                holder.mAppIcon.setImageDrawable(sPackageUtils.getAppIcon(new File(data.get(position)).getName(), holder.mAppIcon.getContext()));
+                if (Common.getSearchWord() != null && Common.isTextMatched(sPackageUtils.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString(), Common.getSearchWord())) {
+                    holder.mAppName.setText(APKEditorUtils.fromHtml(sPackageUtils.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString().replace(Common.getSearchWord(),
                             "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
                 } else {
-                    holder.mAppName.setText(AppData.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()));
+                    holder.mAppName.setText(sPackageUtils.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()));
                 }
             } else {
                 holder.mAppIcon.setImageDrawable(ContextCompat.getDrawable(holder.mAppIcon.getContext(), R.drawable.ic_projects));
@@ -71,7 +73,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
             holder.mTotalSize.setText(holder.mAppName.getContext().getString(R.string.last_modified, DateFormat.getDateTimeInstance()
                     .format(new File(data.get(position)).lastModified())));
             holder.mCard.setOnClickListener(v -> {
-                if (AppData.isAppInstalled(data.get(position).replace(v.getContext().getCacheDir().getPath() + "/",""), v.getContext())) {
+                if (sPackageUtils.isPackageInstalled(data.get(position).replace(v.getContext().getCacheDir().getPath() + "/",""), v.getContext())) {
                     Common.setAppID(data.get(position).replace(v.getContext().getCacheDir().getPath() + "/",""));
                 } else {
                     Common.setAppID(null);
@@ -89,21 +91,24 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                         .setNegativeButton(R.string.cancel, (dialog, id) -> {
                         })
                         .setPositiveButton(R.string.export, (dialog, id) -> {
-                            if (APKExplorer.isPermissionDenied(v.getContext())) {
-                                APKExplorer.requestPermission((Activity) v.getContext());
+                            if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext())) {
+                                sPermissionUtils.requestPermission(
+                                        new String[] {
+                                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                        },(Activity) v.getContext());
                             } else {
                                 APKEditorUtils.dialogEditText(null,
                                         (dialogInterface, i) -> {
                                         }, text -> {
                                             if (text.isEmpty()) {
-                                                APKEditorUtils.snackbar(v, v.getContext().getString(R.string.name_empty));
+                                                sUtils.snackBar(v, v.getContext().getString(R.string.name_empty)).show();
                                                 return;
                                             }
                                             if (text.contains(" ")) {
                                                 text = text.replace(" ", "_");
                                             }
                                             String mName = text;
-                                            if (APKEditorUtils.exist(Projects.getExportPath(v.getContext()) + "/" + text)) {
+                                            if (sUtils.exist(new File(Projects.getExportPath(v.getContext()), text))) {
                                                 new MaterialAlertDialogBuilder(v.getContext())
                                                         .setMessage(v.getContext().getString(R.string.export_project_replace, text))
                                                         .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
@@ -132,7 +137,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                         notifyDataSetChanged();
                     }).show());
             holder.mTotalSize.setVisibility(View.VISIBLE);
-            holder.mTotalSize.setTextColor(APKEditorUtils.isDarkTheme(holder.mTotalSize.getContext()) ? Color.GREEN : Color.BLACK);
+            holder.mTotalSize.setTextColor(sUtils.isDarkTheme(holder.mTotalSize.getContext()) ? Color.GREEN : Color.BLACK);
             holder.mDelete.setColorFilter(Color.RED);
         } catch (NullPointerException ignored) {}
     }

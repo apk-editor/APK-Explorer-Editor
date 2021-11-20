@@ -1,6 +1,5 @@
 package com.apk.editor.activities;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -19,7 +18,6 @@ import com.apk.editor.utils.AppSettings;
  */
 public class SettingsActivity extends AppCompatActivity {
 
-    @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

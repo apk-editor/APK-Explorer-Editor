@@ -1,7 +1,5 @@
 package com.apk.editor.utils.apkSigner;
 
-import com.apk.editor.utils.APKEditorUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,6 +15,8 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
+
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -50,7 +50,7 @@ public class ApkSigner {
             InputStream entryInputStream = apkZipFile.getInputStream(zipEntry);
 
             zipOutputStream.putNextEntry(new ZipEntry(zipEntry.getName()));
-            APKEditorUtils.copyStream(entryInputStream, zipOutputStream);
+            sUtils.copyStream(entryInputStream, zipOutputStream);
             zipOutputStream.closeEntry();
         }
 

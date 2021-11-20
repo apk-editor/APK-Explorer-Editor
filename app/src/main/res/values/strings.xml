@@ -10,10 +10,6 @@
     <string name="apps">Apps</string>
     <string name="apps_exported">Exported APK\'s</string>
     <string name="apps_installed">Installed Apps</string>
-    <string name="app_theme">App Theme</string>
-    <string name="app_theme_auto">Auto</string>
-    <string name="app_theme_dark">Dark</string>
-    <string name="app_theme_light">Light</string>
     <string name="assembling">Assembling\n\'%s\'</string>
     <string name="build">Build</string>
     <string name="building">Building\'%s\'…</string>
@@ -24,18 +20,13 @@
     <string name="clear_cache">Clear Cache</string>
     <string name="clear_cache_summary">Delete internal settings of AEE</string>
     <string name="clear_cache_message">Everything, except the exported applications, will be removed.</string>
-    <string name="credits">Credits</string>
-    <string name="credits_message">Want to see your name here? Then, please help me to translate this application.</string>
-    <string name="credits_summary">Credits to contributors</string>
     <string name="copying">Copying \'%s\'…</string>
-    <string name="copyright">Copyright: © %s</string>
     <string name="decompiling">Decompiling \'%s\'…</string>
     <string name="delete">Delete</string>
     <string name="delete_question">Delete %s?</string>
     <string name="deleting">Deleting \'%s\'…</string>
     <string name="details">Details</string>
     <string name="disable">Disable</string>
-    <string name="dismiss">Dismiss</string>
     <string name="documentation">Documentation</string>
     <string name="documentation_summary">Check out AEE documentation</string>
     <string name="donations">Donations</string>
@@ -75,30 +66,10 @@
     <string name="installer_action">On Installing APK\'s</string>
     <string name="installer_message">AEE Split APK installer will handle normal APK\'s, split APK\'s as well as \'xapk\', \'apks\' and \'apkm\' App bundles. In order to initialize an installation, simply select the installation file(s) from the next screen and follow onscreen instructions.</string>
     <string name="installation_cancel_message">Are you sure to cancel the installation?</string>
-    <string name="installation_status_aborted">Installation was cancelled by user</string>
-    <string name="installation_status_bad_apks">Invalid APK files selected</string>
-    <string name="installation_status_blocked">Installation was blocked</string>
-    <string name="installation_status_conflict">Unable to install the app because it conflicts with an already installed app with same package name</string>
-    <string name="installation_status_failed">Installation Failed</string>
-    <string name="installation_status_incompatible">Application is incompatible with this device</string>
-    <string name="installation_status_storage">Not enough storage space to install the application</string>
-    <string name="installation_status_success">Installation Completed Successfully</string>
     <string name="installing">Installing %s…</string>
     <string name="invite_friends">Invite Friends</string>
     <string name="invite_friends_Summary">Invite your friends to try AEE</string>
     <string name="language">Language</string>
-    <string name="language_ar" translatable="false">العربية</string>
-    <string name="language_cs" translatable="false">čeština</string>
-    <string name="language_de" translatable="false">Deutsch</string>
-    <string name="language_en" translatable="false">English</string>
-    <string name="language_es" translatable="false">Español</string>
-    <string name="language_fr" translatable="false">français</string>
-    <string name="language_in" translatable="false">bahasa Indonesia</string>
-    <string name="language_pl" translatable="false">Polski</string>
-    <string name="language_ru" translatable="false">русский</string>
-    <string name="language_tr" translatable="false">Türkçe</string>
-    <string name="language_vi" translatable="false">Tiếng Việt</string>
-    <string name="language_zh" translatable="false">中文（简体）</string>
     <string name="last_modified">Last Modified: %s</string>
     <string name="loading">Loading…</string>
     <string name="manifest">Manifest</string>
@@ -183,14 +154,12 @@
     <string name="text_editing">Enable Text Editing</string>
     <string name="text_editing_summary">AEE text editor is still very basic and a little buggy. APK\'s prepared after editing binary text files may not work properly. Please use it with extreme care.</string>
     <string name="transfer_exported_apk">Transferring previously Exported APK\'s to new path…</string>
-    <string name="translate">Translate</string>
     <string name="unknown_file_message">AEE doesn\'t handle \'%s\' at this moment. If you know this file format, you may export this file into device storage and try editing using a supported third-party application. Alternately, you may try to open it as a text file?</string>
     <string name="unsupported_file">Unsupported file</string>
     <string name="unsupported_file_arsc">You\'re selected \'resources.arsc\', which is unfortunately impossible for AEE to read.\n\nWhat is resources.arsc?\nresources.arsc is a binary resource file containing the configuration-specific values of an application, such as integers, booleans and strings, as well as references to more complex resources, like UI layouts.\n\nHow to read resources.arsc?\nTools such as Apktool or Android Asset Packaging Tool (AAPT) shall be used to print out the contents of resources.arsc into human-readable format.</string>
     <string name="unsupported_file_dex">You\'re selected a \'DEX\' (.dex) file, which is unfortunately impossible for AEE to read.\n\nWhat is a DEX file?\nA Dex file has code that is ultimately executed by the Android Runtime. Every APK\'s should have a \'classes.dex\' file, which references any classes or methods used within an app. Essentially, any Activity, Object, or Fragment used within the code base will be transformed into bytes within a Dex file that can be run as an Android app.\n\nHow to read a DEX file?\nA DEX file shall be converted to \'jar\' format and later into \'Java\' file using tools such as \'dex2jar\' and \'JD-GUI\'.</string>
     <string name="user">User</string>
     <string name="user_interface">User Interface</string>
-    <string name="version">Version: %s</string>
     <string name="warning">Warning</string>
     <string name="wrong_extension">Please select a file with %s extension.</string>
     <string name="yes">Yes</string>

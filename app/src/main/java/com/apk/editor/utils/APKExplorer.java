@@ -1,11 +1,9 @@
 package com.apk.editor.utils;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -17,13 +15,11 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.activities.APKTasksActivity;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,6 +28,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import in.sunilpaulmathew.sCommon.Utils.sExecutor;
+import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
+import in.sunilpaulmathew.sCommon.Utils.sSingleItemDialog;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -48,7 +49,7 @@ public class APKExplorer {
                 }
             }
             Collections.sort(mDir, String.CASE_INSENSITIVE_ORDER);
-            if (!APKEditorUtils.getBoolean("az_order", true, activity)) {
+            if (!sUtils.getBoolean("az_order", true, activity)) {
                 Collections.reverse(mDir);
             }
             mData.addAll(mDir);
@@ -64,7 +65,7 @@ public class APKExplorer {
                 }
             }
             Collections.sort(mFiles, String.CASE_INSENSITIVE_ORDER);
-            if (!APKEditorUtils.getBoolean("az_order", true, activity)) {
+            if (!sUtils.getBoolean("az_order", true, activity)) {
                 Collections.reverse(mFiles);
             }
             mData.addAll(mFiles);
@@ -92,31 +93,14 @@ public class APKExplorer {
         return path.endsWith(".apk") || path.endsWith(".apks") || path.endsWith(".apkm") || path.endsWith(".xapk");
     }
 
-    public static boolean isPermissionDenied(Context context) {
-        if (Build.VERSION.SDK_INT < 29) {
-            String permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-            return (context.checkCallingOrSelfPermission(permission) != PackageManager.PERMISSION_GRANTED);
-        } else {
-            return false;
-        }
-    }
-
-    public static void requestPermission(Activity activity) {
-        if (Build.VERSION.SDK_INT < 29) {
-            ActivityCompat.requestPermissions(activity, new String[] {
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            APKEditorUtils.snackbar(activity.findViewById(android.R.id.content), activity.getString(R.string.permission_denied_message));
-        }
-    }
-
     public static void setIcon(AppCompatImageButton icon, Drawable drawable, Context context) {
         icon.setImageDrawable(drawable);
-        icon.setColorFilter(APKEditorUtils.isDarkTheme(context) ? ContextCompat.getColor(context, R.color.colorWhite) :
+        icon.setColorFilter(sUtils.isDarkTheme(context) ? ContextCompat.getColor(context, R.color.colorWhite) :
                 ContextCompat.getColor(context, R.color.colorBlack));
     }
 
     public static int getSpanCount(Activity activity) {
-        return APKEditorUtils.getOrientation(activity) == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1;
+        return sUtils.getOrientation(activity) == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1;
     }
 
     public static List<String> getTextViewData(String path, Context context) {
@@ -125,10 +109,10 @@ public class APKExplorer {
         if (ExternalAPKData.isFMInstall()) {
             text = path;
         } else if (Common.getAppID() != null && APKExplorer.isBinaryXML(path)) {
-            text = ExternalAPKData.readXMLFromAPK(AppData.getSourceDir(Common.getAppID(), context), path.replace(
+            text = ExternalAPKData.readXMLFromAPK(sPackageUtils.getSourceDir(Common.getAppID(), context), path.replace(
                     context.getCacheDir().getPath() + "/" + Common.getAppID() + "/", ""));
         } else {
-            text = APKEditorUtils.read(path);
+            text = sUtils.read(new File(path));
         }
         if (text != null) {
             for (String line : text.split("\\r?\\n")) {
@@ -189,11 +173,6 @@ public class APKExplorer {
         return bitmap;
     }
 
-    private static CharSequence[] getInstallerMenu(Context context) {
-        return new CharSequence[]{context.getString(R.string.install), context.getString(R.string.install_resign),
-                context.getString(R.string.resign_only)};
-    }
-
     private static void installAPKs(Activity activity) {
         if (APKData.findPackageName(activity) != null) {
             if (Common.getAPKList().size() > 1) {
@@ -205,36 +184,43 @@ public class APKExplorer {
                 activity.finish();
             }
         } else {
-            APKEditorUtils.snackbar(activity.findViewById(android.R.id.content), activity.getString(R.string.installation_status_bad_apks));
+            sUtils.snackBar(activity.findViewById(android.R.id.content), activity.getString(R.string.installation_status_bad_apks)).show();
         }
     }
 
     public static void handleAPKs(Activity activity) {
         if (APKEditorUtils.isFullVersion(activity)) {
-            if (APKEditorUtils.getString("installerAction", null, activity) == null) {
-                new MaterialAlertDialogBuilder(activity)
-                        .setItems(getInstallerMenu(activity), (dialog, itemPosition) -> {
-                            if (itemPosition == 0) {
-                                installAPKs(activity);
-                            } else if (itemPosition == 1) {
-                                if (!APKEditorUtils.getBoolean("firstSigning", false, activity)) {
-                                    AppData.getSigningOptionsMenu(null, activity).show();
-                                } else {
-                                    APKData.reSignAPKs(null, true, activity);
-                                }
+            if (sUtils.getString("installerAction", null, activity) == null) {
+                new sSingleItemDialog(0, null, new String[] {
+                        activity.getString(R.string.install),
+                        activity.getString(R.string.install_resign),
+                        activity.getString(R.string.resign_only)
+                }, activity) {
+
+                    @Override
+                    public void onItemSelected(int itemPosition) {
+                        sUtils.saveBoolean("firstSigning", true, activity);
+                        if (itemPosition == 0) {
+                            installAPKs(activity);
+                        } else if (itemPosition == 1) {
+                            if (!sUtils.getBoolean("firstSigning", false, activity)) {
+                                AppData.getSigningOptionsMenu(null, activity).show();
                             } else {
-                                if (!APKEditorUtils.getBoolean("firstSigning", false, activity)) {
-                                    AppData.getSigningOptionsMenu(null, activity).show();
-                                } else {
-                                    APKData.reSignAPKs(null, false, activity);
-                                }
+                                APKData.reSignAPKs(null, true, activity);
                             }
-                            dialog.dismiss();
-                        }).show();
-            } else if (APKEditorUtils.getString("installerAction", null, activity).equals(activity.getString(R.string.install))) {
+                        } else {
+                            if (!sUtils.getBoolean("firstSigning", false, activity)) {
+                                AppData.getSigningOptionsMenu(null, activity).show();
+                            } else {
+                                APKData.reSignAPKs(null, false, activity);
+                            }
+                        }
+                    }
+                }.show();
+            } else if (sUtils.getString("installerAction", null, activity).equals(activity.getString(R.string.install))) {
                 installAPKs(activity);
             } else {
-                if (!APKEditorUtils.getBoolean("firstSigning", false, activity)) {
+                if (!sUtils.getBoolean("firstSigning", false, activity)) {
                     AppData.getSigningOptionsMenu(null, activity).show();
                 } else {
                     APKData.reSignAPKs(null,true, activity);
@@ -246,7 +232,7 @@ public class APKExplorer {
     }
 
     public static void exploreAPK(String packageName, Context context) {
-        new AsyncTasks() {
+        new sExecutor() {
             private File mBackUpPath, mExplorePath;
 
             @Override
@@ -260,7 +246,7 @@ public class APKExplorer {
                     Common.setStatus(null);
                     Intent apkTasks = new Intent(context, APKTasksActivity.class);
                     context.startActivity(apkTasks);
-                    Common.setStatus(context.getString(R.string.exploring, AppData.getAppName(packageName, context)));
+                    Common.setStatus(context.getString(R.string.exploring, sPackageUtils.getAppName(packageName, context)));
                 }
             }
 
@@ -268,17 +254,17 @@ public class APKExplorer {
             public void doInBackground() {
                 if (!mExplorePath.exists()) {
                     mExplorePath.mkdirs();
-                    APKEditorUtils.unzip(AppData.getSourceDir(packageName, context), mExplorePath.getAbsolutePath());
+                    APKEditorUtils.unzip(sPackageUtils.getSourceDir(packageName, context), mExplorePath.getAbsolutePath());
                     // Decompile dex file(s)
                     for (File files : Objects.requireNonNull(mExplorePath.listFiles())) {
                         if (files.getName().startsWith("classes") && files.getName().endsWith(".dex")) {
                             mBackUpPath.mkdirs();
-                            APKEditorUtils.copy(files.getAbsolutePath(), new File(mBackUpPath, files.getName()).getAbsolutePath());
-                            APKEditorUtils.delete(files.getAbsolutePath());
+                            sUtils.copy(files, new File(mBackUpPath, files.getName()));
+                            sUtils.delete(files);
                             File mDexExtractPath = new File(mExplorePath, files.getName());
                             mDexExtractPath.mkdirs();
                             Common.setStatus(context.getString(R.string.decompiling, files.getName()));
-                            new DexToSmali(false, new File(AppData.getSourceDir(Common.getAppID(), context)), mDexExtractPath, 0, files.getName()).execute();
+                            new DexToSmali(false, new File(sPackageUtils.getSourceDir(Common.getAppID(), context)), mDexExtractPath, 0, files.getName()).execute();
                         }
                     }
                 }

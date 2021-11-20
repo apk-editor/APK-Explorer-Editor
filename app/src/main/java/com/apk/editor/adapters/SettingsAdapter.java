@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.recyclerViewItems.SettingsItems;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
+
+import in.sunilpaulmathew.sCommon.Utils.sSerializableItems;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 31, 2021
@@ -26,9 +28,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
 
     private static ClickListener clickListener;
 
-    private static ArrayList<SettingsItems> data;
+    private static ArrayList<sSerializableItems> data;
 
-    public SettingsAdapter(ArrayList<SettingsItems> data) {
+    public SettingsAdapter(ArrayList<sSerializableItems> data) {
         SettingsAdapter.data = data;
     }
 
@@ -42,16 +44,16 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull SettingsAdapter.ViewHolder holder, int position) {
-        holder.Title.setText(data.get(position).getTitle());
-        if (data.get(position).getDescription() != null) {
-            holder.Description.setText(data.get(position).getDescription());
+        holder.Title.setText(data.get(position).getTextOne());
+        if (data.get(position).getTextTwo() != null) {
+            holder.Description.setText(data.get(position).getTextTwo());
         } else {
             holder.Description.setVisibility(View.GONE);
         }
-        if (APKEditorUtils.isDarkTheme(holder.Title.getContext())) {
+        if (sUtils.isDarkTheme(holder.Title.getContext())) {
             holder.Title.setTextColor(APKEditorUtils.getThemeAccentColor(holder.Title.getContext()));
         }
-        holder.mIcon.setColorFilter(APKEditorUtils.isDarkTheme(holder.Title.getContext()) ? Color.WHITE : Color.BLACK);
+        holder.mIcon.setColorFilter(sUtils.isDarkTheme(holder.Title.getContext()) ? Color.WHITE : Color.BLACK);
         if (data.get(position).getIcon() != null) {
             holder.mIcon.setImageDrawable(data.get(position).getIcon());
         } else {

@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.adapters.APKDetailsAdapter;
-import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.ExternalAPKData;
+
+import in.sunilpaulmathew.sCommon.Utils.sExecutor;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on November 07, 2021
@@ -28,7 +29,7 @@ public class APKDetailsFragment extends Fragment {
         RecyclerView mRecyclerView = mRootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         
-        new AsyncTasks() {
+        new sExecutor() {
             private APKDetailsAdapter mAdapter;
             @Override
             public void onPreExecute() {

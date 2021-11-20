@@ -7,13 +7,8 @@
     <string name="apps_exported">APK exportadas</string>
     <string name="apps_installed">Aplicaciones instaladas</string>
     <string name="cancel">Cancelar</string>
-    <string name="credits">Créditos</string>
-    <string name="credits_message">¿Quieres ver tu nombre aquí? Entonces, ¡ayúdame a traducir esta aplicación!</string>
-    <string name="credits_summary">Contribuciones de</string>
-    <string name="copyright">Copyright: © %s</string>
     <string name="delete">Borrar</string>
     <string name="delete_question">¿Deseas borrar %s?</string>
-    <string name="dismiss">Omitir</string>
     <string name="documentation">Documentación</string>
     <string name="documentation_summary">Consultar documentación de AEE</string>
     <string name="donations">Donaciones</string>
@@ -57,13 +52,11 @@
     <string name="support_group">Grupo de apoyo</string>
     <string name="support_group_summary">Únete al grupo de apoyo de la AEE</string>
     <string name="system">Sistema</string>
-    <string name="translate">Traducir</string>
     <string name="unknown_file_message">AEE no admite "%s" por el momento. Si conoces este formato de archivo, deberías exportar este archivo al almacenamiento del dispositivo e intentar editarlo con otra aplicación. De lo contrario, ¿deseas abrir de todos modos?</string>
     <string name="unsupported_file">Archivo no soportado</string>
     <string name="unsupported_file_arsc">Has seleccionado \'resources.arsc\', que desafortunadamente AEE no puede leer.\n\n¿Qué es resources.arsc?\nresources.arsc es un archivo de recursos binarios que contiene valores de configuración específicos para una aplicación, como enteros, booleanos, pero también referencias a recursos más complejos, como el diseño de la interfaz de usuario.\n\n¿Cómo leer resources.arsc?\nHerramientas como Apktool o Android Asset Packaging Tool (AAPT) pueden utilizarse para mostrar el contenido de resources.arsc en un formato comprensible para el ser humano.</string>
     <string name="unsupported_file_dex">Has seleccionado un archivo \'DEX\' (.dex) que desafortunadamente no puede ser leído por AEE.\n\n¿Qué es un archivo DEX?\nUn archivo DEX tiene código que es ejecutado al final por el Android Runtime. Cada APK debe tener un archivo \'classes.dex\' que hace referencia a todas las clases y métodos utilizados en la aplicación. Esencialmente, cualquier Actividad, Objeto o Fragmento utilizado en el código será transformado en bytes en el archivo DEX para ser ejecutado como una aplicación Android.\n\n¿Cómo leer un archivo DEX?\nUn archivo DEX debe ser convertido a formato \'jar\' y luego a archivo \'Java\' con herramientas como \'dex2jar\' o \'JD-GUI\'.</string>
     <string name="user">Usuario</string>
-    <string name="version">Versión: %s</string>
     <string name="bundles">Compartir</string>
     <string name="preparing_bundle">Preparando paquete de aplicaciones para compartir…</string>
     <string name="privacy_policy">Políica de privacidad</string>
@@ -90,14 +83,6 @@
     <string name="install_storage">Instalar desde almacenamiento</string>
     <string name="installer_message">El instalador modular AEE de APK  soporta APKs normales, APKs modulares, así como paquetes de aplicaciones \'xapk\', \'apks\' y \'apkm\'. Para iniciar una instalación, sólo tienes que seleccionar el/los archivo(s) de instalación en la siguiente pantalla y seguir las instrucciones que aparecen en ella.</string>
     <string name="installation_cancel_message">¿Está seguro de cancelar la instalación?</string>
-    <string name="installation_status_aborted">La instalación ha sido cancelada por el usuario</string>
-    <string name="installation_status_bad_apks">Archivo APK seleccionado no válido</string>
-    <string name="installation_status_blocked">La instalación se ha bloqueado</string>
-    <string name="installation_status_conflict">No se puede instalar la aplicación porque interfiere con una ya instalada con el mismo nombre de paquete</string>
-    <string name="installation_status_failed">Falló la instalación</string>
-    <string name="installation_status_incompatible">La aplicación no es compatible con este dispositivo</string>
-    <string name="installation_status_storage">No hay suficiente espacio de almacenamiento para instalar la aplicación</string>
-    <string name="installation_status_success">La instalación fue un éxito</string>
     <string name="name_empty">¡El nombre no puede estar vacío! Abortando.</string>
     <string name="ok">Aceptar</string>
     <string name="preparing_bundle_install">Preparando \'%s\' para la instalación</string>
@@ -139,10 +124,6 @@
     <string name="file_path_error">No se ha podido recuperar la ruta del archivo desde el gestor de archivos externo.</string>
     <string name="image_viewer">Visor de imágenes AEE</string>
     <string name="text_editor">Editor de texto AEE</string>
-    <string name="app_theme">Tema de la aplicación</string>
-    <string name="app_theme_auto">Auto</string>
-    <string name="app_theme_dark">Oscuro</string>
-    <string name="app_theme_light">Claro</string>
     <string name="discard">Descartar</string>
     <string name="discard_message">¿Deshacer los cambios realizados en este archivo?</string>
 </resources>

@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.apk.editor.R;
-import com.apk.editor.utils.APKCertificate;
 import com.apk.editor.utils.ExternalAPKData;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -27,9 +26,7 @@ public class CertificateFragment extends Fragment {
 
         if (ExternalAPKData.getCertificate() != null) {
             try {
-                if (APKCertificate.getCertificateDetails(ExternalAPKData.getAPKFile().getAbsolutePath(), requireActivity()) != null) {
-                    mText.setText(ExternalAPKData.getCertificate());
-                }
+                mText.setText(ExternalAPKData.getCertificate());
             } catch (Exception ignored) {
             }
         }

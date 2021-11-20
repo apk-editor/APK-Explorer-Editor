@@ -26,14 +26,20 @@ import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
-import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.ExternalAPKData;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.util.Objects;
+
+import in.sunilpaulmathew.sCommon.Utils.sExecutor;
+import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
+import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
+import in.sunilpaulmathew.sCommon.Utils.sSingleItemDialog;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 05, 2021
@@ -59,7 +65,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         mProgressLayout = mRootView.findViewById(R.id.progress_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
-        mTitle.setText(Common.getAppID() != null ? AppData.getAppName(Common.getAppID(), requireActivity()) : new File(Common.getPath()).getName());
+        mTitle.setText(Common.getAppID() != null ? sPackageUtils.getAppName(Common.getAppID(), requireActivity()) : new File(Common.getPath()).getName());
 
         mBack.setOnClickListener(v -> retainDialog());
 
@@ -70,18 +76,20 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                 })
                 .setPositiveButton(getString(R.string.build), (dialog, id) -> {
-                    if (!APKEditorUtils.getBoolean("firstSigning", false, requireActivity())) {
-                        new MaterialAlertDialogBuilder(requireActivity())
-                                .setItems(AppData.getSigningOptionsMenu(requireActivity()), (d, itemPosition) -> {
-                                    APKEditorUtils.saveBoolean("firstSigning", true, requireActivity());
-                                    if (itemPosition == 0) {
-                                        APKData.prepareSignedAPK(requireActivity());
-                                    } else {
-                                        Intent signing = new Intent(requireActivity(), APKSignActivity.class);
-                                        startActivity(signing);
-                                    }
-                                    dialog.dismiss();
-                                }).show();
+                    if (!sUtils.getBoolean("firstSigning", false, requireActivity())) {
+                        new sSingleItemDialog(0, null, AppData.getSigningOptionsMenu(requireActivity()), requireActivity()) {
+
+                            @Override
+                            public void onItemSelected(int itemPosition) {
+                                sUtils.saveBoolean("firstSigning", true, requireActivity());
+                                if (itemPosition == 0) {
+                                    APKData.prepareSignedAPK(requireActivity());
+                                } else {
+                                    Intent signing = new Intent(requireActivity(), APKSignActivity.class);
+                                    startActivity(signing);
+                                }
+                            }
+                        }.show();
                     } else {
                         APKData.prepareSignedAPK(requireActivity());
                     }
@@ -98,7 +106,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             mRecyclerView.setAdapter(mRecycleViewAdapter);
         } catch (NullPointerException ignored) {
             mRecyclerView.setVisibility(View.GONE);
-            mError.setText(getString(R.string.explore_error_status, AppData.getAppName(Common.getAppID(), requireActivity())));
+            mError.setText(getString(R.string.explore_error_status, sPackageUtils.getAppName(Common.getAppID(), requireActivity())));
             mError.setVisibility(View.VISIBLE);
         }
 
@@ -106,10 +114,10 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             PopupMenu popupMenu = new PopupMenu(requireActivity(), mSortButton);
             Menu menu = popupMenu.getMenu();
             menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
-                    .setChecked(APKEditorUtils.getBoolean("az_order", true, requireActivity()));
+                    .setChecked(sUtils.getBoolean("az_order", true, requireActivity()));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
-                    APKEditorUtils.saveBoolean("az_order", !APKEditorUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
+                    sUtils.saveBoolean("az_order", !sUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
                     reload(requireActivity());
                 }
                 return false;
@@ -126,6 +134,9 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                 imageView.putExtra(ImageViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
                 startActivity(imageView);
             } else if (APKExplorer.isTextFile(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position))) {
+                if (ExternalAPKData.isFMInstall()) {
+                    ExternalAPKData.isFMInstall(false);
+                }
                 Intent textView = new Intent(requireActivity(), TextViewActivity.class);
                 textView.putExtra(TextViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
                 startActivity(textView);
@@ -146,8 +157,11 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                         .setNeutralButton(getString(R.string.cancel), (dialog, id) -> {
                         })
                         .setNegativeButton(getString(R.string.export), (dialog, id) -> {
-                            if (APKExplorer.isPermissionDenied(requireActivity())) {
-                                APKExplorer.requestPermission(requireActivity());
+                            if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, requireActivity())) {
+                                sPermissionUtils.requestPermission(
+                                        new String[] {
+                                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                        },requireActivity());
                             } else {
                                 Projects.exportToStorage(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position),
                                         new File(APKExplorer.getData(getFilesList(),true, requireActivity()).get(position)).getName(),
@@ -178,7 +192,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
     }
 
     private void retainDialog() {
-        if (APKEditorUtils.getString("projectAction", null, requireActivity()) == null) {
+        if (sUtils.getString("projectAction", null, requireActivity()) == null) {
             new MaterialAlertDialogBuilder(requireActivity())
                     .setIcon(R.mipmap.ic_launcher)
                     .setTitle(R.string.app_name)
@@ -191,7 +205,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                         requireActivity().finish();
                     })
                     .setPositiveButton(getString(R.string.save), (dialog, id) -> requireActivity().finish()).show();
-        } else if (APKEditorUtils.getString("projectAction", null, requireActivity()).equals(getString(R.string.delete))) {
+        } else if (sUtils.getString("projectAction", null, requireActivity()).equals(getString(R.string.delete))) {
             Projects.deleteProject(new File(requireActivity().getCacheDir().getPath(), Common.getAppID() != null ? Common.getAppID() :
                     new File(Common.getPath()).getName()), requireActivity());
             requireActivity().finish();
@@ -206,7 +220,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
 
     @SuppressLint("StaticFieldLeak")
     private void reload(Activity activity) {
-        new AsyncTasks() {
+        new sExecutor() {
 
             @Override
             public void onPreExecute() {
@@ -223,7 +237,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             public void onPostExecute() {
                 if (Common.getAppID() != null) {
                     mTitle.setText(Common.getAppID().equals(requireActivity().getCacheDir().getPath() + "/" + (Common.getAppID() != null ?
-                            Common.getAppID() : new File(Common.getPath()).getName()) + File.separator) ? AppData.getAppName(Common.getAppID(), activity)
+                            Common.getAppID() : new File(Common.getPath()).getName()) + File.separator) ? sPackageUtils.getAppName(Common.getAppID(), activity)
                             : new File(Common.getPath()).getName());
                 }
                 mRecyclerView.setAdapter(mRecycleViewAdapter);

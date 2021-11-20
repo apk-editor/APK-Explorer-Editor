@@ -20,9 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.adapters.InstallerFilePickerAdapter;
-import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SplitAPKInstaller;
 import com.google.android.material.card.MaterialCardView;
@@ -31,6 +29,10 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.util.Objects;
+
+import in.sunilpaulmathew.sCommon.Utils.sExecutor;
+import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 21, 2021
@@ -58,12 +60,15 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
 
         mBack.setOnClickListener(v -> super.onBackPressed());
 
-        if (APKExplorer.isPermissionDenied(this)) {
+        if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,this)) {
             LinearLayoutCompat mPermissionLayout = findViewById(R.id.permission_layout);
             MaterialCardView mPermissionGrant = findViewById(R.id.grant_card);
             mPermissionLayout.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
-            mPermissionGrant.setOnClickListener(v -> APKExplorer.requestPermission(this));
+            mPermissionGrant.setOnClickListener(v -> sPermissionUtils.requestPermission(
+                    new String[] {
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },this));
             return;
         }
 
@@ -100,7 +105,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                 mRecycleViewAdapter.notifyItemChanged(position);
                 Common.getSelectCard().setVisibility(Common.getAPKList().isEmpty() ? View.GONE : View.VISIBLE);
             } else {
-                APKEditorUtils.snackbar(findViewById(android.R.id.content), getString(R.string.wrong_extension, ".apks/.apkm/.xapk"));
+                sUtils.snackBar(findViewById(android.R.id.content), getString(R.string.wrong_extension, ".apks/.apkm/.xapk")).show();
             }
         });
 
@@ -110,10 +115,10 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
             PopupMenu popupMenu = new PopupMenu(this, mSortButton);
             Menu menu = popupMenu.getMenu();
             menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
-                    .setChecked(APKEditorUtils.getBoolean("az_order", true, this));
+                    .setChecked(sUtils.getBoolean("az_order", true, this));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
-                    APKEditorUtils.saveBoolean("az_order", !APKEditorUtils.getBoolean("az_order", true, this), this);
+                    sUtils.saveBoolean("az_order", !sUtils.getBoolean("az_order", true, this), this);
                     reload(this);
                 }
                 return false;
@@ -130,7 +135,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
     }
 
     private void reload(Activity activity) {
-        new AsyncTasks() {
+        new sExecutor() {
 
             @Override
             public void onPreExecute() {

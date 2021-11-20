@@ -22,12 +22,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.adapters.ProjectsAdapter;
-import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppData;
-import com.apk.editor.utils.AsyncTasks;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.textview.MaterialTextView;
+
+import in.sunilpaulmathew.sCommon.Utils.sExecutor;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 06, 2021
@@ -74,10 +75,10 @@ public class ProjectsFragment extends Fragment {
             PopupMenu popupMenu = new PopupMenu(requireActivity(), mSortButton);
             Menu menu = popupMenu.getMenu();
             menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
-                    .setChecked(APKEditorUtils.getBoolean("az_order", true, requireActivity()));
+                    .setChecked(sUtils.getBoolean("az_order", true, requireActivity()));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
-                    APKEditorUtils.saveBoolean("az_order", !APKEditorUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
+                    sUtils.saveBoolean("az_order", !sUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
                     loadProjects(requireActivity());
                 }
                 return false;
@@ -120,7 +121,7 @@ public class ProjectsFragment extends Fragment {
                     mExit = false;
                     requireActivity().finish();
                 } else {
-                    APKEditorUtils.snackbar(requireActivity().findViewById(android.R.id.content), getString(R.string.press_back));
+                    sUtils.snackBar(requireActivity().findViewById(android.R.id.content), getString(R.string.press_back)).show();
                     mExit = true;
                     mHandler.postDelayed(() -> mExit = false, 2000);
                 }
@@ -131,7 +132,7 @@ public class ProjectsFragment extends Fragment {
     }
 
     private void loadProjects(Activity activity) {
-        new AsyncTasks() {
+        new sExecutor() {
 
             @Override
             public void onPreExecute() {

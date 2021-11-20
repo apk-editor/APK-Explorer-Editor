@@ -13,7 +13,6 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
-import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.recyclerViewItems.PackageItems;
@@ -22,6 +21,10 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.util.Objects;
+
+import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -50,9 +53,9 @@ public class InstallerActivity extends AppCompatActivity {
         String path = getIntent().getStringExtra(PATH_INTENT);
         if (path != null) {
             try {
-                Common.setPackageName(Objects.requireNonNull(APKData.getAppID(path, this)).toString());
-                mTitle.setText(APKData.getAppName(path, this));
-                mIcon.setImageDrawable(APKData.getAppIcon(path, this));
+                Common.setPackageName(Objects.requireNonNull(sAPKUtils.getPackageName(path, this)).toString());
+                mTitle.setText(sAPKUtils.getAPKName(path, this));
+                mIcon.setImageDrawable(sAPKUtils.getAPKIcon(path, this));
             } catch (NullPointerException ignored) {}
         } else {
             Common.setPackageName(APKData.findPackageName(this));
@@ -83,11 +86,11 @@ public class InstallerActivity extends AppCompatActivity {
                     while (!isInterrupted()) {
                         Thread.sleep(500);
                         runOnUiThread(() -> {
-                            String installationStatus = APKEditorUtils.getString("installationStatus", "waiting", activity);
+                            String installationStatus = sUtils.getString("installationStatus", "waiting", activity);
                             if (installationStatus.equals("waiting")) {
                                 try {
                                     if (getIntent().getStringExtra(PATH_INTENT) != null) {
-                                        mStatus.setText(getString(R.string.installing, APKData.getAppName(getIntent().getStringExtra(PATH_INTENT), activity)));
+                                        mStatus.setText(getString(R.string.installing, sAPKUtils.getAPKName(getIntent().getStringExtra(PATH_INTENT), activity)));
                                     } else {
                                         mStatus.setText(getString(R.string.installing, getName()));
                                     }
@@ -98,8 +101,8 @@ public class InstallerActivity extends AppCompatActivity {
                                 mCancel.setVisibility(View.VISIBLE);
                                 if (installationStatus.equals(getString(R.string.installation_status_success))) {
                                     try {
-                                        mTitle.setText(AppData.getAppName(Common.getPackageName(), activity));
-                                        mIcon.setImageDrawable(AppData.getAppIcon(Common.getPackageName(), activity));
+                                        mTitle.setText(sPackageUtils.getAppName(Common.getPackageName(), activity));
+                                        mIcon.setImageDrawable(sPackageUtils.getAppIcon(Common.getPackageName(), activity));
                                         mOpen.setVisibility(View.VISIBLE);
                                     } catch (NullPointerException ignored) {}
                                 }
@@ -114,8 +117,8 @@ public class InstallerActivity extends AppCompatActivity {
     private CharSequence getName() {
         CharSequence name = null;
         for (String mAPKs : Common.getAPKList()) {
-            if (APKData.getAppName(mAPKs, this) != null) {
-                name = APKData.getAppName(mAPKs, this);
+            if (sAPKUtils.getAPKName(mAPKs, this) != null) {
+                name = sAPKUtils.getAPKName(mAPKs, this);
             }
         }
         return name;
@@ -124,8 +127,8 @@ public class InstallerActivity extends AppCompatActivity {
     private Drawable getIcon() {
         Drawable icon = null;
         for (String mAPKs : Common.getAPKList()) {
-            if (APKData.getAppIcon(mAPKs, this) != null) {
-                icon = APKData.getAppIcon(mAPKs, this);
+            if (sAPKUtils.getAPKIcon(mAPKs, this) != null) {
+                icon = sAPKUtils.getAPKIcon(mAPKs, this);
             }
         }
         return icon;
@@ -133,22 +136,22 @@ public class InstallerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (APKEditorUtils.getString("installationStatus", "waiting", this).equals("waiting")) {
+        if (sUtils.getString("installationStatus", "waiting", this).equals("waiting")) {
             return;
         }
-        if (APKEditorUtils.getString("installationStatus", "waiting", this).equals(getString(R.string.installation_status_success))) {
+        if (sUtils.getString("installationStatus", "waiting", this).equals(getString(R.string.installation_status_success))) {
             Common.getPackageData().add(new PackageItems(
-                    AppData.getAppName(Common.getPackageName(), this).toString(),
+                    sPackageUtils.getAppName(Common.getPackageName(), this).toString(),
                     Common.getPackageName(),
-                    AppData.getVersionName(AppData.getSourceDir(Common.getPackageName(), this), this),
-                    new File(AppData.getSourceDir(Common.getPackageName(), this)).length(),
+                    sAPKUtils.getVersionName(sPackageUtils.getSourceDir(Common.getPackageName(), this), this),
+                    new File(sPackageUtils.getSourceDir(Common.getPackageName(), this)).length(),
                     Objects.requireNonNull(AppData.getPackageInfo(Common.getPackageName(), this)).firstInstallTime,
                     Objects.requireNonNull(AppData.getPackageInfo(Common.getPackageName(), this)).lastUpdateTime,
-                    AppData.getAppIcon(Common.getPackageName(), this)
+                    sPackageUtils.getAppIcon(Common.getPackageName(), this)
             ));
         }
-        if (APKEditorUtils.exist(getCacheDir().getPath() + "/splits")) {
-            APKEditorUtils.delete(getCacheDir().getPath() + "/splits");
+        if (sUtils.exist(new File(getCacheDir(),"splits"))) {
+            sUtils.delete(new File(getCacheDir(),"splits"));
         }
         super.onBackPressed();
     }

@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
+
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on November 07, 2021
  * Ref: https://gitlab.com/guardianproject/checkey/-/blob/master/app/src/main/java/info/guardianproject/checkey/Utils.java
@@ -26,7 +28,6 @@ import java.util.List;
 public class ExternalAPKData {
 
     private static boolean mFMInstall = false;
-    private static File mAPKFile = null;
     private static List<String> mPermissions = null;
     private static String mCertificate = null, mManifest = null, mMinSDKVersion = null, mSDKVersion = null,
             mSize = null, mVersion = null;
@@ -37,7 +38,7 @@ public class ExternalAPKData {
             APKItems mAPKData = new APKItems(apkMeta.getLabel(), apkMeta.getPackageName(),
                     apkMeta.getVersionName(), readXMLFromAPK(apk, "AndroidManifest.xml"),
                     apkMeta.getCompileSdkVersion(), apkMeta.getMinSdkVersion(),
-                    APKData.getAppIcon(apk, context), apkMeta.getVersionCode(),
+                    sAPKUtils.getAPKIcon(apk, context), apkMeta.getVersionCode(),
                     apkMeta.getUsesPermissions());
             apkFile.close();
             return mAPKData;
@@ -48,10 +49,6 @@ public class ExternalAPKData {
 
     public static boolean isFMInstall() {
         return mFMInstall;
-    }
-
-    public static File getAPKFile() {
-        return mAPKFile;
     }
 
     public static List<String> getData() {
@@ -182,10 +179,6 @@ public class ExternalAPKData {
 
     public static void isFMInstall(boolean b) {
         mFMInstall = b;
-    }
-
-    public static void setAPKFile(File file) {
-        mAPKFile = file;
     }
 
     public static void setCertificate(String certificate) {

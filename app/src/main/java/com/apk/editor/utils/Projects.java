@@ -19,6 +19,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import in.sunilpaulmathew.sCommon.Utils.sExecutor;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
+
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
@@ -36,14 +39,14 @@ public class Projects {
             }
         }
         Collections.sort(mData);
-        if (!APKEditorUtils.getBoolean("az_order", true, context)) {
+        if (!sUtils.getBoolean("az_order", true, context)) {
             Collections.reverse(mData);
         }
         return mData;
     }
 
-    public static AsyncTasks exportToStorage(String source, String name, String folder, Context context) {
-        return new AsyncTasks() {
+    public static sExecutor exportToStorage(String source, String name, String folder, Context context) {
+        return new sExecutor() {
             private String mExportPath;
             @Override
             public void onPreExecute() {
@@ -52,7 +55,7 @@ public class Projects {
             @Override
             public void doInBackground() {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                    APKEditorUtils.mkdir(getExportPath(context) + "/" + folder);
+                    sUtils.mkdir(new File(getExportPath(context), folder));
                     mExportPath = getExportPath(context) + "/" + Common.getAppID();
                 } else {
                     mExportPath = getExportPath(context);
@@ -65,12 +68,12 @@ public class Projects {
                         values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
                         Uri uri = context.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
                         OutputStream outputStream = context.getContentResolver().openOutputStream(uri);
-                        outputStream.write(Objects.requireNonNull(APKEditorUtils.read(source)).getBytes());
+                        outputStream.write(Objects.requireNonNull(sUtils.read(new File(source))).getBytes());
                         outputStream.close();
                     } catch (IOException ignored) {
                     }
                 } else {
-                    APKEditorUtils.copy(source, new File(mExportPath, name).getAbsolutePath());
+                    sUtils.copy(new File(source), new File(mExportPath, name));
                 }
             }
 
@@ -87,15 +90,15 @@ public class Projects {
     }
 
     public static String getExportPath(Context context) {
-        if (Build.VERSION.SDK_INT < 29 && APKEditorUtils.getString("exportPath", null, context) != null) {
-            return APKEditorUtils.getString("exportPath", null, context);
+        if (Build.VERSION.SDK_INT < 29 && sUtils.getString("exportPath", null, context) != null) {
+            return sUtils.getString("exportPath", null, context);
         } else {
             return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
         }
     }
 
     public static void exportProject(File path, String name, Context context) {
-        new AsyncTasks() {
+        new sExecutor() {
             private ProgressDialog mProgressDialog;
 
             @Override
@@ -104,14 +107,14 @@ public class Projects {
                 mProgressDialog.setMessage(context.getString(R.string.exporting, path.getName()));
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
-                if (APKEditorUtils.exist(getExportPath(context) + "/" + name)) {
-                    APKEditorUtils.delete(getExportPath(context) + "/" + name);
+                if (sUtils.exist(new File(getExportPath(context), name))) {
+                    sUtils.delete(new File(getExportPath(context), name));
                 }
             }
 
             @Override
             public void doInBackground() {
-                APKEditorUtils.copyDir(path, new File(getExportPath(context), name));
+                sUtils.copyDir(path, new File(getExportPath(context), name));
             }
 
             @Override
@@ -125,7 +128,7 @@ public class Projects {
     }
 
     public static void deleteProject(File path, Context context) {
-        new AsyncTasks() {
+        new sExecutor() {
             private ProgressDialog mProgressDialog;
 
             @Override
@@ -138,7 +141,7 @@ public class Projects {
 
             @Override
             public void doInBackground() {
-                APKEditorUtils.delete(path.getAbsolutePath());
+                sUtils.delete(path);
             }
 
             @Override

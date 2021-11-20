@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SplitAPKInstaller;
 import com.google.android.material.card.MaterialCardView;
@@ -29,6 +28,9 @@ import com.google.android.material.textview.MaterialTextView;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
+
+import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -53,8 +55,8 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull APKsAdapter.ViewHolder holder, int position) {
         try {
             if (new File(data.get(position)).isDirectory()) {
-                if (APKData.getAppIcon(data.get(position) + "/base.apk", holder.mAppName.getContext()) != null) {
-                    holder.mAppIcon.setImageDrawable(APKData.getAppIcon(data.get(position) + "/base.apk", holder.mAppName.getContext()));
+                if (sAPKUtils.getAPKIcon(data.get(position) + "/base.apk", holder.mAppName.getContext()) != null) {
+                    holder.mAppIcon.setImageDrawable(sAPKUtils.getAPKIcon(data.get(position) + "/base.apk", holder.mAppName.getContext()));
                 } else {
                     holder.mAppIcon.setImageDrawable(ContextCompat.getDrawable(holder.mAppIcon.getContext(), R.drawable.ic_android));
                     holder.mAppIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mAppIcon.getContext()));
@@ -65,15 +67,15 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 } else {
                     holder.mAppName.setText(new File(data.get(position)).getName());
                 }
-                if (APKData.getAppID(data.get(position) + "/base.apk", holder.mAppName.getContext()) == null) {
+                if (sAPKUtils.getPackageName(data.get(position) + "/base.apk", holder.mAppName.getContext()) == null) {
                     holder.mAppName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                    holder.mCard.setOnClickListener(v -> APKEditorUtils.snackbar(v, v.getContext().getString(R.string.apk_corrupted)));
+                    holder.mCard.setOnClickListener(v -> sUtils.snackBar(v, v.getContext().getString(R.string.apk_corrupted)).show());
                 }
-                if (APKData.getVersionName(data.get(position) + "/base.apk", holder.mAppName.getContext()) != null) {
-                    holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.version, APKData.getVersionName(data.get(position) + "/base.apk", holder.mAppName.getContext())));
+                if (sAPKUtils.getVersionName(data.get(position) + "/base.apk", holder.mAppName.getContext()) != null) {
+                    holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.version, sAPKUtils.getVersionName(data.get(position) + "/base.apk", holder.mAppName.getContext())));
                 }
                 holder.mCard.setOnClickListener(v -> {
-                    if (APKEditorUtils.isFullVersion(v.getContext()) && data.get(position).contains("_aee-signed") && !APKEditorUtils.getBoolean("signature_warning", false, v.getContext())) {
+                    if (APKEditorUtils.isFullVersion(v.getContext()) && data.get(position).contains("_aee-signed") && !sUtils.getBoolean("signature_warning", false, v.getContext())) {
                         APKData.showSignatureErrorDialog(v.getContext());
                     } else {
                         new MaterialAlertDialogBuilder(v.getContext())
@@ -109,18 +111,18 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                     return false;
                 });
             } else {
-                if (APKData.getAppIcon(data.get(position), holder.mAppName.getContext()) != null) {
-                    holder.mAppIcon.setImageDrawable(APKData.getAppIcon(data.get(position), holder.mAppName.getContext()));
+                if (sAPKUtils.getAPKIcon(data.get(position), holder.mAppName.getContext()) != null) {
+                    holder.mAppIcon.setImageDrawable(sAPKUtils.getAPKIcon(data.get(position), holder.mAppName.getContext()));
                 } else {
                     holder.mAppIcon.setImageDrawable(ContextCompat.getDrawable(holder.mAppIcon.getContext(), R.drawable.ic_android));
                     holder.mAppIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mAppIcon.getContext()));
                 }
-                if (APKData.getAppName(data.get(position), holder.mAppName.getContext()) != null) {
-                    if (Common.getSearchWord() != null && Common.isTextMatched(Objects.requireNonNull(APKData.getAppName(data.get(position), holder.mAppName.getContext())).toString(), Common.getSearchWord())) {
-                        holder.mAppName.setText(APKEditorUtils.fromHtml(Objects.requireNonNull(APKData.getAppName(data.get(position), holder.mAppName.getContext())).toString().replace(Common.getSearchWord(),
+                if (sAPKUtils.getAPKName(data.get(position), holder.mAppName.getContext()) != null) {
+                    if (Common.getSearchWord() != null && Common.isTextMatched(Objects.requireNonNull(sAPKUtils.getAPKName(data.get(position), holder.mAppName.getContext())).toString(), Common.getSearchWord())) {
+                        holder.mAppName.setText(APKEditorUtils.fromHtml(Objects.requireNonNull(sAPKUtils.getAPKName(data.get(position), holder.mAppName.getContext())).toString().replace(Common.getSearchWord(),
                                 "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
                     } else {
-                        holder.mAppName.setText(APKData.getAppName(data.get(position), holder.mAppName.getContext()));
+                        holder.mAppName.setText(sAPKUtils.getAPKName(data.get(position), holder.mAppName.getContext()));
                     }
                 } else {
                     if (Common.getSearchWord() != null && Common.isTextMatched(new File(data.get(position)).getName(), Common.getSearchWord())) {
@@ -130,19 +132,19 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                         holder.mAppName.setText(new File(data.get(position)).getName());
                     }
                     holder.mAppName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                    holder.mCard.setOnClickListener(v -> APKEditorUtils.snackbar(v, v.getContext().getString(R.string.apk_corrupted)));
+                    holder.mCard.setOnClickListener(v -> sUtils.snackBar(v, v.getContext().getString(R.string.apk_corrupted)).show());
                 }
-                if (!APKEditorUtils.isDarkTheme(holder.mCard.getContext())) {
+                if (!sUtils.isDarkTheme(holder.mCard.getContext())) {
                     holder.mCard.setCardBackgroundColor(Color.LTGRAY);
                 }
-                if (APKData.getVersionName(data.get(position), holder.mAppName.getContext()) != null) {
-                    holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.version, APKData.getVersionName(data.get(position), holder.mAppName.getContext())));
+                if (sAPKUtils.getVersionName(data.get(position), holder.mAppName.getContext()) != null) {
+                    holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.version, sAPKUtils.getVersionName(data.get(position), holder.mAppName.getContext())));
                 }
-                holder.mSize.setText(holder.mSize.getContext().getString(R.string.size, AppData.getAPKSize(new File(data.get(position)).length())));
-                holder.mSize.setTextColor(APKEditorUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
+                holder.mSize.setText(holder.mSize.getContext().getString(R.string.size, sAPKUtils.getAPKSize(data.get(position))));
+                holder.mSize.setTextColor(sUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
                 holder.mSize.setVisibility(View.VISIBLE);
                 holder.mCard.setOnClickListener(v -> {
-                    if (APKEditorUtils.isFullVersion(v.getContext()) && data.get(position).contains("_aee-signed.apk") && !APKEditorUtils.getBoolean("signature_warning", false, v.getContext())) {
+                    if (APKEditorUtils.isFullVersion(v.getContext()) && data.get(position).contains("_aee-signed.apk") && !sUtils.getBoolean("signature_warning", false, v.getContext())) {
                         APKData.showSignatureErrorDialog(v.getContext());
                     } else {
                         new MaterialAlertDialogBuilder(v.getContext())
@@ -163,7 +165,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                         popupMenu.setOnMenuItemClickListener(item -> {
                             switch (item.getItemId()) {
                                 case 0:
-                                    APKData.shareAPK(data.get(position), v.getContext()).show();
+                                    APKData.shareAPK(data.get(position), v.getContext());
                                     break;
                                 case 1:
                                     APKData.saveToDownloads(new File(data.get(position)), v.getContext()).execute();
@@ -173,7 +175,14 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                         });
                         popupMenu.show();
                     } else {
-                        APKData.shareAPK(data.get(position), v.getContext()).show();
+                        new MaterialAlertDialogBuilder(v.getContext())
+                                .setIcon(R.mipmap.ic_launcher)
+                                .setTitle(R.string.app_name)
+                                .setMessage(v.getContext().getString(R.string.share_message, sAPKUtils.getAPKName(data.get(position), v.getContext())))
+                                .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
+                                })
+                                .setPositiveButton(v.getContext().getString(R.string.share), (dialog, id) ->
+                                        APKData.shareAPK(data.get(position), v.getContext())).show();
                     }
                     return false;
                 });
@@ -189,7 +198,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                 })
                 .setPositiveButton(R.string.delete, (dialog, id) -> {
-                    APKEditorUtils.delete(data.get(position));
+                    sUtils.delete(new File(data.get(position)));
                     data.remove(position);
                     notifyItemRemoved(position);
                     notifyDataSetChanged();

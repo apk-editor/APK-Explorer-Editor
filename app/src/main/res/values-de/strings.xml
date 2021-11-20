@@ -7,13 +7,8 @@
     <string name="apps_exported">"Exportierte APK's"</string>
     <string name="apps_installed">"Installierte Apps"</string>
     <string name="cancel">"Abbrechen"</string>
-    <string name="credits">"Danksagungen"</string>
-    <string name="credits_message">"Willst du dein Name hier sehen? Dann bitte helf uns die App zu übersetzen!"</string>
-    <string name="credits_summary">"Danke an die Kontributoren"</string>
-    <string name="copyright">"Copyright: © %s"</string>
     <string name="delete">"Löschen"</string>
     <string name="delete_question">"%s löschen?"</string>
-    <string name="dismiss">"Abbrechen"</string>
     <string name="documentation">"Dokumenation"</string>
     <string name="documentation_summary">"Schau auf die AEE Dokumentation"</string>
     <string name="donations">"Spenden"</string>
@@ -57,7 +52,6 @@
     <string name="support_group">"Support-Gruppe"</string>
     <string name="support_group_summary">"Trete der AEE Support-Gruppe bei"</string>
     <string name="system">"System"</string>
-    <string name="translate">"Übersetzen"</string>
     <string name="unknown_file_message">"AEE kann im Moment nicht mit '%s' umgehen. Wenn Sie dieses Dateiformat kennen, können Sie diese Datei in den Gerätespeicher exportieren und versuchen, sie mit einer unterstützten Drittanbieteranwendung zu bearbeiten. Alternativ können Sie auch versuchen, die Datei als Textdatei zu öffnen?"</string>
     <string name="unsupported_file">"Nicht unterstützte Datei"</string>
     <string name="unsupported_file_arsc">"Sie haben 'resources.arsc' ausgewählt, was für AEE leider nicht lesbar ist.
@@ -75,7 +69,6 @@
         Wie liest man eine DEX-Datei?
         Eine DEX-Datei muss mit Tools wie 'dex2jar' und 'JD-GUI' in das 'jar'-Format und später in eine 'Java'-Datei konvertiert werden."</string>
     <string name="user">"Nutzer"</string>
-    <string name="version">"Version: %s"</string>
     <string name="bundles">"Bündel"</string>
     <string name="preparing_bundle">"App-Bundle für das Teilen vorbereiten…"</string>
     <string name="privacy_policy">"Datenschutzrichtlinie"</string>
@@ -102,14 +95,6 @@
     <string name="install_storage">"Installation aus dem Speicher"</string>
     <string name="installer_message">"Der AEE Split APK Installer verarbeitet normale APKs, geteilte APKs sowie 'xapk', 'apks' und 'apkm' App-Bundles. Um eine Installation zu starten, wählen Sie einfach die Installationsdatei(en) auf dem nächsten Bildschirm aus und folgen den Anweisungen auf dem Bildschirm."</string>
     <string name="installation_cancel_message">"Sind Sie sicher, dass Sie die Installation abbrechen wollen?"</string>
-    <string name="installation_status_aborted">"Installation wurde vom Nutzer abgebrochen"</string>
-    <string name="installation_status_bad_apks">"Ungültige APK-Dateien ausgewählt"</string>
-    <string name="installation_status_blocked">"Installation wurde blockiert"</string>
-    <string name="installation_status_conflict">"Die App kann nicht installiert werden, da sie in Konflikt mit einer bereits installierten App mit demselben Paketnamen steht"</string>
-    <string name="installation_status_failed">"Installation fehlgeschlagen!"</string>
-    <string name="installation_status_incompatible">"Anwendung ist mit diesem Gerät nicht kompatibel"</string>
-    <string name="installation_status_storage">"Nicht genügend Speicherplatz für die Installation der Anwendung"</string>
-    <string name="installation_status_success">"Installation erfolgreich abgeschlossen!"</string>
     <string name="name_empty">"Name sollte nicht leer sein! Abbruch."</string>
     <string name="ok">"OK"</string>
     <string name="preparing_bundle_install">"Vorbereiten von '%s' für die Installation…"</string>
@@ -152,10 +137,6 @@
     <string name="text_editing_summary">"Der AEE-Texteditor ist noch sehr einfach und ein wenig fehlerhaft. APKs, die nach der Bearbeitung von binären Textdateien erstellt wurden, funktionieren möglicherweise nicht richtig. Bitte verwenden Sie ihn mit äußerster Vorsicht."</string>
     <string name="warning">"Warnung"</string>
     <string name="file_path_error">"Dateipfad konnte nicht vom externen Dateimanager geladen werden!"</string>
-    <string name="app_theme">"Theme"</string>
-    <string name="app_theme_auto">"Automatisch"</string>
-    <string name="app_theme_dark">"Dunkel"</string>
-    <string name="app_theme_light">"Hell"</string>
     <string name="discard">"Verwerfen"</string>
     <string name="discard_message">"Änderungen an dieser Datei verwerfen?"</string>
     <string name="export_path_apks">"Export Pfad (APKs)"</string>

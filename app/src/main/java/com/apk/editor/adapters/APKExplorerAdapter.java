@@ -16,10 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.FilePickerActivity;
-import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -27,6 +25,10 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.util.List;
+
+import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -53,7 +55,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
     public void onBindViewHolder(@NonNull APKExplorerAdapter.ViewHolder holder, int position) {
         if (new File(data.get(position)).isDirectory()) {
             holder.mIcon.setImageDrawable(ContextCompat.getDrawable(holder.mTitle.getContext(), R.drawable.ic_folder));
-            if (APKEditorUtils.isDarkTheme(holder.mIcon.getContext())) {
+            if (sUtils.isDarkTheme(holder.mIcon.getContext())) {
                 holder.mIcon.setBackground(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_circle));
             }
             holder.mIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mTitle.getContext()));
@@ -68,7 +70,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                     APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_file), holder.mIcon.getContext());
                 }
             } else if (data.get(position).endsWith(".apk")) {
-                holder.mIcon.setImageDrawable(APKData.getAppIcon(data.get(position), holder.mIcon.getContext()));
+                holder.mIcon.setImageDrawable(sAPKUtils.getAPKIcon(data.get(position), holder.mIcon.getContext()));
             } else {
                 if (data.get(position).endsWith(".xml")) {
                     APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_xml), holder.mIcon.getContext());
@@ -78,7 +80,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
             }
         }
         holder.mTitle.setText(new File(data.get(position)).getName());
-        holder.mDescription.setText(AppData.getAPKSize(new File(data.get(position)).length()));
+        holder.mDescription.setText(sAPKUtils.getAPKSize(data.get(position)));
         holder.mSettings.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
             Menu menu = popupMenu.getMenu();
@@ -97,7 +99,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
                                 .setPositiveButton(R.string.delete, (dialog, id) -> {
-                                    APKEditorUtils.delete(data.get(position));
+                                    sUtils.delete(new File(data.get(position)));
                                     data.remove(position);
                                     notifyDataSetChanged();
                                 }).show();
@@ -110,8 +112,11 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                                 .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
                                 })
                                 .setPositiveButton(v.getContext().getString(R.string.export), (dialog, id) -> {
-                                    if (APKExplorer.isPermissionDenied(v.getContext())) {
-                                        APKExplorer.requestPermission((Activity) v.getContext());
+                                    if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext())) {
+                                        sPermissionUtils.requestPermission(
+                                                new String[] {
+                                                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                                }, (Activity) v.getContext());
                                     } else {
                                         Projects.exportToStorage(data.get(position), new File(data.get(position)).getName(), Common.getAppID(), v.getContext()).execute();
                                     }

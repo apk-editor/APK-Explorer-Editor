@@ -7,13 +7,8 @@
     <string name="apps_exported">"APK exportés"</string>
     <string name="apps_installed">"Applications installées"</string>
     <string name="cancel">"Annuler"</string>
-    <string name="credits">"Crédits"</string>
-    <string name="credits_message">"Vous voulez voir votre nom ici ? Alors, aidez-moi s'il vous plaît à traduire AEE !"</string>
-    <string name="credits_summary">"Contributeurs"</string>
-    <string name="copyright">"Copyright: © %s"</string>
     <string name="delete">"Effacer"</string>
     <string name="delete_question">"Effacer %s ?"</string>
-    <string name="dismiss">"Abandonner"</string>
     <string name="documentation">"Documentation"</string>
     <string name="documentation_summary">"Consulter la documentation d'AEE"</string>
     <string name="donations">"Dons"</string>
@@ -57,7 +52,6 @@
     <string name="support_group">"Groupe d'entraide"</string>
     <string name="support_group_summary">"Rejoindre le groupe d'entraide d'AEE"</string>
     <string name="system">"Système"</string>
-    <string name="translate">"Traduire"</string>
     <string name="unknown_file_message">"AEE ne supporte pas '%s' pour le moment. Si vous connaissez ce format de fichier, vous devez exporter ce fichier vers le stockage de l'appareil et essayer de l'éditer avec une autre application. Autrement vous devriez essayer de l'ouvrir en tant que texte ?"</string>
     <string name="unsupported_file">"Fichier non supporté"</string>
     <string name="unsupported_file_arsc">"Vous avez sélectionné  'resources.arsc', que malheureusement AEE ne peut pas lire.
@@ -75,7 +69,6 @@
         Comment lire un fichier DEX ?
         Un fichier DEX doit être converti au format 'jar' et ensuite en fichier 'Java' avec des outils tels que 'dex2jar' ou 'JD-GUI'."</string>
     <string name="user">"Utilisateur"</string>
-    <string name="version">"Version : %s"</string>
     <string name="bundles">"Lots"</string>
     <string name="preparing_bundle">"Préparation du lot d'applications pour le partage…"</string>
     <string name="privacy_policy">"Politique de confidentialité"</string>
@@ -102,14 +95,6 @@
     <string name="install_storage">"Installation depuis le stockage"</string>
     <string name="installer_message">"L'installeur AEE d'APK modulaires prend en charge les APK normaux, les APK modulaires ainsi que les lots d'applications 'xapk', 'apks' et 'apkm'. Afin de lancer une installation, selectionnez simplement le(s) fichier(s) d'installation depuis l'écran suivant et suivez les instructions affichées à l'écran."</string>
     <string name="installation_cancel_message">"Êtes-vous sûr•e de vouloir annuler l'installation ?"</string>
-    <string name="installation_status_aborted">"L'installation a été annulée par l'utilisateur"</string>
-    <string name="installation_status_bad_apks">"Fichier APK sélectionné invalide"</string>
-    <string name="installation_status_blocked">"L'installation a été bloquée"</string>
-    <string name="installation_status_conflict">"Impossible d'installer l'application car elle est en conflit avec une application déjà installée portant le même nom de paquet"</string>
-    <string name="installation_status_failed">"L'installation a échoué !"</string>
-    <string name="installation_status_incompatible">"L'application n'est pas compatible avec cette appareil"</string>
-    <string name="installation_status_storage">"Pas assez d'espace de stockage pour installer l'application"</string>
-    <string name="installation_status_success">"L'installation s'est déroulée avec succès !"</string>
     <string name="name_empty">"Le nom ne peut pas être vide ! Abandon."</string>
     <string name="ok">"OK"</string>
     <string name="preparing_bundle_install">"Préparation de '%s' pour l'installation…"</string>
@@ -153,10 +138,6 @@
     <string name="file_path_error">"Échec de récupération du chemin du fichier depuis le gestionnaire de fichiers externe !"</string>
     <string name="image_viewer">"Visionneur d'images AEE"</string>
     <string name="text_editor">"Éditeur de texte AEE"</string>
-    <string name="app_theme">"Thème de l'application"</string>
-    <string name="app_theme_auto">"Auto"</string>
-    <string name="app_theme_dark">"Sombre"</string>
-    <string name="app_theme_light">"Clair"</string>
     <string name="discard">"Annuler"</string>
     <string name="discard_message">"Annuler les modifications faites sur ce fichier ?"</string>
     <string name="export_path_apks">"Chemin d'exportation (APK)"</string>

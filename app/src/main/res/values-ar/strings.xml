@@ -7,13 +7,8 @@
     <string name="apps_exported">"التطبيقات المصدرة"</string>
     <string name="apps_installed">"التطبيقات المثبتة"</string>
     <string name="cancel">"إلغاء"</string>
-    <string name="credits">"ثناء"</string>
-    <string name="credits_message">"هل تريد رؤية اسمك هنا؟ إذن، يرجى مساعدتي في ترجمة هذا التطبيق!"</string>
-    <string name="credits_summary">"ثناء للمساهمين"</string>
-    <string name="copyright">"حقوق النشر: © %s"</string>
     <string name="delete">"حذف"</string>
     <string name="delete_question">"حذف %s؟"</string>
-    <string name="dismiss">"رفض"</string>
     <string name="documentation">"الوثيقة"</string>
     <string name="documentation_summary">"تحقق من وثيقة AEE"</string>
     <string name="donations">"التبرعات"</string>
@@ -57,7 +52,6 @@
     <string name="support_group">"مجموعة الدعم"</string>
     <string name="support_group_summary">"انضم لمجموعة دعم AEE"</string>
     <string name="system">"النظام"</string>
-    <string name="translate">"ترجمة"</string>
     <string name="unknown_file_message">"لا يتعامل AEE مع '%s' في الوقت الحالي. إذا كنت تعرف تنسيق الملف هذا، فيمكنك تصدير هذا الملف إلى ذاكرة تخزين الجهاز ومحاولة التعديل باستخدام تطبيق آخر مدعوم. كبديل، يمكنك محاولة فتحه كملف نصي؟"</string>
     <string name="unsupported_file">"ملف غير مدعوم"</string>
     <string name="unsupported_file_arsc">"لقد حددت \"resources.arsc\"، والتي للأسف من المستحيل على AEE قراءتها.
@@ -75,7 +69,6 @@
  كيف تقرأ ملف DEX؟
  يجب تحويل ملف DEX إلى تنسيق \"jar\" ولاحقًا إلى ملف \"Java\" باستخدام أدوات مثل \"dex2jar\" و \"JD-GUI\"."</string>
     <string name="user">"المستخدم"</string>
-    <string name="version">"الإصدار: %s"</string>
     <string name="bundles">"الحزم"</string>
     <string name="preparing_bundle">"يتم إعداد حزمة التطبيق للمشاركة…"</string>
     <string name="privacy_policy">"سياسة الخصوصية"</string>
@@ -105,14 +98,6 @@
     <string name="install_storage">"تسطيب من التخزين"</string>
     <string name="installer_message">"AEE مجزء مثبت APK  سوف يتعامل مع APK العادية، وأجزاء APK ك 'xapk'، 'apks' وحزم التطبيقات apkm. من أجل تهيئة تثبيت ما، ببساطة حدد ملف التثبيت (ملفات) من الشاشة التالية واتبع التعليمات التي تظهر على الشاشة."</string>
     <string name="installation_cancel_message">"هل أنت متأكد من إلغاء التثبيت؟"</string>
-    <string name="installation_status_aborted">"التثبيت ألغي من المستخدم"</string>
-    <string name="installation_status_bad_apks">"تم اختيار ملفات APK معطوبة"</string>
-    <string name="installation_status_blocked">"حجب التثبيت"</string>
-    <string name="installation_status_conflict">"غير قادر على تثبيت التطبيق لأنه يتعارض مع تطبيق مثبت مسبقاً بنفس اسم الحزمة"</string>
-    <string name="installation_status_failed">"فشل التثبيت!"</string>
-    <string name="installation_status_incompatible">"التطبيق غير متوافق مع هذه الأداة"</string>
-    <string name="installation_status_storage">"مساحة تخزين غير كافية لتثبيت التطبيق"</string>
-    <string name="installation_status_success">"التثبيت تم بنجاح!"</string>
     <string name="name_empty">"الاسم يجب ألا يكون فارغاً! إلغاء"</string>
     <string name="ok">"حسناً"</string>
     <string name="preparing_bundle_install">"تهيئة '%s' للتثبيت…"</string>
@@ -156,10 +141,6 @@
     <string name="file_path_error">"فشل في الحصول على مسار الملف من مدير ملفات خارجي!"</string>
     <string name="image_viewer">"مستعرض صور AEE "</string>
     <string name="text_editor">"معدل نصوص AEE"</string>
-    <string name="app_theme">"قوالب التطبيق"</string>
-    <string name="app_theme_auto">"آلي"</string>
-    <string name="app_theme_dark">"مظلم"</string>
-    <string name="app_theme_light">"منير"</string>
     <string name="discard">"مرفوض"</string>
     <string name="discard_message">"رفض التغيرات المجرات على هذا الملف"</string>
     <string name="export_path_apks">"مسار تصدير (APK)"</string>

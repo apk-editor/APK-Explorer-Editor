@@ -7,13 +7,8 @@
     <string name="apps_exported">"APKs Exportados"</string>
     <string name="apps_installed">"Apps Instalados"</string>
     <string name="cancel">"Cancelar"</string>
-    <string name="credits">"Créditos"</string>
-    <string name="credits_message">"Quer ver seu nome aqui? Então, por favor, me ajude a traduzir este aplicativo!"</string>
-    <string name="credits_summary">"Créditos aos contribuidores"</string>
-    <string name="copyright">"Copyright: © %s"</string>
     <string name="delete">"Apagar"</string>
     <string name="delete_question">"Apagar %s?"</string>
-    <string name="dismiss">"Dispensar"</string>
     <string name="documentation">"Documentação"</string>
     <string name="documentation_summary">"Verificar documentação do AEE"</string>
     <string name="donations">"Doações"</string>
@@ -57,7 +52,6 @@
     <string name="support_group">"Grupo de Suporte"</string>
     <string name="support_group_summary">"Juntar-se ao grupo de suporte do AEE"</string>
     <string name="system">"Sistema"</string>
-    <string name="translate">"Traduzir"</string>
     <string name="unknown_file_message">"AEE não controla '%s' neste momento. Se você conhece esse formato de arquivo, pode exportá-lo para o armazenamento do dispositivo e tentar editá-lo usando um aplicativo de terceiros compatível. Como alternativa, quer tentar abri-lo como um arquivo de texto?"</string>
     <string name="unsupported_file">"Arquivo não suportado"</string>
     <string name="unsupported_file_arsc">"Você selecionou 'resources.arsc', o que infelizmente é impossível para o AEE ler.
@@ -75,7 +69,6 @@ Um arquivo Dex possui um código que é executado pelo Android Runtime. Cada APK
 Como ler um arquivo DEX?
 Um arquivo DEX deve ser convertido para o formato 'jar' e posteriormente para o arquivo 'Java' usando ferramentas como 'dex2jar' e 'JD-GUI'."</string>
     <string name="user">"Usuário"</string>
-    <string name="version">"Versão: %s"</string>
     <string name="bundles">"Pacotes"</string>
     <string name="preparing_bundle">"Preparando pacote de aplicativo para compartilhar"</string>
     <string name="privacy_policy">"Política de Privacidade"</string>
@@ -102,14 +95,6 @@ Um arquivo DEX deve ser convertido para o formato 'jar' e posteriormente para o 
     <string name="install_storage">"Instalar do Armazenamento"</string>
     <string name="installer_message">"O instalador AEE Split APK irá lidar com APKs normais, APKs divididos, bem como pacotes de aplicativos 'xapk', 'apks' e 'apkm'. Para inicializar uma instalação, basta selecionar o(s) arquivo(s) de instalação na próxima tela e siga as instruções na tela."</string>
     <string name="installation_cancel_message">"Tem certeza que quer cancelar a instalação?"</string>
-    <string name="installation_status_aborted">"A instalação foi cancelada pelo usuário"</string>
-    <string name="installation_status_bad_apks">"Arquivos APKs selecionados inválidos"</string>
-    <string name="installation_status_blocked">"A instalação foi bloqueada"</string>
-    <string name="installation_status_conflict">"Não foi possível instalar o aplicativo porque ele está em conflito com um aplicativo já instalado com o mesmo nome de pacote"</string>
-    <string name="installation_status_failed">"A Instalação Falhou!"</string>
-    <string name="installation_status_incompatible">"O aplicativo é incompatível com este dispositivo"</string>
-    <string name="installation_status_storage">"Espaço de armazenamento insuficiente para instalar o aplicativo"</string>
-    <string name="installation_status_success">"Instalação Completada Com Sucesso!"</string>
     <string name="name_empty">"O nome não pode estar vazio! Abortando."</string>
     <string name="ok">"OK"</string>
     <string name="preparing_bundle_install">"Preparando '%s' para instalação…"</string>
@@ -122,7 +107,7 @@ Um arquivo DEX deve ser convertido para o formato 'jar' e posteriormente para o 
     <string name="resign_only">"Somente Reassinar"</string>
     <string name="resigned_apks_path">"Arquivo(s) APK reassinados foram gerados!
 
-Caminho: '%s'"</string>
+        Caminho: '%s'"</string>
     <string name="resigning_apks">"Reassinando APKs selecionados"</string>
     <string name="select_storage">"Selecionar do Armazenamento"</string>
     <string name="sort_by">"Classificar Apps"</string>
@@ -153,10 +138,6 @@ Caminho: '%s'"</string>
     <string name="file_path_error">"Falha ao obter o caminho do arquivo do Gerenciador de Arquivos externo!"</string>
     <string name="image_viewer">"Visualizador de Imagem AEE"</string>
     <string name="text_editor">"Editor de Texto AEE"</string>
-    <string name="app_theme">"Tema do App"</string>
-    <string name="app_theme_auto">"Auto"</string>
-    <string name="app_theme_dark">"Escuro"</string>
-    <string name="app_theme_light">"Claro"</string>
     <string name="discard">"Descartar"</string>
     <string name="discard_message">"Descartar mudanças feitas neste arquivo?"</string>
     <string name="export_path_apks">"Caminho de Exportação (APKs)"</string>
