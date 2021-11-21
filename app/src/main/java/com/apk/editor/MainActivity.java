@@ -15,6 +15,8 @@ import com.apk.editor.fragments.ApplicationsFragment;
 import com.apk.editor.fragments.ProjectsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Objects;
+
 import in.sunilpaulmathew.sCommon.Adapters.sPagerAdapter;
 import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
@@ -42,6 +44,20 @@ public class MainActivity extends AppCompatActivity {
         adapter.AddFragment(new APKsFragment(), null);
         adapter.AddFragment(new AboutFragment(), null);
 
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(final int i, final float v, final int i2) {
+            }
+            @Override
+            public void onPageSelected(int position) {
+                Objects.requireNonNull(mViewPager.getAdapter()).notifyDataSetChanged();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(final int i) {
+            }
+        });
+
         mViewPager.setAdapter(adapter);
 
         mBottomNav.setOnItemSelectedListener(
@@ -60,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                             mViewPager.setCurrentItem(3);
                             break;
                     }
+                    Objects.requireNonNull(mViewPager.getAdapter()).notifyDataSetChanged();
                     return false;
                 }
         );
