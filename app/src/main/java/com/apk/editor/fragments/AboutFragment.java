@@ -2,12 +2,10 @@ package com.apk.editor.fragments;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -29,9 +27,6 @@ import in.sunilpaulmathew.sCommon.Utils.sUtils;
  */
 public class AboutFragment extends Fragment {
 
-    private boolean mExit;
-    private final Handler mHandler = new Handler();
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,20 +36,6 @@ public class AboutFragment extends Fragment {
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), sUtils.getOrientation(requireActivity()) == Configuration.ORIENTATION_LANDSCAPE ? 3 : 2));
         AboutAdapter mRecycleViewAdapter = new AboutAdapter(getData());
         mRecyclerView.setAdapter(mRecycleViewAdapter);
-
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if (mExit) {
-                    mExit = false;
-                    requireActivity().finish();
-                } else {
-                    sUtils.snackBar(requireActivity().findViewById(android.R.id.content), getString(R.string.press_back)).show();
-                    mExit = true;
-                    mHandler.postDelayed(() -> mExit = false, 2000);
-                }
-            }
-        });
 
         return mRootView;
     }

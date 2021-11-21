@@ -2,7 +2,6 @@ package com.apk.editor.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -10,9 +9,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
@@ -25,7 +22,6 @@ import com.apk.editor.adapters.ProjectsAdapter;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
-import com.google.android.material.textview.MaterialTextView;
 
 import in.sunilpaulmathew.sCommon.Utils.sExecutor;
 import in.sunilpaulmathew.sCommon.Utils.sUtils;
@@ -35,11 +31,7 @@ import in.sunilpaulmathew.sCommon.Utils.sUtils;
  */
 public class ProjectsFragment extends Fragment {
 
-    private AppCompatEditText mSearchWord;
-    private boolean mExit;
-    private final Handler mHandler = new Handler();
     private LinearLayoutCompat mProgress;
-    private MaterialTextView mAppTitle;
     private RecyclerView mRecyclerView;
     private ProjectsAdapter mRecycleViewAdapter;
 
@@ -48,26 +40,26 @@ public class ProjectsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mRootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mAppTitle = mRootView.findViewById(R.id.app_title);
-        mSearchWord = mRootView.findViewById(R.id.search_word);
+        Common.initializeProjectsTitle(mRootView, R.id.app_title);
+        Common.initializeProjectsSearchWord(mRootView, R.id.search_word);
         mProgress = mRootView.findViewById(R.id.progress_layout);
         AppCompatImageButton mSearchButton = mRootView.findViewById(R.id.search_button);
         AppCompatImageButton mSortButton = mRootView.findViewById(R.id.sort_button);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        mAppTitle.setText(getString(R.string.projects));
+        Common.getProjectsTitle().setText(getString(R.string.projects));
 
         mSearchButton.setOnClickListener(v -> {
-            if (mSearchWord.getVisibility() == View.VISIBLE) {
-                mSearchWord.setVisibility(View.GONE);
-                mAppTitle.setVisibility(View.VISIBLE);
-                AppData.toggleKeyboard(0, mSearchWord, requireActivity());
+            if (Common.getProjectsSearchWord().getVisibility() == View.VISIBLE) {
+                Common.getProjectsSearchWord().setVisibility(View.GONE);
+                Common.getProjectsTitle().setVisibility(View.VISIBLE);
+                AppData.toggleKeyboard(0, Common.getProjectsSearchWord(), requireActivity());
             } else {
-                mSearchWord.setVisibility(View.VISIBLE);
-                mSearchWord.requestFocus();
-                mAppTitle.setVisibility(View.GONE);
-                AppData.toggleKeyboard(1, mSearchWord, requireActivity());
+                Common.getProjectsSearchWord().setVisibility(View.VISIBLE);
+                Common.getProjectsSearchWord().requestFocus();
+                Common.getProjectsTitle().setVisibility(View.GONE);
+                AppData.toggleKeyboard(1, Common.getProjectsSearchWord(), requireActivity());
             }
         });
 
@@ -88,7 +80,7 @@ public class ProjectsFragment extends Fragment {
 
         loadProjects(requireActivity());
 
-        mSearchWord.addTextChangedListener(new TextWatcher() {
+        Common.getProjectsSearchWord().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -104,30 +96,6 @@ public class ProjectsFragment extends Fragment {
             }
         });
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if (Common.getSearchWord() != null) {
-                    mSearchWord.setText(null);
-                    Common.setSearchWord(null);
-                    return;
-                }
-                if (mSearchWord.getVisibility() == View.VISIBLE) {
-                    mSearchWord.setVisibility(View.GONE);
-                    mAppTitle.setVisibility(View.VISIBLE);
-                    return;
-                }
-                if (mExit) {
-                    mExit = false;
-                    requireActivity().finish();
-                } else {
-                    sUtils.snackBar(requireActivity().findViewById(android.R.id.content), getString(R.string.press_back)).show();
-                    mExit = true;
-                    mHandler.postDelayed(() -> mExit = false, 2000);
-                }
-            }
-        });
-
         return mRootView;
     }
 
@@ -137,7 +105,7 @@ public class ProjectsFragment extends Fragment {
             @Override
             public void onPreExecute() {
                 mRecyclerView.setVisibility(View.GONE);
-                mProgress.setVisibility(View.VISIBLE);
+                Common.setProgress(true, mProgress);
                 mRecyclerView.removeAllViews();
             }
 
@@ -150,7 +118,7 @@ public class ProjectsFragment extends Fragment {
             public void onPostExecute() {
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mRecyclerView.setVisibility(View.VISIBLE);
-                mProgress.setVisibility(View.GONE);
+                Common.setProgress(false, mProgress);
             }
         }.execute();
     }
@@ -170,7 +138,7 @@ public class ProjectsFragment extends Fragment {
         super.onDestroy();
 
         if (Common.getSearchWord() != null) {
-            mSearchWord.setText(null);
+            Common.getProjectsSearchWord().setText(null);
             Common.setSearchWord(null);
         }
     }

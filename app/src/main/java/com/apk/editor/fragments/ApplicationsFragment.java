@@ -3,7 +3,6 @@ package com.apk.editor.fragments;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,9 +11,7 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
@@ -27,7 +24,6 @@ import com.apk.editor.adapters.ApplicationsAdapter;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Objects;
 
@@ -39,12 +35,8 @@ import in.sunilpaulmathew.sCommon.Utils.sUtils;
  */
 public class ApplicationsFragment extends Fragment {
 
-    private AppCompatEditText mSearchWord;
     private AppCompatImageButton mSortButton;
-    private boolean mExit;
-    private final Handler mHandler = new Handler();
     private LinearLayoutCompat mProgress;
-    private MaterialTextView mAppTitle;
     private RecyclerView mRecyclerView;
     private ApplicationsAdapter mRecycleViewAdapter;
 
@@ -53,8 +45,8 @@ public class ApplicationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mRootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mAppTitle = mRootView.findViewById(R.id.app_title);
-        mSearchWord = mRootView.findViewById(R.id.search_word);
+        Common.initializeAppsTitle(mRootView, R.id.app_title);
+        Common.initializeAppsSearchWord(mRootView, R.id.search_word);
         mProgress = mRootView.findViewById(R.id.progress_layout);
         AppCompatImageButton mSearchButton = mRootView.findViewById(R.id.search_button);
         mSortButton = mRootView.findViewById(R.id.sort_button);
@@ -63,7 +55,7 @@ public class ApplicationsFragment extends Fragment {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        mAppTitle.setText(getString(R.string.apps_installed));
+        Common.getAppsTitle().setText(getString(R.string.apps_installed));
         mTabLayout.setVisibility(View.VISIBLE);
 
         mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.all)));
@@ -108,21 +100,21 @@ public class ApplicationsFragment extends Fragment {
         });
 
         mSearchButton.setOnClickListener(v -> {
-            if (mSearchWord.getVisibility() == View.VISIBLE) {
-                mSearchWord.setVisibility(View.GONE);
-                mAppTitle.setVisibility(View.VISIBLE);
-                AppData.toggleKeyboard(0, mSearchWord, requireActivity());
+            if (Common.getAppsSearchWord().getVisibility() == View.VISIBLE) {
+                Common.getAppsSearchWord().setVisibility(View.GONE);
+                Common.getAppsTitle().setVisibility(View.VISIBLE);
+                AppData.toggleKeyboard(0, Common.getAppsSearchWord(), requireActivity());
             } else {
-                mSearchWord.setVisibility(View.VISIBLE);
-                mSearchWord.requestFocus();
-                mAppTitle.setVisibility(View.GONE);
-                AppData.toggleKeyboard(1, mSearchWord, requireActivity());
+                Common.getAppsSearchWord().setVisibility(View.VISIBLE);
+                Common.getAppsSearchWord().requestFocus();
+                Common.getAppsTitle().setVisibility(View.GONE);
+                AppData.toggleKeyboard(1, Common.getAppsSearchWord(), requireActivity());
             }
         });
 
         mSortButton.setOnClickListener(v -> sortMenu(requireActivity()));
 
-        mSearchWord.addTextChangedListener(new TextWatcher() {
+        Common.getAppsSearchWord().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -139,30 +131,6 @@ public class ApplicationsFragment extends Fragment {
         });
 
         loadApps(requireActivity());
-
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if (Common.getSearchWord() != null) {
-                    mSearchWord.setText(null);
-                    Common.setSearchWord(null);
-                    return;
-                }
-                if (mSearchWord.getVisibility() == View.VISIBLE) {
-                    mSearchWord.setVisibility(View.GONE);
-                    mAppTitle.setVisibility(View.VISIBLE);
-                    return;
-                }
-                if (mExit) {
-                    mExit = false;
-                    requireActivity().finish();
-                } else {
-                    sUtils.snackBar(requireActivity().findViewById(android.R.id.content), getString(R.string.press_back)).show();
-                    mExit = true;
-                    mHandler.postDelayed(() -> mExit = false, 2000);
-                }
-            }
-        });
 
         return mRootView;
     }
@@ -184,7 +152,7 @@ public class ApplicationsFragment extends Fragment {
             @Override
             public void onPreExecute() {
                 mRecyclerView.setVisibility(View.GONE);
-                mProgress.setVisibility(View.VISIBLE);
+                Common.setProgress(true, mProgress);
                 mRecyclerView.removeAllViews();
             }
 
@@ -197,7 +165,7 @@ public class ApplicationsFragment extends Fragment {
             public void onPostExecute() {
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mRecyclerView.setVisibility(View.VISIBLE);
-                mProgress.setVisibility(View.GONE);
+                Common.setProgress(false, mProgress);
             }
         }.execute();
     }
@@ -292,7 +260,7 @@ public class ApplicationsFragment extends Fragment {
         super.onDestroy();
 
         if (Common.getSearchWord() != null) {
-            mSearchWord.setText(null);
+            Common.getAppsSearchWord().setText(null);
             Common.setSearchWord(null);
         }
     }

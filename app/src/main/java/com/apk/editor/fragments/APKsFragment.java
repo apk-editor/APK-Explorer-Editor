@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -15,9 +14,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
@@ -54,11 +51,7 @@ import in.sunilpaulmathew.sCommon.Utils.sUtils;
  */
 public class APKsFragment extends Fragment {
 
-    private AppCompatEditText mSearchWord;
-    private boolean mExit;
-    private final Handler mHandler = new Handler();
     private LinearLayoutCompat mProgress;
-    private MaterialTextView mAppTitle;
     private RecyclerView mRecyclerView;
     private APKsAdapter mRecycleViewAdapter;
 
@@ -67,8 +60,8 @@ public class APKsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mRootView = inflater.inflate(R.layout.fragment_apks, container, false);
 
-        mAppTitle = mRootView.findViewById(R.id.app_title);
-        mSearchWord = mRootView.findViewById(R.id.search_word);
+        Common.initializeAPKsTitle(mRootView, R.id.app_title);
+        Common.initializeAPKsSearchWord(mRootView, R.id.search_word);
         mProgress = mRootView.findViewById(R.id.progress_layout);
         AppCompatImageButton mSearchButton = mRootView.findViewById(R.id.search_button);
         AppCompatImageButton mSortButton = mRootView.findViewById(R.id.sort_button);
@@ -82,7 +75,7 @@ public class APKsFragment extends Fragment {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        mAppTitle.setText(getString(R.string.apps_exported));
+        Common.getAPKsTitle().setText(getString(R.string.apps_exported));
         mTabLayout.setVisibility(View.VISIBLE);
 
         mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.apks)));
@@ -120,15 +113,15 @@ public class APKsFragment extends Fragment {
         });
 
         mSearchButton.setOnClickListener(v -> {
-            if (mSearchWord.getVisibility() == View.VISIBLE) {
-                mSearchWord.setVisibility(View.GONE);
-                mAppTitle.setVisibility(View.VISIBLE);
-                AppData.toggleKeyboard(0, mSearchWord, requireActivity());
+            if (Common.getAPKsSearchWord().getVisibility() == View.VISIBLE) {
+                Common.getAPKsSearchWord().setVisibility(View.GONE);
+                Common.getAPKsTitle().setVisibility(View.VISIBLE);
+                AppData.toggleKeyboard(0, Common.getAPKsSearchWord(), requireActivity());
             } else {
-                mSearchWord.setVisibility(View.VISIBLE);
-                mSearchWord.requestFocus();
-                mAppTitle.setVisibility(View.GONE);
-                AppData.toggleKeyboard(1, mSearchWord, requireActivity());
+                Common.getAPKsSearchWord().setVisibility(View.VISIBLE);
+                Common.getAPKsSearchWord().requestFocus();
+                Common.getAPKsTitle().setVisibility(View.GONE);
+                AppData.toggleKeyboard(1, Common.getAPKsSearchWord(), requireActivity());
             }
         });
 
@@ -149,7 +142,7 @@ public class APKsFragment extends Fragment {
 
         loadAPKs(requireActivity());
 
-        mSearchWord.addTextChangedListener(new TextWatcher() {
+        Common.getAPKsSearchWord().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -167,32 +160,6 @@ public class APKsFragment extends Fragment {
 
         mAddButton.setOnClickListener(v -> launchInstallerFilePicker());
         mInstall.setOnClickListener(v -> launchInstallerFilePicker());
-
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if (mProgress.getVisibility() == View.GONE) {
-                    if (Common.getSearchWord() != null) {
-                        mSearchWord.setText(null);
-                        Common.setSearchWord(null);
-                        return;
-                    }
-                    if (mSearchWord.getVisibility() == View.VISIBLE) {
-                        mSearchWord.setVisibility(View.GONE);
-                        mAppTitle.setVisibility(View.VISIBLE);
-                        return;
-                    }
-                    if (mExit) {
-                        mExit = false;
-                        requireActivity().finish();
-                    } else {
-                        sUtils.snackBar(requireActivity().findViewById(android.R.id.content), getString(R.string.press_back)).show();
-                        mExit = true;
-                        mHandler.postDelayed(() -> mExit = false, 2000);
-                    }
-                }
-            }
-        });
 
         return mRootView;
     }
@@ -243,7 +210,7 @@ public class APKsFragment extends Fragment {
             @Override
             public void onPreExecute() {
                 mRecyclerView.setVisibility(View.GONE);
-                mProgress.setVisibility(View.VISIBLE);
+                Common.setProgress(true, mProgress);
                 mRecyclerView.removeAllViews();
             }
 
@@ -256,7 +223,7 @@ public class APKsFragment extends Fragment {
             public void onPostExecute() {
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mRecyclerView.setVisibility(View.VISIBLE);
-                mProgress.setVisibility(View.GONE);
+                Common.setProgress(false, mProgress);
             }
         }.execute();
     }
@@ -268,7 +235,7 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void onPreExecute() {
-                mProgress.setVisibility(View.VISIBLE);
+                Common.setProgress(true, mProgress);
                 sUtils.delete(activity.getExternalFilesDir("APK"));
                 Common.getAPKList().clear();
             }
@@ -305,7 +272,7 @@ public class APKsFragment extends Fragment {
                             .setPositiveButton(R.string.cancel, (dialogInterface, i) -> {
                             }).show();
                 }
-                mProgress.setVisibility(View.GONE);
+                Common.setProgress(false, mProgress);
             }
         };
     }
@@ -315,7 +282,7 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void onPreExecute() {
-                mProgress.setVisibility(View.VISIBLE);
+                Common.setProgress(true, mProgress);
                 sUtils.delete(activity.getExternalFilesDir("APK"));
                 Common.getAPKList().clear();
             }
@@ -344,7 +311,7 @@ public class APKsFragment extends Fragment {
             @Override
             public void onPostExecute() {
                 APKExplorer.handleAPKs(activity);
-                mProgress.setVisibility(View.GONE);
+                Common.setProgress(false, mProgress);
             }
         };
     }
@@ -379,7 +346,7 @@ public class APKsFragment extends Fragment {
         super.onDestroy();
 
         if (Common.getSearchWord() != null) {
-            mSearchWord.setText(null);
+            Common.getAPKsSearchWord().setText(null);
             Common.setSearchWord(null);
         }
     }

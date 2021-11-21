@@ -2,8 +2,11 @@ package com.apk.editor.utils;
 
 import android.view.View;
 
+import androidx.appcompat.widget.AppCompatEditText;
+
 import com.apk.editor.utils.recyclerViewItems.PackageItems;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,17 +16,35 @@ import java.util.List;
  */
 public class Common {
 
-    private static boolean mBuilding = false, mFinish = false, mPrivateKey = false,
+    private static AppCompatEditText mSearchWordApks, mSearchWordApps, mSearchWordProjects;
+    private static boolean mBuilding = false, mBusy = false, mFinish = false, mPrivateKey = false,
             mReloading = false, mRSATemplate = false;
     private static List<PackageItems> mPackageData = null;
     private static final List<String> mAPKList = new ArrayList<>(), mErrorList = new ArrayList<>();
     private static int mError = 0, mSuccess = 0;
     private static MaterialCardView mSelect;
+    private static MaterialTextView mApksTitle, mAppsTitle, mProjectsTitle;
     private static String mAppID, mFilePath = null, mFileToReplace = null, mPackageName = null,
             mPath = null, mSearchText, mSearchWord, mStatus = null;
 
+    public static AppCompatEditText getAPKsSearchWord() {
+        return mSearchWordApks;
+    }
+
+    public static AppCompatEditText getAppsSearchWord() {
+        return mSearchWordApps;
+    }
+
+    public static AppCompatEditText getProjectsSearchWord() {
+        return mSearchWordProjects;
+    }
+
     public static boolean isBuilding() {
         return mBuilding;
+    }
+
+    public static boolean isBusy() {
+        return mBusy;
     }
 
     public static boolean isFinished() {
@@ -75,6 +96,18 @@ public class Common {
         return mSelect;
     }
 
+    public static MaterialTextView getAPKsTitle() {
+        return mApksTitle;
+    }
+
+    public static MaterialTextView getAppsTitle() {
+        return mAppsTitle;
+    }
+
+    public static MaterialTextView getProjectsTitle() {
+        return mProjectsTitle;
+    }
+
     public static String getAppID() {
         return mAppID;
     }
@@ -105,6 +138,30 @@ public class Common {
 
     public static String getStatus() {
         return mStatus;
+    }
+
+    public static void initializeAPKsSearchWord(View view, int id) {
+        mSearchWordApks = view.findViewById(id);
+    }
+
+    public static void initializeAPKsTitle(View view, int id) {
+        mApksTitle = view.findViewById(id);
+    }
+
+    public static void initializeAppsSearchWord(View view, int id) {
+        mSearchWordApps = view.findViewById(id);
+    }
+
+    public static void initializeAppsTitle(View view, int id) {
+        mAppsTitle = view.findViewById(id);
+    }
+
+    public static void initializeProjectsSearchWord(View view, int id) {
+        mSearchWordProjects = view.findViewById(id);
+    }
+
+    public static void initializeProjectsTitle(View view, int id) {
+        mProjectsTitle = view.findViewById(id);
     }
 
     public static void initializeView(View view, int id) {
@@ -157,6 +214,11 @@ public class Common {
 
     public static void setPath(String path) {
         mPath = path;
+    }
+
+    public static void setProgress(boolean b, View view) {
+        mBusy = b;
+        view.setVisibility(b ? View.VISIBLE : View.GONE);
     }
 
     public static void setSearchText(String searchText) {

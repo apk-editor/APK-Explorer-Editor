@@ -3,6 +3,8 @@ package com.apk.editor;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -13,6 +15,7 @@ import com.apk.editor.fragments.APKsFragment;
 import com.apk.editor.fragments.AboutFragment;
 import com.apk.editor.fragments.ApplicationsFragment;
 import com.apk.editor.fragments.ProjectsFragment;
+import com.apk.editor.utils.Common;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
@@ -24,6 +27,9 @@ import in.sunilpaulmathew.sCommon.Utils.sUtils;
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
 public class MainActivity extends AppCompatActivity {
+
+    private boolean mExit;
+    private final Handler mHandler = new Handler();
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -89,6 +95,36 @@ public class MainActivity extends AppCompatActivity {
             Intent settings = new Intent(this, SettingsActivity.class);
             startActivity(settings);
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (Common.isBusy()) return;
+        if (Common.getSearchWord() != null) {
+            if (Common.getAPKsSearchWord().getVisibility() == View.VISIBLE) {
+                Common.getAPKsSearchWord().setVisibility(View.GONE);
+                Common.getAPKsTitle().setVisibility(View.VISIBLE);
+                Common.getAPKsSearchWord().setText(null);
+            } else if (Common.getAppsSearchWord().getVisibility() == View.VISIBLE) {
+                Common.getAppsSearchWord().setVisibility(View.GONE);
+                Common.getAppsTitle().setVisibility(View.VISIBLE);
+                Common.getAppsSearchWord().setText(null);
+            } else if (Common.getProjectsSearchWord().getVisibility() == View.VISIBLE) {
+                Common.getProjectsSearchWord().setVisibility(View.GONE);
+                Common.getProjectsTitle().setVisibility(View.VISIBLE);
+                Common.getProjectsSearchWord().setText(null);
+            }
+            Common.setSearchWord(null);
+            return;
+        }
+        if (mExit) {
+            mExit = false;
+            finish();
+        } else {
+            sUtils.snackBar(findViewById(android.R.id.content), getString(R.string.press_back)).show();
+            mExit = true;
+            mHandler.postDelayed(() -> mExit = false, 2000);
+        }
     }
 
 }
