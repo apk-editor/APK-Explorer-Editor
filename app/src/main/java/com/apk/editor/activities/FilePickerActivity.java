@@ -162,7 +162,7 @@ public class FilePickerActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if (requestCode == 1 && Build.VERSION.SDK_INT < 30 && grantResults.length > 0
+        if (requestCode == 0 && Build.VERSION.SDK_INT < 30 && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             this.recreate();
         }
