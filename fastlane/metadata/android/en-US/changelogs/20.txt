@@ -1,0 +1,7 @@
+* Implement swipe changing pages on main UI.
+* Use system file picker to replace resource files in Android > 29.
+* APK Explorer: Export: Restrict permission request to < API 29.
+* Properly reload views on switching pages.
+* Added brand-new Credits page in About.
+* Updated Chinese & Pt-Br locale.
+* Miscellaneous changes.
