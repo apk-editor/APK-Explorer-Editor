@@ -141,8 +141,18 @@
     <string name="details">"详情"</string>
     <string name="failed">"失败"</string>
     <string name="open">"打开"</string>
+    <string name="preparing_source">"从源码构建APK文件"</string>
+    <string name="resigned_apks_error">"由于在组装'smali'文件时出错，构建中止。请查看“详情”以了解更多信息。"</string>
+    <string name="success">"成功"</string>
     <string name="sort_by_installed">"安装时间"</string>
     <string name="sort_by_size">"大小"</string>
     <string name="sort_by_updated">"更新时间"</string>
     <string name="start">"开始"</string>
+    <string name="android_version">"Android %s"</string>
+    <string name="certificate">"证明"</string>
+    <string name="install_bundle_question">"你确定要安装选定的应用吗"</string>
+    <string name="loading">"加载中"</string>
+    <string name="permissions">"权限"</string>
+    <string name="save_to_downloads">"保存到Downloads目录"</string>
+    <string name="saving">"保存中"</string>
 </resources>

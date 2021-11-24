@@ -56,18 +56,18 @@
     <string name="unsupported_file">"Arquivo sem suporte"</string>
     <string name="unsupported_file_arsc">"Você selecionou 'resources.arsc', que infelizmente não pode ser aberto por AEE.
 
-Que é resources.arsc?
-resources.arsc é um arquivo binário que contém os valores específicos de configuração de um app, como integers, booleans e strings, assim como referências aos recursos mais complexos, como layouts de IU.
+        Que é resources.arsc?
+        resources.arsc é um arquivo binário que contém os valores específicos de configuração de um app, como integers, booleans e strings, assim como referências aos recursos mais complexos, como layouts de IU.
 
-Como abrir resources.arsc?
-Ferramentas como Apktool ou Android Asset Packaging Tool (AAPT) deveria ser usado para exibir o conteúdo de resources.arsc em formato legível para um ser humano."</string>
+        Como abrir resources.arsc?
+        Ferramentas como Apktool ou Android Asset Packaging Tool (AAPT) deveria ser usado para exibir o conteúdo de resources.arsc em formato legível para um ser humano."</string>
     <string name="unsupported_file_dex">"Você selecionou o arquivo 'DEX' (.dex), que infelizmente não pode ser aberto por AEE.
 
-Que é o arquivo DEX?
-O arquivo Dex tem código que é executado pelo Android Runtime. Cada APKs deveria ter o arquivo 'classes.dex', que faz referência a qualquer classe ou método usado dentro de um app. Essencialmente, qualquer atividade, objeto ou fragmento usado dentro da base de código será transformado em bytes dentro de um arquivo Dex que pode ser executado como um app no Android.
+        Que é o arquivo DEX?
+        O arquivo Dex tem código que é executado pelo Android Runtime. Cada APKs deveria ter o arquivo 'classes.dex', que faz referência a qualquer classe ou método usado dentro de um app. Essencialmente, qualquer atividade, objeto ou fragmento usado dentro da base de código será transformado em bytes dentro de um arquivo Dex que pode ser executado como um app no Android.
 
-Como abrir o arquivo DEX?
-O arquivo DEX deveria ser convertido para o formato 'jar' e depois em arquivo 'Java' usando ferramenta tipo 'dex2jar' e 'JD-GUI'."</string>
+        Como abrir o arquivo DEX?
+        O arquivo DEX deveria ser convertido para o formato 'jar' e depois em arquivo 'Java' usando ferramenta tipo 'dex2jar' e 'JD-GUI'."</string>
     <string name="user">"Usuário"</string>
     <string name="bundles">"Pacote"</string>
     <string name="preparing_bundle">"Preparando o pacote de apps para compartilhar…"</string>
@@ -107,7 +107,7 @@ O arquivo DEX deveria ser convertido para o formato 'jar' e depois em arquivo 'J
     <string name="resign_only">"Apenas Reassinar"</string>
     <string name="resigned_apks_path">"Arquivos APK reassinados foram gerados!
 
-Localização: '%s'"</string>
+        Localização: '%s'"</string>
     <string name="resigning_apks">"Reassinando APK selecionados…"</string>
     <string name="select_storage">"Selecione de Armazenamento"</string>
     <string name="sort_by">"Ordenar Apps"</string>
@@ -149,4 +149,12 @@ Localização: '%s'"</string>
     <string name="deleting">"Excluindo '%s'…"</string>
     <string name="grant">"Permitir"</string>
     <string name="important">"Importante"</string>
+    <string name="copying">"Copiando '%s'…"</string>
+    <string name="details">"Detalhes"</string>
+    <string name="failed">"Falhou"</string>
+    <string name="open">"Abrir"</string>
+    <string name="success">"Sucesso"</string>
+    <string name="sort_by_size">"Tamanho"</string>
+    <string name="start">"Iniciar"</string>
+    <string name="loading">"Carregando…"</string>
 </resources>
