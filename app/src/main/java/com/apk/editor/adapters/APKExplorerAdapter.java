@@ -125,8 +125,12 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                         break;
                     case 2:
                         Common.setFileToReplace(data.get(position));
-                        Intent filePicker = new Intent(v.getContext(), FilePickerActivity.class);
-                        v.getContext().startActivity(filePicker);
+                        if (Build.VERSION.SDK_INT >= 29) {
+                            sUtils.filePickerIntent(false, 0, null, (Activity) v.getContext());
+                        } else {
+                            Intent filePicker = new Intent(v.getContext(), FilePickerActivity.class);
+                            v.getContext().startActivity(filePicker);
+                        }
                         break;
                 }
                 return false;

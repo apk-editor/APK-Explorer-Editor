@@ -94,6 +94,7 @@
     <string name="rate_us">Rate AEE</string>
     <string name="rate_us_Summary">Rate or/and Review AEE in Google Play</string>
     <string name="replace">Replace</string>
+    <string name="replace_file_question">Replace %s with selected file?</string>
     <string name="replace_question">Replace %s with</string>
     <string name="report_issue">Report Issue</string>
     <string name="report_issue_summary">Raise an issue at GitHub</string>
