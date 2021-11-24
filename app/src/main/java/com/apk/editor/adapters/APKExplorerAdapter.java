@@ -3,6 +3,7 @@ package com.apk.editor.adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -112,7 +113,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                                 .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
                                 })
                                 .setPositiveButton(v.getContext().getString(R.string.export), (dialog, id) -> {
-                                    if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext())) {
+                                    if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext())) {
                                         sPermissionUtils.requestPermission(
                                                 new String[] {
                                                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE
