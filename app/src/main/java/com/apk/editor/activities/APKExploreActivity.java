@@ -40,6 +40,8 @@ public class APKExploreActivity extends AppCompatActivity {
 
             if (uriFile != null) {
                 new MaterialAlertDialogBuilder(this)
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setTitle(R.string.app_name)
                         .setMessage(getString(R.string.replace_file_question, new File(Common.getFileToReplace()).getName()))
                         .setNegativeButton(R.string.cancel, (dialog, id) -> {
                         })

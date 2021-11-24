@@ -96,6 +96,8 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                 switch (item.getItemId()) {
                     case 0:
                         new MaterialAlertDialogBuilder(v.getContext())
+                                .setIcon(R.mipmap.ic_launcher)
+                                .setTitle(R.string.app_name)
                                 .setMessage(v.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
