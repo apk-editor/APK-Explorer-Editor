@@ -20,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
 
+import in.sunilpaulmathew.crashreporter.Utils.CrashReporter;
 import in.sunilpaulmathew.sCommon.Adapters.sPagerAdapter;
 import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         // Set App Language
         sUtils.setLanguage(this);
         setContentView(R.layout.activity_main);
+
+        new CrashReporter("E-Mail: apkeditor@protonmail.com", this).initialize();
 
         BottomNavigationView mBottomNav = findViewById(R.id.bottom_navigation);
         AppCompatImageButton mSettings = findViewById(R.id.settings_menu);
