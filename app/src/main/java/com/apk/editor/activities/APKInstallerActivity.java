@@ -82,6 +82,10 @@ public class APKInstallerActivity extends AppCompatActivity {
             public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(activity);
                 mProgressDialog.setMessage(activity.getString(R.string.loading));
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mProgressDialog.setIcon(R.mipmap.ic_launcher);
+                mProgressDialog.setTitle(R.string.app_name);
+                mProgressDialog.setIndeterminate(true);
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
                 sUtils.delete(getExternalFilesDir("APK"));

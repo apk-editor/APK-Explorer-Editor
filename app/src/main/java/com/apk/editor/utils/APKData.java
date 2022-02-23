@@ -278,6 +278,10 @@ public class APKData {
                 mProgressDialog = new ProgressDialog(activity);
                 mProgressDialog.setMessage(packageName != null ? activity.getString(R.string.signing, sPackageUtils.getAppName(
                         packageName, activity)) : activity.getString(R.string.resigning_apks));
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mProgressDialog.setIcon(R.mipmap.ic_launcher);
+                mProgressDialog.setTitle(R.string.app_name);
+                mProgressDialog.setIndeterminate(true);
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
 
@@ -388,6 +392,10 @@ public class APKData {
             public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(context);
                 mProgressDialog.setMessage(context.getString(R.string.exporting, sPackageUtils.getAppName(packageName, context)));
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mProgressDialog.setIcon(R.mipmap.ic_launcher);
+                mProgressDialog.setTitle(R.string.app_name);
+                mProgressDialog.setIndeterminate(true);
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
                 if (!getExportAPKsPath(context).exists()) {
@@ -444,6 +452,10 @@ public class APKData {
             public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(context);
                 mProgressDialog.setMessage(context.getString(exportOnly ? R.string.saving : R.string.preparing_bundle));
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mProgressDialog.setIcon(R.mipmap.ic_launcher);
+                mProgressDialog.setTitle(R.string.app_name);
+                mProgressDialog.setIndeterminate(true);
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
                 if (!sUtils.exist(new File(Projects.getExportPath(context)))) {
@@ -488,6 +500,10 @@ public class APKData {
             public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(context);
                 mProgressDialog.setMessage(context.getString(R.string.saving));
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mProgressDialog.setIcon(R.mipmap.ic_launcher);
+                mProgressDialog.setTitle(R.string.app_name);
+                mProgressDialog.setIndeterminate(true);
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
             }
