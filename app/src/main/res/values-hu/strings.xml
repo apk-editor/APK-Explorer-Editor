@@ -1,0 +1,182 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="about">"Névjegy"</string>
+    <string name="all">"Összes"</string>
+    <string name="apks">"APK'-k"</string>
+    <string name="apps">"Alkalmazások"</string>
+    <string name="apps_exported">"Exportált APK'-k"</string>
+    <string name="apps_installed">"Telepített alkalmazások"</string>
+    <string name="cancel">"Mégse"</string>
+    <string name="delete">"Töröl"</string>
+    <string name="delete_question">"Töröl %s?"</string>
+    <string name="documentation">"Dokumentáció"</string>
+    <string name="documentation_summary">"Nézze meg az AEE dokumentációját"</string>
+    <string name="donations">"Támogatás"</string>
+    <string name="donations_summary">"Támogassa az AEE fejlesztését"</string>
+    <string name="export">"Exportálás"</string>
+    <string name="export_question">"Exportálja az eszköz tárhelyére?"</string>
+    <string name="export_complete_message">"A kiválasztott forrás sikeresen exportálva ide '%s'!"</string>
+    <string name="exploring">"%s felfedezése…"</string>
+    <string name="explore_error_status">"Nem sikerült a(z) %s felfedezése!"</string>
+    <string name="install">"Telepít"</string>
+    <string name="install_question">"Telepíti %s?"</string>
+    <string name="installing">"%s telepítése…"</string>
+    <string name="invite_friends">"Barátok meghívása"</string>
+    <string name="invite_friends_Summary">"Hívja meg barátait az AEE kipróbálására"</string>
+    <string name="last_modified">"Utolsó módosítás: %s"</string>
+    <string name="open_as_text">"Megnyitás szövegként"</string>
+    <string name="permission_denied_message">"A tárhely hozzáférés engedélye megtagadva !"</string>
+    <string name="preparing_apk">"%s APK előkészítése…"</string>
+    <string name="press_back">"Nyomja meg ismét a Vissza gombot az APK Explorer bezárásához!"</string>
+    <string name="projects">"Projektek"</string>
+    <string name="rate_us">"Az AEE értékelése"</string>
+    <string name="rate_us_Summary">"Tekintse meg és értékelje az AEE -t a Google Playen"</string>
+    <string name="replace">"Cserél"</string>
+    <string name="replace_question">"%s cseréje"</string>
+    <string name="report_issue">"Hibabejelentés"</string>
+    <string name="report_issue_summary">"Jelentse a problémát a GitHubon"</string>
+    <string name="save">"Ment"</string>
+    <string name="save_projects_question">"Menti a projektet a későbbi használatra?"</string>
+    <string name="save_question">"Menti a fájlon végrehajtott módosításokat?"</string>
+    <string name="save_apk_message">"Szeretne készíteni egy aláírt APK -t a jelenlegi módosításokkal?"</string>
+    <string name="sdcard">"Belső tárhely"</string>
+    <string name="search">"Keres…"</string>
+    <string name="share">"Megosztás"</string>
+    <string name="share_message">"Megosztja %s?"</string>
+    <string name="share_with">"Megosztás ezzel"</string>
+    <string name="signing">"'%s' aláírása…"</string>
+    <string name="size">"Méret: %s"</string>
+    <string name="source_code">"Forráskód"</string>
+    <string name="source_code_summary">"Ellenőrizze az AEE forráskódját"</string>
+    <string name="split_apk_installer">"AEE Osztott APK Telepítő"</string>
+    <string name="support_group">"Támogató Csoport"</string>
+    <string name="support_group_summary">"Csatlakozz az AEE támogató csoporthoz"</string>
+    <string name="system">"Rendszer"</string>
+    <string name="unknown_file_message">"Az AEE jelenleg nem kezeli a(z) '%s' -t. Ha ismeri ezt a fájlformátumot, exportálhatja a fájlt az eszköz tárolójába és megpróbálhatja szerkeszteni egy támogatott külső alkalmazás segítségével. Alternatív megoldásként megpróbálja megnyitni szöveges fájlként?"</string>
+    <string name="unsupported_file">"Nem támogatott fájl"</string>
+    <string name="unsupported_file_arsc">"Ön a 'resources.arsc' elemet választotta, amit sajnos az AEE nem tud elolvasni.
+
+        Mi az resources.arsc?
+        A resources.arsc egy bináris erőforrásfájl, amely egy alkalmazás konfiguráció-specifikus értékeit tartalmazza, például egész számokat, logikai értékeket és karakterláncokat, valamint hivatkozásokat összetettebb erőforrásokra, például UI-elrendezésekre.
+
+        Hogyan kell olvasni a resources.arsc-t?
+        Olyan eszközöket kell használni, mint az Apktool vagy az Android Asset Packaging Tool (AAPT) a resources.arsc fájl tartalmának ember által olvasható formátumba történő kinyomtatására."</string>
+    <string name="unsupported_file_dex">"'DEX' (.dex) fájlt választott, amelyet sajnos az AEE nem tud olvasni.
+
+        Mi az a DEX fájl?
+        A Dex fájlok kódját végső soron az Android Runtime hajtja végre.  Minden APK-nak rendelkeznie kell egy 'classes.dex' fájllal, amely hivatkozik az alkalmazáson belül használt osztályokra vagy metódusokra.  Lényegében a kódbázison belül használt bármely tevékenység, objektum, vagy töredék, bájtokká alakul egy Dex-fájlban, amely Android-alkalmazásként futtatható.
+
+        Hogyan lehet olvasni egy DEX fájlt?
+        A DEX-fájlt 'jar' formátumra, majd később 'Java' fájllá kell konvertálni olyan eszközök segítségével, mint a 'dex2jar' és a 'JD-GUI'."</string>
+    <string name="user">"Felhasználó"</string>
+    <string name="bundles">"Kötegek"</string>
+    <string name="preparing_bundle">"App köteg előkészítése megosztásra…"</string>
+    <string name="privacy_policy">"Adatvédelmi Irányelvek"</string>
+    <string name="privacy_policy_summary">"Olvassa el az Adatvédelmi Irányelveket"</string>
+    <string name="private_key">"Privát Kulcs"</string>
+    <string name="private_key_summary">"Válasszon egyéni privát kulcsot"</string>
+    <string name="rsa_template">"RSA Sablon"</string>
+    <string name="rsa_template_summary">"Válasszon egyéni RSA sablont"</string>
+    <string name="select">"Kiválaszt"</string>
+    <string name="signing_custom">"Egyéni kulcs beállítása"</string>
+    <string name="signing_default">"Aláírás az alapértelmezett kulccsal"</string>
+    <string name="signing_message">"Az AEE az Aefyr PseudoApkSigner könyvtárat használja az APK-k aláírására. Ezért az AEE-hez pk8 formátumú privát kulcsra, valamint ugyanabból a kulcsból létrehozott RSA sablonfájlra van szükség.  Kattintson ide, ha többet szeretne megtudni a privát kulcs és az RSA sablon létrehozásáról!"</string>
+    <string name="signing_question">"Használja a '%s'-t újként"</string>
+    <string name="signing_title">"APK Aláírás"</string>
+    <string name="apk_installer">"AEE APK Telepítő"</string>
+    <string name="bundle_install_question">"Biztosan telepíti a(z) '%s' app-csomagot?"</string>
+    <string name="export_app_question">"Exportálja a(z) '%s'-t az eszköz tárhelyére?"</string>
+    <string name="export_project_question">"Másolatot készít erről a projektmappáról az eszköz tárhelyére?"</string>
+    <string name="export_project_replace">"'%s' már létezik! Ki akarod cserélni?"</string>
+    <string name="export_resign">"Exportálás és Újra-aláírás"</string>
+    <string name="export_storage">"Exportálás a tárhelyre"</string>
+    <string name="exporting">"%s exportálása…"</string>
+    <string name="got_it">"Megvan"</string>
+    <string name="install_storage">"Telepítés a tárhelyről"</string>
+    <string name="installer_message">"Az AEE Osztott APK telepítője kezeli a normál APK-kat, a felosztott APK-kat mint az 'xapk', 'apks' és 'apkm' alkalmazáscsomagokat.  A telepítés elindításához egyszerűen válassza ki a telepítőfájl(oka)t a következő képernyőn és kövesse a megjelenő utasításokat."</string>
+    <string name="installation_cancel_message">"Biztosan megszakítja a telepítést?"</string>
+    <string name="name_empty">"A név nem lehet üres. Megszakítás."</string>
+    <string name="ok">"OK"</string>
+    <string name="preparing_bundle_install">"'%s' előkészítése a telepítéshez…"</string>
+    <string name="select_apk">"Osztott APK-k kiválasztása"</string>
+    <string name="signature_warning">"Fontos, hogy távolítsa el az alkalmazás régi verzióját (ha létezik) az AEE-aláírt APK/App csomag telepítése előtt, hogy elkerülje az aláírás eltéréséből adódó telepítési hibákat."</string>
+    <string name="wrong_extension">"Válasszon egy %s kiterjesztésű fájlt."</string>
+    <string name="yes">"Igen"</string>
+    <string name="apk_corrupted">"Az APK fájl(ok) sérültek. Megszakítás."</string>
+    <string name="install_resign">"Újra-aláírás &amp; Telepítés"</string>
+    <string name="resign_only">"Újra-aláírás"</string>
+    <string name="resigned_apks_path">"Újra-aláírt APK-fájl(ok) készültek.
+
+        Elérési út: '%s'"</string>
+    <string name="resigning_apks">"A kiválasztott APK-k újra-aláírása…"</string>
+    <string name="select_storage">"Kiválasztás a Tárhelyről"</string>
+    <string name="sort_by">"App-k rendezése"</string>
+    <string name="sort_by_name">"Név"</string>
+    <string name="sort_by_id">"Csomag ID"</string>
+    <string name="sort_order">"A-Z"</string>
+    <string name="clear_cache">"Gyorsítótár törlése"</string>
+    <string name="clear_cache_summary">"Törölje az AEE belső beállításait"</string>
+    <string name="clear_cache_message">"Az exportált alkalmazások kivételével minden eltávolításra kerül."</string>
+    <string name="disable">"Tilt"</string>
+    <string name="enable">"Engedélyez"</string>
+    <string name="export_options">"Exportálásra (APK-k)"</string>
+    <string name="export_path_default">"Belső tárhely/AEE"</string>
+    <string name="export_path_download">"Letölt"</string>
+    <string name="export_path_resources">"Exportálási útvonal (nem APK-k)"</string>
+    <string name="installer_action">"Az APK-k telepítéséről"</string>
+    <string name="project_exist_action">"Egy projektből való kilépésről"</string>
+    <string name="prompt">"Súgó"</string>
+    <string name="settings">"Beállítások"</string>
+    <string name="settings_general">"Általános"</string>
+    <string name="settings_misc">"Vegyes"</string>
+    <string name="sign_apk_custom">"Egyéni kulcs"</string>
+    <string name="sign_apk_default">"Alapértelmezett kulcs"</string>
+    <string name="sign_apk_with">"APK-k aláírása"</string>
+    <string name="text_editing">"Szövegszerkesztés engedélyezése"</string>
+    <string name="text_editing_summary">"Az AEE szövegszerkesztője még nagyon egyszerű és kissé hibás. Előfordulhat, hogy a bináris szöveges fájlok szerkesztése után készített APK-k nem működnek megfelelően.  Kérjük rendkívül körültekintően használja."</string>
+    <string name="warning">"Figyelmeztetés"</string>
+    <string name="file_path_error">"Nem sikerült lekérni a fájl elérési útját a külső fájlkezelőből"</string>
+    <string name="image_viewer">"AEE Képmegjelenítő"</string>
+    <string name="text_editor">"AEE Szövegszerkesztő"</string>
+    <string name="discard">"Elvet"</string>
+    <string name="discard_message">"Elveti a fájlon végrehajtott módosításokat?"</string>
+    <string name="export_path_apks">"Exportálási útvonal (APK-k)"</string>
+    <string name="export_path_files_dir">"Külső fájlok könyvtára"</string>
+    <string name="language">"Nyelv"</string>
+    <string name="transfer_exported_apk">"Korábban exportált APK-k átvitele új elérési útra…"</string>
+    <string name="user_interface">"Felhasználói felület"</string>
+    <string name="decompiling">"'%s' visszafordítása…"</string>
+    <string name="deleting">"'%s' törlése…"</string>
+    <string name="grant">"Megenged"</string>
+    <string name="important">"Fontos"</string>
+    <string name="assembling">"Összerakás
+        '%s'"</string>
+    <string name="build">"Épít"</string>
+    <string name="building">"'%s' építése…"</string>
+    <string name="copying">"'%s' másolása…"</string>
+    <string name="details">"Részletek"</string>
+    <string name="failed">"Sikertelen"</string>
+    <string name="failed_smali_message">"A következő 'kicsi' fájlokat nem sikerült összeállítani.
+
+        %s"</string>
+    <string name="open">"Megnyit"</string>
+    <string name="preparing_source">"Forrás előkészítése az APK építéshez…"</string>
+    <string name="resigned_apks_error">"Az építés megszakadt a 'kicsi' fájlok összeállítási hibái miatt. Több információt talál a 'Részletek' -nél."</string>
+    <string name="success">"Siker"</string>
+    <string name="sort_by_installed">"Telepítés ideje"</string>
+    <string name="sort_by_size">"Méret"</string>
+    <string name="sort_by_updated">"Frissítés ideje"</string>
+    <string name="sort_size">"Kicsitől a nagyig"</string>
+    <string name="start">"Indít"</string>
+    <string name="android_version">"Android %s"</string>
+    <string name="certificate">"Bizonyítvány"</string>
+    <string name="install_bundle_question">"Telepíti a kiválasztott app csomagot?"</string>
+    <string name="loading">"Betöltés…"</string>
+    <string name="manifest">"Jegyzék"</string>
+    <string name="permissions">"Engedélyek"</string>
+    <string name="save_to_downloads">"Mentés a Letöltések közé"</string>
+    <string name="saving">"Mentés…"</string>
+    <string name="sdk_compile">"Fordítás SDK: %s"</string>
+    <string name="sdk_minimum">"Minimális SDK: %s"</string>
+    <string name="signing_select_question">"Használja a kiválasztott fájlt új %s -ként?"</string>
+</resources>

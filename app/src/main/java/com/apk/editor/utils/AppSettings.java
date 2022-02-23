@@ -148,6 +148,7 @@ public class AppSettings {
         mData.add(new sSerializableItems(null, "Andreaugustoqueiroz999", "Portuguese (Portugal) Translation", null));
         mData.add(new sSerializableItems(null, "Dodi Studio", "Indonesian Translation", "null"));
         mData.add(new sSerializableItems(null, "Cooky", "Polish Translation", null));
+        mData.add(new sSerializableItems(null, "Erős Pista", "Hungarian Translation", null));
         return mData;
     }
 
