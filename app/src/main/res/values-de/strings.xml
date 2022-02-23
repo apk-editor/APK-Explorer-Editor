@@ -100,7 +100,6 @@
     <string name="preparing_bundle_install">"Vorbereiten von '%s' für die Installation…"</string>
     <string name="select_apk">"Wählen Sie geteilte APKs"</string>
     <string name="signature_warning">"Es ist wichtig, die alte Version (falls vorhanden) der App zu deinstallieren, bevor Sie eine AEE-signierte APK/App-Bundle installieren, um einen Installationsfehler aufgrund einer fehlenden Signatur zu vermeiden!"</string>
-
     <string name="wrong_extension">"Bitte wählen Sie eine Datei mit der %s-Endung."</string>
     <string name="yes">"Ja"</string>
     <string name="apk_corrupted">"APK-Datei(en) ist/sind beschädigt! Abbruch."</string>
@@ -137,6 +136,8 @@
     <string name="text_editing_summary">"Der AEE-Texteditor ist noch sehr einfach und ein wenig fehlerhaft. APKs, die nach der Bearbeitung von binären Textdateien erstellt wurden, funktionieren möglicherweise nicht richtig. Bitte verwenden Sie ihn mit äußerster Vorsicht."</string>
     <string name="warning">"Warnung"</string>
     <string name="file_path_error">"Dateipfad konnte nicht vom externen Dateimanager geladen werden!"</string>
+    <string name="image_viewer">"AEE Bild Betrachter"</string>
+    <string name="text_editor">"AEE Text Editor"</string>
     <string name="discard">"Verwerfen"</string>
     <string name="discard_message">"Änderungen an dieser Datei verwerfen?"</string>
     <string name="export_path_apks">"Export Pfad (APKs)"</string>
@@ -148,6 +149,10 @@
     <string name="deleting">"Lösche '%s'…"</string>
     <string name="grant">"Erteilen"</string>
     <string name="important">"Wichtig"</string>
+    <string name="assembling">"Zusammenfügen
+        '%s'"</string>
+    <string name="build">"Erstellen"</string>
+    <string name="building">"Erstelle'%s'…"</string>
     <string name="copying">"Kopiere '%s'…"</string>
     <string name="details">"Details"</string>
     <string name="failed">"Fehler"</string>
@@ -162,4 +167,16 @@
     <string name="sort_by_size">"Größe"</string>
     <string name="sort_by_updated">"Updatezeit"</string>
     <string name="sort_size">"Größe"</string>
+    <string name="start">"Start"</string>
+    <string name="android_version">"Android %s"</string>
+    <string name="certificate">"Zertifikat"</string>
+    <string name="install_bundle_question">"Willst Du das gewählte Paket installieren?"</string>
+    <string name="loading">"Lade…"</string>
+    <string name="manifest">"Manifest"</string>
+    <string name="permissions">"Berechtigungen"</string>
+    <string name="save_to_downloads">"In Downloads speichern"</string>
+    <string name="saving">"Speichern…"</string>
+    <string name="sdk_compile">"Kompiliere SDK: %s"</string>
+    <string name="sdk_minimum">"Niedrigste SDK: %s"</string>
+    <string name="signing_select_question">"Ausgewählte Datei als %s speichern?"</string>
 </resources>

@@ -56,19 +56,18 @@
     <string name="unsupported_file">"Tệp không được hỗ trợ"</string>
     <string name="unsupported_file_arsc">"Bạn đã chọn 'resources.arsc', không may là AEE không thể đọc nó.
 
-resources.arsc là gì?
-resources.arsc là một tệp tài nguyên nhị phân chứa các giá trị cụ thể cho sự thiết lập của một ứng dụng, như là các số nguyên, boolean và xâu kí tự, cũng như là các lần nhắc đến các tài nguyên phức tạp hơn, như là bố cục giao diện.
+        resources.arsc là gì?
+        resources.arsc là một tệp tài nguyên nhị phân chứa các giá trị cụ thể cho sự thiết lập của một ứng dụng, như là các số nguyên, boolean và xâu kí tự, cũng như là các lần nhắc đến các tài nguyên phức tạp hơn, như là bố cục giao diện.
 
-Làm thế nào để đọc resources.arsc?
-Các công cụ như Apktool hoặc Android Asset Packaging Tool (AAPT) nên được sử dụng để hiển thị nội dung của resources.arsc ra định dạng con người có thể đọc.
-"</string>
+        Làm thế nào để đọc resources.arsc?
+        Các công cụ như Apktool hoặc Android Asset Packaging Tool (AAPT) nên được sử dụng để hiển thị nội dung của resources.arsc ra định dạng con người có thể đọc."</string>
     <string name="unsupported_file_dex">"Bạn đã chọn một tệp 'DEX' (.dex), không may là AEE không thể đọc nó.
 
-Tệp DEX là gì?
-Một tệp DEX có mã mà cuối cùng sẽ được Android Runtime thực thi. Mọi tệp APK nên có một tệp 'classes.dex', nó nhắc đến bất kỳ class hoặc phương pháp nào được sử dụng trong một ứng dụng. Về bản chất, bất kỳ Activity, Object, hoặc Fragment nào được sử dụng trong mã sẽ được chuyển thành các byte trong một tệp Dex mà có thể được chạy dưới dạng một ứng dụng Android.
+        Tệp DEX là gì?
+        Một tệp DEX có mã mà cuối cùng sẽ được Android Runtime thực thi. Mọi tệp APK nên có một tệp 'classes.dex', nó nhắc đến bất kỳ class hoặc phương pháp nào được sử dụng trong một ứng dụng. Về bản chất, bất kỳ Activity, Object, hoặc Fragment nào được sử dụng trong mã sẽ được chuyển thành các byte trong một tệp Dex mà có thể được chạy dưới dạng một ứng dụng Android.
 
-Làm thế nào để đọc một tệp DEX?
-Một tệp DEX nên được chuyển thành định dạng 'jar' và lát nữa thành tệp 'Java' bằng cách sử dụng các công cụ như 'dex2jar' và 'JD-GUI'."</string>
+        Làm thế nào để đọc một tệp DEX?
+        Một tệp DEX nên được chuyển thành định dạng 'jar' và lát nữa thành tệp 'Java' bằng cách sử dụng các công cụ như 'dex2jar' và 'JD-GUI'."</string>
     <string name="user">"Người dùng"</string>
     <string name="bundles">"Bộ ứng dụng"</string>
     <string name="preparing_bundle">"Đang chuẩn bị bộ ứng dụng để chia sẻ…"</string>
@@ -151,7 +150,7 @@ Một tệp DEX nên được chuyển thành định dạng 'jar' và lát nữ
     <string name="grant">"Cấp"</string>
     <string name="important">"Quan trọng"</string>
     <string name="assembling">"Đang dựng
-'%s'"</string>
+        '%s'"</string>
     <string name="build">"Xây dựng"</string>
     <string name="building">"Đang xây dựng '%s'…"</string>
     <string name="copying">"Đang sao chép '%s'…"</string>
@@ -159,9 +158,25 @@ Một tệp DEX nên được chuyển thành định dạng 'jar' và lát nữ
     <string name="failed">"Thất bại"</string>
     <string name="failed_smali_message">"Các tệp 'smali' sau không thể dựng!
 
-%s"</string>
+        %s"</string>
     <string name="open">"Mở"</string>
     <string name="preparing_source">"Đang chuẩn bị nguồn để xây dựng APK…"</string>
     <string name="resigned_apks_error">"Đã huỷ xây dựng vì lỗi khi dựng các tệp 'smali'. Vui lòng kiểm tra 'Chi tiết' để tìm hiểu thêm!"</string>
     <string name="success">"Thành công"</string>
+    <string name="sort_by_installed">"Thời gian cài đặt"</string>
+    <string name="sort_by_size">"Kích cỡ"</string>
+    <string name="sort_by_updated">"Thời gian cập nhật"</string>
+    <string name="sort_size">"Nhỏ đến lớn"</string>
+    <string name="start">"Bắt đầu"</string>
+    <string name="android_version">"Android %s"</string>
+    <string name="certificate">"Chứng chỉ"</string>
+    <string name="install_bundle_question">"Bạn có chắc bạn muốn cài đặt gói ứng dụng đã chọn không?"</string>
+    <string name="loading">"Đang tải…"</string>
+    <string name="manifest">"Manifest"</string>
+    <string name="permissions">"Quyền"</string>
+    <string name="save_to_downloads">"Lưu vào Downloads"</string>
+    <string name="saving">"Đang lưu…"</string>
+    <string name="sdk_compile">"SDK biên dịch: %s"</string>
+    <string name="sdk_minimum">"SDK tối thiểu: %s"</string>
+    <string name="signing_select_question">"Sử dụng tệp đã chọn làm %s mới?"</string>
 </resources>

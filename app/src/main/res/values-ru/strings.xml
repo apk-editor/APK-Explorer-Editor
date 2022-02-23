@@ -2,7 +2,7 @@
 
     <string name="about">"О приложении"</string>
     <string name="all">"Все"</string>
-    <string name="apks">"APK"</string>
+    <string name="apks">"APK's"</string>
     <string name="apps">"Приложения"</string>
     <string name="apps_exported">"Экспортированные APK"</string>
     <string name="apps_installed">"Установленные приложения"</string>
@@ -15,9 +15,9 @@
     <string name="donations_summary">"Поддержите разработку AEE"</string>
     <string name="export">"Экспорт"</string>
     <string name="export_question">"Экспортировать в хранилище устройства?"</string>
-    <string name="export_complete_message">"Выбранный ресурс успешно экспортирован в '%s'!"</string>
-    <string name="exploring">"Изучение% s…"</string>
-    <string name="explore_error_status">"Не удалось исследовать% s!"</string>
+    <string name="export_complete_message">"Выбранный ресурс успешно экспортирован в '%s'"</string>
+    <string name="exploring">"Изучение %s…"</string>
+    <string name="explore_error_status">"Не удалось исследовать %s!"</string>
     <string name="install">"Установить"</string>
     <string name="install_question">"Установить %s?"</string>
     <string name="installing">"Установка %s…"</string>
@@ -56,25 +56,25 @@
     <string name="unsupported_file">"Неподдерживаемый формат файла"</string>
     <string name="unsupported_file_arsc">"Вы выбрали 'resources.arsc', который, к сожалению, AEE не может прочитать.
 
-Что такое resources.arsc?
-resources.arsc-это двоичный файл ресурсов, содержащий специфические конфигурационные значения приложения, такие как целые числа, логические значения и строки, а также ссылки на более сложные ресурсы, такие как макеты пользовательского интерфейса.
+        Что такое resources.arsc?
+        resources.arsc-это двоичный файл ресурсов, содержащий специфические конфигурационные значения приложения, такие как целые числа, логические значения и строки, а также ссылки на более сложные ресурсы, такие как макеты пользовательского интерфейса.
 
-Как считать resources.arsc?
-Такие инструменты как Apktool или Android Asset Packaging Tool (AAPT) могут быть использованы для конвертации  resources.arsc в удобочитаемый формат."</string>
+        Как считать resources.arsc?
+        Такие инструменты как Apktool или Android Asset Packaging Tool (AAPT) могут быть использованы для конвертации  resources.arsc в удобочитаемый формат."</string>
     <string name="unsupported_file_dex">"Вы выбрали файл DEX (.dex), который, к сожалению, не может прочитать AEE.
 
-Что это за файл - DEX?
-Файл Dex содержит код, который в конечном итоге выполняется средой выполнения Android. Каждый APK должен иметь файл classes.dex, который ссылается на любые классы или методы, используемые в приложении. По сути, любое действие, объект или фрагмент, используемые в базе кода, будут преобразованы в байты в файле Dex, который можно запустить как приложение для Android.
+        Что это за файл - DEX?
+        Файл Dex содержит код, который в конечном итоге выполняется средой выполнения Android. Каждый APK должен иметь файл classes.dex, который ссылается на любые классы или методы, используемые в приложении. По сути, любое действие, объект или фрагмент, используемые в базе кода, будут преобразованы в байты в файле Dex, который можно запустить как приложение для Android.
 
-Как читать файл DEX?
-Файл DEX должен быть преобразован в формат jar, а затем в файл Java с использованием таких инструментов, как dex2jar и JD-GUI."</string>
+        Как читать файл DEX?
+        Файл DEX должен быть преобразован в формат jar, а затем в файл Java с использованием таких инструментов, как dex2jar и JD-GUI."</string>
     <string name="user">"Пользователь"</string>
     <string name="bundles">"Пакеты"</string>
     <string name="preparing_bundle">"Подготовка пакета приложения"</string>
     <string name="privacy_policy">"Политика конфиденциальности"</string>
     <string name="privacy_policy_summary">"Прочитать политику конфиденциальности"</string>
     <string name="private_key">"Приватный ключ"</string>
-    <string name="private_key_summary">"Выбрать кастомный приватный ключ "</string>
+    <string name="private_key_summary">"Выбрать произвольный личный ключ"</string>
     <string name="rsa_template">"RSA Шаблон"</string>
     <string name="rsa_template_summary">"Выбрать кастомный RSA шаблон"</string>
     <string name="select">"Выбрать"</string>
@@ -149,4 +149,34 @@ resources.arsc-это двоичный файл ресурсов, содержа
     <string name="deleting">"Удаление '%s'…"</string>
     <string name="grant">"Грант"</string>
     <string name="important">"Важный"</string>
+    <string name="assembling">"Сборка
+        '%s'"</string>
+    <string name="build">"Сборка"</string>
+    <string name="building">"Сборка'%s'…"</string>
+    <string name="copying">"Копирование '%s'…"</string>
+    <string name="details">"Подробности"</string>
+    <string name="failed">"Неудача"</string>
+    <string name="failed_smali_message">"Сборка следующих файлов 'smali' не удалась.
+
+        %s"</string>
+    <string name="open">"Открыть"</string>
+    <string name="preparing_source">"Подготовка исходников для создания APK…"</string>
+    <string name="resigned_apks_error">"Сборка прервана из-за ошибок при сборке файлов 'smali'. Пожалуйста, проверьте 'Подробности', чтобы узнать больше."</string>
+    <string name="success">"Успех"</string>
+    <string name="sort_by_installed">"Время установки"</string>
+    <string name="sort_by_size">"Размер"</string>
+    <string name="sort_by_updated">"Время обновления"</string>
+    <string name="sort_size">"Малый в Большой"</string>
+    <string name="start">"Старт"</string>
+    <string name="android_version">"Андроид %s"</string>
+    <string name="certificate">"Сертификат"</string>
+    <string name="install_bundle_question">"Вы уверены установить выбранный пакет приложений?"</string>
+    <string name="loading">"Загрузка"</string>
+    <string name="manifest">"Манифест"</string>
+    <string name="permissions">"Права доступа"</string>
+    <string name="save_to_downloads">"Сохранить в Загрузки"</string>
+    <string name="saving">"Сохранение…"</string>
+    <string name="sdk_compile">"Компиляция SDK: %s"</string>
+    <string name="sdk_minimum">"Минимальная версия SDK: %s"</string>
+    <string name="signing_select_question">"Использовать выбранный файл как новый %s?"</string>
 </resources>

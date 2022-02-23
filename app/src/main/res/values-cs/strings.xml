@@ -23,6 +23,7 @@
     <string name="installing">"Instalace%s…"</string>
     <string name="invite_friends">"Pozvat přátele"</string>
     <string name="invite_friends_Summary">"Pozvěte své přátele, aby vyzkoušeli AEE"</string>
+    <string name="last_modified">"Naposledy upraveno '%s'"</string>
     <string name="open_as_text">"Otevřít jako text"</string>
     <string name="permission_denied_message">"Oprávnění odepřeno pro zápis do úložiště!"</string>
     <string name="preparing_apk">"Příprava %s APK…"</string>
@@ -53,8 +54,20 @@
     <string name="system">"System"</string>
     <string name="unknown_file_message">"AEE v tuto chvíli nezpracovává '%s'. Pokud znáte tento formát souboru, můžete jej exportovat do úložiště zařízení a zkusit jej upravit pomocí podporované aplikace jiného výrobce. Můžete jej také zkusit otevřít jako textový soubor?"</string>
     <string name="unsupported_file">"Nepodporovaný soubor"</string>
-    <string name="unsupported_file_arsc">"Vybrali jste soubor „resources.arsc“, což je bohužel pro AEE nemožné číst.\n\nCo je Resources.arsc?\nresources.arsc je binární soubor prostředků, který obsahuje hodnoty aplikace specifické pro konfiguraci, jako jsou celá čísla, logické hodnoty a řetězce, stejně jako odkazy na složitější prostředky, jako jsou rozložení uživatelského rozhraní.\n\nJak číst resources.arsc?\nK tisku obsahu resource.arsc do formátu čitelného pro člověka se použijí nástroje jako Apktool nebo Android Asset Packaging Tool (AAPT)."</string>
-    <string name="unsupported_file_dex">"Vybrali jste soubor 'DEX' (.dex), který je bohužel pro AEE nemožné číst.\n\nWhat is a DEX file?\nDex má kód, který je nakonec spuštěn Android Runtime. Každý soubor APK by měl mít soubor 'classes.dex', který odkazuje na všechny třídy nebo metody používané v aplikaci. V zásadě bude jakákoli aktivita, objekt nebo fragment použitá v rámci kódu transformována na bajty v rámci souboru Dex, který lze spustit jako aplikaci pro Android.\n\nJak číst soubor DEX?\nSoubor DEX se převede do formátu „jar“ a později do souboru „Java“ pomocí nástrojů, jako jsou „dex2jar“ a „JD-GUI“."</string>
+    <string name="unsupported_file_arsc">"Vybrali jste soubor „resources.arsc“, což je bohužel pro AEE nemožné číst.
+
+        Co je Resources.arsc?
+        resources.arsc je binární soubor prostředků, který obsahuje hodnoty aplikace specifické pro konfiguraci, jako jsou celá čísla, logické hodnoty a řetězce, stejně jako odkazy na složitější prostředky, jako jsou rozložení uživatelského rozhraní.
+
+        Jak číst resources.arsc?
+        K tisku obsahu resource.arsc do formátu čitelného pro člověka se použijí nástroje jako Apktool nebo Android Asset Packaging Tool (AAPT)."</string>
+    <string name="unsupported_file_dex">"Vybrali jste soubor 'DEX' (.dex), který je bohužel pro AEE nemožné číst.
+
+        What is a DEX file?
+        Dex má kód, který je nakonec spuštěn Android Runtime. Každý soubor APK by měl mít soubor 'classes.dex', který odkazuje na všechny třídy nebo metody používané v aplikaci. V zásadě bude jakákoli aktivita, objekt nebo fragment použitá v rámci kódu transformována na bajty v rámci souboru Dex, který lze spustit jako aplikaci pro Android.
+
+        Jak číst soubor DEX?
+        Soubor DEX se převede do formátu „jar“ a později do souboru „Java“ pomocí nástrojů, jako jsou „dex2jar“ a „JD-GUI“."</string>
     <string name="user">"Uživatel"</string>
     <string name="bundles">"Součástky"</string>
     <string name="preparing_bundle">"Příprava balíčku aplikace pro sdílení…"</string>
@@ -92,7 +105,9 @@
     <string name="apk_corrupted">"Soubory APK jsou poškozené! Přerušení."</string>
     <string name="install_resign">"Znovu podepsat a amp; Nainstalovat"</string>
     <string name="resign_only">"Znovu podepsat"</string>
-    <string name="resigned_apks_path">"Vygenerují se znovu podepsané soubory APK!\n\nCesta: '%s'"</string>
+    <string name="resigned_apks_path">"Vygenerují se znovu podepsané soubory APK!
+
+        Cesta: '%s'"</string>
     <string name="resigning_apks">"Opětovné podepsání vybraných souborů APK…"</string>
     <string name="select_storage">"Vyberte z úložiště"</string>
     <string name="sort_by">"Setřídit aplikace"</string>
@@ -130,4 +145,9 @@
     <string name="language">"Jazyk"</string>
     <string name="transfer_exported_apk">"Přenos dříve exportovaných souborů APK na novou cestu …"</string>
     <string name="user_interface">"uživatelské rozhraní"</string>
+    <string name="details">"Detaily"</string>
+    <string name="open">"Otevřít"</string>
+    <string name="success">"Úspěch"</string>
+    <string name="sort_by_installed">"Datum instalace"</string>
+    <string name="sort_by_size">"Velikost"</string>
 </resources>

@@ -4,7 +4,7 @@
     <string name="all">"全部"</string>
     <string name="apks">"安装包"</string>
     <string name="apps">"全部应用"</string>
-    <string name="apps_exported">"导出应用"</string>
+    <string name="apps_exported">"已导出应用"</string>
     <string name="apps_installed">"已安装应用"</string>
     <string name="cancel">"取消"</string>
     <string name="delete">"删除"</string>
@@ -27,7 +27,7 @@
     <string name="open_as_text">"打开为文本"</string>
     <string name="permission_denied_message">"存储权限被拒绝！"</string>
     <string name="preparing_apk">"正在准备 %s 应用 …"</string>
-    <string name="press_back">"再次返回退出应用"</string>
+    <string name="press_back">"再按一次返回按钮退出应用"</string>
     <string name="projects">"项目"</string>
     <string name="rate_us">"评价AEE"</string>
     <string name="rate_us_Summary">"在Google Play中评价AEE"</string>
@@ -42,7 +42,7 @@
     <string name="sdcard">"SD卡"</string>
     <string name="search">"搜索…"</string>
     <string name="share">"分享"</string>
-    <string name="share_message">"是否分享 %s"</string>
+    <string name="share_message">"是否分享 %s ？"</string>
     <string name="share_with">"分享"</string>
     <string name="signing">"正在签名 %s…"</string>
     <string name="size">"大小：%s"</string>
@@ -52,7 +52,7 @@
     <string name="support_group">"交流群组"</string>
     <string name="support_group_summary">"加入AEE交流群组"</string>
     <string name="system">"系统应用"</string>
-    <string name="unknown_file_message">"Aee无法处理'％'。如果您知道如何打开此文件格式，则可以将此文件导出到设备存储中，并使用支持的第三方应用进行编辑，或者以文本格式打开"</string>
+    <string name="unknown_file_message">"Aee无法处理'%s'。如果您知道如何打开此文件格式，则可以将此文件导出到设备存储中，并使用支持的第三方应用进行编辑，或者以文本格式打开"</string>
     <string name="unsupported_file">"不支持的文件"</string>
     <string name="unsupported_file_arsc">"你选择了'Resources.arsc'，但AEE暂不支持此文件\n\n什么是resources.arsc？\nResources.arsc是包含应用配置特定值的二进制资源文件，例如整数，布尔值和字符串，以及对更复杂的资源的引用，如UI布局等\n\n如何打开resource.arsc？\n您可以使用APKTOOL或Android Asset Packaging Tool（AAPT）等工具反编译资源以便于查看和修改"</string>
     <string name="unsupported_file_dex">"你选择了dex（.dex）文件，但AEE暂不支持打开此类型的文件\n\n什么是DEX文件？\nDEX文件包含应用运行时执行的代码。每个APK都应具有\“classes.dex\”文件，它引用应用中的任何类或方法。基本上，代码库中的任何活动，对象或片段都可以被转换为Dex中的代码\n\n如何反编译DEX文件？\nDEX文件应转换为\“jar\”格式，然后使用\“dex2jar\”和'jd-gui'等工具反编译查看修改"</string>
@@ -135,11 +135,16 @@
     <string name="deleting">"正在删除 %s  …"</string>
     <string name="grant">"授予"</string>
     <string name="important">"重要"</string>
+    <string name="assembling">"正在汇编
+        '%s'"</string>
     <string name="build">"构建"</string>
     <string name="building">"构建'%s'…"</string>
     <string name="copying">"复制 '%s'…"</string>
     <string name="details">"详情"</string>
     <string name="failed">"失败"</string>
+    <string name="failed_smali_message">"汇编下列 \"smali\" 文件失败。
+
+        %s"</string>
     <string name="open">"打开"</string>
     <string name="preparing_source">"从源码构建APK文件"</string>
     <string name="resigned_apks_error">"由于在组装'smali'文件时出错，构建中止。请查看“详情”以了解更多信息。"</string>
@@ -147,12 +152,17 @@
     <string name="sort_by_installed">"安装时间"</string>
     <string name="sort_by_size">"大小"</string>
     <string name="sort_by_updated">"更新时间"</string>
+    <string name="sort_size">"从小到大"</string>
     <string name="start">"开始"</string>
     <string name="android_version">"Android %s"</string>
     <string name="certificate">"证明"</string>
     <string name="install_bundle_question">"你确定要安装选定的应用吗"</string>
     <string name="loading">"加载中"</string>
+    <string name="manifest">"应用清单"</string>
     <string name="permissions">"权限"</string>
     <string name="save_to_downloads">"保存到Downloads目录"</string>
     <string name="saving">"保存中"</string>
+    <string name="sdk_compile">"SDK 目标版本：%s"</string>
+    <string name="sdk_minimum">"SDK 最低版本： %s"</string>
+    <string name="signing_select_question">"用选择的文件作为新的 %s？"</string>
 </resources>
