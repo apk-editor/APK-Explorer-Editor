@@ -178,6 +178,8 @@ public class AppSettings {
                 return context.getString(R.string.language_pl);
             case "in":
                 return context.getString(R.string.language_in);
+            case "hu":
+                return context.getString(R.string.language_hu);
             default:
                 return context.getString(R.string.app_theme_auto);
         }
@@ -260,7 +262,8 @@ public class AppSettings {
                 context.getString(R.string.language_tr),
                 context.getString(R.string.language_vi),
                 context.getString(R.string.language_pl),
-                context.getString(R.string.language_in)
+                context.getString(R.string.language_in),
+                context.getString(R.string.language_hu)
         };
     }
 
@@ -413,6 +416,10 @@ public class AppSettings {
                         break;
                     case 12:
                         sUtils.saveString("appLanguage", "in", context);
+                        restartApp(context);
+                        break;
+                    case 13:
+                        sUtils.saveString("appLanguage", "hu", context);
                         restartApp(context);
                         break;
                     }
