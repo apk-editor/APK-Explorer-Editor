@@ -30,7 +30,7 @@ public class APKTasksActivity extends AppCompatActivity {
     private MaterialCardView mCancel, mDetails;
     private MaterialTextView mError, mOutputPath, mSuccess, mTaskSummary;
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint({"UseCompatLoadingForDrawables", "StringFormatInvalid"})
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +72,16 @@ public class APKTasksActivity extends AppCompatActivity {
                     .setPositiveButton(R.string.cancel, (dialog, id) -> finish()).show();
         });
 
-        mCancel.setOnClickListener(v -> onBackPressed());
+        mCancel.setOnClickListener(v -> {
+            if (!Common.isFinished()) {
+                Common.isCancelled(true);
+                mTaskSummary.setText(getString(R.string.cancelling));
+                mTaskSummary.setTextColor(Color.RED);
+                mCancel.setVisibility(View.GONE);
+                return;
+            }
+            onBackPressed();
+        });
 
         refreshStatus(this);
     }
@@ -86,7 +95,12 @@ public class APKTasksActivity extends AppCompatActivity {
                     while (!isInterrupted()) {
                         Thread.sleep(500);
                         runOnUiThread(() -> {
-                            if (!Common.isFinished()) {
+                            if (Common.isCancelled()) {
+                                mTaskSummary.setText(activity.getString(R.string.cancelling));
+                                if (Common.isBuilding() && Common.isFinished()) {
+                                    activity.finish();
+                                }
+                            } else if (!Common.isFinished()) {
                                 try {
                                     if (Common.getStatus() != null) {
                                         mTaskSummary.setVisibility(View.VISIBLE);

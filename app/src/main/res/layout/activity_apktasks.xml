@@ -109,7 +109,7 @@
                     app:cardBackgroundColor="?attr/colorAccent"
                     android:layout_margin="25dp"
                     app:cardCornerRadius="15dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:padding="10dp">
 
                         <com.google.android.material.textview.MaterialTextView

@@ -237,6 +237,9 @@ public class APKExplorer {
 
             @Override
             public void onPreExecute() {
+                Common.isBuilding(false);
+                Common.isCancelled(false);
+                Common.setFinishStatus(false);
                 Common.setAppID(packageName);
                 mExplorePath = new File(context.getCacheDir().getPath(), packageName);
                 mBackUpPath = new File(mExplorePath, ".aeeBackup");
@@ -257,7 +260,7 @@ public class APKExplorer {
                     APKEditorUtils.unzip(sPackageUtils.getSourceDir(packageName, context), mExplorePath.getAbsolutePath());
                     // Decompile dex file(s)
                     for (File files : Objects.requireNonNull(mExplorePath.listFiles())) {
-                        if (files.getName().startsWith("classes") && files.getName().endsWith(".dex")) {
+                        if (files.getName().startsWith("classes") && files.getName().endsWith(".dex") && !Common.isCancelled()) {
                             mBackUpPath.mkdirs();
                             sUtils.copy(files, new File(mBackUpPath, files.getName()));
                             sUtils.delete(files);
@@ -268,15 +271,20 @@ public class APKExplorer {
                         }
                     }
                 }
+                if (Common.isCancelled()) {
+                    sUtils.delete(mExplorePath);
+                    Common.isCancelled(false);
+                    Common.setFinishStatus(true);
+                }
             }
 
             @Override
             public void onPostExecute() {
                 if (!Common.isFinished()) {
                     Common.setFinishStatus(true);
+                    Intent explorer = new Intent(context, APKExploreActivity.class);
+                    context.startActivity(explorer);
                 }
-                Intent explorer = new Intent(context, APKExploreActivity.class);
-                context.startActivity(explorer);
             }
         }.execute();
     }

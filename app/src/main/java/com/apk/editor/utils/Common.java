@@ -17,8 +17,8 @@ import java.util.List;
 public class Common {
 
     private static AppCompatEditText mSearchWordApks, mSearchWordApps, mSearchWordProjects;
-    private static boolean mBuilding = false, mBusy = false, mFinish = false, mPrivateKey = false,
-            mReloading = false, mRSATemplate = false;
+    private static boolean mBuilding = false, mBusy = false, mCancel = false, mFinish = false,
+            mPrivateKey = false, mReloading = false, mRSATemplate = false;
     private static List<PackageItems> mPackageData = null;
     private static final List<String> mAPKList = new ArrayList<>(), mErrorList = new ArrayList<>();
     private static int mError = 0, mSuccess = 0;
@@ -45,6 +45,10 @@ public class Common {
 
     public static boolean isBusy() {
         return mBusy;
+    }
+
+    public static boolean isCancelled() {
+        return mCancel;
     }
 
     public static boolean isFinished() {
@@ -170,6 +174,10 @@ public class Common {
 
     public static void isBuilding(boolean b) {
         mBuilding = b;
+    }
+
+    public static void isCancelled(boolean b) {
+        mCancel = b;
     }
 
     public static void isReloading(boolean b) {

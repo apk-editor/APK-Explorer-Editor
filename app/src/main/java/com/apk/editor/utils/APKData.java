@@ -1,5 +1,6 @@
 package com.apk.editor.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -169,24 +170,27 @@ public class APKData {
                         sUtils.saveBoolean("signature_warning", true, context)).show();
     }
 
+    @SuppressLint("StringFormatInvalid")
     private static void prepareSource(File buildDir, File exportPath, File backupPath, Context context) {
-        for (File file : Objects.requireNonNull(exportPath.listFiles())) {
-            if (!fileToExclude(file)) {
-                if (file.isDirectory()) {
-                    sUtils.copyDir(file, new File(buildDir, file.getName()));
-                } else {
-                    sUtils.copy(file, new File(buildDir, file.getName()));
+        if (!Common.isCancelled()) {
+            for (File file : Objects.requireNonNull(exportPath.listFiles())) {
+                if (!fileToExclude(file)) {
+                    if (file.isDirectory()) {
+                        sUtils.copyDir(file, new File(buildDir, file.getName()));
+                    } else {
+                        sUtils.copy(file, new File(buildDir, file.getName()));
+                    }
                 }
-            }
-            if (file.isDirectory() && file.getName().startsWith("classes") && file.getName().endsWith(".dex")) {
-                // Build new dex file if the smali files are modified
-                if (sUtils.exist(new File(file, "edited"))) {
-                    Common.setStatus(context.getString(R.string.building, file.getName()));
-                    new SmaliToDex(file, new File(buildDir, file.getName()), 0, context).execute();
-                } else {
-                    // Otherwise, use the original one from the backup folder
-                    if (sUtils.exist(new File(backupPath, file.getName()))) {
-                        sUtils.copy(new File(backupPath, file.getName()), new File(buildDir, file.getName()));
+                if (file.isDirectory() && file.getName().startsWith("classes") && file.getName().endsWith(".dex")) {
+                    // Build new dex file if the smali files are modified
+                    if (sUtils.exist(new File(file, "edited"))) {
+                        Common.setStatus(context.getString(R.string.building, file.getName()));
+                        new SmaliToDex(file, new File(buildDir, file.getName()), 0, context).execute();
+                    } else {
+                        // Otherwise, use the original one from the backup folder
+                        if (sUtils.exist(new File(backupPath, file.getName()))) {
+                            sUtils.copy(new File(backupPath, file.getName()), new File(buildDir, file.getName()));
+                        }
                     }
                 }
             }
@@ -203,6 +207,7 @@ public class APKData {
             @Override
             public void onPreExecute() {
                 Common.setFinishStatus(false);
+                Common.isCancelled(false);
                 Common.isBuilding(true);
                 Common.setStatus(null);
                 Intent apkTasks = new Intent(activity, APKTasksActivity.class);
@@ -230,8 +235,9 @@ public class APKData {
                     return;
                 }
                 APKEditorUtils.zip(mBuildDir, mTMPZip);
+                File mParent;
                 if (Common.getAppID() != null && APKData.isAppBundle(sPackageUtils.getSourceDir(Common.getAppID(), activity))) {
-                    File mParent = new File(getExportAPKsPath(activity), Common.getAppID() + "_aee-signed");
+                    mParent = new File(getExportAPKsPath(activity), Common.getAppID() + "_aee-signed");
                     if (mParent.exists()) {
                         sUtils.delete(mParent);
                     }
@@ -245,13 +251,16 @@ public class APKData {
                     Common.setStatus(activity.getString(R.string.signing, "base.apk"));
                     signApks(mTMPZip, new File(mParent, "base.apk"), activity);
                 } else {
-                    File mParent = new File(getExportAPKsPath(activity), (Common.getAppID() != null ? Common.getAppID() :
+                    mParent = new File(getExportAPKsPath(activity), (Common.getAppID() != null ? Common.getAppID() :
                             new File(Common.getPath()).getName()) + "_aee-signed.apk");
                     if (mParent.exists()) {
                         sUtils.delete(mParent);
                     }
                     Common.setStatus(activity.getString(R.string.signing, mParent.getName()));
                     signApks(mTMPZip, mParent, activity);
+                }
+                if (Common.isCancelled()) {
+                    sUtils.delete(mParent);
                 }
             }
 

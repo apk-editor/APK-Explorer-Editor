@@ -1,5 +1,6 @@
 package com.apk.editor.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.apk.editor.R;
@@ -43,6 +44,7 @@ public class SmaliToDex {
         mContext = context;
     }
 
+    @SuppressLint("StringFormatInvalid")
     private void buildFile(File file, DexBuilder dexBuilder) {
         try {
             InputStream inStream = new FileInputStream(file);
@@ -70,6 +72,9 @@ public class SmaliToDex {
     }
 
     private static boolean assembleSmaliFile(File smaliFile, DexBuilder dexBuilder, int apiLevel) throws Exception {
+        if (Common.isCancelled()) {
+            return false;
+        }
         try (FileInputStream fis = new FileInputStream(smaliFile)) {
             InputStreamReader reader = new InputStreamReader(fis, StandardCharsets.UTF_8);
 

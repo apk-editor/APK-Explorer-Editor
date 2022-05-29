@@ -16,6 +16,7 @@
     <string name="bundle_install_question">Are you sure to install app bundle \'%s\'?</string>
     <string name="bundles">Bundles</string>
     <string name="cancel">Cancel</string>
+    <string name="cancelling">Cancelling…</string>
     <string name="certificate">Certificate</string>
     <string name="clear_cache">Clear Cache</string>
     <string name="clear_cache_summary">Delete internal settings of AEE</string>
