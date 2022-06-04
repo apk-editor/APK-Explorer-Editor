@@ -56,34 +56,31 @@
     <string name="unsupported_file">"ملف غير مدعوم"</string>
     <string name="unsupported_file_arsc">"لقد حددت \"resources.arsc\"، والتي للأسف من المستحيل على AEE قراءتها.
 
- ما هو Resources.arsc؟
- resources.arsc هو ملف موارد ثنائي يحتوي على القيم الخاصة بالتكوين لتطبيق م ، مثل الأعداد الصحيحة، القيم المنطقية والسلاسل، بالإضافة إلى مراجع إلى موارد أكثر تعقيدًا، مثل تخطيطات واجهة المستخدم.
+        ما هو Resources.arsc؟
+        resources.arsc هو ملف موارد ثنائي يحتوي على القيم الخاصة بالتكوين لتطبيق م ، مثل الأعداد الصحيحة، القيم المنطقية والسلاسل، بالإضافة إلى مراجع إلى موارد أكثر تعقيدًا، مثل تخطيطات واجهة المستخدم.
 
- كيف قراءة Resources.arsc؟
- يجب استخدام أداة مثل Apktool أو Android Asset Packaging Tool (AAPT) لطباعة محتويات Resources.arsc إلى تنسيق يمكن للبشر قراءته."</string>
+        كيف قراءة Resources.arsc؟
+        يجب استخدام أداة مثل Apktool أو Android Asset Packaging Tool (AAPT) لطباعة محتويات Resources.arsc إلى تنسيق يمكن للبشر قراءته."</string>
     <string name="unsupported_file_dex">"لقد حددت ملف \"DEX\" (.dex)، والذي للأسف يستحيل على AEE قراءته.
 
- ما هو ملف DEX؟
- يحتوي ملف Dex على شفرة يتم تنفيذها في النهاية بواسطة Android Runtime. يجب أن يحتوي كل ملف APK على ملف \"class.dex\"، والذي يشير إلى أي class أو طرق مستخدمة داخل التطبيق. بشكل أساسي، سيتم تحويل أي نشاط أو كائن أو جزء مستخدم داخل قاعدة التعليمات البرمجية إلى بايت داخل ملف Dex يمكن تشغيله كتطبيق أندرويد.
+        ما هو ملف DEX؟
+        يحتوي ملف Dex على شفرة يتم تنفيذها في النهاية بواسطة Android Runtime. يجب أن يحتوي كل ملف APK على ملف \"class.dex\"، والذي يشير إلى أي class أو طرق مستخدمة داخل التطبيق. بشكل أساسي، سيتم تحويل أي نشاط أو كائن أو جزء مستخدم داخل قاعدة التعليمات البرمجية إلى بايت داخل ملف Dex يمكن تشغيله كتطبيق أندرويد.
 
- كيف تقرأ ملف DEX؟
- يجب تحويل ملف DEX إلى تنسيق \"jar\" ولاحقًا إلى ملف \"Java\" باستخدام أدوات مثل \"dex2jar\" و \"JD-GUI\"."</string>
+        كيف تقرأ ملف DEX؟
+        يجب تحويل ملف DEX إلى تنسيق \"jar\" ولاحقًا إلى ملف \"Java\" باستخدام أدوات مثل \"dex2jar\" و \"JD-GUI\"."</string>
     <string name="user">"المستخدم"</string>
     <string name="bundles">"الحزم"</string>
     <string name="preparing_bundle">"يتم إعداد حزمة التطبيق للمشاركة…"</string>
     <string name="privacy_policy">"سياسة الخصوصية"</string>
     <string name="privacy_policy_summary">"إقرأ سياسة الخصوصية"</string>
     <string name="private_key">"مفتاح خاص"</string>
-
-    <!-- Fuzzy -->
     <string name="private_key_summary">"اختر  مفتاحاً خاصاً محدداً"</string>
     <string name="rsa_template">"قالب RSA"</string>
     <string name="rsa_template_summary">"اختر قالب RSA محدداً"</string>
     <string name="select">"اختر"</string>
     <string name="signing_custom">"تكوين مفتاح محدد"</string>
     <string name="signing_default">"أشّر بالمفتاح الافتراضي"</string>
-    <string name="signing_message">"يستخدم AEE مكتبة PseudoApkSigner من قبل  Aefyr لتأشير APK. ونتيجة لذلك، يتطلب AEE مفتاح خاص بتنسيق pk8 بالإضافة إلى ملف قالب RSA تم إنشاؤه من نفس المفتاح. انقر هنا لقراءة المزيد عن إنشاء مفتاح خاص و قالب RSA!
-"</string>
+    <string name="signing_message">"يستخدم AEE مكتبة PseudoApkSigner من قبل  Aefyr لتأشير APK. ونتيجة لذلك، يتطلب AEE مفتاح خاص بتنسيق pk8 بالإضافة إلى ملف قالب RSA تم إنشاؤه من نفس المفتاح. انقر هنا لقراءة المزيد عن إنشاء مفتاح خاص و قالب RSA!"</string>
     <string name="signing_question">"استخدم '%s' كجديد"</string>
     <string name="signing_title">"أشّر APK"</string>
     <string name="apk_installer">"مثبت AEE APK"</string>
@@ -110,7 +107,7 @@
     <string name="resign_only">"إعادة تأشير فقط"</string>
     <string name="resigned_apks_path">"إعادة تأشير ملف(ات) تم توليدها!
 
-مسار: '%s'"</string>
+        مسار: '%s'"</string>
     <string name="resigning_apks">"إعادة تأشير APK مختارة"</string>
     <string name="select_storage">"اختر من التخزين"</string>
     <string name="sort_by">"نظم التطبيقات"</string>
@@ -148,4 +145,38 @@
     <string name="language">"اللغة"</string>
     <string name="transfer_exported_apk">"تحويل APK المصدرة مسبقاً لمسار جديد…"</string>
     <string name="user_interface">"واجهة المستخدم"</string>
+    <string name="decompiling">"فك ترجمة '٪ s' …"</string>
+    <string name="deleting">"جارٍ حذف \"٪ s\" …"</string>
+    <string name="grant">"منح"</string>
+    <string name="important">"الأهميه"</string>
+    <string name="assembling">"تجميع
+        '٪س'"</string>
+    <string name="build">"بناء"</string>
+    <string name="building">"البنايات'…"</string>
+    <string name="copying">"جاري نسخ '٪ s' …"</string>
+    <string name="details">"تفاصيل"</string>
+    <string name="failed">"باءت بالفشل"</string>
+    <string name="failed_smali_message">"فشل تجميع ملفات \"smali\" التالية.
+
+        ٪س"</string>
+    <string name="open">"فتح"</string>
+    <string name="preparing_source">"جارٍ تحضير المصدر لبناء APK…"</string>
+    <string name="resigned_apks_error">"تم إحباط البناء بسبب أخطاء في تجميع ملفات \"smali\". يرجى التحقق من \"التفاصيل\" لمعرفة المزيد."</string>
+    <string name="success">"نجاح"</string>
+    <string name="sort_by_installed">"وقت التثبيت"</string>
+    <string name="sort_by_size">"مقاس"</string>
+    <string name="sort_by_updated">"الوقت المحدث"</string>
+    <string name="sort_size">"صغير إلى كبير"</string>
+    <string name="start">"يبدأ"</string>
+    <string name="android_version">"Android٪ s"</string>
+    <string name="certificate">"شهادة"</string>
+    <string name="install_bundle_question">"هل أنت متأكد من تثبيت حزمة التطبيق المحددة؟"</string>
+    <string name="loading">"تحميل…"</string>
+    <string name="manifest">"قائمة"</string>
+    <string name="permissions">"أذونات"</string>
+    <string name="save_to_downloads">"حفظ في التنزيلات"</string>
+    <string name="saving">"إنقاذ…"</string>
+    <string name="sdk_compile">"تجميع SDK:٪ s"</string>
+    <string name="sdk_minimum">"الحد الأدنى من SDK:٪ s"</string>
+    <string name="signing_select_question">"هل تريد استخدام الملف المحدد باعتباره٪ s الجديد؟"</string>
 </resources>

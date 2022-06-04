@@ -17,7 +17,7 @@
     <string name="export_question">"Exporter vers le stockage de l'appareil ?"</string>
     <string name="export_complete_message">"La ressource sélectionnée a été exportée avec succès vers '%s' !"</string>
     <string name="exploring">"Exploration de %s"</string>
-    <string name="explore_error_status">"Échec de l'exploitation de %s !"</string>
+    <string name="explore_error_status">"Échec de l'exploration de %s"</string>
     <string name="install">"Installer"</string>
     <string name="install_question">"Installer %s ?"</string>
     <string name="installing">"Installation de %s…"</string>
@@ -25,7 +25,7 @@
     <string name="invite_friends_Summary">"Inviter des ami•e•s à essayer AEE"</string>
     <string name="last_modified">"Dernière modification : %s"</string>
     <string name="open_as_text">"Ouvrir comme du texte"</string>
-    <string name="permission_denied_message">"Permission d'écriture sur le stockage refusée !"</string>
+    <string name="permission_denied_message">"Permission d'accéder au périphérique de stockage refusée"</string>
     <string name="preparing_apk">"Préparation de l'APK de %s…"</string>
     <string name="press_back">"Pressez le bouton retour à nouveau pour quitter APK Explorer !"</string>
     <string name="projects">"Projets"</string>
@@ -80,14 +80,14 @@
     <string name="select">"Sélectionner"</string>
     <string name="signing_custom">"Configurer une clé personnalisée"</string>
     <string name="signing_default">"Signer avec la clé par défaut"</string>
-    <string name="signing_message">"AEE utilisé la bibliothèque PseudoApkSigner de Aefyr pour signer les APK. Par conséquent, AEE a besoin d'une clé privée au format pk8 et aussi d'un modèle RSA créé depuis la même clé. Cliquez ici pour en lire davantage sur comment créer une clé privée et un modèle RSA !"</string>
+    <string name="signing_message">"AEE utilisé la bibliothèque PseudoApkSigner de Aefyr pour signer les APK. Par conséquent, AEE a besoin d'une clé privée au format pk8 et aussi d'un modèle RSA créé depuis la même clé. Cliquez ici pour en lire davantage sur comment créer une clé privée et un modèle RSA."</string>
     <string name="signing_question">"Utiliser '%s' comme nouvelle clé"</string>
     <string name="signing_title">"Signature de l'APK"</string>
     <string name="apk_installer">"Installeur d'APK AEE"</string>
     <string name="bundle_install_question">"Êtes-vous sûr•e de vouloir installer le lot d'applications '%s' ?"</string>
     <string name="export_app_question">"Exporter '%s' vers le stockage de l'appareil ?"</string>
     <string name="export_project_question">"Faire une copie du projet sur le stockage de l'appareil ?"</string>
-    <string name="export_project_replace">"'%s' existe déjà ! Voulez-vous le remplacer ?"</string>
+    <string name="export_project_replace">"'%s' existe déjà. Voulez-vous le remplacer ?"</string>
     <string name="export_resign">"Exporter et re-signer"</string>
     <string name="export_storage">"Exporter vers le stockage"</string>
     <string name="exporting">"Exportation de %s…"</string>
@@ -95,7 +95,7 @@
     <string name="install_storage">"Installation depuis le stockage"</string>
     <string name="installer_message">"L'installeur AEE d'APK modulaires prend en charge les APK normaux, les APK modulaires ainsi que les lots d'applications 'xapk', 'apks' et 'apkm'. Afin de lancer une installation, selectionnez simplement le(s) fichier(s) d'installation depuis l'écran suivant et suivez les instructions affichées à l'écran."</string>
     <string name="installation_cancel_message">"Êtes-vous sûr•e de vouloir annuler l'installation ?"</string>
-    <string name="name_empty">"Le nom ne peut pas être vide ! Abandon."</string>
+    <string name="name_empty">"Le nom ne peut pas être vide. Abandon."</string>
     <string name="ok">"OK"</string>
     <string name="preparing_bundle_install">"Préparation de '%s' pour l'installation…"</string>
     <string name="select_apk">"Sélectionnez l'APK modulaire"</string>
@@ -133,9 +133,9 @@
     <string name="sign_apk_default">"Clé par défaut"</string>
     <string name="sign_apk_with">"Signer les APK avec"</string>
     <string name="text_editing">"Activer l'édition de texte"</string>
-    <string name="text_editing_summary">"L'éditeur de texte d'AEE est encore très basique et buggé. Les APK préparés après l'édition de fichier texte binaire peut ne pas fonctionner correctement. SVP utilisez le avec extrême prudence."</string>
+    <string name="text_editing_summary">"L'éditeur de texte d'AEE est encore très basique et un peu buggé. Les APK préparés après l'édition de fichier texte binaire peut ne pas fonctionner correctement. SVP utilisez le avec extrême prudence."</string>
     <string name="warning">"Attention"</string>
-    <string name="file_path_error">"Échec de récupération du chemin du fichier depuis le gestionnaire de fichiers externe !"</string>
+    <string name="file_path_error">"Échec de récupération du chemin du fichier depuis le gestionnaire de fichiers externe"</string>
     <string name="image_viewer">"Visionneur d'images AEE"</string>
     <string name="text_editor">"Éditeur de texte AEE"</string>
     <string name="discard">"Annuler"</string>
@@ -153,17 +153,29 @@
     <string name="build">"Création"</string>
     <string name="building">"Creation de '%s'"</string>
     <string name="copying">"Copie de '%s'"</string>
-    <string name="details">"Détails "</string>
+    <string name="details">"Détails"</string>
     <string name="failed">"Échoué"</string>
-    <string name="failed_smali_message">"Le fichiers 'smali' suivant n'ont pas pu être  assemblés !
+    <string name="failed_smali_message">"Le fichiers 'smali' suivant n'ont pas pu être  assemblés.
 
         %s"</string>
     <string name="open">"Ouvrir"</string>
     <string name="preparing_source">"Préparation de la source pour la construction"</string>
-    <string name="resigned_apks_error">"La construction a été arrêtée suite à des erreurs dans l'assemblage des fichiers 'smali'. Regardez les 'Détails' pour en savoir plus !"</string>
+    <string name="resigned_apks_error">"La construction a été arrêtée suite à des erreurs dans l'assemblage des fichiers 'smali'. Regardez les 'Détails' pour en savoir plus."</string>
     <string name="success">"Succès"</string>
     <string name="sort_by_installed">"Date d'installation"</string>
     <string name="sort_by_size">"Taille"</string>
     <string name="sort_by_updated">"Date de mise à jour"</string>
     <string name="sort_size">"Croissant"</string>
+    <string name="start">"Commencer"</string>
+    <string name="android_version">"Android %s"</string>
+    <string name="certificate">"Certificat"</string>
+    <string name="install_bundle_question">"Êtes-vous sur•e d’installer le lot d’applications sélectionné ?"</string>
+    <string name="loading">"Chargement…"</string>
+    <string name="manifest">"Manifeste"</string>
+    <string name="permissions">"Permissions"</string>
+    <string name="save_to_downloads">"Enregistrer dans Téléchargements"</string>
+    <string name="saving">"Enregistrement…"</string>
+    <string name="sdk_compile">"SDK de compilation : %s"</string>
+    <string name="sdk_minimum">"SDK minimum : %s"</string>
+    <string name="signing_select_question">"Utiliser le fichier sélectionné comme nouveau %s ?"</string>
 </resources>

@@ -2,12 +2,12 @@
 
     <string name="about">"Tentang"</string>
     <string name="all">"Semua"</string>
-    <string name="apks">"APK's"</string>
-    <string name="apps">"Apps"</string>
-    <string name="apps_exported">"APK Diekspor"</string>
-    <string name="apps_installed">"Aplikasi Dipasang"</string>
+    <string name="apks">"APK"</string>
+    <string name="apps">"Aplikasi"</string>
+    <string name="apps_exported">"APK yang diekspor"</string>
+    <string name="apps_installed">"Aplikasi Terpasang"</string>
     <string name="cancel">"Batal"</string>
-    <string name="delete">"Hapus"</string>
+    <string name="delete">"Menghapus"</string>
     <string name="delete_question">"Hapus %s?"</string>
     <string name="documentation">"Dokumentasi"</string>
     <string name="documentation_summary">"Periksa dokumen AEE"</string>
@@ -16,6 +16,7 @@
     <string name="export">"Ekspor"</string>
     <string name="export_question">"Ekspor ke penyimpanan perangkat?"</string>
     <string name="export_complete_message">"Sumber daya yang dipilih berhasil diekspor ke '%s'!"</string>
+    <string name="exploring">"Menjelajahi %s…"</string>
     <string name="explore_error_status">"Gagal untuk mengeksplorasi %s!"</string>
     <string name="install">"Pasang"</string>
     <string name="install_question">"Pasang %s?"</string>
@@ -151,4 +152,15 @@
     <string name="sort_by_updated">"Waktu yang Diperbarui"</string>
     <string name="sort_size">"Kecil ke Besar"</string>
     <string name="start">"Mulai"</string>
+    <string name="android_version">"Android %s"</string>
+    <string name="certificate">"Sertifikat"</string>
+    <string name="install_bundle_question">"Apakah Anda yakin untuk menginstal app bundle yang dipilih?"</string>
+    <string name="loading">"Memuat…"</string>
+    <string name="manifest">"Tampak"</string>
+    <string name="permissions">"Izin"</string>
+    <string name="save_to_downloads">"Simpan ke Unduhan"</string>
+    <string name="saving">"Penghematan…"</string>
+    <string name="sdk_compile">"Kompilasi SDK: %s"</string>
+    <string name="sdk_minimum">"SDK Minimum: %s"</string>
+    <string name="signing_select_question">"Gunakan file yang dipilih sebagai %s baru?"</string>
 </resources>

@@ -168,4 +168,15 @@
     <string name="sort_by_updated">"Czas aktualizacji"</string>
     <string name="sort_size">"Od małego do dużego"</string>
     <string name="start">"Zacznij"</string>
+    <string name="android_version">"Android %s"</string>
+    <string name="certificate">"Certyfikat"</string>
+    <string name="install_bundle_question">"Czy na pewno chcesz zainstalować wybrany pakiet aplikacji?"</string>
+    <string name="loading">"Ładowanie…"</string>
+    <string name="manifest">"Manifest"</string>
+    <string name="permissions">"Uprawnienia"</string>
+    <string name="save_to_downloads">"Zapisz w Pobrane"</string>
+    <string name="saving">"Zapisywanie…"</string>
+    <string name="sdk_compile">"Kompiluj SDK: %s"</string>
+    <string name="sdk_minimum">"Minimalne SDK: %s"</string>
+    <string name="signing_select_question">"Użyć wybranego pliku jako nowego %s?"</string>
 </resources>
