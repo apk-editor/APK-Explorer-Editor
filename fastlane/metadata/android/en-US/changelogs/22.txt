@@ -1,0 +1,4 @@
+* Exploring & Building APKs: Allow cancelling the process.
+* Added Hungarian to language switch.
+* Updated translations.
+* Miscellaneous changes.

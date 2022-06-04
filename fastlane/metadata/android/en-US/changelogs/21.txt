@@ -1,5 +1,0 @@
-* Fixed APK installation in Android 12 (S).
-* Updated progress style.
-* Update build tools.
-* Added Hungarian and updated other translations.
-* Miscellaneous changes.
