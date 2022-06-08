@@ -10,7 +10,7 @@
 
 ### APK Explorer & Editor, an open-source tool to explore the contents of an installed APK, is strictly made with an aim to inspect an installed APK file.
 
-## How-To-Use
+## Features
 AEE currently supports the following tasks
 * Explore an installed application and navigate through its contents.
 * Save/export individual resource files such as icon, fonts, graphics, binary XML files, etc to device storage.
@@ -35,7 +35,7 @@ AEE currently supports the following tasks
                     alt="" height="80">](https://github.com/apk-editor/APK-Explorer-Editor/releases)
 
 ## Support
-[<img src="https://github.com/SmartPack/SmartPack.github.io/blob/master/asset/pic006.png?raw=true"
+[<img src="https://github.com/SmartPack/SmartPack.github.io/blob/master/assets/pic006.png?raw=true"
      alt=""
      height="80">](https://t.me/apkexplorer)
 
