@@ -88,6 +88,10 @@ public class APKInstallerActivity extends AppCompatActivity {
                 mProgressDialog.setIndeterminate(true);
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
+
+                // Nullify previously acquired certificates, if any
+                ExternalAPKData.setCertificate(null);
+
                 sUtils.delete(getExternalFilesDir("APK"));
                 mExtension = ExternalAPKData.getExtension(uri, activity);
                 mFile = new File(getExternalFilesDir("APK"), "tmp." + mExtension);
