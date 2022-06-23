@@ -160,6 +160,7 @@
     <string name="unsupported_file">Unsupported file</string>
     <string name="unsupported_file_arsc">You\'re selected \'resources.arsc\', which is unfortunately impossible for AEE to read.\n\nWhat is resources.arsc?\nresources.arsc is a binary resource file containing the configuration-specific values of an application, such as integers, booleans and strings, as well as references to more complex resources, like UI layouts.\n\nHow to read resources.arsc?\nTools such as Apktool or Android Asset Packaging Tool (AAPT) shall be used to print out the contents of resources.arsc into human-readable format.</string>
     <string name="unsupported_file_dex">You\'re selected a \'DEX\' (.dex) file, which is unfortunately impossible for AEE to read.\n\nWhat is a DEX file?\nA Dex file has code that is ultimately executed by the Android Runtime. Every APK\'s should have a \'classes.dex\' file, which references any classes or methods used within an app. Essentially, any Activity, Object, or Fragment used within the code base will be transformed into bytes within a Dex file that can be run as an Android app.\n\nHow to read a DEX file?\nA DEX file shall be converted to \'jar\' format and later into \'Java\' file using tools such as \'dex2jar\' and \'JD-GUI\'.</string>
+    <string name="update">Update</string>
     <string name="user">User</string>
     <string name="user_interface">User Interface</string>
     <string name="warning">Warning</string>

@@ -37,6 +37,7 @@ import in.sunilpaulmathew.sCommon.Adapters.sPagerAdapter;
 import in.sunilpaulmathew.sCommon.Utils.sAPKCertificateUtils;
 import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
 import in.sunilpaulmathew.sCommon.Utils.sExecutor;
+import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
 import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
@@ -49,7 +50,7 @@ public class APKInstallerActivity extends AppCompatActivity {
     private File mFile = null;
     private LinearLayoutCompat mMainLayout, mIconsLayout;
     private MaterialCardView mCancel, mInstall;
-    private MaterialTextView mAppName, mPackageID;
+    private MaterialTextView mAppName, mInstallText, mPackageID;
     private String mName = null, mExtension = null, mPackageName = null;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -65,6 +66,7 @@ public class APKInstallerActivity extends AppCompatActivity {
         mMainLayout = findViewById(R.id.main_layout);
         mIconsLayout = findViewById(R.id.icons_layout);
         mInstall = findViewById(R.id.install);
+        mInstallText = findViewById(R.id.install_text);
         mCancel = findViewById(R.id.cancel);
         mTabLayout = findViewById(R.id.tab_Layout);
         mViewPager = findViewById(R.id.view_pager);
@@ -147,6 +149,9 @@ public class APKInstallerActivity extends AppCompatActivity {
                     if (mName != null || mPackageName != null || mIcon != null) {
                         ExternalAPKData.isFMInstall(true);
                         loadAPKDetails(activity);
+                        if (sPackageUtils.isPackageInstalled(mPackageName, activity)) {
+                            mInstallText.setText(getString(R.string.update));
+                        }
                     } else if (mExtension.equals("apkm") || mExtension.equals("apks") || mExtension.equals("xapk")) {
                         new MaterialAlertDialogBuilder(activity)
                                 .setIcon(R.mipmap.ic_launcher)
