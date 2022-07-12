@@ -179,4 +179,7 @@
     <string name="sdk_compile">"Fordítás SDK: %s"</string>
     <string name="sdk_minimum">"Minimális SDK: %s"</string>
     <string name="signing_select_question">"Használja a kiválasztott fájlt új %s -ként?"</string>
+    <string name="cancelling">"Visszavonás…"</string>
+    <string name="replace_file_question">"%s fájlt lecseréli a kiválasztott fájlra?"</string>
+    <string name="update">"Frissítés"</string>
 </resources>
