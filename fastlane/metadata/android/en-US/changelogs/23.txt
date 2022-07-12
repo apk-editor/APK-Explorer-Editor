@@ -1,0 +1,4 @@
+* Improved app bundle installation.
+* Updated apk installation from file manager.
+* Updated Hungarian translations.
+* Miscellaneous changes.
