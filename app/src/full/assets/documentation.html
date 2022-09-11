@@ -74,7 +74,7 @@ The main user interface of AEE is categorized into a number of pages, and are
 <ol>
     <li>Prepare a signed APK with jarsigner using the key to be later used as RSA template<br><br><b>jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore KEYSTORE_PATH APK_PATH alias_name</b><br><br></li>
     <li>Extract the above-signed APK file and get the <b>RSA certificate</b> (file with .RSA extension) from <b>META-INF</b> folder<br><br></li>
-    <li>Remove last <b>X</b> bytes from the RSA certificate, where <b>X</b> equals the <b>RSA key size</b>. As an example, to remove the last 256 bytes from an RSA certificate, use the following command.<br><br><b><b>truncate --size=-256 RSA_CERT_PATH</b></b><br></li>
+    <li>Remove last <b>X</b> bytes from the RSA certificate, where <b>X</b> equals the <b>RSA key size</b>. As an example, to remove the last 256 bytes from an RSA certificate, use the following command.<br><br><b><b>truncate -s -256 RSA_CERT_PATH</b></b><br></li>
 </ol>
 
 <h3 style="color: blue">Configure AEE to work with custom key</h3>
