@@ -44,7 +44,7 @@ android {
 
 dependencies {
     implementation 'com.github.sunilpaulmathew:CrashReporter:93ff4f0'
-    implementation 'com.github.sunilpaulmathew:sCommon:f741dad243'
+    implementation 'com.github.sunilpaulmathew:sCommon:947d85b85e'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'net.dongliu:apk-parser:2.6.10'
     implementation 'net.lingala.zip4j:zip4j:2.9.0'
