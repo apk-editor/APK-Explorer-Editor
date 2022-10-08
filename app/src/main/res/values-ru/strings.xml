@@ -179,4 +179,7 @@
     <string name="sdk_compile">"Компиляция SDK: %s"</string>
     <string name="sdk_minimum">"Минимальная версия SDK: %s"</string>
     <string name="signing_select_question">"Использовать выбранный файл как новый %s?"</string>
+    <string name="cancelling">"Отмена…"</string>
+    <string name="replace_file_question">"Заменить %s выбранным файлом?"</string>
+    <string name="update">"Обновлять"</string>
 </resources>

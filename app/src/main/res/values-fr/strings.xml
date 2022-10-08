@@ -178,4 +178,7 @@
     <string name="sdk_compile">"SDK de compilation : %s"</string>
     <string name="sdk_minimum">"SDK minimum : %s"</string>
     <string name="signing_select_question">"Utiliser le fichier sélectionné comme nouveau %s ?"</string>
+    <string name="cancelling">"Annulation"</string>
+    <string name="replace_file_question">"Remplacer %s avec le fichier sélectionné ?"</string>
+    <string name="update">"Mise à jour"</string>
 </resources>

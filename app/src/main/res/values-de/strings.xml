@@ -179,4 +179,7 @@
     <string name="sdk_compile">"Kompiliere SDK: %s"</string>
     <string name="sdk_minimum">"Niedrigste SDK: %s"</string>
     <string name="signing_select_question">"Ausgewählte Datei als %s speichern?"</string>
+    <string name="cancelling">"Abbrechen"</string>
+    <string name="replace_file_question">"%s mit der Ausgewählten Datei ersetzen?"</string>
+    <string name="update">"Aktualisieren"</string>
 </resources>
