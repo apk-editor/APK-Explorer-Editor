@@ -1,1 +1,1 @@
-Instalador/explorador/editor de APKS e App bundles de código livre para Android!
+Instalador/explorador/editor de APKS e App bundles de código aberto para Android!
