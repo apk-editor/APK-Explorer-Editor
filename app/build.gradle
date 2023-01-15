@@ -2,12 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion 31
+    compileSdkVersion 33
     buildToolsVersion "30.0.3"
+    namespace 'com.apk.editor'
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode 24
         versionName "v0.24"
         vectorDrawables.useSupportLibrary = true
@@ -36,16 +37,16 @@ android {
             dimension "release"
         }
     }
-
-    lintOptions {
+    lint {
         abortOnError false
     }
+
 }
 
 dependencies {
     implementation 'com.github.sunilpaulmathew:CrashReporter:93ff4f0'
     implementation 'com.github.sunilpaulmathew:sCommon:947d85b85e'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'net.dongliu:apk-parser:2.6.10'
     implementation 'net.lingala.zip4j:zip4j:2.9.0'
     implementation 'org.smali:baksmali:2.5.2'
