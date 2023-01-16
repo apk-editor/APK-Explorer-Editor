@@ -75,12 +75,9 @@
     <string name="privacy_policy_summary">"Olvassa el az Adatvédelmi Irányelveket"</string>
     <string name="private_key">"Privát Kulcs"</string>
     <string name="private_key_summary">"Válasszon egyéni privát kulcsot"</string>
-    <string name="rsa_template">"RSA sablon"</string>
-    <string name="rsa_template_summary">"Válasszon egyéni RSA sablont"</string>
     <string name="select">"Kiválaszt"</string>
     <string name="signing_custom">"Egyéni kulcs beállítása"</string>
     <string name="signing_default">"Aláírás az alapértelmezett kulccsal"</string>
-    <string name="signing_message">"Az AEE az Aefyr PseudoApkSigner könyvtárat használja az APK-k aláírására. Ezért az AEE-hez pk8 formátumú privát kulcsra, valamint ugyanabból a kulcsból létrehozott RSA sablonfájlra van szükség. Kattintson ide, ha többet szeretne megtudni a privát kulcs és az RSA sablon létrehozásáról."</string>
     <string name="signing_question">"Használja a '%s'-t újként"</string>
     <string name="signing_title">"APK Aláírás"</string>
     <string name="apk_installer">"AEE APK Telepítő"</string>

@@ -103,8 +103,6 @@
     <string name="resigned_apks_error">Building is aborted due to errors in assembling \'smali\' files. Please check the \'Details\' to find out more.</string>
     <string name="resigned_apks_path">Re-signed APK file(s) are generated.\n\nPath: \'%s\'</string>
     <string name="resigning_apks">Re-signing selected APK\'s…</string>
-    <string name="rsa_template">RSA Template</string>
-    <string name="rsa_template_summary">Select custom RSA template</string>
     <string name="save">Save</string>
     <string name="save_apk_message">Do you want to prepare a signed APK with the current modifications?</string>
     <string name="save_projects_question">Save project for future use?</string>
@@ -131,9 +129,9 @@
     <string name="signing">Signing \'%s\'…</string>
     <string name="signing_custom">Configure custom Key</string>
     <string name="signing_default">Sign with default Key</string>
-    <string name="signing_message">AEE uses PseudoApkSigner library by Aefyr to sign APK\'s. As a result, AEE requires a private key in pk8 format as well as an RSA template file created from the same key. Click here to read more about creating a private key and RSA template.</string>
     <string name="signing_question">Use \'%s\' as the new</string>
     <string name="signing_select_question">Use selected file as the new %s?</string>
+    <string name="signing_summary">In order to sign APK\'s with a custom key, AEE requires a private key in pk8 format and an X509Certificate exported from the same key. Click here to read more about creating a private key and  X509Certificate.</string>
     <string name="signing_title">APK Signing</string>
     <string name="size">Size: %s</string>
     <string name="sort_by">Sort Apps</string>
@@ -165,5 +163,7 @@
     <string name="user_interface">User Interface</string>
     <string name="warning">Warning</string>
     <string name="wrong_extension">Please select a file with %s extension.</string>
+    <string name="x509_certificate">X509Certificate</string>
+    <string name="x509_certificate_summary">Select custom X509Certificate</string>
     <string name="yes">Yes</string>
 </resources>

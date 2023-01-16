@@ -75,12 +75,9 @@
     <string name="privacy_policy_summary">"Đọc chính sách riêng tư"</string>
     <string name="private_key">"Mã riêng tư"</string>
     <string name="private_key_summary">"Chọn mã riêng tư tuỳ chỉnh"</string>
-    <string name="rsa_template">"Mẫu RSA"</string>
-    <string name="rsa_template_summary">"Chọn mẫu RSA tuỳ chỉnh"</string>
     <string name="select">"Chọn"</string>
     <string name="signing_custom">"Thiết lập mã tuỳ chỉnh"</string>
     <string name="signing_default">"Ký bằng mã mặc định"</string>
-    <string name="signing_message">"AEE sử dụng thư viện PseudoApkSigner bởi Aefyr để ký các APK. Do đó, AEE yêu cầu một mã riêng tư có định dạng pk8 cũng như là một tệp mẫu RSA được tạo từ mã đó. Nhấn vào đây để đọc thêm về việc tạo một mã riêng tư và mẫu RSA!"</string>
     <string name="signing_question">"Sử dụng '%s' là mới"</string>
     <string name="signing_title">"Ký APK"</string>
     <string name="apk_installer">"Trình cài đặt APK của AEE"</string>

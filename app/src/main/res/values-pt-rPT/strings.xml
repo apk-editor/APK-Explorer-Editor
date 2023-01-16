@@ -56,18 +56,18 @@
     <string name="unsupported_file">"Arquivo não suportado"</string>
     <string name="unsupported_file_arsc">"Você selecionou 'resources.arsc', o que infelizmente é impossível para o AEE ler.
 
-O que é resources.arsc?
-resources.arsc é um arquivo de recurso binário que contém os valores específicos da configuração de um aplicativo, como inteiros, booleanos e strings, bem como referências a recursos mais complexos, como layouts de UI.
+        O que é resources.arsc?
+        resources.arsc é um arquivo de recurso binário que contém os valores específicos da configuração de um aplicativo, como inteiros, booleanos e strings, bem como referências a recursos mais complexos, como layouts de UI.
 
-Como ler resources.arsc?
-Ferramentas como Apktool ou Android Asset Packaging Tool (AAPT) devem ser usadas para imprimir o conteúdo de resources.arsc em formato legível por humanos."</string>
+        Como ler resources.arsc?
+        Ferramentas como Apktool ou Android Asset Packaging Tool (AAPT) devem ser usadas para imprimir o conteúdo de resources.arsc em formato legível por humanos."</string>
     <string name="unsupported_file_dex">"Você selecionou um arquivo 'DEX' (.dex), que infelizmente é impossível para o AEE ler.
 
-O que é um arquivo DEX?
-Um arquivo Dex possui um código que é executado pelo Android Runtime. Cada APK deve ter um arquivo 'classes.dex', que faz referência a quaisquer classes ou métodos usados em um aplicativo. Essencialmente, qualquer Activity, Object ou Fragment usado na base do código será transformado em bytes dentro de um arquivo Dex que pode ser executado como um aplicativo Android.
+        O que é um arquivo DEX?
+        Um arquivo Dex possui um código que é executado pelo Android Runtime. Cada APK deve ter um arquivo 'classes.dex', que faz referência a quaisquer classes ou métodos usados em um aplicativo. Essencialmente, qualquer Activity, Object ou Fragment usado na base do código será transformado em bytes dentro de um arquivo Dex que pode ser executado como um aplicativo Android.
 
-Como ler um arquivo DEX?
-Um arquivo DEX deve ser convertido para o formato 'jar' e posteriormente para o arquivo 'Java' usando ferramentas como 'dex2jar' e 'JD-GUI'."</string>
+        Como ler um arquivo DEX?
+        Um arquivo DEX deve ser convertido para o formato 'jar' e posteriormente para o arquivo 'Java' usando ferramentas como 'dex2jar' e 'JD-GUI'."</string>
     <string name="user">"Usuário"</string>
     <string name="bundles">"Pacotes"</string>
     <string name="preparing_bundle">"Preparando pacote de aplicativo para compartilhar"</string>
@@ -75,12 +75,9 @@ Um arquivo DEX deve ser convertido para o formato 'jar' e posteriormente para o 
     <string name="privacy_policy_summary">"Ler Política de Privacidade"</string>
     <string name="private_key">"Chave Privada"</string>
     <string name="private_key_summary">"Selecionar Chave Privada Personalizada"</string>
-    <string name="rsa_template">"Modelo RSA"</string>
-    <string name="rsa_template_summary">"Selecionar Modelo RSA Personalizado"</string>
     <string name="select">"Selecionar"</string>
     <string name="signing_custom">"Configurar Chave Personalizada"</string>
     <string name="signing_default">"Assinar com Chave padrão"</string>
-    <string name="signing_message">"AEE usa a biblioteca PseudoApkSigner da Aefyr para assinar APKs. Como resultado, o AEE requer uma chave privada no formato pk8, bem como um arquivo de modelo RSA criado a partir da mesma chave. Clique aqui para ler mais sobre como criar uma chave privada e um modelo RSA!"</string>
     <string name="signing_question">"Usar '%s' como a nova"</string>
     <string name="signing_title">"Assinando APK"</string>
     <string name="apk_installer">"Instalador AEE APK"</string>

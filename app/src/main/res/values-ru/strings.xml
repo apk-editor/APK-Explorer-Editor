@@ -75,12 +75,9 @@
     <string name="privacy_policy_summary">"Прочитать политику конфиденциальности"</string>
     <string name="private_key">"Приватный ключ"</string>
     <string name="private_key_summary">"Выбрать произвольный личный ключ"</string>
-    <string name="rsa_template">"RSA Шаблон"</string>
-    <string name="rsa_template_summary">"Выбрать кастомный RSA шаблон"</string>
     <string name="select">"Выбрать"</string>
     <string name="signing_custom">"Сконфигурировать кастомный ключ"</string>
     <string name="signing_default">"Подписать дефолтным ключом"</string>
-    <string name="signing_message">"AEE использует библиотеку PseudoApkSigner от Aefyr для подписи APK. Это означает что для AEE требуется закрытый ключ в формате pk8, а также файл шаблона RSA, созданный на основе того же ключа. Нажмите здесь, чтобы узнать больше о создании закрытого ключа и шаблона RSA!"</string>
     <string name="signing_question">"Используйте \"% s\" в качестве нового"</string>
     <string name="signing_title">"Подпись APK"</string>
     <string name="apk_installer">"AEE Установщик APK"</string>

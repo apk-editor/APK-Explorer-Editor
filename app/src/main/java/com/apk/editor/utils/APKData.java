@@ -18,13 +18,11 @@ import androidx.core.content.FileProvider;
 import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.activities.APKTasksActivity;
-import com.apk.editor.utils.apkSigner.ApkSigner;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -91,23 +89,21 @@ public class APKData {
         try {
             checkAndPrepareSigningEnvironment(context);
 
-            ApkSigner apkSigner = new ApkSigner(new File(getSigningEnvironmentDir(context), "APKEditor"), new File(getSigningEnvironmentDir(context), "APKEditor.pk8"));
+            APKSigner apkSigner = new APKSigner(context);
             apkSigner.sign(apk, signedAPK);
         } catch (Exception ignored) {}
     }
 
     private static void checkAndPrepareSigningEnvironment(Context context) {
-        File signingEnvironment = getSigningEnvironmentDir(context);
-        File pastFile = new File(signingEnvironment, "APKEditor");
-        File privateKeyFile = new File(signingEnvironment, "APKEditor.pk8");
+        File privateKey = new File(getSigningEnvironmentDir(context), "APKEditor.pk8");
 
-        if (pastFile.exists() && privateKeyFile.exists())
+        if (privateKey.exists()) {
             return;
+        }
 
-        signingEnvironment.mkdir();
+        sUtils.mkdir(getSigningEnvironmentDir(context));
 
-        sUtils.copyAssetFile("APKEditor", pastFile, context);
-        sUtils.copyAssetFile("APKEditor.pk8", privateKeyFile, context);
+        sUtils.copyAssetFile("APKEditor.pk8", privateKey, context);
     }
 
     private static File getSigningEnvironmentDir(Context context) {
@@ -220,7 +216,7 @@ public class APKData {
                 if (mBuildDir.exists()) {
                     sUtils.delete(mBuildDir);
                 }
-                mBuildDir.mkdirs();
+                sUtils.mkdir(mBuildDir);
 
                 if (mTMPZip.exists()) {
                     sUtils.delete(mTMPZip);
@@ -241,7 +237,7 @@ public class APKData {
                     if (mParent.exists()) {
                         sUtils.delete(mParent);
                     }
-                    mParent.mkdirs();
+                    sUtils.mkdir(mParent);
                     for (String mSplits : splitApks(sPackageUtils.getSourceDir(Common.getAppID(), activity))) {
                         if (!new File(mSplits).getName().equals("base.apk")) {
                             Common.setStatus(activity.getString(R.string.signing, new File(mSplits).getName()));
@@ -328,7 +324,7 @@ public class APKData {
                         if (mParent.exists()) {
                             sUtils.delete(mParent);
                         }
-                        mParent.mkdirs();
+                        sUtils.mkdir(mParent);
                         for (String mSplits : Common.getAPKList()) {
                             signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), activity);
                         }
@@ -408,7 +404,7 @@ public class APKData {
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
                 if (!getExportAPKsPath(context).exists()) {
-                    getExportAPKsPath(context).mkdirs();
+                    sUtils.mkdir(getExportAPKsPath(context));
                 }
             }
 
@@ -418,9 +414,8 @@ public class APKData {
                     File mParent = new File(getExportAPKsPath(context) , packageName);
                     if (mParent.exists()) {
                         sUtils.delete(mParent);
-                    } else {
-                        mParent.mkdirs();
                     }
+                    sUtils.mkdir(mParent);
                     for (String mSplits : splitApks(sPackageUtils.getSourceDir(packageName, context))) {
                         if (mSplits.endsWith(".apk")) {
                             sUtils.copy(new File(mSplits), new File(mParent, new File(mSplits).getName()));
@@ -476,7 +471,7 @@ public class APKData {
             @Override
             public void doInBackground() {
                 if (mFile.exists()) {
-                    mFile.delete();
+                    sUtils.delete(mFile);
                 }
                 APKEditorUtils.zip(new File(path), mFile);
             }
@@ -521,7 +516,7 @@ public class APKData {
             @Override
             public void doInBackground() {
                 try {
-                    InputStream inputStream = new FileInputStream(file);
+                    FileInputStream inputStream = new FileInputStream(file);
                     ContentValues values = new ContentValues();
                     values.put(MediaStore.MediaColumns.DISPLAY_NAME, file.getName());
                     values.put(MediaStore.MediaColumns.MIME_TYPE, "*/*");

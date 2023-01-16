@@ -75,12 +75,9 @@
     <string name="privacy_policy_summary">"Przeczytaj politykę prywatności"</string>
     <string name="private_key">"Klucz prywatny"</string>
     <string name="private_key_summary">"Wybierz własny klucz prywatny"</string>
-    <string name="rsa_template">"Szablon RSA"</string>
-    <string name="rsa_template_summary">"Wybierz własny szablon RSA"</string>
     <string name="select">"Wybierz"</string>
     <string name="signing_custom">"Skonfiguruj własny klucz"</string>
     <string name="signing_default">"Podpisz domyślnym kluczem"</string>
-    <string name="signing_message">"AEE używa biblioteki PseudoApkSigner autorstwa Aefyr do podpisywania APK. W rezultacie, AEE wymaga klucza prywatnego w formacie pk8 oraz pliku szablonu RSA utworzonego z tego samego klucza. Dotknij tutaj, aby przeczytać więcej o tworzeniu klucza prywatnego i szablonu RSA!"</string>
     <string name="signing_question">"Użyj '%s' jako nowego"</string>
     <string name="signing_title">"Podpisywanie APK"</string>
     <string name="apk_installer">"AEE Instalator APK"</string>

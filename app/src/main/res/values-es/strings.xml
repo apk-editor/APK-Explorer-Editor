@@ -75,12 +75,9 @@
     <string name="privacy_policy_summary">"Lee la política de privacidad"</string>
     <string name="private_key">"Clave privada"</string>
     <string name="private_key_summary">"Selecciona una clave privada"</string>
-    <string name="rsa_template">"Modelo RSA"</string>
-    <string name="rsa_template_summary">"Selecciona un modelo RSA"</string>
     <string name="select">"Seleccionar"</string>
     <string name="signing_custom">"Configurar clave personalizada"</string>
     <string name="signing_default">"Firmar con la clave predeterminada"</string>
-    <string name="signing_message">"AEE usa la biblioteca PseudoApkSigner de Aefyr para firmar las APK. Como resultado, AEE requiere una clave privada en formato pk8 así como un archivo de plantilla RSA creado a partir de la misma clave. Haga clic aquí para leer más sobre la creación de una clave privada y una plantilla RSA."</string>
     <string name="signing_question">"Usar '%s' como nueva clave"</string>
     <string name="signing_title">"Firma de APK"</string>
     <string name="apk_installer">"Instalador AEE de APK"</string>

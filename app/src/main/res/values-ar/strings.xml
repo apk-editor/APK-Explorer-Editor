@@ -75,12 +75,9 @@
     <string name="privacy_policy_summary">"إقرأ سياسة الخصوصية"</string>
     <string name="private_key">"مفتاح خاص"</string>
     <string name="private_key_summary">"اختر  مفتاحاً خاصاً محدداً"</string>
-    <string name="rsa_template">"قالب RSA"</string>
-    <string name="rsa_template_summary">"اختر قالب RSA محدداً"</string>
     <string name="select">"اختر"</string>
     <string name="signing_custom">"تكوين مفتاح محدد"</string>
     <string name="signing_default">"أشّر بالمفتاح الافتراضي"</string>
-    <string name="signing_message">"يستخدم AEE مكتبة PseudoApkSigner من قبل  Aefyr لتأشير APK. ونتيجة لذلك، يتطلب AEE مفتاح خاص بتنسيق pk8 بالإضافة إلى ملف قالب RSA تم إنشاؤه من نفس المفتاح. انقر هنا لقراءة المزيد عن إنشاء مفتاح خاص و قالب RSA!"</string>
     <string name="signing_question">"استخدم '%s' كجديد"</string>
     <string name="signing_title">"أشّر APK"</string>
     <string name="apk_installer">"مثبت AEE APK"</string>

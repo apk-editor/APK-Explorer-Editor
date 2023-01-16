@@ -75,12 +75,9 @@
     <string name="privacy_policy_summary">"Přečtěte si zásady ochrany osobních údajů"</string>
     <string name="private_key">"Soukromý klíč"</string>
     <string name="private_key_summary">"Vyberte vlastní soukromý klíč"</string>
-    <string name="rsa_template">"Šablona RSA"</string>
-    <string name="rsa_template_summary">"Vyberte vlastní šablonu RSA"</string>
     <string name="select">"Vybrat"</string>
     <string name="signing_custom">"Nakonfigurujte vlastní klíč"</string>
     <string name="signing_default">"Podepsat pomocí výchozího klíče"</string>
-    <string name="signing_message">"AEE používá k podepisování APK knihovnu PseudoApkSigner od Aefyra. Výsledkem je, že AEE vyžaduje soukromý klíč ve formátu pk8 a také soubor šablony RSA vytvořený ze stejného klíče. Kliknutím sem se dozvíte více o vytváření soukromého klíče a šablony RSA!"</string>
     <string name="signing_question">"Jako nový použijte '%s'"</string>
     <string name="signing_title">"Podepisování APK"</string>
     <string name="apk_installer">"Instalační program APK AEE"</string>

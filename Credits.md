@@ -3,12 +3,13 @@ APK Explorer & Editor (AEE) is, and as always, an open-source project which is r
 
 ## Code
 * [Grarak](https://github.com/Grarak/) - Kernel Adiutor
-* [Aefyr](https://github.com/Aefyr) - PseudoApkSigner & SAI
+* [Aefyr](https://github.com/Aefyr) - SAI
 * [Hsiafan](https://github.com/hsiafan/) - APK parser
 * [Srikanth Reddy Lingala](https://github.com/srikanth-lingala) - zip4j
 * [Nitin Kalra](https://github.com/nkalra0123/) - Split App Share & Install
 * [Connor Tumbleson](https://github.com/iBotPeaches/Apktool/) - Apktool
 * [Ben Gruver](https://github.com/JesusFreke/smali/) - smali/baksmali
+* [Google](https://android.googlesource.com/platform/tools/apksig) - apksig
 * [sunilpaulmathew](https://github.com/SmartPack/PackageManager/) - Package Manager
 
 ## Icon

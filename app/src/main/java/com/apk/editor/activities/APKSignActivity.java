@@ -1,5 +1,6 @@
 package com.apk.editor.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,9 +20,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
@@ -30,8 +28,8 @@ import in.sunilpaulmathew.sCommon.Utils.sUtils;
  */
 public class APKSignActivity extends AppCompatActivity {
 
-    private AppCompatImageButton mClearKey, mClearRSA;
-    private MaterialTextView mKeySummary, mRSASummary;
+    private AppCompatImageButton mClearKey, mClearCert;
+    private MaterialTextView mKeySummary, mCertSummary;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,12 +38,12 @@ public class APKSignActivity extends AppCompatActivity {
 
         AppCompatImageButton mBack = findViewById(R.id.back);
         mClearKey = findViewById(R.id.clear_key);
-        mClearRSA = findViewById(R.id.clear_rsa);
+        mClearCert = findViewById(R.id.clear_cert);
         MaterialTextView mInfo = findViewById(R.id.info);
         mKeySummary = findViewById(R.id.key_summary);
-        mRSASummary = findViewById(R.id.rsa_summary);
+        mCertSummary = findViewById(R.id.cert_summary);
         FrameLayout mKey = findViewById(R.id.private_key);
-        FrameLayout mRSA = findViewById(R.id.rsa);
+        FrameLayout mCert = findViewById(R.id.cert);
 
         mInfo.setOnClickListener(v -> {
             Intent documentation = new Intent(this, DocumentationActivity.class);
@@ -68,7 +66,7 @@ public class APKSignActivity extends AppCompatActivity {
             }
         });
 
-        mRSA.setOnClickListener(v -> {
+        mCert.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= 29) {
                 Intent installer = new Intent(Intent.ACTION_GET_CONTENT);
                 installer.setType("*/*");
@@ -100,33 +98,22 @@ public class APKSignActivity extends AppCompatActivity {
             mClearKey.setVisibility(View.GONE);
         }
 
-        if (sUtils.getString("RSATemplate", null, this) != null) {
-            mRSASummary.setText(sUtils.getString("RSATemplate", null, this));
-            mClearRSA.setColorFilter(Color.RED);
-            mClearRSA.setVisibility(View.VISIBLE);
-            mClearRSA.setOnClickListener(v -> {
-                sUtils.saveString("RSATemplate", null, this);
-                new File(getFilesDir(), "signing/APKEditor").delete();
-                mRSASummary.setText(getString(R.string.rsa_template_summary));
-                mClearRSA.setVisibility(View.GONE);
+        if (sUtils.getString("X509Certificate", null, this) != null) {
+            mCertSummary.setText(sUtils.getString("X509Certificate", null, this));
+            mClearCert.setColorFilter(Color.RED);
+            mClearCert.setVisibility(View.VISIBLE);
+            mClearCert.setOnClickListener(v -> {
+                sUtils.saveString("X509Certificate", null, this);
+                new File(getFilesDir(), "signing/APKEditorCert").delete();
+                mCertSummary.setText(getString(R.string.x509_certificate_summary));
+                mClearCert.setVisibility(View.GONE);
             });
         } else {
-            mClearRSA.setVisibility(View.GONE);
+            mClearCert.setVisibility(View.GONE);
         }
     }
 
-    private void writeFile(File file, Uri uri) {
-        try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
-            InputStream inputStream = getContentResolver().openInputStream(uri);
-            int read;
-            byte[] bytes = new byte[8192];
-            while ((read = inputStream.read(bytes)) != -1) {
-                outputStream.write(bytes, 0, read);
-            }
-        } catch (IOException ignored) {}
-        setStatus();
-    }
-
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -136,18 +123,18 @@ public class APKSignActivity extends AppCompatActivity {
 
             if (uri != null) {
                 new MaterialAlertDialogBuilder(this)
-                        .setMessage(getString(R.string.signing_select_question, requestCode == 0 ? getString(R.string.private_key) : getString(R.string.rsa_template)))
+                        .setMessage(getString(R.string.signing_select_question, requestCode == 0 ? getString(R.string.private_key) : getString(R.string.x509_certificate)))
                         .setNegativeButton(R.string.cancel, (dialog, id) -> {
                         })
                         .setPositiveButton(R.string.select, (dialog, id) -> {
                             if (requestCode == 0) {
                                 sUtils.saveString("PrivateKey", new File(getFilesDir(), "signing/APKEditor.pk8").getAbsolutePath(), this);
-                                writeFile(new File(getFilesDir(), "signing/APKEditor.pk8"), uri);
+                                sUtils.copy(uri, new File(getFilesDir(), "signing/APKEditor.pk8"), this);
                             } else if (requestCode == 1) {
-                                sUtils.saveString("RSATemplate", new File(getFilesDir(), "signing/APKEditor").getAbsolutePath(), this);
-                                writeFile(new File(getFilesDir(), "signing/APKEditor"), uri);
+                                sUtils.saveString("X509Certificate", new File(getFilesDir(), "signing/APKEditorCert").getAbsolutePath(), this);
+                                sUtils.copy(uri, new File(getFilesDir(), "signing/APKEditorCert"), this);
                             }
-
+                            setStatus();
                         }).show();
             }
         }

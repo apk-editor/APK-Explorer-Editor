@@ -67,8 +67,6 @@
     <string name="user">"Kullanıcı"</string>
     <string name="privacy_policy">"Gizlilik İlkeleri"</string>
     <string name="privacy_policy_summary">"Gizlilik İlkelerini Oku"</string>
-    <string name="rsa_template">"RSA kalıbı"</string>
-    <string name="rsa_template_summary">"Özel RSA kalıbı seç"</string>
     <string name="select">"Seç"</string>
     <string name="signing_question">"'%s'i yeni olarak kullan"</string>
     <string name="signing_title">"APK İmzalama"</string>

@@ -63,12 +63,9 @@
     <string name="privacy_policy_summary">"Baca Kebijakan Pribadi"</string>
     <string name="private_key">"Kunci Pribadi"</string>
     <string name="private_key_summary">"Pilih kustom Kunci Pribadi"</string>
-    <string name="rsa_template">"Templat RSA"</string>
-    <string name="rsa_template_summary">"Pilih kustom templat RSA"</string>
     <string name="select">"Pilih"</string>
     <string name="signing_custom">"Konfigurasikan Kunci khusus"</string>
     <string name="signing_default">"Sign dengan kunci default"</string>
-    <string name="signing_message">"AEE menggunakan pustaka PseudoApkSigner oleh Aefyr untuk menandatangani APK.  Akibatnya, AEE memerlukan kunci pribadi dalam format pk8 serta file template RSA yang dibuat dari kunci yang sama.  Klik di sini untuk membaca lebih lanjut tentang membuat kunci pribadi dan template RSA!"</string>
     <string name="signing_question">"Gunakan '%s' sebagai yang baru"</string>
     <string name="signing_title">"Signing APK"</string>
     <string name="apk_installer">"AEE Pemasang APK"</string>

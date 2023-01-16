@@ -85,7 +85,7 @@ public class FilePickerActivity extends AppCompatActivity {
                         .setMessage(Common.getFileToReplace() != null ? getString(R.string.replace_question, new File(Common.getFileToReplace()).getName()) + " " +
                                 new File(APKExplorer.getData(getFilesList(), true, this).get(position)).getName() + "?" : getString(R.string.signing_question,
                                 new File(APKExplorer.getData(getFilesList(), true, this).get(position)).getName()) + " " + getString(Common.hasPrivateKey() ?
-                                R.string.private_key : R.string.rsa_template))
+                                R.string.private_key : R.string.x509_certificate))
                         .setNegativeButton(R.string.cancel, (dialog, id) -> {
                         })
                         .setPositiveButton(Common.getFileToReplace() != null ? R.string.replace : R.string.select, (dialog, id) -> {
@@ -99,7 +99,7 @@ public class FilePickerActivity extends AppCompatActivity {
                                     sUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(getFilesDir(), "signing/APKEditor.pk8"));
                                     Common.setPrivateKeyStatus(false);
                                 } else {
-                                    sUtils.saveString("RSATemplate", APKExplorer.getData(getFilesList(), true, this).get(position), this);
+                                    sUtils.saveString("X509Certificate", APKExplorer.getData(getFilesList(), true, this).get(position), this);
                                     sUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(getFilesDir(), "signing/APKEditor"));
                                     Common.setRSATemplateStatus(false);
                                 }

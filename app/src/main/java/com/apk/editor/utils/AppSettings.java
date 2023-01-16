@@ -124,8 +124,9 @@ public class AppSettings {
         mData.add(new sSerializableItems(null, "Willi Ye", "Kernel Adiutor", "https://github.com/Grarak/KernelAdiutor"));
         mData.add(new sSerializableItems(null, "Hsiafan", "APK parser", "https://github.com/hsiafan/apk-parser"));
         mData.add(new sSerializableItems(null, "Srikanth Reddy Lingala", "Zip4j", "https://github.com/srikanth-lingala/zip4j"));
+        mData.add(new sSerializableItems(null, "Aefyr", "SAI", "https://github.com/Aefyr/SAI"));
         if (APKEditorUtils.isFullVersion(context)) {
-            mData.add(new sSerializableItems(null, "Aefyr", "PseudoApkSigner", "https://github.com/Aefyr/PseudoApkSigner"));
+            mData.add(new sSerializableItems(null, "Google", "apksig", "https://android.googlesource.com/platform/tools/apksig"));
         }
         mData.add(new sSerializableItems(null, "Connor Tumbleson", "Apktool", "https://github.com/iBotPeaches/Apktool/"));
         mData.add(new sSerializableItems(null, "Ben Gruver", "smali/baksmali", "https://github.com/JesusFreke/smali/"));
@@ -583,9 +584,9 @@ public class AppSettings {
                 if (itemPosition == 0) {
                     if (isCustomKey(context)) {
                         sUtils.saveString("PrivateKey", null, context);
-                        new File(context.getFilesDir(), "signing/APKEditor.pk8").delete();
-                        sUtils.saveString("RSATemplate", null, context);
-                        new File(context.getFilesDir(), "signing/APKEditor").delete();
+                        sUtils.delete(new File(context.getFilesDir(), "signing/APKEditor.pk8"));
+                        sUtils.saveString("X509Certificate", null, context);
+                        sUtils.delete(new File(context.getFilesDir(), "signing/APKEditorCert"));
                         getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_key, context), context.getString(R.string.sign_apk_with), getAPKSign(context), null));
                         adapter.notifyItemChanged(position);
                     }
@@ -611,7 +612,9 @@ public class AppSettings {
                     sUtils.delete(activity.getFilesDir());
                     if (APKEditorUtils.isFullVersion(activity) && isCustomKey(activity)) {
                         sUtils.saveString("PrivateKey", null, activity);
-                        sUtils.saveString("RSATemplate", null, activity);
+                        sUtils.delete(new File(activity.getFilesDir(), "signing/APKEditor.pk8"));
+                        sUtils.saveString("X509Certificate", null, activity);
+                        sUtils.delete(new File(activity.getFilesDir(), "signing/APKEditorCert"));
                     }
                     activity.finish();
                 }).show();
@@ -660,7 +663,7 @@ public class AppSettings {
 
     private static boolean isCustomKey(Context context) {
         return sUtils.getString("PrivateKey", null, context) != null &&
-                sUtils.getString("RSATemplate", null, context) != null;
+                sUtils.getString("X509Certificate", null, context) != null;
     }
 
     public static boolean isTextEditingEnabled(Context context) {
