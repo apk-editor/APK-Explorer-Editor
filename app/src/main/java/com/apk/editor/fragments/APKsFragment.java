@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -195,7 +197,7 @@ public class APKsFragment extends Fragment {
             installer.setType("*/*");
             installer.addCategory(Intent.CATEGORY_OPENABLE);
             installer.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            startActivityForResult(installer, 0);
+            installerFilePicker.launch(installer);
         } else {
             Common.getAPKList().clear();
             Common.setPath(Environment.getExternalStorageDirectory().toString());
@@ -303,6 +305,7 @@ public class APKsFragment extends Fragment {
                         if (Objects.equals(mExtension, "apk")) {
                             Common.getAPKList().add(mFile.getAbsolutePath());
                         }
+                        inputStream.close();
                     } catch (IOException ignored) {
                     }
                 }
@@ -316,20 +319,20 @@ public class APKsFragment extends Fragment {
         };
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    ActivityResultLauncher<Intent> installerFilePicker = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
 
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
-            Uri uriFile = data.getData();
-
-            if (data.getClipData() != null) {
-                handleMultipleAPKs(data.getClipData(), requireActivity()).execute();
-            } else if (uriFile != null) {
-                handleSingleInstallationEvent(uriFile, requireActivity()).execute();
+                    if (data.getClipData() != null) {
+                        handleMultipleAPKs(data.getClipData(), requireActivity()).execute();
+                    } else if (data.getData() != null) {
+                        handleSingleInstallationEvent(data.getData(), requireActivity()).execute();
+                    }
+                }
             }
-        }
-    }
+    );
 
     @Override
     public void onResume() {

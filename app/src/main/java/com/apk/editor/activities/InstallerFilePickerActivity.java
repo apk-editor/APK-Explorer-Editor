@@ -172,6 +172,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1 && Build.VERSION.SDK_INT < 30 && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             this.recreate();

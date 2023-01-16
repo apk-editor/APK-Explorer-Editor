@@ -107,6 +107,7 @@ public class ExternalAPKData {
         return null;
     }
 
+    @SuppressLint("StringFormatInvalid")
     private static String sdkToAndroidVersion(String sdkVersion, Context context) {
         int sdk = Integer.parseInt(sdkVersion);
         switch (sdk) {
@@ -189,6 +190,7 @@ public class ExternalAPKData {
         mManifest = manifest;
     }
 
+    @SuppressLint("StringFormatInvalid")
     public static void setMinSDKVersion(String minSDKVersion, Context context) {
         mMinSDKVersion = context.getString(R.string.sdk_minimum, sdkToAndroidVersion(minSDKVersion, context));
     }
@@ -197,6 +199,7 @@ public class ExternalAPKData {
         mPermissions = permissions;
     }
 
+    @SuppressLint("StringFormatInvalid")
     public static void setSDKVersion(String sdkVersion, Context context) {
         mSDKVersion = context.getString(R.string.sdk_compile, sdkToAndroidVersion(sdkVersion, context));
     }

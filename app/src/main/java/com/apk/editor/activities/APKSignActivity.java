@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -54,11 +56,9 @@ public class APKSignActivity extends AppCompatActivity {
 
         mKey.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= 29) {
-                Intent installer = new Intent(Intent.ACTION_GET_CONTENT);
-                installer.setType("*/*");
-                installer.addCategory(Intent.CATEGORY_OPENABLE);
-                installer.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
-                startActivityForResult(installer, 0);
+                Intent keyPicker = new Intent(Intent.ACTION_GET_CONTENT);
+                keyPicker.setType("*/*");
+                keyPickerResultLauncher.launch(keyPicker);
             } else {
                 Common.setPrivateKeyStatus(true);
                 Intent filePicker = new Intent(this, FilePickerActivity.class);
@@ -68,11 +68,9 @@ public class APKSignActivity extends AppCompatActivity {
 
         mCert.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= 29) {
-                Intent installer = new Intent(Intent.ACTION_GET_CONTENT);
-                installer.setType("*/*");
-                installer.addCategory(Intent.CATEGORY_OPENABLE);
-                installer.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
-                startActivityForResult(installer, 1);
+                Intent certPicker = new Intent(Intent.ACTION_GET_CONTENT);
+                certPicker.setType("*/*");
+                certPickerResultLauncher.launch(certPicker);
             } else {
                 Common.setRSATemplateStatus(true);
                 Intent filePicker = new Intent(this, FilePickerActivity.class);
@@ -90,7 +88,7 @@ public class APKSignActivity extends AppCompatActivity {
             mClearKey.setVisibility(View.VISIBLE);
             mClearKey.setOnClickListener(v -> {
                 sUtils.saveString("PrivateKey", null, this);
-                new File(getFilesDir(), "signing/APKEditor.pk8").delete();
+                sUtils.delete(new File(getFilesDir(), "signing/APKEditor.pk8"));
                 mKeySummary.setText(getString(R.string.private_key_summary));
                 mClearKey.setVisibility(View.GONE);
             });
@@ -104,7 +102,7 @@ public class APKSignActivity extends AppCompatActivity {
             mClearCert.setVisibility(View.VISIBLE);
             mClearCert.setOnClickListener(v -> {
                 sUtils.saveString("X509Certificate", null, this);
-                new File(getFilesDir(), "signing/APKEditorCert").delete();
+                sUtils.delete(new File(getFilesDir(), "signing/APKEditorCert"));
                 mCertSummary.setText(getString(R.string.x509_certificate_summary));
                 mClearCert.setVisibility(View.GONE);
             });
@@ -114,31 +112,49 @@ public class APKSignActivity extends AppCompatActivity {
     }
 
     @SuppressLint("StringFormatInvalid")
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    ActivityResultLauncher<Intent> certPickerResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
+                    Uri uriFile = data.getData();
 
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            Uri uri = data.getData();
-
-            if (uri != null) {
-                new MaterialAlertDialogBuilder(this)
-                        .setMessage(getString(R.string.signing_select_question, requestCode == 0 ? getString(R.string.private_key) : getString(R.string.x509_certificate)))
-                        .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                        })
-                        .setPositiveButton(R.string.select, (dialog, id) -> {
-                            if (requestCode == 0) {
-                                sUtils.saveString("PrivateKey", new File(getFilesDir(), "signing/APKEditor.pk8").getAbsolutePath(), this);
-                                sUtils.copy(uri, new File(getFilesDir(), "signing/APKEditor.pk8"), this);
-                            } else if (requestCode == 1) {
-                                sUtils.saveString("X509Certificate", new File(getFilesDir(), "signing/APKEditorCert").getAbsolutePath(), this);
-                                sUtils.copy(uri, new File(getFilesDir(), "signing/APKEditorCert"), this);
-                            }
-                            setStatus();
-                        }).show();
+                    if (uriFile != null) {
+                        new MaterialAlertDialogBuilder(this)
+                                .setMessage(getString(R.string.signing_select_question, getString(R.string.x509_certificate)))
+                                .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                                })
+                                .setPositiveButton(R.string.select, (dialog, id) -> {
+                                    sUtils.saveString("X509Certificate", new File(getFilesDir(), "signing/APKEditorCert").getAbsolutePath(), this);
+                                    sUtils.copy(uriFile, new File(getFilesDir(), "signing/APKEditorCert"), this);
+                                    setStatus();
+                                }).show();
+                    }
+                }
             }
-        }
-    }
+    );
+
+    ActivityResultLauncher<Intent> keyPickerResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
+                    Uri uriFile = data.getData();
+
+                    if (uriFile != null) {
+                        new MaterialAlertDialogBuilder(this)
+                                .setMessage(getString(R.string.signing_select_question, getString(R.string.private_key)))
+                                .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                                })
+                                .setPositiveButton(R.string.select, (dialog, id) -> {
+                                    sUtils.saveString("PrivateKey", new File(getFilesDir(), "signing/APKEditor.pk8").getAbsolutePath(), this);
+                                    sUtils.copy(uriFile, new File(getFilesDir(), "signing/APKEditor.pk8"), this);
+                                    setStatus();
+                                }).show();
+                    }
+                }
+            }
+    );
 
     @Override
     public void onResume() {

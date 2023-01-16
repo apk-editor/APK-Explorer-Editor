@@ -5,11 +5,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +29,7 @@ import com.google.android.material.textview.MaterialTextView;
 import java.io.File;
 import java.text.DateFormat;
 import java.util.List;
+import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
 import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
@@ -97,9 +101,23 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                                                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                                         },(Activity) v.getContext());
                             } else {
-                                APKEditorUtils.dialogEditText(null,
-                                        (dialogInterface, i) -> {
-                                        }, text -> {
+                                LinearLayout layout = new LinearLayout(v.getContext());
+                                layout.setPadding(75, 75, 75, 75);
+
+                                AppCompatEditText editText = new AppCompatEditText(v.getContext());
+                                editText.setGravity(Gravity.CENTER);
+                                editText.setLayoutParams(new LinearLayout.LayoutParams(
+                                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                                editText.setSingleLine(true);
+
+                                layout.addView(editText);
+
+                                new MaterialAlertDialogBuilder(v.getContext())
+                                        .setView(layout)
+                                        .setNegativeButton(R.string.cancel, (d, i) -> {
+                                        })
+                                        .setPositiveButton(R.string.ok, (dialog1, i) -> {
+                                            String text = Objects.requireNonNull(editText.getText()).toString().trim();
                                             if (text.isEmpty()) {
                                                 sUtils.snackBar(v, v.getContext().getString(R.string.name_empty)).show();
                                                 return;
@@ -111,15 +129,14 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                                             if (sUtils.exist(new File(Projects.getExportPath(v.getContext()), text))) {
                                                 new MaterialAlertDialogBuilder(v.getContext())
                                                         .setMessage(v.getContext().getString(R.string.export_project_replace, text))
-                                                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                                                        .setNegativeButton(R.string.cancel, (dialog2, ii) -> {
                                                         })
-                                                        .setPositiveButton(R.string.replace, (dialogInterface, i) -> Projects.exportProject(new File(data.get(position)), mName, v.getContext()))
+                                                        .setPositiveButton(R.string.replace, (dialog2, iii) -> Projects.exportProject(new File(data.get(position)), mName, v.getContext()))
                                                         .show();
                                             } else {
                                                 Projects.exportProject(new File(data.get(position)), mName, v.getContext());
                                             }
-                                        }, v.getContext()).setOnDismissListener(dialogInterface -> {
-                                }).show();
+                                        }).show();
                             }
                         }).show();
                 return false;

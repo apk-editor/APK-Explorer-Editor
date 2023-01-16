@@ -51,48 +51,30 @@
 
         <activity android:name=".activities.APKSignActivity"
             android:exported="false" />
+
         <activity android:name=".activities.APKTasksActivity"
             android:exported="false" />
+
         <activity android:name=".activities.DocumentationActivity"
             android:exported="false" />
+
         <activity android:name=".activities.FilePickerActivity"
             android:exported="false" />
 
         <activity android:name=".activities.ImageViewActivity"
-            android:label="@string/image_viewer"
-            tools:ignore="AppLinkUrlError"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="image/*" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
 
         <activity android:name=".activities.InstallerActivity"
             android:exported="false" />
+
         <activity android:name=".activities.InstallerFilePickerActivity"
             android:exported="false" />
+
         <activity android:name=".activities.SettingsActivity"
             android:exported="false" />
 
         <activity android:name=".activities.TextEditorActivity"
-            android:label="@string/text_editor"
-            tools:ignore="AppLinkUrlError"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/ecmascript" />
-                <data android:mimeType="application/javascript" />
-                <data android:mimeType="application/json" />
-                <data android:mimeType="application/typescript" />
-                <data android:mimeType="application/x-sh" />
-                <data android:mimeType="application/x-shellscript" />
-                <data android:mimeType="application/xml" />
-                <data android:mimeType="text/*" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
 
         <activity android:name=".activities.TextViewActivity"
             android:exported="false" />

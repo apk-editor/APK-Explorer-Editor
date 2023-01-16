@@ -3,6 +3,7 @@ package com.apk.editor.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -102,7 +105,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), APKExplorer.getSpanCount(requireActivity())));
 
         try {
-            mRecycleViewAdapter = new APKExplorerAdapter(APKExplorer.getData(getFilesList(), true, requireActivity()));
+            mRecycleViewAdapter = new APKExplorerAdapter(APKExplorer.getData(getFilesList(), true, requireActivity()), replaceFile);
             mRecyclerView.setAdapter(mRecycleViewAdapter);
         } catch (NullPointerException ignored) {
             mRecyclerView.setVisibility(View.GONE);
@@ -230,7 +233,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
 
             @Override
             public void doInBackground() {
-                mRecycleViewAdapter = new APKExplorerAdapter(APKExplorer.getData(getFilesList(), true, activity));
+                mRecycleViewAdapter = new APKExplorerAdapter(APKExplorer.getData(getFilesList(), true, activity), replaceFile);
             }
 
             @Override
@@ -246,5 +249,28 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             }
         }.execute();
     }
+
+    ActivityResultLauncher<Intent> replaceFile = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
+                    Uri uriFile = data.getData();
+
+                    if (uriFile != null) {
+                        new MaterialAlertDialogBuilder(requireActivity())
+                                .setIcon(R.mipmap.ic_launcher)
+                                .setTitle(R.string.app_name)
+                                .setMessage(getString(R.string.replace_file_question, new File(Common.getFileToReplace()).getName()))
+                                .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                                })
+                                .setPositiveButton(R.string.replace, (dialog, id) -> {
+                                    sUtils.copy(uriFile, new File(Common.getFileToReplace()), requireActivity());
+                                    reload(requireActivity());
+                                }).show();
+                    }
+                }
+            }
+    );
     
 }

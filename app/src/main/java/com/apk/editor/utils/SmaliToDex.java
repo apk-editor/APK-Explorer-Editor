@@ -18,7 +18,6 @@ import org.jf.smali.smaliTreeWalker;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ public class SmaliToDex {
     @SuppressLint("StringFormatInvalid")
     private void buildFile(File file, DexBuilder dexBuilder) {
         try {
-            InputStream inStream = new FileInputStream(file);
+            FileInputStream inStream = new FileInputStream(file);
             if (!assembleSmaliFile(file, dexBuilder, mApiLevel)) {
                 Common.setStatus(mContext.getString(R.string.assembling, file.getName()) + " : " + mContext.getString(R.string.failed));
                 Common.setError(Common.getError() + 1);

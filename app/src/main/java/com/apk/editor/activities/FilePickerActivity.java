@@ -93,7 +93,7 @@ public class FilePickerActivity extends AppCompatActivity {
                                 sUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(Common.getFileToReplace()));
                                 Common.setFileToReplace(null);
                             }  else {
-                                new File(getFilesDir(), "signing").mkdirs();
+                                sUtils.mkdir(new File(getFilesDir(), "signing"));
                                 if (Common.hasPrivateKey()) {
                                     sUtils.saveString("PrivateKey", APKExplorer.getData(getFilesList(), true, this).get(position), this);
                                     sUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(getFilesDir(), "signing/APKEditor.pk8"));
@@ -164,6 +164,7 @@ public class FilePickerActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 0 && Build.VERSION.SDK_INT < 30 && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             this.recreate();

@@ -1,5 +1,6 @@
 package com.apk.editor.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -253,19 +254,20 @@ public class APKExplorer {
                 }
             }
 
+            @SuppressLint("StringFormatInvalid")
             @Override
             public void doInBackground() {
                 if (!mExplorePath.exists()) {
-                    mExplorePath.mkdirs();
+                    sUtils.mkdir(mExplorePath);
                     APKEditorUtils.unzip(sPackageUtils.getSourceDir(packageName, context), mExplorePath.getAbsolutePath());
                     // Decompile dex file(s)
                     for (File files : Objects.requireNonNull(mExplorePath.listFiles())) {
                         if (files.getName().startsWith("classes") && files.getName().endsWith(".dex") && !Common.isCancelled()) {
-                            mBackUpPath.mkdirs();
+                            sUtils.mkdir(mBackUpPath);
                             sUtils.copy(files, new File(mBackUpPath, files.getName()));
                             sUtils.delete(files);
                             File mDexExtractPath = new File(mExplorePath, files.getName());
-                            mDexExtractPath.mkdirs();
+                            sUtils.mkdir(mDexExtractPath);
                             Common.setStatus(context.getString(R.string.decompiling, files.getName()));
                             new DexToSmali(false, new File(sPackageUtils.getSourceDir(Common.getAppID(), context)), mDexExtractPath, 0, files.getName()).execute();
                         }

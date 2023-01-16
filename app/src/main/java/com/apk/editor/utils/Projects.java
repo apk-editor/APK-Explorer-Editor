@@ -1,5 +1,6 @@
 package com.apk.editor.utils;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -135,6 +136,7 @@ public class Projects {
         new sExecutor() {
             private ProgressDialog mProgressDialog;
 
+            @SuppressLint("StringFormatInvalid")
             @Override
             public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(context);

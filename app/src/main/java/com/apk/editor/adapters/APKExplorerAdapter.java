@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.PopupMenu;
@@ -36,12 +37,14 @@ import in.sunilpaulmathew.sCommon.Utils.sUtils;
  */
 public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.ViewHolder> {
 
+    private static ActivityResultLauncher<Intent> mActivityResultLauncher;
     private static ClickListener clickListener;
 
     private static List<String> data;
 
-    public APKExplorerAdapter(List<String> data) {
+    public APKExplorerAdapter(List<String> data, ActivityResultLauncher<Intent> activityResultLauncher) {
         APKExplorerAdapter.data = data;
+        APKExplorerAdapter.mActivityResultLauncher = activityResultLauncher;
     }
 
     @NonNull
@@ -128,7 +131,9 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                     case 2:
                         Common.setFileToReplace(data.get(position));
                         if (Build.VERSION.SDK_INT >= 29) {
-                            sUtils.filePickerIntent(false, 0, null, (Activity) v.getContext());
+                            Intent replace = new Intent(Intent.ACTION_GET_CONTENT);
+                            replace.setType("*/*");
+                            mActivityResultLauncher.launch(replace);
                         } else {
                             Intent filePicker = new Intent(v.getContext(), FilePickerActivity.class);
                             v.getContext().startActivity(filePicker);
