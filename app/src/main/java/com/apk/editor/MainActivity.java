@@ -104,15 +104,15 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (Common.isBusy()) return;
         if (Common.getSearchWord() != null) {
-            if (Common.getAPKsSearchWord().getVisibility() == View.VISIBLE) {
+            if (Common.getAPKsSearchWord() != null && Common.getAPKsSearchWord().getVisibility() == View.VISIBLE) {
                 Common.getAPKsSearchWord().setVisibility(View.GONE);
                 Common.getAPKsTitle().setVisibility(View.VISIBLE);
                 Common.getAPKsSearchWord().setText(null);
-            } else if (Common.getAppsSearchWord().getVisibility() == View.VISIBLE) {
+            } else if (Common.getAppsSearchWord() != null && Common.getAppsSearchWord().getVisibility() == View.VISIBLE) {
                 Common.getAppsSearchWord().setVisibility(View.GONE);
                 Common.getAppsTitle().setVisibility(View.VISIBLE);
                 Common.getAppsSearchWord().setText(null);
-            } else if (Common.getProjectsSearchWord().getVisibility() == View.VISIBLE) {
+            } else if (Common.getProjectsSearchWord() != null && Common.getProjectsSearchWord().getVisibility() == View.VISIBLE) {
                 Common.getProjectsSearchWord().setVisibility(View.GONE);
                 Common.getProjectsTitle().setVisibility(View.VISIBLE);
                 Common.getProjectsSearchWord().setText(null);
