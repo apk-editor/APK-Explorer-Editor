@@ -5,21 +5,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.card.MaterialCardView;
@@ -31,7 +28,6 @@ import java.text.DateFormat;
 import java.util.List;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
 import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
 import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
@@ -57,31 +53,16 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ProjectsAdapter.ViewHolder holder, int position) {
         try {
-            if (sPackageUtils.isPackageInstalled(new File(data.get(position)).getName(), holder.mAppIcon.getContext())) {
-                holder.mAppIcon.setImageDrawable(sPackageUtils.getAppIcon(new File(data.get(position)).getName(), holder.mAppIcon.getContext()));
-                if (Common.getSearchWord() != null && Common.isTextMatched(sPackageUtils.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString(), Common.getSearchWord())) {
-                    holder.mAppName.setText(APKEditorUtils.fromHtml(sPackageUtils.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()).toString().replace(Common.getSearchWord(),
-                            "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
-                } else {
-                    holder.mAppName.setText(sPackageUtils.getAppName(new File(data.get(position)).getName(), holder.mAppName.getContext()));
-                }
+            holder.mAppIcon.setImageBitmap(APKExplorer.getAppIcon(data.get(position) + "/.aeeBackup/appData"));
+            if (Common.getSearchWord() != null && Common.isTextMatched((Objects.requireNonNull(APKExplorer.getAppName(data.get(position) + "/.aeeBackup/appData"))), Common.getSearchWord())) {
+                holder.mAppName.setText(APKEditorUtils.fromHtml(Objects.requireNonNull(APKExplorer.getAppName(data.get(position) + "/.aeeBackup/appData")).replace(Common.getSearchWord(),
+                        "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
             } else {
-                holder.mAppIcon.setImageDrawable(ContextCompat.getDrawable(holder.mAppIcon.getContext(), R.drawable.ic_projects));
-                if (Common.getSearchWord() != null && Common.isTextMatched(new File(data.get(position)).getName(), Common.getSearchWord())) {
-                    holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().replace(Common.getSearchWord(),
-                            "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
-                } else {
-                    holder.mAppName.setText(new File(data.get(position)).getName());
-                }
+                holder.mAppName.setText(APKExplorer.getAppName(data.get(position) + "/.aeeBackup/appData"));
             }
             holder.mTotalSize.setText(holder.mAppName.getContext().getString(R.string.last_modified, DateFormat.getDateTimeInstance()
                     .format(new File(data.get(position)).lastModified())));
             holder.mCard.setOnClickListener(v -> {
-                if (sPackageUtils.isPackageInstalled(data.get(position).replace(v.getContext().getCacheDir().getPath() + "/",""), v.getContext())) {
-                    Common.setAppID(data.get(position).replace(v.getContext().getCacheDir().getPath() + "/",""));
-                } else {
-                    Common.setAppID(null);
-                }
                 Common.setPath(data.get(position));
                 Intent explorer = new Intent(v.getContext(), APKExploreActivity.class);
                 v.getContext().startActivity(explorer);
@@ -101,42 +82,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                                                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                                         },(Activity) v.getContext());
                             } else {
-                                LinearLayout layout = new LinearLayout(v.getContext());
-                                layout.setPadding(75, 75, 75, 75);
-
-                                AppCompatEditText editText = new AppCompatEditText(v.getContext());
-                                editText.setGravity(Gravity.CENTER);
-                                editText.setLayoutParams(new LinearLayout.LayoutParams(
-                                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                                editText.setSingleLine(true);
-
-                                layout.addView(editText);
-
-                                new MaterialAlertDialogBuilder(v.getContext())
-                                        .setView(layout)
-                                        .setNegativeButton(R.string.cancel, (d, i) -> {
-                                        })
-                                        .setPositiveButton(R.string.ok, (dialog1, i) -> {
-                                            String text = Objects.requireNonNull(editText.getText()).toString().trim();
-                                            if (text.isEmpty()) {
-                                                sUtils.snackBar(v, v.getContext().getString(R.string.name_empty)).show();
-                                                return;
-                                            }
-                                            if (text.contains(" ")) {
-                                                text = text.replace(" ", "_");
-                                            }
-                                            String mName = text;
-                                            if (sUtils.exist(new File(Projects.getExportPath(v.getContext()), text))) {
-                                                new MaterialAlertDialogBuilder(v.getContext())
-                                                        .setMessage(v.getContext().getString(R.string.export_project_replace, text))
-                                                        .setNegativeButton(R.string.cancel, (dialog2, ii) -> {
-                                                        })
-                                                        .setPositiveButton(R.string.replace, (dialog2, iii) -> Projects.exportProject(new File(data.get(position)), mName, v.getContext()))
-                                                        .show();
-                                            } else {
-                                                Projects.exportProject(new File(data.get(position)), mName, v.getContext());
-                                            }
-                                        }).show();
+                                Projects.exportProject(new File(data.get(position)), v.getContext());
                             }
                         }).show();
                 return false;

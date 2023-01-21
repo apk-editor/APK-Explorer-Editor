@@ -1,6 +1,5 @@
 package com.apk.editor.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -39,7 +38,6 @@ import java.io.File;
 import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
 import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
 import in.sunilpaulmathew.sCommon.Utils.sSingleItemDialog;
 import in.sunilpaulmathew.sCommon.Utils.sUtils;
@@ -53,8 +51,8 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
     private LinearLayoutCompat mProgressLayout;
     private RecyclerView mRecyclerView;
     private APKExplorerAdapter mRecycleViewAdapter;
+    private String mAppName = null;
 
-    @SuppressLint("StringFormatInvalid")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,7 +66,9 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         mProgressLayout = mRootView.findViewById(R.id.progress_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
-        mTitle.setText(Common.getAppID() != null ? sPackageUtils.getAppName(Common.getAppID(), requireActivity()) : new File(Common.getPath()).getName());
+        mAppName = APKExplorer.getAppName(Common.getPath() + "/.aeeBackup/appData");
+        Common.setAppID(APKExplorer.getPackageName(Common.getPath() + "/.aeeBackup/appData"));
+        mTitle.setText(mAppName);
 
         mBack.setOnClickListener(v -> retainDialog());
 
@@ -109,7 +109,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             mRecyclerView.setAdapter(mRecycleViewAdapter);
         } catch (NullPointerException ignored) {
             mRecyclerView.setVisibility(View.GONE);
-            mError.setText(getString(R.string.explore_error_status, sPackageUtils.getAppName(Common.getAppID(), requireActivity())));
+            mError.setText(getString(R.string.explore_error_status, mAppName));
             mError.setVisibility(View.VISIBLE);
         }
 
@@ -203,14 +203,12 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                     .setNeutralButton(getString(R.string.cancel), (dialog, id) -> {
                     })
                     .setNegativeButton(getString(R.string.delete), (dialog, id) -> {
-                        Projects.deleteProject(new File(requireActivity().getCacheDir().getPath(), Common.getAppID() != null ? Common.getAppID() :
-                                new File(Common.getPath()).getName()), requireActivity());
+                        Projects.deleteProject(new File(requireActivity().getCacheDir(), Common.getAppID()), requireActivity());
                         requireActivity().finish();
                     })
                     .setPositiveButton(getString(R.string.save), (dialog, id) -> requireActivity().finish()).show();
         } else if (sUtils.getString("projectAction", null, requireActivity()).equals(getString(R.string.delete))) {
-            Projects.deleteProject(new File(requireActivity().getCacheDir().getPath(), Common.getAppID() != null ? Common.getAppID() :
-                    new File(Common.getPath()).getName()), requireActivity());
+            Projects.deleteProject(new File(requireActivity().getCacheDir(), Common.getAppID()), requireActivity());
             requireActivity().finish();
         } else {
             requireActivity().finish();
@@ -221,7 +219,6 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         return new File(Common.getPath()).listFiles();
     }
 
-    @SuppressLint("StaticFieldLeak")
     private void reload(Activity activity) {
         new sExecutor() {
 
@@ -239,9 +236,8 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             @Override
             public void onPostExecute() {
                 if (Common.getAppID() != null) {
-                    mTitle.setText(Common.getAppID().equals(requireActivity().getCacheDir().getPath() + "/" + (Common.getAppID() != null ?
-                            Common.getAppID() : new File(Common.getPath()).getName()) + File.separator) ? sPackageUtils.getAppName(Common.getAppID(), activity)
-                            : new File(Common.getPath()).getName());
+                    mTitle.setText(Common.getPath().equals(new File(activity.getCacheDir(), Objects.requireNonNull(Common.getAppID()))
+                                    .getAbsolutePath()) ? mAppName : new File(Common.getPath()).getName());
                 }
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mProgressLayout.setVisibility(View.GONE);

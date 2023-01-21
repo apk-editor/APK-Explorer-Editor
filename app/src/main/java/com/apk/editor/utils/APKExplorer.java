@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
@@ -22,6 +24,10 @@ import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.activities.APKTasksActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -90,8 +96,43 @@ public class APKExplorer {
         return path.endsWith(".xml") && (new File(path).getName().equals("AndroidManifest.xml") || path.contains(Common.getAppID() + "/res/"));
     }
 
+    public static boolean isSmaliEdited(String path) {
+        if (getAppData(path) == null) return false;
+        try {
+            return Objects.requireNonNull(getAppData(path)).getBoolean("smali_edited");
+        } catch (JSONException ignored) {
+        }
+        return false;
+    }
+
+    public static Bitmap getAppIcon(String path) {
+        if (getAppData(path) == null) return null;
+        try {
+            return stringToBitmap(Objects.requireNonNull(getAppData(path)).getString("app_icon"));
+        } catch (JSONException ignored) {
+        }
+        return null;
+    }
+
+    public static Bitmap stringToBitmap(String string) {
+        try {
+            byte[] imageAsBytes = Base64.decode(string.getBytes(), Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+        } catch (Exception ignored) {}
+        return null;
+    }
+
     private static boolean isSupportedFile(String path) {
         return path.endsWith(".apk") || path.endsWith(".apks") || path.endsWith(".apkm") || path.endsWith(".xapk");
+    }
+
+    public static JSONObject getAppData(String path) {
+        if (sUtils.read(new File(path)) == null) return null;
+        try {
+            return new JSONObject(sUtils.read(new File(path)));
+        } catch (JSONException ignored) {
+        }
+        return null;
     }
 
     public static void setIcon(AppCompatImageButton icon, Drawable drawable, Context context) {
@@ -102,6 +143,24 @@ public class APKExplorer {
 
     public static int getSpanCount(Activity activity) {
         return sUtils.getOrientation(activity) == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1;
+    }
+
+    public static String getAppName(String path) {
+        if (getAppData(path) == null) return null;
+        try {
+            return Objects.requireNonNull(getAppData(path)).getString("app_name");
+        } catch (JSONException ignored) {
+        }
+        return null;
+    }
+
+    public static String getPackageName(String path) {
+        if (getAppData(path) == null) return null;
+        try {
+            return Objects.requireNonNull(getAppData(path)).getString("package_name");
+        } catch (JSONException ignored) {
+        }
+        return null;
     }
 
     public static List<String> getTextViewData(String path, Context context) {
@@ -259,6 +318,21 @@ public class APKExplorer {
             public void doInBackground() {
                 if (!mExplorePath.exists()) {
                     sUtils.mkdir(mExplorePath);
+                    sUtils.mkdir(mBackUpPath);
+                    // Store basic information about the app
+                    try {
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        Bitmap.createScaledBitmap(drawableToBitmap(sPackageUtils.getAppIcon(packageName, context)), 150, 150, true).compress(Bitmap
+                                .CompressFormat.PNG,100, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                        JSONObject mJSONObject = new JSONObject();
+                        mJSONObject.put("app_icon", Base64.encodeToString(byteArray, Base64.DEFAULT));
+                        mJSONObject.put("app_name", sPackageUtils.getAppName(packageName, context));
+                        mJSONObject.put("smali_edited", false);
+                        mJSONObject.put("package_name", packageName);
+                        sUtils.create(mJSONObject.toString(), new File(mBackUpPath, "appData"));
+                    } catch (JSONException ignored) {
+                    }
                     APKEditorUtils.unzip(sPackageUtils.getSourceDir(packageName, context), mExplorePath.getAbsolutePath());
                     // Decompile dex file(s)
                     for (File files : Objects.requireNonNull(mExplorePath.listFiles())) {
@@ -269,7 +343,7 @@ public class APKExplorer {
                             File mDexExtractPath = new File(mExplorePath, files.getName());
                             sUtils.mkdir(mDexExtractPath);
                             Common.setStatus(context.getString(R.string.decompiling, files.getName()));
-                            new DexToSmali(false, new File(sPackageUtils.getSourceDir(Common.getAppID(), context)), mDexExtractPath, 0, files.getName()).execute();
+                            new DexToSmali(false, new File(sPackageUtils.getSourceDir(packageName, context)), mDexExtractPath, 0, files.getName()).execute();
                         }
                     }
                 }

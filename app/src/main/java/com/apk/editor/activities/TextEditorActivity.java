@@ -11,8 +11,12 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.Common;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.Objects;
@@ -64,9 +68,11 @@ public class TextEditorActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.save), (dialog, id) -> {
                     sUtils.create(text, new File(path));
                     if (path.contains("classes") && path.contains(".dex")) {
-                        String parentPath = path.split(".dex")[0] + ".dex";
-                        if (!sUtils.exist(new File(parentPath, "edited"))) {
-                            sUtils.create("# Edited", new File(parentPath, "edited"));
+                        try {
+                            JSONObject jsonObject = new JSONObject(sUtils.read(new File(getCacheDir(), Common.getAppID() + "/.aeeBackup/appData")));
+                            jsonObject.put("smali_edited", true);
+                            sUtils.create(jsonObject.toString(), new File(getCacheDir(), Common.getAppID() + "/.aeeBackup/appData"));
+                        } catch (JSONException ignored) {
                         }
                     }
                     finish();

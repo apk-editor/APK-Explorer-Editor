@@ -179,7 +179,7 @@ public class APKData {
                 }
                 if (file.isDirectory() && file.getName().startsWith("classes") && file.getName().endsWith(".dex")) {
                     // Build new dex file if the smali files are modified
-                    if (sUtils.exist(new File(file, "edited"))) {
+                    if (APKExplorer.isSmaliEdited(new File(context.getCacheDir(), Common.getAppID() + "/.aeeBackup/appData").getAbsolutePath())) {
                         Common.setStatus(context.getString(R.string.building, file.getName()));
                         new SmaliToDex(file, new File(buildDir, file.getName()), 0, context).execute();
                     } else {

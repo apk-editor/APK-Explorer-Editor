@@ -8,8 +8,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
 
 import com.apk.editor.R;
+import com.apk.editor.interfaces.EditTextInterface;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
@@ -31,7 +33,7 @@ public class Projects {
     public static List<String> getData(Context context) {
         List<String> mData = new ArrayList<>();
         for (File mFile : Objects.requireNonNull(new File(context.getCacheDir().toString()).listFiles())) {
-            if (mFile.exists() && mFile.isDirectory() && new File(mFile, "AndroidManifest.xml").exists()) {
+            if (mFile.exists() && mFile.isDirectory() && new File(mFile, ".aeeBackup/appData").exists()) {
                 if (Common.getSearchWord() == null) {
                     mData.add(mFile.getAbsolutePath());
                 } else if (Common.isTextMatched(mFile.getName(), Common.getSearchWord())) {
@@ -96,6 +98,34 @@ public class Projects {
         } else {
             return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
         }
+    }
+
+    public static void exportProject(File file, Context context) {
+        new EditTextInterface(null, context.getString(R.string.app_name), context) {
+
+            @Override
+            public void positiveButtonLister(Editable s) {
+                String text = s.toString().trim();
+                if (text.isEmpty()) {
+                    sUtils.toast(context.getString(R.string.name_empty), context).show();
+                    return;
+                }
+                if (text.contains(" ")) {
+                    text = text.replace(" ", "_");
+                }
+                String name = text;
+                if (sUtils.exist(new File(Projects.getExportPath(context), text))) {
+                    new MaterialAlertDialogBuilder(context)
+                            .setMessage(context.getString(R.string.export_project_replace, text))
+                            .setNegativeButton(R.string.cancel, (dialog2, ii) -> {
+                            })
+                            .setPositiveButton(R.string.replace, (dialog2, iii) -> exportProject(file, name, context))
+                            .show();
+                } else {
+                    exportProject(file, name, context);
+                }
+            }
+        }.show();
     }
 
     public static void exportProject(File path, String name, Context context) {
