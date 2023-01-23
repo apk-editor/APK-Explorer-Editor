@@ -1,6 +1,7 @@
 package com.apk.editor.utils;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.android.apksig.ApkSigner;
 
@@ -83,7 +84,15 @@ public class APKSigner {
         builder.setOutputApk(output);
         builder.setCreatedBy("APK Editor");
         builder.setV1SigningEnabled(true);
-        builder.setV2SigningEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            builder.setV2SigningEnabled(true);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            builder.setV3SigningEnabled(true);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            builder.setV4SigningEnabled(true);
+        }
         builder.setMinSdkVersion(-1);
         ApkSigner signer = builder.build();
         signer.sign();
