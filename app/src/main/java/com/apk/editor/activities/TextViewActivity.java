@@ -1,6 +1,5 @@
 package com.apk.editor.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,23 +9,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.adapters.TextViewAdapter;
-import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
-import com.apk.editor.utils.AppSettings;
-import com.apk.editor.utils.Common;
-import com.apk.editor.utils.Projects;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 
-import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
+import in.sunilpaulmathew.sCommon.Utils.sExecutor;
+import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -34,7 +30,9 @@ import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
 public class TextViewActivity extends AppCompatActivity {
 
     private AppCompatEditText mSearchWord;
+    private LinearLayoutCompat mProgressLayout;
     private MaterialTextView mTitle;
+    private RecyclerView mRecyclerView;
     public static final String PATH_INTENT = "path";
     private String mPath;
 
@@ -46,22 +44,15 @@ public class TextViewActivity extends AppCompatActivity {
         mSearchWord = findViewById(R.id.search_word);
         AppCompatImageButton mBack = findViewById(R.id.back);
         AppCompatImageButton mSearch = findViewById(R.id.search);
-        AppCompatImageButton mEdit = findViewById(R.id.edit);
-        AppCompatImageButton mExport = findViewById(R.id.export);
+        mProgressLayout = findViewById(R.id.progress_layout);
         mTitle = findViewById(R.id.title);
-        RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
-
-        if (APKEditorUtils.isFullVersion(this) && AppSettings.isTextEditingEnabled(this)) {
-            mEdit.setVisibility(View.VISIBLE);
-        }
+        mRecyclerView = findViewById(R.id.recycler_view);
 
         mPath = getIntent().getStringExtra(PATH_INTENT);
 
-        assert mPath != null;
-        mTitle.setText(new File(mPath).getName());
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new TextViewAdapter(APKExplorer.getTextViewData(mPath, this)));
+        if (mPath != null && sUtils.exist(new File(mPath))) {
+            mTitle.setText(new File(mPath).getName());
+        }
 
         mSearch.setOnClickListener(v -> {
             if (mSearchWord.getVisibility() == View.VISIBLE) {
@@ -86,35 +77,36 @@ public class TextViewActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Common.setSearchText(s.toString());
-                mRecyclerView.setAdapter(new TextViewAdapter(APKExplorer.getTextViewData(mPath, TextViewActivity.this)));
+                reload(s.toString()).execute();
 
             }
         });
 
-        mEdit.setOnClickListener(v -> {
-            Intent textEditor = new Intent(this, TextEditorActivity.class);
-            textEditor.putExtra(TextEditorActivity.PATH_INTENT, mPath);
-            startActivity(textEditor);
-            finish();
-        });
-
-        mExport.setOnClickListener(v -> new MaterialAlertDialogBuilder(this)
-                .setMessage(R.string.export_question)
-                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
-                })
-                .setPositiveButton(getString(R.string.export), (dialog, id) -> {
-                    if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,this)) {
-                        sPermissionUtils.requestPermission(
-                                new String[] {
-                                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                },this);
-                    } else {
-                        Projects.exportToStorage(mPath, new File(mPath).getName(), Common.getAppID(), this).execute();
-                    }
-                }).show());
+        reload(null).execute();
 
         mBack.setOnClickListener(v -> finish());
+    }
+
+    private sExecutor reload(String searchWord) {
+        return new sExecutor() {
+            private TextViewAdapter mTextViewAdapter;
+            @Override
+            public void onPreExecute() {
+                mProgressLayout.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void doInBackground() {
+                mTextViewAdapter = new TextViewAdapter(APKExplorer.getTextViewData(mPath, searchWord, TextViewActivity.this), searchWord);
+            }
+
+            @Override
+            public void onPostExecute() {
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(TextViewActivity.this));
+                mRecyclerView.setAdapter(mTextViewAdapter);
+                mProgressLayout.setVisibility(View.GONE);
+            }
+        };
     }
 
     @Override

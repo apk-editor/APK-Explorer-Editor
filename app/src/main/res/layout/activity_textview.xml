@@ -42,22 +42,10 @@
             android:gravity="center_vertical"
             android:layout_gravity="start"
             android:layout_marginStart="30dp"
-            android:layout_marginEnd="80dp"
+            android:layout_marginEnd="40dp"
             android:textColor="?attr/colorAccent"
             android:textSize="18sp"
             android:padding="10dp" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="center"
-            android:background="@color/colorBlack"
-            android:layout_gravity="end|center_vertical"
-            android:src="@drawable/ic_edit"
-            android:tint="?attr/colorAccent"
-            android:layout_marginEnd="80dp"
-            android:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/search"
@@ -67,19 +55,10 @@
             android:background="@color/colorBlack"
             android:layout_gravity="end|center_vertical"
             android:src="@drawable/ic_search"
-            android:tint="?attr/colorAccent"
-            android:layout_marginEnd="40dp" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/export"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="center"
-            android:background="@color/colorBlack"
-            android:layout_gravity="end|center_vertical"
-            android:src="@drawable/ic_export"
             android:tint="?attr/colorAccent" />
     </FrameLayout>
+
+    <include layout="@layout/progress_layout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

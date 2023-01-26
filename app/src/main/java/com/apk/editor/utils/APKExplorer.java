@@ -20,6 +20,7 @@ import android.util.Base64;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 
+import com.apk.axml.aXMLDecoder;
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.activities.APKTasksActivity;
@@ -163,22 +164,25 @@ public class APKExplorer {
         return null;
     }
 
-    public static List<String> getTextViewData(String path, Context context) {
+    public static List<String> getTextViewData(String path, String searchWord, Context context) {
         List<String> mData = new ArrayList<>();
-        String text;
-        if (ExternalAPKData.isFMInstall()) {
+        String text = null;
+        if (isBinaryXML(path)) {
+            try {
+                text = new aXMLDecoder(new File(path)).decode().trim();
+            } catch (Exception e) {
+                sUtils.toast(context.getString(R.string.xml_decode_failed, new File(path).getName()), context).show();
+            }
+        } else if (ExternalAPKData.isFMInstall()) {
             text = path;
-        } else if (Common.getAppID() != null && APKExplorer.isBinaryXML(path)) {
-            text = ExternalAPKData.readXMLFromAPK(sPackageUtils.getSourceDir(Common.getAppID(), context), path.replace(
-                    context.getCacheDir().getPath() + "/" + Common.getAppID() + "/", ""));
         } else {
             text = sUtils.read(new File(path));
         }
         if (text != null) {
             for (String line : text.split("\\r?\\n")) {
-                if (Common.getSearchText() == null) {
+                if (searchWord == null) {
                     mData.add(line);
-                } else if (Common.isTextMatched(line, Common.getSearchText())) {
+                } else if (Common.isTextMatched(line, searchWord)) {
                     mData.add(line);
                 }
             }
@@ -310,6 +314,8 @@ public class APKExplorer {
                     Intent apkTasks = new Intent(context, APKTasksActivity.class);
                     context.startActivity(apkTasks);
                     Common.setStatus(context.getString(R.string.exploring, sPackageUtils.getAppName(packageName, context)));
+                } else if (!sUtils.exist(new File(mBackUpPath, "appData"))) {
+                    sUtils.delete(mExplorePath);
                 }
             }
 
@@ -328,8 +334,8 @@ public class APKExplorer {
                         JSONObject mJSONObject = new JSONObject();
                         mJSONObject.put("app_icon", Base64.encodeToString(byteArray, Base64.DEFAULT));
                         mJSONObject.put("app_name", sPackageUtils.getAppName(packageName, context));
-                        mJSONObject.put("smali_edited", false);
                         mJSONObject.put("package_name", packageName);
+                        mJSONObject.put("smali_edited", false);
                         sUtils.create(mJSONObject.toString(), new File(mBackUpPath, "appData"));
                     } catch (JSONException ignored) {
                     }

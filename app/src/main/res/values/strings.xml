@@ -3,7 +3,7 @@
     <string name="about">About</string>
     <string name="all">All</string>
     <string name="android_version">Android %s</string>
-    <string name="apk_corrupted">APK file(s) is corrupted. Aborting.</string>
+    <string name="apk_corrupted">APK file(s) is corrupted. Aborting…</string>
     <string name="apk_installer">AEE APK Installer</string>
     <string name="apks">APK\'s</string>
     <string name="app_name_short" translatable="false">AEE</string>
@@ -74,7 +74,7 @@
     <string name="last_modified">Last Modified: %s</string>
     <string name="loading">Loading…</string>
     <string name="manifest">Manifest</string>
-    <string name="name_empty">Name shouldn\'t be empty. Aborting.</string>
+    <string name="name_empty">Name shouldn\'t be empty. Aborting…</string>
     <string name="ok">OK</string>
     <string name="open">Open</string>
     <string name="open_as_text">Open as text</string>
@@ -165,5 +165,7 @@
     <string name="wrong_extension">Please select a file with %s extension.</string>
     <string name="x509_certificate">X509Certificate</string>
     <string name="x509_certificate_summary">Select custom X509Certificate</string>
+    <string name="xml_corrupted">XML string is corrupted. Aborting…</string>
+    <string name="xml_decode_failed">Failed to decode %s</string>
     <string name="yes">Yes</string>
 </resources>

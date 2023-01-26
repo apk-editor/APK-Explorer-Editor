@@ -2,14 +2,11 @@ package com.apk.editor.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -220,15 +217,6 @@ public class APKInstallerActivity extends AppCompatActivity {
             Common.getAPKList().add(mFile.getAbsolutePath());
             APKExplorer.handleAPKs(activity);
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == 1 && Build.VERSION.SDK_INT < 30 && grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            this.recreate();
-        }
     }
 
     @Override

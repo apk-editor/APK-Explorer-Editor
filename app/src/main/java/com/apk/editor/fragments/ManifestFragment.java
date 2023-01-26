@@ -30,7 +30,7 @@ public class ManifestFragment extends Fragment {
 
         if (ExternalAPKData.getManifest() != null) {
             try {
-                mRecyclerView.setAdapter(new TextViewAdapter(APKExplorer.getTextViewData(ExternalAPKData.getManifest(), requireActivity())));
+                mRecyclerView.setAdapter(new TextViewAdapter(APKExplorer.getTextViewData(ExternalAPKData.getManifest(), null, requireActivity()), null));
             } catch (Exception ignored) {
             }
         }

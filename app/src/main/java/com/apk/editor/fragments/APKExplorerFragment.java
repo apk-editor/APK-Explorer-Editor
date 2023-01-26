@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apk.editor.R;
 import com.apk.editor.activities.APKSignActivity;
 import com.apk.editor.activities.ImageViewActivity;
+import com.apk.editor.activities.TextEditorActivity;
 import com.apk.editor.activities.TextViewActivity;
 import com.apk.editor.adapters.APKExplorerAdapter;
 import com.apk.editor.utils.APKData;
@@ -29,7 +30,6 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.ExternalAPKData;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -132,17 +132,20 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             if (new File(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position)).isDirectory()) {
                 Common.setPath(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
                 reload(requireActivity());
+            } else if (APKExplorer.isTextFile(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position))) {
+                Intent intent;
+                if (APKEditorUtils.isFullVersion(requireActivity())) {
+                    intent = new Intent(requireActivity(), TextEditorActivity.class);
+                    intent.putExtra(TextEditorActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
+                } else {
+                    intent = new Intent(requireActivity(), TextViewActivity.class);
+                    intent.putExtra(TextViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
+                }
+                startActivity(intent);
             } else if (APKExplorer.isImageFile(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position))) {
                 Intent imageView = new Intent(requireActivity(), ImageViewActivity.class);
                 imageView.putExtra(ImageViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
                 startActivity(imageView);
-            } else if (APKExplorer.isTextFile(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position))) {
-                if (ExternalAPKData.isFMInstall()) {
-                    ExternalAPKData.isFMInstall(false);
-                }
-                Intent textView = new Intent(requireActivity(), TextViewActivity.class);
-                textView.putExtra(TextViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
-                startActivity(textView);
             } else if (APKExplorer.getData(getFilesList(), true, requireActivity()).get(position).endsWith(".dex") || APKExplorer.getData(getFilesList(), true,
                     requireActivity()).get(position).endsWith("resources.arsc")) {
                 new MaterialAlertDialogBuilder(requireActivity())
@@ -202,7 +205,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                     .setMessage(R.string.save_projects_question)
                     .setNeutralButton(getString(R.string.cancel), (dialog, id) -> {
                     })
-                    .setNegativeButton(getString(R.string.delete), (dialog, id) -> {
+                    .setNegativeButton(getString(R.string.discard), (dialog, id) -> {
                         Projects.deleteProject(new File(requireActivity().getCacheDir(), Common.getAppID()), requireActivity());
                         requireActivity().finish();
                     })

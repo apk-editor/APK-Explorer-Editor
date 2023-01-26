@@ -25,7 +25,7 @@ public class Common {
     private static MaterialCardView mSelect;
     private static MaterialTextView mApksTitle, mAppsTitle, mProjectsTitle;
     private static String mAppID, mFilePath = null, mFileToReplace = null, mPackageName = null,
-            mPath = null, mSearchText, mSearchWord, mStatus = null;
+            mPath = null, mSearchWord, mStatus = null;
 
     public static AppCompatEditText getAPKsSearchWord() {
         return mSearchWordApks;
@@ -132,10 +132,6 @@ public class Common {
         return mPath;
     }
 
-    public static String getSearchText() {
-        return mSearchText;
-    }
-
     public static String getSearchWord() {
         return mSearchWord;
     }
@@ -227,10 +223,6 @@ public class Common {
     public static void setProgress(boolean b, View view) {
         mBusy = b;
         view.setVisibility(b ? View.VISIBLE : View.GONE);
-    }
-
-    public static void setSearchText(String searchText) {
-        mSearchText = searchText;
     }
 
     public static void setSearchWord(String searchWord) {
