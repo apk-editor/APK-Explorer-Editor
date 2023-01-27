@@ -196,9 +196,8 @@ public class APKData {
     public static void prepareSignedAPK(Activity activity) {
         new sExecutor() {
             private File mBackUpPath = null, mBuildDir = null;
-            private final File mExportPath = new File(activity.getCacheDir(), Common.getAppID() != null ?
-                    Common.getAppID() : new File(Common.getPath()).getName()), mTMPZip = new File(activity
-                    .getCacheDir(), "tmp.apk");
+            private final File mExportPath = new File(activity.getCacheDir(), Common.getAppID()),
+                    mTMPZip = new File(activity.getCacheDir(), "tmp.apk");
 
             @Override
             public void onPreExecute() {
@@ -208,8 +207,7 @@ public class APKData {
                 Common.setStatus(null);
                 Intent apkTasks = new Intent(activity, APKTasksActivity.class);
                 activity.startActivity(apkTasks);
-                Common.setStatus(activity.getString(R.string.preparing_apk, (Common.getAppID() != null ? Common.getAppID() :
-                        new File(Common.getPath()).getName())));
+                Common.setStatus(activity.getString(R.string.preparing_apk, Common.getAppID()));
 
                 mBuildDir = new File(mExportPath, ".aeeBuild");
                 mBackUpPath = new File(mExportPath, ".aeeBackup");
@@ -232,7 +230,8 @@ public class APKData {
                 }
                 APKEditorUtils.zip(mBuildDir, mTMPZip);
                 File mParent;
-                if (Common.getAppID() != null && APKData.isAppBundle(sPackageUtils.getSourceDir(Common.getAppID(), activity))) {
+                if (sPackageUtils.isPackageInstalled(Common.getAppID(), activity) && APKData.isAppBundle(sPackageUtils
+                        .getSourceDir(Common.getAppID(), activity))) {
                     mParent = new File(getExportAPKsPath(activity), Common.getAppID() + "_aee-signed");
                     if (mParent.exists()) {
                         sUtils.delete(mParent);
@@ -247,8 +246,7 @@ public class APKData {
                     Common.setStatus(activity.getString(R.string.signing, "base.apk"));
                     signApks(mTMPZip, new File(mParent, "base.apk"), activity);
                 } else {
-                    mParent = new File(getExportAPKsPath(activity), (Common.getAppID() != null ? Common.getAppID() :
-                            new File(Common.getPath()).getName()) + "_aee-signed.apk");
+                    mParent = new File(getExportAPKsPath(activity), Common.getAppID() + "_aee-signed.apk");
                     if (mParent.exists()) {
                         sUtils.delete(mParent);
                     }
