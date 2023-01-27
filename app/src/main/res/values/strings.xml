@@ -103,6 +103,7 @@
     <string name="resigned_apks_error">Building is aborted due to errors in assembling \'smali\' files. Please check the \'Details\' to find out more.</string>
     <string name="resigned_apks_path">Re-signed APK file(s) are generated.\n\nPath: \'%s\'</string>
     <string name="resigning_apks">Re-signing selected APK\'s…</string>
+    <string name="root">Root</string>
     <string name="save">Save</string>
     <string name="save_apk_message">Do you want to prepare a signed APK with the current modifications?</string>
     <string name="save_projects_question">Save project for future use?</string>

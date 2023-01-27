@@ -51,7 +51,6 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
     private LinearLayoutCompat mProgressLayout;
     private RecyclerView mRecyclerView;
     private APKExplorerAdapter mRecycleViewAdapter;
-    private String mAppName = null;
 
     @Nullable
     @Override
@@ -66,9 +65,9 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         mProgressLayout = mRootView.findViewById(R.id.progress_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
-        mAppName = APKExplorer.getAppName(Common.getPath() + "/.aeeBackup/appData");
+        String mAppName = APKExplorer.getAppName(Common.getPath() + "/.aeeBackup/appData");
         Common.setAppID(APKExplorer.getPackageName(Common.getPath() + "/.aeeBackup/appData"));
-        mTitle.setText(mAppName);
+        mTitle.setText(getString(R.string.root));
 
         mBack.setOnClickListener(v -> retainDialog());
 
@@ -240,7 +239,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             public void onPostExecute() {
                 if (Common.getAppID() != null) {
                     mTitle.setText(Common.getPath().equals(new File(activity.getCacheDir(), Objects.requireNonNull(Common.getAppID()))
-                                    .getAbsolutePath()) ? mAppName : new File(Common.getPath()).getName());
+                                    .getAbsolutePath()) ? getString(R.string.root) : new File(Common.getPath()).getName());
                 }
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mProgressLayout.setVisibility(View.GONE);

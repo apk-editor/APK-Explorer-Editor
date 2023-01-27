@@ -32,7 +32,7 @@
             app:itemIconTint="@color/colorBlue"
             app:itemTextColor="@color/colorBlue"
             android:background="@color/colorBlack"
-            app:menu="@menu/bottom_navigation"
+            app:menu="@menu/navigation_main"
             app:labelVisibilityMode="labeled"
             android:layout_gravity="bottom" />
 

@@ -11,48 +11,7 @@
         android:orientation="vertical"
         android:visibility="gone" >
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorBlack"
-            android:orientation="horizontal"
-            android:gravity="center" >
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/app_image"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_gravity="center"
-                android:padding="10dp" />
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/app_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlue"
-                    android:layout_gravity="start"
-                    android:textStyle="bold"
-                    android:gravity="start"
-                    android:textSize="23sp" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/package_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:textColor="@color/colorWhite"
-                    android:textIsSelectable="true"
-                    android:visibility="gone"
-                    android:gravity="start"
-                    android:textSize="15sp" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        <include layout="@layout/app_title_layout" />
 
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
