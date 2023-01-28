@@ -103,6 +103,9 @@ public class ApplicationsFragment extends Fragment {
             if (Common.getAppsSearchWord().getVisibility() == View.VISIBLE) {
                 Common.getAppsSearchWord().setVisibility(View.GONE);
                 Common.getAppsTitle().setVisibility(View.VISIBLE);
+                if (Common.getAppsSearchWord() != null) {
+                    Common.getAppsSearchWord().setText(null);
+                }
                 AppData.toggleKeyboard(0, Common.getAppsSearchWord(), requireActivity());
             } else {
                 Common.getAppsSearchWord().setVisibility(View.VISIBLE);
@@ -253,16 +256,6 @@ public class ApplicationsFragment extends Fragment {
             return false;
         });
         popupMenu.show();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (Common.getSearchWord() != null) {
-            Common.getAppsSearchWord().setText(null);
-            Common.setSearchWord(null);
-        }
     }
     
 }

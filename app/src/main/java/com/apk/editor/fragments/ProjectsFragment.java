@@ -54,6 +54,9 @@ public class ProjectsFragment extends Fragment {
             if (Common.getProjectsSearchWord().getVisibility() == View.VISIBLE) {
                 Common.getProjectsSearchWord().setVisibility(View.GONE);
                 Common.getProjectsTitle().setVisibility(View.VISIBLE);
+                if (Common.getProjectsSearchWord() != null) {
+                    Common.getProjectsSearchWord().setText(null);
+                }
                 AppData.toggleKeyboard(0, Common.getProjectsSearchWord(), requireActivity());
             } else {
                 Common.getProjectsSearchWord().setVisibility(View.VISIBLE);
@@ -130,16 +133,6 @@ public class ProjectsFragment extends Fragment {
         if (Common.isReloading()) {
             Common.isReloading(false);
             loadProjects(requireActivity());
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (Common.getSearchWord() != null) {
-            Common.getProjectsSearchWord().setText(null);
-            Common.setSearchWord(null);
         }
     }
     

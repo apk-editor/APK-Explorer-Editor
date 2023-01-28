@@ -118,6 +118,9 @@ public class APKsFragment extends Fragment {
             if (Common.getAPKsSearchWord().getVisibility() == View.VISIBLE) {
                 Common.getAPKsSearchWord().setVisibility(View.GONE);
                 Common.getAPKsTitle().setVisibility(View.VISIBLE);
+                if (Common.getAPKsSearchWord() != null) {
+                    Common.getAPKsSearchWord().setText(null);
+                }
                 AppData.toggleKeyboard(0, Common.getAPKsSearchWord(), requireActivity());
             } else {
                 Common.getAPKsSearchWord().setVisibility(View.VISIBLE);
@@ -341,16 +344,6 @@ public class APKsFragment extends Fragment {
         if (Common.isReloading()) {
             Common.isReloading(false);
             loadAPKs(requireActivity());
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (Common.getSearchWord() != null) {
-            Common.getAPKsSearchWord().setText(null);
-            Common.setSearchWord(null);
         }
     }
     

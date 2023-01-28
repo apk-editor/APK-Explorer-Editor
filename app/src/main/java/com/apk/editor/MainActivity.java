@@ -130,4 +130,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (Common.getSearchWord() != null) {
+            Common.setSearchWord(null);
+        }
+    }
+
 }
