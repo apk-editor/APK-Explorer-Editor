@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.apk.axml.APKParser;
 import com.apk.editor.R;
-import com.apk.editor.utils.ExternalAPKData;
 import com.google.android.material.textview.MaterialTextView;
 
 /*
@@ -24,9 +24,11 @@ public class CertificateFragment extends Fragment {
 
         MaterialTextView mText = mRootView.findViewById(R.id.text);
 
-        if (ExternalAPKData.getCertificate() != null) {
+        APKParser mAPKParser = new APKParser();
+
+        if (mAPKParser.getCertificate() != null) {
             try {
-                mText.setText(ExternalAPKData.getCertificate());
+                mText.setText(mAPKParser.getCertificate());
             } catch (Exception ignored) {
             }
         }

@@ -37,7 +37,6 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorBlue"
                     android:layout_gravity="start"
-                    android:visibility="gone"
                     android:textStyle="bold"
                     android:gravity="start"
                     android:textSize="23sp" />

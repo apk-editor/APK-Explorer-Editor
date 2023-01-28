@@ -37,7 +37,7 @@ public class APKDetailsFragment extends Fragment {
 
             @Override
             public void doInBackground() {
-                mAdapter = new APKDetailsAdapter(ExternalAPKData.getData());
+                mAdapter = new APKDetailsAdapter(ExternalAPKData.getData(requireActivity()));
             }
 
             @Override

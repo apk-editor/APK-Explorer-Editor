@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.apk.axml.APKParser;
 import com.apk.editor.R;
-import com.apk.editor.utils.ExternalAPKData;
 import com.google.android.material.textview.MaterialTextView;
 
 import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
@@ -26,10 +26,12 @@ public class PermissionsFragment extends Fragment {
 
         MaterialTextView mText = mRootView.findViewById(R.id.text);
 
-        if (ExternalAPKData.getPermissions() != null) {
+        APKParser mAPKParser = new APKParser();
+
+        if (mAPKParser.getPermissions() != null) {
             try {
                 StringBuilder sb = new StringBuilder();
-                for (String permission : ExternalAPKData.getPermissions()) {
+                for (String permission : mAPKParser.getPermissions()) {
                     sb.append(permission).append("\n").append(sPermissionUtils.getDescription(permission.replace(
                             "android.permission.",""), requireActivity())).append("\n\n");
                 }

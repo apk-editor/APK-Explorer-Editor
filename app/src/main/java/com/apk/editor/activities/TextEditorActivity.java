@@ -26,6 +26,7 @@ import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
@@ -76,8 +77,8 @@ public class TextEditorActivity extends AppCompatActivity {
             @Override
             public void doInBackground() {
                 if (APKExplorer.isBinaryXML(mPath)) {
-                    try {
-                        text = new aXMLDecoder(new File(mPath)).decode().trim();
+                    try (FileInputStream inputStream = new FileInputStream(mPath)) {
+                        text = new aXMLDecoder().decode(inputStream).trim();
                     } catch (Exception e) {
                         invalid = true;
                     }

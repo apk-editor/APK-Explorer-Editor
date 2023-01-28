@@ -2,7 +2,6 @@ package com.apk.editor.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +12,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.apk.axml.APKParser;
 import com.apk.editor.R;
 import com.apk.editor.fragments.APKDetailsFragment;
 import com.apk.editor.fragments.CertificateFragment;
@@ -22,7 +22,6 @@ import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.ExternalAPKData;
 import com.apk.editor.utils.SplitAPKInstaller;
-import com.apk.editor.utils.recyclerViewItems.APKItems;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
@@ -31,8 +30,6 @@ import com.google.android.material.textview.MaterialTextView;
 import java.io.File;
 
 import in.sunilpaulmathew.sCommon.Adapters.sPagerAdapter;
-import in.sunilpaulmathew.sCommon.Utils.sAPKCertificateUtils;
-import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
 import in.sunilpaulmathew.sCommon.Utils.sExecutor;
 import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
 import in.sunilpaulmathew.sCommon.Utils.sUtils;
@@ -43,12 +40,12 @@ import in.sunilpaulmathew.sCommon.Utils.sUtils;
 public class APKInstallerActivity extends AppCompatActivity {
 
     private AppCompatImageView mAppIcon;
-    private Drawable mIcon = null;
+    private APKParser mAPKParser;
     private File mFile = null;
     private LinearLayoutCompat mMainLayout, mIconsLayout;
     private MaterialCardView mCancel, mInstall;
     private MaterialTextView mAppName, mInstallText, mPackageID;
-    private String mName = null, mExtension = null, mPackageName = null;
+    private String mExtension = null;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
 
@@ -88,9 +85,6 @@ public class APKInstallerActivity extends AppCompatActivity {
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
 
-                // Nullify previously acquired certificates, if any
-                ExternalAPKData.setCertificate(null);
-
                 sUtils.delete(getExternalFilesDir("APK"));
                 mExtension = ExternalAPKData.getExtension(uri, activity);
                 mFile = new File(getExternalFilesDir("APK"), "tmp." + mExtension);
@@ -101,37 +95,8 @@ public class APKInstallerActivity extends AppCompatActivity {
             public void doInBackground() {
                 sUtils.copy(uri, mFile, activity);
                 try {
-                    APKItems mAPKData = ExternalAPKData.getAPKData(mFile.getAbsolutePath(), activity);
-                    if (mAPKData != null) {
-                        if (mAPKData.getAppName() != null) {
-                            mName = mAPKData.getAppName();
-                        }
-                        if (mAPKData.getPackageName() != null) {
-                            mPackageName = mAPKData.getPackageName();
-                        }
-                        if (mAPKData.getIcon() != null) {
-                            mIcon = mAPKData.getIcon();
-                        }
-                        if (mAPKData.getPermissions() != null) {
-                            ExternalAPKData.setPermissions(mAPKData.getPermissions());
-                        }
-                        if (mAPKData.getManifest() != null) {
-                            ExternalAPKData.setManifest(mAPKData.getManifest());
-                        }
-                        if (new sAPKCertificateUtils(mFile,null, activity).getCertificateDetails() != null) {
-                            ExternalAPKData.setCertificate(new sAPKCertificateUtils(mFile,null, activity).getCertificateDetails());
-                        }
-                        if (mAPKData.getVersionName() != null) {
-                            ExternalAPKData.setVersionInfo(getString(R.string.version, mAPKData.getVersionName() + " (" + mAPKData.getVersionCode() + ")"));
-                        }
-                        if (mAPKData.getSDKVersion() != null) {
-                            ExternalAPKData.setSDKVersion(mAPKData.getSDKVersion(), activity);
-                        }
-                        if (mAPKData.getMinSDKVersion() != null) {
-                            ExternalAPKData.setMinSDKVersion(mAPKData.getMinSDKVersion(), activity);
-                        }
-                        ExternalAPKData.setSize(getString(R.string.size, sAPKUtils.getAPKSize(mFile.getAbsolutePath())) + " (" + mFile.length() + " bytes)");
-                    }
+                    mAPKParser = new APKParser();
+                    mAPKParser.parse(mFile.getAbsolutePath(), activity);
                 } catch (Exception ignored) {
                 }
             }
@@ -143,10 +108,10 @@ public class APKInstallerActivity extends AppCompatActivity {
                 } catch (IllegalArgumentException ignored) {
                 }
                 if (mFile.exists()) {
-                    if (mName != null || mPackageName != null || mIcon != null) {
+                    if (mAPKParser.isParsed()) {
                         ExternalAPKData.isFMInstall(true);
                         loadAPKDetails(activity);
-                        if (sPackageUtils.isPackageInstalled(mPackageName, activity)) {
+                        if (sPackageUtils.isPackageInstalled(mAPKParser.getPackageName(), activity)) {
                             mInstallText.setText(getString(R.string.update));
                         }
                     } else if (mExtension.equals("apkm") || mExtension.equals("apks") || mExtension.equals("xapk")) {
@@ -183,26 +148,24 @@ public class APKInstallerActivity extends AppCompatActivity {
     private void loadAPKDetails(Activity activity) {
         sPagerAdapter adapter = new sPagerAdapter(getSupportFragmentManager());
         try {
-            if (mName != null) {
-                mAppName.setText(mName);
-                mAppName.setVisibility(View.VISIBLE);
-            }
-            if (mPackageName != null) {
-                mPackageID.setText(mPackageName);
+            if (sPackageUtils.isPackageInstalled(mAPKParser.getPackageName(), activity)) {
+                mAppName.setText(sPackageUtils.getAppName(mAPKParser.getPackageName(), activity));
+                mPackageID.setText(mAPKParser.getPackageName());
+                mAppIcon.setImageDrawable(sPackageUtils.getAppIcon(mAPKParser.getPackageName(), activity));
                 mPackageID.setVisibility(View.VISIBLE);
-            }
-            if (mIcon != null) {
-                mAppIcon.setImageDrawable(mIcon);
+            } else {
+                mAppName.setText(mAPKParser.getPackageName());
+                mAppIcon.setImageDrawable(mAPKParser.getAppIcon());
             }
 
             adapter.AddFragment(new APKDetailsFragment(), getString(R.string.details));
-            if (ExternalAPKData.getPermissions() != null) {
+            if (mAPKParser.getPermissions() != null) {
                 adapter.AddFragment(new PermissionsFragment(), getString(R.string.permissions));
             }
-            if (ExternalAPKData.getManifest() != null) {
+            if (mAPKParser.getManifest() != null) {
                 adapter.AddFragment(new ManifestFragment(), getString(R.string.manifest));
             }
-            if (ExternalAPKData.getCertificate() != null) {
+            if (mAPKParser.getCertificate() != null) {
                 adapter.AddFragment(new CertificateFragment(), getString(R.string.certificate));
             }
         } catch (Exception ignored) {}

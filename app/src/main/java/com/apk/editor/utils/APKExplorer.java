@@ -30,6 +30,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -168,8 +169,8 @@ public class APKExplorer {
         List<String> mData = new ArrayList<>();
         String text = null;
         if (isBinaryXML(path)) {
-            try {
-                text = new aXMLDecoder(new File(path)).decode().trim();
+            try (FileInputStream inputStream = new FileInputStream(path)) {
+                text = new aXMLDecoder().decode(inputStream).trim();
             } catch (Exception e) {
                 sUtils.toast(context.getString(R.string.xml_decode_failed, new File(path).getName()), context).show();
             }

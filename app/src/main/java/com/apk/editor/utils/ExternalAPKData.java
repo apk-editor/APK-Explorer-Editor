@@ -8,18 +8,11 @@ import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.webkit.MimeTypeMap;
 
+import com.apk.axml.APKParser;
 import com.apk.editor.R;
-import com.apk.editor.utils.recyclerViewItems.APKItems;
 
-import net.dongliu.apk.parser.ApkFile;
-import net.dongliu.apk.parser.bean.ApkMeta;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on November 07, 2021
@@ -28,55 +21,39 @@ import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
 public class ExternalAPKData {
 
     private static boolean mFMInstall = false;
-    private static List<String> mPermissions = null;
-    private static String mCertificate = null, mManifest = null, mMinSDKVersion = null, mSDKVersion = null,
-            mSize = null, mVersion = null;
-
-    public static APKItems getAPKData(String apk, Context context) {
-        try (ApkFile apkFile = new ApkFile(new File(apk))) {
-            ApkMeta apkMeta = apkFile.getApkMeta();
-            APKItems mAPKData = new APKItems(apkMeta.getLabel(), apkMeta.getPackageName(),
-                    apkMeta.getVersionName(), readXMLFromAPK(apk, "AndroidManifest.xml"),
-                    apkMeta.getCompileSdkVersion(), apkMeta.getMinSdkVersion(),
-                    sAPKUtils.getAPKIcon(apk, context), apkMeta.getVersionCode(),
-                    apkMeta.getUsesPermissions());
-            apkFile.close();
-            return mAPKData;
-        } catch (IOException ignored) {
-        }
-        return null;
-    }
 
     public static boolean isFMInstall() {
         return mFMInstall;
     }
 
-    public static List<String> getData() {
+    @SuppressLint("StringFormatInvalid")
+    public static List<String> getData(Context context) {
         List<String> mData = new ArrayList<>();
+        APKParser mAPKParser = new APKParser();
         try {
-            if (mVersion != null) {
-                mData.add(mVersion);
+            if (mAPKParser.getVersionName() != null) {
+                mData.add(context.getString(R.string.version, mAPKParser.getVersionName() + " (" + mAPKParser.getVersionCode() + ")"));
             }
-            if (mSDKVersion != null) {
-                mData.add(mSDKVersion);
+            if (mAPKParser.getCompiledSDKVersion() != null) {
+                mData.add(context.getString(R.string.sdk_compile, sdkToAndroidVersion(mAPKParser.getCompiledSDKVersion(), context)));
             }
-            if (mMinSDKVersion != null) {
-                mData.add(mMinSDKVersion);
+            if (mAPKParser.getMinSDKVersion() != null) {
+                mData.add(context.getString(R.string.sdk_minimum, sdkToAndroidVersion(mAPKParser.getMinSDKVersion(), context)));
             }
-            if (mSize != null) {
-                mData.add(mSize);
+            if (mAPKParser.getAPKSize() != Integer.MIN_VALUE) {
+                long size = mAPKParser.getAPKSize() / 1024;
+                long decimal = (size - 1024) / 1024;
+                String apkSize;
+                if (size > 1024) {
+                    apkSize = size / 1024 + "." + decimal + " MB";
+                } else {
+                    apkSize = size  + " KB";
+                }
+                mData.add(context.getString(R.string.size, apkSize) + " (" + mAPKParser.getAPKSize() + " bytes)");
             }
         } catch (Exception ignored) {
         }
         return mData;
-    }
-
-    public static List<String> getPermissions() {
-        return mPermissions;
-    }
-
-    public static String getCertificate() {
-        return mCertificate;
     }
 
     public static String getExtension(Uri uri, Context context) {
@@ -89,20 +66,6 @@ public class ExternalAPKData {
             }
         } else {
             return MimeTypeMap.getFileExtensionFromUrl(uri.getPath());
-        }
-        return null;
-    }
-
-    public static String getManifest() {
-        return mManifest;
-    }
-
-    public static String readXMLFromAPK(String apk, String path) {
-        try (ApkFile apkFile = new ApkFile(new File(apk))) {
-            String xmlData = apkFile.transBinaryXml(path);
-            apkFile.close();
-            return xmlData;
-        } catch (IOException ignored) {
         }
         return null;
     }
@@ -180,36 +143,6 @@ public class ExternalAPKData {
 
     public static void isFMInstall(boolean b) {
         mFMInstall = b;
-    }
-
-    public static void setCertificate(String certificate) {
-        mCertificate = certificate;
-    }
-
-    public static void setManifest(String manifest) {
-        mManifest = manifest;
-    }
-
-    @SuppressLint("StringFormatInvalid")
-    public static void setMinSDKVersion(String minSDKVersion, Context context) {
-        mMinSDKVersion = context.getString(R.string.sdk_minimum, sdkToAndroidVersion(minSDKVersion, context));
-    }
-
-    public static void setPermissions(List<String> permissions) {
-        mPermissions = permissions;
-    }
-
-    @SuppressLint("StringFormatInvalid")
-    public static void setSDKVersion(String sdkVersion, Context context) {
-        mSDKVersion = context.getString(R.string.sdk_compile, sdkToAndroidVersion(sdkVersion, context));
-    }
-
-    public static void setSize(String size) {
-        mSize = size;
-    }
-
-    public static void setVersionInfo(String version) {
-        mVersion = version;
     }
 
 }
