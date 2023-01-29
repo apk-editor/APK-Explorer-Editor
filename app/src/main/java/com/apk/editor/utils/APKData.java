@@ -315,7 +315,7 @@ public class APKData {
                     }
                     if (Common.getAPKList().size() > 1) {
                         if (install) {
-                            mParent = new File(activity.getCacheDir(), "aee-signed");
+                            mParent = new File(activity.getExternalCacheDir(), "aee-signed");
                         } else {
                             mParent = new File(getExportAPKsPath(activity), apkNameString + "_aee-signed");
                         }
@@ -460,18 +460,19 @@ public class APKData {
                 mProgressDialog.setIndeterminate(true);
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
-                if (!sUtils.exist(new File(Projects.getExportPath(context)))) {
-                    sUtils.mkdir(new File(Projects.getExportPath(context)));
-                }
-                mFile = new File(Projects.getExportPath(context), new File(path).getName() + ".xapk");
+                mFile = new File(context.getExternalFilesDir("APK"), new File(path).getName() + ".xapk");
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void doInBackground() {
                 if (mFile.exists()) {
                     sUtils.delete(mFile);
                 }
                 APKEditorUtils.zip(new File(path), mFile);
+                if (exportOnly) {
+                    saveToDownload(mFile, context);
+                }
             }
 
             @Override
@@ -513,17 +514,7 @@ public class APKData {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void doInBackground() {
-                try {
-                    FileInputStream inputStream = new FileInputStream(file);
-                    ContentValues values = new ContentValues();
-                    values.put(MediaStore.MediaColumns.DISPLAY_NAME, file.getName());
-                    values.put(MediaStore.MediaColumns.MIME_TYPE, "*/*");
-                    values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
-                    Uri uri = context.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
-                    OutputStream outputStream = context.getContentResolver().openOutputStream(uri);
-                    sUtils.copyStream(inputStream, outputStream);
-                } catch (IOException ignored) {
-                }
+                saveToDownload(file, context);
             }
 
             @Override
@@ -534,6 +525,21 @@ public class APKData {
                 }
             }
         };
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public static void saveToDownload(File file, Context context) {
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.MediaColumns.DISPLAY_NAME, file.getName());
+            values.put(MediaStore.MediaColumns.MIME_TYPE, "*/*");
+            values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+            Uri uri = context.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
+            OutputStream outputStream = context.getContentResolver().openOutputStream(uri);
+            sUtils.copyStream(inputStream, outputStream);
+        } catch (IOException ignored) {
+        }
     }
 
 }
