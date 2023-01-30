@@ -56,6 +56,7 @@ public class SplitAPKInstaller {
 
     public static void handleAppBundle(String path, Activity activity) {
         new sExecutor() {
+            private final File mFile = new File(activity.getExternalCacheDir(), "splits");
             private ProgressDialog mProgressDialog;
 
             @Override
@@ -69,21 +70,21 @@ public class SplitAPKInstaller {
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
 
-                if (sUtils.exist(activity.getExternalFilesDir("splits"))) {
-                    sUtils.delete(activity.getExternalFilesDir("splits"));
+                if (sUtils.exist(mFile)) {
+                    sUtils.delete(mFile);
                 }
             }
 
             @Override
             public void doInBackground() {
-                APKEditorUtils.unzip(path, activity.getExternalFilesDir("splits").getAbsolutePath());
-                for (File files : getFilesList(activity.getExternalFilesDir("splits"))) {
+                APKEditorUtils.unzip(path, mFile.getAbsolutePath());
+                for (File files : getFilesList(mFile)) {
                     if (files.isFile() && files.getName().endsWith(".apk")) {
-                        Common.setPath(activity.getExternalFilesDir("splits").getAbsolutePath());
+                        Common.setPath(mFile.getAbsolutePath());
                     } else if (files.isDirectory()) {
-                        for (File dirs : getFilesList(activity.getExternalFilesDir("splits" + files.getName()))) {
+                        for (File dirs : getFilesList(new File(mFile, files.getName()))) {
                             if (dirs.isFile() && dirs.getName().endsWith(".apk")) {
-                                Common.setPath(activity.getExternalFilesDir("splits" + dirs.getName()).getAbsolutePath());
+                                Common.setPath(new File(mFile, dirs.getName()).getAbsolutePath());
                             }
                         }
                     }
