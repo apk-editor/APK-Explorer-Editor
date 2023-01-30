@@ -114,8 +114,6 @@
     <string name="clear_cache">"تنظيف الكاش"</string>
     <string name="clear_cache_summary">"إزالة الإعدادات الداخلية ل AEE"</string>
     <string name="clear_cache_message">"أي شيء، عدا التطبيقات المصدرة، سيزال!"</string>
-    <string name="disable">"عدم تمكين"</string>
-    <string name="enable">"تمكين"</string>
     <string name="export_options">"يتم تصدير (APK)"</string>
     <string name="export_path_default">"ذاكرة داخلية/ AEE"</string>
     <string name="export_path_download">"تنزيل"</string>
@@ -129,11 +127,8 @@
     <string name="sign_apk_custom">"مفتاح مخصص"</string>
     <string name="sign_apk_default">"مفتاح إفتراضي"</string>
     <string name="sign_apk_with">"توقيع APK باستخدام"</string>
-    <string name="text_editing">"تمكين تعديل النص"</string>
-    <string name="text_editing_summary">"محرر النص AEE لا يزال أساسياً جداً وفيه عدة أخطاء. APK التي أعدت بعد تحرير الملفات النصية الثنائية قد لا تعمل بشكل صحيح. يرجى استخدامها بعناية شديدة."</string>
     <string name="warning">"تحذير"</string>
     <string name="file_path_error">"فشل في الحصول على مسار الملف من مدير ملفات خارجي!"</string>
-    <string name="image_viewer">"مستعرض صور AEE "</string>
     <string name="text_editor">"معدل نصوص AEE"</string>
     <string name="discard">"مرفوض"</string>
     <string name="discard_message">"رفض التغيرات المجرات على هذا الملف"</string>

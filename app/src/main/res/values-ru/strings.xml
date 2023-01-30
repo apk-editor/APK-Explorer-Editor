@@ -114,8 +114,6 @@
     <string name="clear_cache">"Очистить кэш"</string>
     <string name="clear_cache_summary">"Удалить внутренние настройки AEE"</string>
     <string name="clear_cache_message">"Все, кроме экспортированных приложений, будет удалено!"</string>
-    <string name="disable">"Отключить"</string>
-    <string name="enable">"Включить"</string>
     <string name="export_options">"При экспорте (APK)"</string>
     <string name="export_path_default">"Внутреннее хранилище/AEE"</string>
     <string name="export_path_download">"Скачать"</string>
@@ -129,11 +127,8 @@
     <string name="sign_apk_custom">"Кастомный ключ"</string>
     <string name="sign_apk_default">"Дефолтный ключ"</string>
     <string name="sign_apk_with">"Подписать APK с помощью"</string>
-    <string name="text_editing">"Включить редактирование текста"</string>
-    <string name="text_editing_summary">"Текстовый редактор AEE по-прежнему очень прост и немного глючит. APK, подготовленный после редактирования двоичных текстовых файлов, может работать неправильно. Пожалуйста, используйте его с особой осторожностью."</string>
     <string name="warning">"Предупреждение"</string>
     <string name="file_path_error">"Не удалось получить путь из внешнего файлового менеджера!"</string>
-    <string name="image_viewer">"Просмотрщик изображений AEE"</string>
     <string name="text_editor">"Текстовый редактор AEE"</string>
     <string name="discard">"Отменить"</string>
     <string name="discard_message">"Отменить изменения, сделанные в файле?"</string>

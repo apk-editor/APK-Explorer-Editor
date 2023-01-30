@@ -9,8 +9,6 @@ import android.os.Environment;
 
 import com.apk.editor.MainActivity;
 import com.apk.editor.R;
-import com.apk.editor.activities.APKSignActivity;
-import com.apk.editor.adapters.SettingsAdapter;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
@@ -18,10 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
 import in.sunilpaulmathew.sCommon.Utils.sSerializableItems;
 import in.sunilpaulmathew.sCommon.Utils.sSingleChoiceDialog;
-import in.sunilpaulmathew.sCommon.Utils.sThemeUtils;
 import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
@@ -29,28 +25,7 @@ import in.sunilpaulmathew.sCommon.Utils.sUtils;
  */
 public class AppSettings {
 
-    public static ArrayList<sSerializableItems> getData(Context context) {
-        ArrayList <sSerializableItems> mData = new ArrayList<>();
-        mData.add(new sSerializableItems(null, context.getString(R.string.user_interface), null, null));
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_theme, context), context.getString(R.string.app_theme), sThemeUtils.getAppTheme(context), null));
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_translate, context), context.getString(R.string.language), getLanguage(context), null));
-        mData.add(new sSerializableItems(null, context.getString(R.string.settings_general), null, null));
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_projects, context), context.getString(R.string.project_exist_action), getProjectExistAction(context), null));
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_export, context), context.getString(R.string.export_path_apks), getExportAPKsPath(context), null));
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_export, context), context.getString(R.string.export_path_resources), getExportPath(context), null));
-        if (APKEditorUtils.isFullVersion(context)) {
-            mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_edit, context), context.getString(R.string.text_editing), getEditingOptions(context), null));
-            mData.add(new sSerializableItems(null, context.getString(R.string.signing_title), null, null));
-            mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_android, context), context.getString(R.string.export_options), getAPKs(context), null));
-            mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_installer, context), context.getString(R.string.installer_action), getInstallerAction(context), null));
-            mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_key, context), context.getString(R.string.sign_apk_with), getAPKSign(context), null));
-        }
-        mData.add(new sSerializableItems(null, context.getString(R.string.settings_misc), null, null));
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_delete, context), context.getString(R.string.clear_cache), context.getString(R.string.clear_cache_summary), null));
-        return mData;
-    }
-
-    private static int getAPKSignPosition(Context context) {
+    public static int getAPKSignPosition(Context context) {
         if (isCustomKey(context)) {
             return 1;
         } else {
@@ -67,15 +42,7 @@ public class AppSettings {
         return 0;
     }
 
-    private static int getEditingOptionsPosition(Context context) {
-        if (sUtils.getBoolean("editText", false, context)) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    private static int getProjectExitingMenuPosition(Context context) {
+    public static int getProjectExitingMenuPosition(Context context) {
         for (int i = 0; i < getProjectExitingMenu(context).length; i++) {
             if (getProjectExistAction(context).equals(getProjectExitingMenu(context)[i])) {
                 return i;
@@ -84,7 +51,7 @@ public class AppSettings {
         return 2;
     }
 
-    private static int getExportAPKsPathPosition(Context context) {
+    public static int getExportAPKsPathPosition(Context context) {
         if (getExportAPKsPath(context).equals(context.getString(R.string.export_path_default))) {
             return 1;
         } else {
@@ -92,7 +59,7 @@ public class AppSettings {
         }
     }
 
-    private static int getExportPathPosition(Context context) {
+    public static int getExportPathPosition(Context context) {
         for (int i = 0; i < getExportPathMenu(context).length; i++) {
             if (getExportPath(context).equals(getExportPathMenu(context)[i])) {
                 return i;
@@ -101,7 +68,7 @@ public class AppSettings {
         return 2;
     }
 
-    private static int getExportingAPKsPosition(Context context) {
+    public static int getExportingAPKsPosition(Context context) {
         for (int i = 0; i < getExportingAPKMenu(context).length; i++) {
             if (getAPKs(context).equals(getExportingAPKMenu(context)[i])) {
                 return i;
@@ -110,7 +77,7 @@ public class AppSettings {
         return 2;
     }
 
-    private static int getInstallerMenuPosition(Context context) {
+    public static int getInstallerMenuPosition(Context context) {
         for (int i = 0; i < getInstallerMenu(context).length; i++) {
             if (getInstallerAction(context).equals(getInstallerMenu(context)[i])) {
                 return i;
@@ -153,7 +120,7 @@ public class AppSettings {
         return mData;
     }
 
-    private static String getLanguage(Context context) {
+    public static String getLanguage(Context context) {
         switch (sUtils.getLanguage(context)) {
             case "en_US":
                 return context.getString(R.string.language_en);
@@ -186,7 +153,7 @@ public class AppSettings {
         }
     }
 
-    private static String getExportAPKsPath(Context context) {
+    public static String getExportAPKsPath(Context context) {
         String exportAPKPath = sUtils.getString("exportAPKsPath", "externalFiles", context);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && exportAPKPath.equals("internalStorage")) {
             return context.getString(R.string.export_path_default);
@@ -195,7 +162,7 @@ public class AppSettings {
         }
     }
 
-    private static String getExportPath(Context context) {
+    public static String getExportPath(Context context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             if (sUtils.getString("exportPath", null, context) != null && sUtils.getString("exportPath", null, context).equals(Environment.getExternalStorageDirectory().toString())) {
                 return context.getString(R.string.sdcard);
@@ -209,7 +176,7 @@ public class AppSettings {
         }
     }
 
-    private static String getAPKs(Context context) {
+    public static String getAPKs(Context context) {
         if (sUtils.getString("exportAPKs", null, context) != null) {
             return sUtils.getString("exportAPKs", null, context);
         } else {
@@ -217,7 +184,7 @@ public class AppSettings {
         }
     }
 
-    private static String getProjectExistAction(Context context) {
+    public static String getProjectExistAction(Context context) {
         if (sUtils.getString("projectAction", null, context) != null) {
             return sUtils.getString("projectAction", null, context);
         } else {
@@ -225,15 +192,7 @@ public class AppSettings {
         }
     }
 
-    private static String getEditingOptions(Context context) {
-        if (sUtils.getBoolean("editText", false, context)) {
-            return context.getString(R.string.enable);
-        } else {
-            return context.getString(R.string.disable);
-        }
-    }
-
-    private static String getInstallerAction(Context context) {
+    public static String getInstallerAction(Context context) {
         if (sUtils.getString("installerAction", null, context) != null) {
             return sUtils.getString("installerAction", null, context);
         } else {
@@ -241,7 +200,7 @@ public class AppSettings {
         }
     }
 
-    private static String getAPKSign(Context context) {
+    public static String getAPKSign(Context context) {
         if (isCustomKey(context)) {
             return context.getString(R.string.sign_apk_custom);
         } else {
@@ -268,14 +227,7 @@ public class AppSettings {
         };
     }
 
-    private static String[] getEditingOptionsMenu(Context context) {
-        return new String[] {
-                context.getString(R.string.disable),
-                context.getString(R.string.enable)
-        };
-    }
-
-    private static String[] getProjectExitingMenu(Context context) {
+    public static String[] getProjectExitingMenu(Context context) {
         return new String[] {
                 context.getString(R.string.save),
                 context.getString(R.string.delete),
@@ -283,14 +235,14 @@ public class AppSettings {
         };
     }
 
-    private static String[] getAPKExportPathMenu(Context context) {
+    public static String[] getAPKExportPathMenu(Context context) {
         return new String[] {
                 context.getString(R.string.export_path_files_dir),
                 context.getString(R.string.export_path_default)
         };
     }
 
-    private static String[] getExportPathMenu(Context context) {
+    public static String[] getExportPathMenu(Context context) {
         if (Build.VERSION.SDK_INT < 29) {
             return new String[]{
                     context.getString(R.string.sdcard),
@@ -304,7 +256,7 @@ public class AppSettings {
         }
     }
 
-    private static String[] getExportingAPKMenu(Context context) {
+    public static String[] getExportingAPKMenu(Context context) {
         return new String[] {
                 context.getString(R.string.export_storage),
                 context.getString(R.string.export_resign),
@@ -312,7 +264,7 @@ public class AppSettings {
         };
     }
 
-    private static String[] getInstallerMenu(Context context) {
+    public static String[] getInstallerMenu(Context context) {
         return new String[] {
                 context.getString(R.string.install),
                 context.getString(R.string.install_resign),
@@ -320,47 +272,7 @@ public class AppSettings {
         };
     }
 
-    public static void handleSettingsActions(SettingsAdapter adapter, int position, Activity activity) {
-        if (getData(activity).get(position).getTextTwo() != null) {
-            if (position == 1) {
-                sThemeUtils.setAppTheme(activity);
-            } else if (position == 2) {
-                setLanguage(activity);
-            } else if (position == 4) {
-                setProjectExistAction(adapter, position,activity);
-            } else if (position == 5) {
-                if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, activity)) {
-                    sPermissionUtils.requestPermission(
-                            new String[] {
-                                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                            }, activity);
-                } else {
-                    setExportAPKsPath(adapter, position, activity);
-                }
-            } else if (position == 6) {
-                if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, activity)) {
-                    sPermissionUtils.requestPermission(
-                            new String[] {
-                                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                            },activity);
-                } else {
-                    setExportPath(adapter, position, activity);
-                }
-            } else if (APKEditorUtils.isFullVersion(activity) && position == 7) {
-                setEditingOptions(adapter, position,activity);
-            } else if (APKEditorUtils.isFullVersion(activity) && position == 9) {
-                setAPKs(adapter, position,activity);
-            } else if (APKEditorUtils.isFullVersion(activity) && position == 10) {
-                setInstallerAction(adapter, position,activity);
-            } else if (APKEditorUtils.isFullVersion(activity) && position == 11) {
-                setAPKSign(adapter, position,activity);
-            } else {
-                deleteAppSettings(activity);
-            }
-        }
-    }
-
-    private static void setLanguage(Context context) {
+    public static void setLanguage(Context context) {
         new sSingleChoiceDialog(R.drawable.ic_translate, context.getString(R.string.language),
                 getAppLanguageMenu(context), getAppLanguagePosition(context), context) {
 
@@ -423,205 +335,73 @@ public class AppSettings {
                         sUtils.saveString("appLanguage", "hu", context);
                         restartApp(context);
                         break;
-                    }
-            }
-        }.show();
-    }
-
-    private static void setExportAPKsPath(SettingsAdapter adapter, int position, Context context) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            new sSingleChoiceDialog(R.drawable.ic_export, context.getString(R.string.export_path_apks),
-                    getAPKExportPathMenu(context), getExportAPKsPathPosition(context), context) {
-
-                @Override
-                public void onItemSelected(int itemPosition) {
-                    if (itemPosition == 0) {
-                        sUtils.saveString("exportAPKsPath", "externalFiles", context);
-                        getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_export, context), context.getString(R.string.export_path_apks), getExportAPKsPath(context), null));
-                        adapter.notifyItemChanged(position);
-                        transferExportedApps(context);
-                    } else if (itemPosition == 1) {
-                        sUtils.saveString("exportAPKsPath", "internalStorage", context);
-                        getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_export, context), context.getString(R.string.export_path_apks), getExportAPKsPath(context), null));
-                        adapter.notifyItemChanged(position);
-                        transferExportedApps(context);
-                    }
-                }
-            }.show();
-        }
-    }
-
-    private static void setExportPath(SettingsAdapter adapter, int position, Context context) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            new sSingleChoiceDialog(R.drawable.ic_export, context.getString(R.string.export_path_resources),
-                    getExportPathMenu(context), getExportPathPosition(context), context) {
-
-                @Override
-                public void onItemSelected(int itemPosition) {
-                    if (itemPosition == 0) {
-                        sUtils.saveString("exportPath", Environment.getExternalStorageDirectory().toString(), context);
-                        getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_export, context), context.getString(R.string.export_path_resources), getExportPath(context), null));
-                        adapter.notifyItemChanged(position);
-                    } else if (itemPosition == 1) {
-                        sUtils.saveString("exportPath", Environment.getExternalStorageDirectory().toString() + "/AEE", context);
-                        getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_export, context), context.getString(R.string.export_path_resources), getExportPath(context), null));
-                        adapter.notifyItemChanged(position);
-                    } else {
-                        sUtils.saveString("exportPath", null, context);
-                        getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_export, context), context.getString(R.string.export_path_resources), getExportPath(context), null));
-                        adapter.notifyItemChanged(position);
-                    }
-                }
-            }.show();
-        }
-    }
-
-    private static void setAPKs(SettingsAdapter adapter, int position, Context context) {
-        new sSingleChoiceDialog(R.drawable.ic_android, context.getString(R.string.export_options),
-                getExportingAPKMenu(context), getExportingAPKsPosition(context), context) {
-
-            @Override
-            public void onItemSelected(int itemPosition) {
-                if (itemPosition == 0) {
-                    sUtils.saveString("exportAPKs", context.getString(R.string.export_storage), context);
-                    getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_android, context), context.getString(R.string.export_options), getAPKs(context), null));
-                    adapter.notifyItemChanged(position);
-                } else if (itemPosition == 1) {
-                    sUtils.saveString("exportAPKs", context.getString(R.string.export_resign), context);
-                    getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_android, context), context.getString(R.string.export_options), getAPKs(context), null));
-                    adapter.notifyItemChanged(position);
-                } else {
-                    sUtils.saveString("exportAPKs", null, context);
-                    getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_android, context), context.getString(R.string.export_options), getAPKs(context), null));
-                    adapter.notifyItemChanged(position);
                 }
             }
         }.show();
     }
 
-    private static void setProjectExistAction(SettingsAdapter adapter, int position, Context context) {
-        new sSingleChoiceDialog(R.drawable.ic_projects, context.getString(R.string.project_exist_action),
-                getProjectExitingMenu(context), getProjectExitingMenuPosition(context), context) {
-
-            @Override
-            public void onItemSelected(int itemPosition) {
-                if (itemPosition == 0) {
-                    sUtils.saveString("projectAction", context.getString(R.string.save), context);
-                    getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_projects, context), context.getString(R.string.project_exist_action), getProjectExistAction(context), null));
-                    adapter.notifyItemChanged(position);
-                } else if (itemPosition == 1) {
-                    sUtils.saveString("projectAction", context.getString(R.string.delete), context);
-                    getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_projects, context), context.getString(R.string.project_exist_action), getProjectExistAction(context), null));
-                    adapter.notifyItemChanged(position);
-                } else {
-                    sUtils.saveString("projectAction", null, context);
-                    getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_projects, context), context.getString(R.string.project_exist_action), getProjectExistAction(context), null));
-                    adapter.notifyItemChanged(position);
-                }
-            }
-        }.show();
-    }
-
-    private static void setEditingOptions(SettingsAdapter adapter, int position, Context context) {
-        new sSingleChoiceDialog(R.drawable.ic_edit, context.getString(R.string.text_editing),
-                getEditingOptionsMenu(context), getEditingOptionsPosition(context), context) {
-
-            @Override
-            public void onItemSelected(int itemPosition) {
-                if (itemPosition == 0) {
-                    sUtils.saveBoolean("editText", false, context);
-                    getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_edit, context), context.getString(R.string.text_editing), getEditingOptions(context), null));
-                    adapter.notifyItemChanged(position);
-                } else {
-                    new MaterialAlertDialogBuilder(context)
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(R.string.warning)
-                            .setMessage(context.getString(R.string.text_editing_summary))
-                            .setNegativeButton(context.getString(R.string.cancel), (d, id) -> {
-                            })
-                            .setPositiveButton(context.getString(R.string.enable), (d, id) -> {
-                                sUtils.saveBoolean("editText", true, context);
-                                getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_edit, context), context.getString(R.string.text_editing), getEditingOptions(context), null));
-                                adapter.notifyItemChanged(position);
-                            }).show();
-                }
-            }
-        }.show();
-    }
-
-    private static void setInstallerAction(SettingsAdapter adapter, int position, Context context) {
-        new sSingleChoiceDialog(R.drawable.ic_installer, context.getString(R.string.installer_action),
-                getInstallerMenu(context), getInstallerMenuPosition(context), context) {
-
-            @Override
-            public void onItemSelected(int itemPosition) {
-                if (itemPosition == 0) {
-                    sUtils.saveString("installerAction", context.getString(R.string.install), context);
-                    getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_installer, context), context.getString(R.string.installer_action), getInstallerAction(context), null));
-                    adapter.notifyItemChanged(position);
-                } else if (itemPosition == 1) {
-                    sUtils.saveString("installerAction", context.getString(R.string.install_resign), context);
-                    getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_installer, context), context.getString(R.string.installer_action), getInstallerAction(context), null));
-                    adapter.notifyItemChanged(position);
-                } else {
-                    sUtils.saveString("installerAction", null, context);
-                    getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_installer, context), context.getString(R.string.installer_action), getInstallerAction(context), null));
-                    adapter.notifyItemChanged(position);
-                }
-            }
-        }.show();
-    }
-
-    private static void setAPKSign(SettingsAdapter adapter, int position, Context context) {
-        new sSingleChoiceDialog(R.drawable.ic_key, context.getString(R.string.sign_apk_with),
-                new String[] {
-                        context.getString(R.string.sign_apk_default),
-                        context.getString(R.string.sign_apk_custom)
-                }, getAPKSignPosition(context), context) {
-
-            @Override
-            public void onItemSelected(int itemPosition) {
-                if (itemPosition == 0) {
-                    if (isCustomKey(context)) {
-                        sUtils.saveString("PrivateKey", null, context);
-                        sUtils.delete(new File(context.getFilesDir(), "signing/APKEditor.pk8"));
-                        sUtils.saveString("X509Certificate", null, context);
-                        sUtils.delete(new File(context.getFilesDir(), "signing/APKEditorCert"));
-                        getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_key, context), context.getString(R.string.sign_apk_with), getAPKSign(context), null));
-                        adapter.notifyItemChanged(position);
-                    }
-                } else {
-                    Intent signing = new Intent(context, APKSignActivity.class);
-                    context.startActivity(signing);
-                    getData(context).set(position, new sSerializableItems(sUtils.getDrawable(R.drawable.ic_key, context), context.getString(R.string.sign_apk_with), getAPKSign(context), null));
-                    adapter.notifyItemChanged(position);
-                }
-            }
-        }.show();
-    }
-
-    private static void deleteAppSettings(Activity activity) {
+    public static void deleteAppSettings(Activity activity) {
         new MaterialAlertDialogBuilder(activity)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.warning)
                 .setMessage(activity.getString(R.string.clear_cache_message))
                 .setNegativeButton(activity.getString(R.string.cancel), (dialog, id) -> {
                 })
-                .setPositiveButton(activity.getString(R.string.delete), (dialog, id) -> {
-                    sUtils.delete(activity.getCacheDir());
-                    sUtils.delete(activity.getFilesDir());
-                    if (APKEditorUtils.isFullVersion(activity) && isCustomKey(activity)) {
-                        sUtils.saveString("PrivateKey", null, activity);
-                        sUtils.delete(new File(activity.getFilesDir(), "signing/APKEditor.pk8"));
-                        sUtils.saveString("X509Certificate", null, activity);
-                        sUtils.delete(new File(activity.getFilesDir(), "signing/APKEditorCert"));
-                    }
-                    activity.finish();
-                }).show();
+                .setPositiveButton(activity.getString(R.string.delete), (dialog, id) -> clearAppSettings(activity).execute()
+                ).show();
     }
 
-    private static void transferExportedApps(Context context) {
-        new sExecutor() {
+    public static boolean isCustomKey(Context context) {
+        return sUtils.getString("PrivateKey", null, context) != null &&
+                sUtils.getString("X509Certificate", null, context) != null;
+    }
+
+    private static void restartApp(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
+    }
+
+    private static sExecutor clearAppSettings(Activity activity) {
+        return new sExecutor() {
+            private ProgressDialog mProgressDialog;
+            @Override
+            public void onPreExecute() {
+                mProgressDialog = new ProgressDialog(activity);
+                mProgressDialog.setMessage(activity.getString(R.string.clearing_cache_message));
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mProgressDialog.setIcon(R.mipmap.ic_launcher);
+                mProgressDialog.setTitle(R.string.app_name);
+                mProgressDialog.setIndeterminate(true);
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+            }
+
+            @Override
+            public void doInBackground() {
+                sUtils.delete(activity.getCacheDir());
+                sUtils.delete(activity.getFilesDir());
+                if (APKEditorUtils.isFullVersion(activity) && AppSettings.isCustomKey(activity)) {
+                    sUtils.saveString("PrivateKey", null, activity);
+                    sUtils.delete(new File(activity.getFilesDir(), "signing/APKEditor.pk8"));
+                    sUtils.saveString("X509Certificate", null, activity);
+                    sUtils.delete(new File(activity.getFilesDir(), "signing/APKEditorCert"));
+                }
+            }
+
+            @Override
+            public void onPostExecute() {
+                try {
+                    mProgressDialog.dismiss();
+                } catch (IllegalArgumentException ignored) {
+                }
+                activity.finish();
+            }
+        };
+    }
+
+    public static sExecutor transferExportedApps(Context context){
+        return new sExecutor() {
             private File sourceDir;
             private ProgressDialog mProgressDialog;
 
@@ -658,22 +438,7 @@ public class AppSettings {
                 } catch (IllegalArgumentException ignored) {
                 }
             }
-        }.execute();
-    }
-
-    private static boolean isCustomKey(Context context) {
-        return sUtils.getString("PrivateKey", null, context) != null &&
-                sUtils.getString("X509Certificate", null, context) != null;
-    }
-
-    public static boolean isTextEditingEnabled(Context context) {
-        return sUtils.getBoolean("editText", false, context);
-    }
-
-    private static void restartApp(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(intent);
+        };
     }
 
 }

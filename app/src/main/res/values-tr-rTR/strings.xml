@@ -96,8 +96,6 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Önbellek temizle"</string>
     <string name="clear_cache_summary">"AEE'nin iç ayarlarını sil"</string>
-    <string name="disable">"Devre dışı bırak"</string>
-    <string name="enable">"Etkinleştir"</string>
     <string name="export_path_default">"Dahili Bellek/AEE"</string>
     <string name="export_path_download">"İndir"</string>
     <string name="installer_action">"APK Kurulumunda"</string>
@@ -106,10 +104,7 @@
     <string name="settings_general">"Genel"</string>
     <string name="settings_misc">"Çeşitli"</string>
     <string name="sign_apk_custom">"Özel Anahtar"</string>
-    <string name="text_editing">"Metin düzenlemeyi etkinleştir"</string>
-    <string name="text_editing_summary">"AEE metin düzenleyici çok basit ve henüz hataları olan bir araçtır. Dosyalar değiştirildikten sonra oluşturulacak APK'ler düzgün çalışmayabilir. Çok dikkatli kullanın."</string>
     <string name="warning">"Uyarı"</string>
-    <string name="image_viewer">"AEE Resim Gösterici"</string>
     <string name="text_editor">"AEE Metin Düzenleyici"</string>
     <string name="discard_message">"Değişikliklerden vazgeç?"</string>
     <string name="language">"Dil"</string>

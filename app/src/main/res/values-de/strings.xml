@@ -114,8 +114,6 @@
     <string name="clear_cache">"Cache leeren"</string>
     <string name="clear_cache_summary">"Interne Einstellungen von AEE löschen"</string>
     <string name="clear_cache_message">"Alles, außer den exportierten Anwendungen, werden entfernt!"</string>
-    <string name="disable">"Deaktivieren"</string>
-    <string name="enable">"Aktivieren"</string>
     <string name="export_options">"Beim Exportieren (APK's)"</string>
     <string name="export_path_default">"Lokaler Speicher/AEE"</string>
     <string name="export_path_download">"Herunterladen"</string>
@@ -129,11 +127,8 @@
     <string name="sign_apk_custom">"Benutzerdefinierter Schlüssel"</string>
     <string name="sign_apk_default">"Standardschlüssel"</string>
     <string name="sign_apk_with">"Signieren von APKs mit"</string>
-    <string name="text_editing">"Aktivieren der Textbearbeitung"</string>
-    <string name="text_editing_summary">"Der AEE-Texteditor ist noch sehr einfach und ein wenig fehlerhaft. APKs, die nach der Bearbeitung von binären Textdateien erstellt wurden, funktionieren möglicherweise nicht richtig. Bitte verwenden Sie ihn mit äußerster Vorsicht."</string>
     <string name="warning">"Warnung"</string>
     <string name="file_path_error">"Dateipfad konnte nicht vom externen Dateimanager geladen werden!"</string>
-    <string name="image_viewer">"AEE Bild Betrachter"</string>
     <string name="text_editor">"AEE Text Editor"</string>
     <string name="discard">"Verwerfen"</string>
     <string name="discard_message">"Änderungen an dieser Datei verwerfen?"</string>

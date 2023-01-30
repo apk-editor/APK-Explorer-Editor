@@ -114,8 +114,6 @@
     <string name="clear_cache">"Gyorsítótár törlése"</string>
     <string name="clear_cache_summary">"Törölje az AEE belső beállításait"</string>
     <string name="clear_cache_message">"Az exportált alkalmazások kivételével minden eltávolításra kerül."</string>
-    <string name="disable">"Tilt"</string>
-    <string name="enable">"Engedélyez"</string>
     <string name="export_options">"Exportálásra (APK'-k)"</string>
     <string name="export_path_default">"Belső tárhely/AEE"</string>
     <string name="export_path_download">"Letölt"</string>
@@ -129,11 +127,8 @@
     <string name="sign_apk_custom">"Egyéni kulcs"</string>
     <string name="sign_apk_default">"Alapértelmezett kulcs"</string>
     <string name="sign_apk_with">"APK'-k aláírása"</string>
-    <string name="text_editing">"Szövegszerkesztés engedélyezése"</string>
-    <string name="text_editing_summary">"Az AEE szövegszerkesztője még nagyon egyszerű és kissé hibás. Előfordulhat, hogy a bináris szöveges fájlok szerkesztése után készített APK-k nem működnek megfelelően.  Kérjük rendkívül körültekintően használja."</string>
     <string name="warning">"Figyelmeztetés"</string>
     <string name="file_path_error">"Nem sikerült lekérni a fájl elérési útját a külső fájlkezelőből"</string>
-    <string name="image_viewer">"AEE Képmegjelenítő"</string>
     <string name="text_editor">"AEE Szövegszerkesztő"</string>
     <string name="discard">"Elvet"</string>
     <string name="discard_message">"Elveti a fájlon végrehajtott módosításokat?"</string>

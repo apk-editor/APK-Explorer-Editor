@@ -100,8 +100,6 @@
     <string name="clear_cache">"Bersihkan Sampah"</string>
     <string name="clear_cache_summary">"Hapus pengaturan internal AEE"</string>
     <string name="clear_cache_message">"Semuanya, kecuali aplikasi yang diekspor, akan dihapus!"</string>
-    <string name="disable">"Melumpuhkan"</string>
-    <string name="enable">"Memungkinkan"</string>
     <string name="export_options">"Saat Mengekspor (APK)"</string>
     <string name="export_path_default">"Penyimpanan Internal/AEE"</string>
     <string name="export_path_download">"Unduh"</string>
@@ -115,11 +113,8 @@
     <string name="sign_apk_custom">"Kunci Kustom"</string>
     <string name="sign_apk_default">"Kunci Default"</string>
     <string name="sign_apk_with">"Sign APK dengan"</string>
-    <string name="text_editing">"Aktifkan Pengeditan Teks "</string>
-    <string name="text_editing_summary">"Editor teks AEE masih sangat mendasar dan sedikit bermasalah.  APK yang disiapkan setelah mengedit file teks biner mungkin tidak berfungsi dengan baik.  Silakan gunakan dengan sangat hati-hati."</string>
     <string name="warning">"Peringatan"</string>
     <string name="file_path_error">"Gagal mendapatkan jalur file dari Manajer File eksternal!"</string>
-    <string name="image_viewer">"Penampil Gambar AEE"</string>
     <string name="text_editor">"Editor Teks AEE"</string>
     <string name="discard">"Membuang"</string>
     <string name="discard_message">"Buang perubahan yang dibuat pada file ini?"</string>

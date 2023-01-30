@@ -114,8 +114,6 @@
     <string name="clear_cache">"Vymazat Cache"</string>
     <string name="clear_cache_summary">"Odstranit interní nastavení AEE"</string>
     <string name="clear_cache_message">"Vše kromě exportovaných aplikací bude odstraněno!"</string>
-    <string name="disable">"Zakázat"</string>
-    <string name="enable">"Umožnit"</string>
     <string name="export_options">"Při exportu (APK)"</string>
     <string name="export_path_default">"Interní úložiště / AEE"</string>
     <string name="export_path_download">"Download"</string>
@@ -129,11 +127,8 @@
     <string name="sign_apk_custom">"Vlastní klíč"</string>
     <string name="sign_apk_default">"Výchozí klíč"</string>
     <string name="sign_apk_with">"Podepsat APK pomocí"</string>
-    <string name="text_editing">"Povolit úpravy textu"</string>
-    <string name="text_editing_summary">"AEE textový editor je stále velmi základní a trochu buggy. Soubory APK připravené po úpravě binárních textových souborů nemusí fungovat správně. Používejte jej s maximální opatrností."</string>
     <string name="warning">"Upozornění"</string>
     <string name="file_path_error">"Nepodařilo se získat cestu k souboru z externího správce souborů!"</string>
-    <string name="image_viewer">"Prohlížeč obrázků AEE"</string>
     <string name="text_editor">"AEE Text Editor"</string>
     <string name="discard">"Vyřadit"</string>
     <string name="discard_message">"Zahodit změny provedené v tomto souboru?"</string>

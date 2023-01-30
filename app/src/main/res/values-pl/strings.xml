@@ -114,8 +114,6 @@
     <string name="clear_cache">"Wyczyść pamięć podręczną"</string>
     <string name="clear_cache_summary">"Usuń ustawienia wewnętrzne AEE"</string>
     <string name="clear_cache_message">"Wszystko, oprócz wyeksportowanych aplikacji, zostanie usunięte!"</string>
-    <string name="disable">"Wyłącz"</string>
-    <string name="enable">"Włącz"</string>
     <string name="export_options">"Przy eksportowaniu (APK)"</string>
     <string name="export_path_default">"Pamięć wewnętrzna/AEE"</string>
     <string name="export_path_download">"Pobierz"</string>
@@ -129,11 +127,8 @@
     <string name="sign_apk_custom">"Własny klucz"</string>
     <string name="sign_apk_default">"Domyślny klucz"</string>
     <string name="sign_apk_with">"Podpisz APK z"</string>
-    <string name="text_editing">"Włącz edycję tekstu"</string>
-    <string name="text_editing_summary">"Edytor tekstu AEE jest nadal bardzo podstawowy i posiada błędy. APK przygotowane po edycji binarnych plików tekstowych mogą nie działać poprawnie. Proszę używać go z najwyższą ostrożnością."</string>
     <string name="warning">"Ostrzeżenie"</string>
     <string name="file_path_error">"Nie udało się uzyskać ścieżki pliku z zewnętrznego menedżera plików!"</string>
-    <string name="image_viewer">"AEE Przeglądarka obrazów"</string>
     <string name="text_editor">"AEE Edytor tekstu"</string>
     <string name="discard">"Odrzuć"</string>
     <string name="discard_message">"Odrzucić zmiany wprowadzone w tym pliku?"</string>

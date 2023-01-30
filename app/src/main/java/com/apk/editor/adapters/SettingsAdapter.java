@@ -1,6 +1,5 @@
 package com.apk.editor.adapters;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
@@ -41,7 +40,6 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
         return new ViewHolder(rowItem);
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull SettingsAdapter.ViewHolder holder, int position) {
         holder.Title.setText(data.get(position).getTextOne());

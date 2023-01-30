@@ -112,8 +112,6 @@
     <string name="clear_cache">"Limpiar caché"</string>
     <string name="clear_cache_summary">"Borra ajustes internos de AEE"</string>
     <string name="clear_cache_message">"¡Todo, excepto las aplicaciones exportadas, será eliminado!"</string>
-    <string name="disable">"Desactivar"</string>
-    <string name="enable">"Activar"</string>
     <string name="export_options">"De exportación (APK)"</string>
     <string name="export_path_default">"Almacenamiento interno/AEE"</string>
     <string name="export_path_download">"Descargar"</string>
@@ -127,11 +125,8 @@
     <string name="sign_apk_custom">"Clave personalizada"</string>
     <string name="sign_apk_default">"Clave predeterminada"</string>
     <string name="sign_apk_with">"Firmar APKs con"</string>
-    <string name="text_editing">"Activar la edición de texto"</string>
-    <string name="text_editing_summary">"El editor de texto de AEE sigue siendo muy básico y con errores. Los APKs preparados después de editar el archivo de texto binario podrían no funcionar correctamente. Por favor, utilízalo con extrema precaución."</string>
     <string name="warning">"Atención"</string>
     <string name="file_path_error">"No se ha podido recuperar la ruta del archivo desde el gestor de archivos externo."</string>
-    <string name="image_viewer">"Visor de imágenes AEE"</string>
     <string name="text_editor">"Editor de texto AEE"</string>
     <string name="discard">"Descartar"</string>
     <string name="discard_message">"¿Deshacer los cambios realizados en este archivo?"</string>

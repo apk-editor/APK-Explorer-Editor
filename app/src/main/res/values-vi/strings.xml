@@ -114,8 +114,6 @@
     <string name="clear_cache">"Xoá bộ nhớ đệm"</string>
     <string name="clear_cache_summary">"Xoá cài đặt nội bộ của AEE"</string>
     <string name="clear_cache_message">"Tất cả mọi thứ, trừ các ứng dụng đã xuất, sẽ bị xoá!"</string>
-    <string name="disable">"Tắt"</string>
-    <string name="enable">"Bật"</string>
     <string name="export_options">"Khi xuất (APK)"</string>
     <string name="export_path_default">"Bộ nhớ trong/AEE"</string>
     <string name="export_path_download">"Tải xuống"</string>
@@ -129,11 +127,8 @@
     <string name="sign_apk_custom">"Mã tuỳ chỉnh"</string>
     <string name="sign_apk_default">"Mã mặc định"</string>
     <string name="sign_apk_with">"Ký APK bằng"</string>
-    <string name="text_editing">"Bật chỉnh sửa văn bản"</string>
-    <string name="text_editing_summary">"Trình chỉnh sửa văn bản của AEE vẫn rất cơ bản và có một ít lỗi. Các tệp APK được chuẩn bị sau khi chỉnh sửa các tệp văn bản nhị phân có thể không hoạt động đúng. Hãy sử dụng nó rất cẩn thận."</string>
     <string name="warning">"Cảnh báo"</string>
     <string name="file_path_error">"Lấy đường dẫn tệp từ trình quản lý tệp ngoài thất bại!"</string>
-    <string name="image_viewer">"Trình xem hình ảnh của AEE"</string>
     <string name="text_editor">"Trình chỉnh sửa văn bản của AEE"</string>
     <string name="discard">"Bỏ"</string>
     <string name="discard_message">"Bỏ các thay đổi đã tạo trên tệp này?"</string>
