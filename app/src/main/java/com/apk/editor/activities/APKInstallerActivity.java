@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.viewpager.widget.ViewPager;
 
 import com.apk.axml.APKParser;
@@ -20,7 +21,6 @@ import com.apk.editor.fragments.ManifestFragment;
 import com.apk.editor.fragments.PermissionsFragment;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.ExternalAPKData;
 import com.apk.editor.utils.dialogs.InvalidFileDialog;
 import com.apk.editor.utils.dialogs.SelectBundleDialog;
 import com.google.android.material.card.MaterialCardView;
@@ -29,6 +29,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
+import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.Adapters.sPagerAdapter;
 import in.sunilpaulmathew.sCommon.Utils.sExecutor;
@@ -46,7 +47,6 @@ public class APKInstallerActivity extends AppCompatActivity {
     private LinearLayoutCompat mMainLayout, mIconsLayout;
     private MaterialCardView mCancel, mInstall;
     private MaterialTextView mAppName, mInstallText, mPackageID;
-    private String mExtension = null;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
 
@@ -87,8 +87,8 @@ public class APKInstallerActivity extends AppCompatActivity {
                 mProgressDialog.show();
 
                 sUtils.delete(getExternalFilesDir("APK"));
-                mExtension = ExternalAPKData.getExtension(uri, activity);
-                mFile = new File(getExternalFilesDir("APK"), "tmp." + mExtension);
+                String fileName = Objects.requireNonNull(DocumentFile.fromSingleUri(activity, uri)).getName();
+                mFile = new File(getExternalFilesDir("APK"), Objects.requireNonNull(fileName));
                 Common.getAPKList().clear();
             }
 
@@ -114,7 +114,7 @@ public class APKInstallerActivity extends AppCompatActivity {
                         if (sPackageUtils.isPackageInstalled(mAPKParser.getPackageName(), activity)) {
                             mInstallText.setText(getString(R.string.update));
                         }
-                    } else if (mExtension.equals("apkm") || mExtension.equals("apks") || mExtension.equals("xapk")) {
+                    } else if (mFile.getName().endsWith("apkm") || mFile.getName().endsWith("apks") || mFile.getName().endsWith("xapk")) {
                         new SelectBundleDialog(mFile.getAbsolutePath(), true, activity).show();
                     } else {
                         new InvalidFileDialog(true, activity).show();

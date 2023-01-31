@@ -33,7 +33,6 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.ExternalAPKData;
 import com.apk.editor.utils.dialogs.InvalidFileDialog;
 import com.apk.editor.utils.dialogs.SelectBundleDialog;
 import com.google.android.material.card.MaterialCardView;
@@ -245,7 +244,6 @@ public class APKsFragment extends Fragment {
     private sExecutor handleSingleInstallationEvent(Uri uriFile, Activity activity) {
         return new sExecutor() {
             private File mFile = null;
-            private String mExtension = null;
 
             @Override
             public void onPreExecute() {
@@ -256,18 +254,18 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void doInBackground() {
-                mExtension = ExternalAPKData.getExtension(uriFile, requireActivity());
-                mFile = new File(activity.getExternalFilesDir("APK"), "tmp." + mExtension);
+                String fileName = Objects.requireNonNull(DocumentFile.fromSingleUri(activity, uriFile)).getName();
+                mFile = new File(activity.getExternalFilesDir("APK"), Objects.requireNonNull(fileName));
                 sUtils.copy(uriFile, mFile, activity);
             }
 
             @Override
             public void onPostExecute() {
-                if (mExtension.equals("apk")) {
+                if (mFile.getName().endsWith("apk")) {
                     Common.getAPKList().add(mFile.getAbsolutePath());
                     Common.setFinishStatus(true);
                     APKExplorer.handleAPKs(false, activity);
-                } else if (mExtension.equals("apkm") || mExtension.equals("apks") || mExtension.equals("xapk")) {
+                } else if (mFile.getName().endsWith("apkm") || mFile.getName().endsWith("apks") || mFile.getName().endsWith("xapk")) {
                     new SelectBundleDialog(mFile.getAbsolutePath(), false, activity).show();
                 } else {
                     new InvalidFileDialog(false, activity).show();
