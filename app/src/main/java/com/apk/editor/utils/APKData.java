@@ -154,13 +154,6 @@ public class APKData {
     public static void prepareSource(File buildDir, File exportPath, File backupPath, Context context) {
         if (!Common.isCancelled()) {
             for (File file : Objects.requireNonNull(exportPath.listFiles())) {
-                if (!fileToExclude(file)) {
-                    if (file.isDirectory()) {
-                        sUtils.copyDir(file, new File(buildDir, file.getName()));
-                    } else {
-                        sUtils.copy(file, new File(buildDir, file.getName()));
-                    }
-                }
                 if (file.isDirectory() && file.getName().startsWith("classes") && file.getName().endsWith(".dex")) {
                     // Build new dex file if the smali files are modified
                     if (APKExplorer.isSmaliEdited(new File(context.getCacheDir(), Common.getAppID() + "/.aeeBackup/appData").getAbsolutePath())) {
@@ -170,6 +163,18 @@ public class APKData {
                         // Otherwise, use the original one from the backup folder
                         if (sUtils.exist(new File(backupPath, file.getName()))) {
                             sUtils.copy(new File(backupPath, file.getName()), new File(buildDir, file.getName()));
+                        }
+                    }
+                } else if (file.isDirectory() && file.getName().equals("META-INF")) {
+                    if (new File(file, "services").exists()) {
+                        sUtils.copyDir(new File(file, "services"), new File(buildDir, "META-INF/services"));
+                    }
+                } else {
+                    if (!fileToExclude(file)) {
+                        if (file.isDirectory()) {
+                            sUtils.copyDir(file, new File(buildDir, file.getName()));
+                        } else {
+                            sUtils.copy(file, new File(buildDir, file.getName()));
                         }
                     }
                 }
