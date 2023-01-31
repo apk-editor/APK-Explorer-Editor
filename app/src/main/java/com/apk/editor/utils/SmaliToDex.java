@@ -44,30 +44,30 @@ public class SmaliToDex {
     }
 
     @SuppressLint("StringFormatInvalid")
-    private void buildFile(File file, DexBuilder dexBuilder) {
+    private static void buildFile(int api, File file, DexBuilder dexBuilder, Context context) {
         try {
             FileInputStream inStream = new FileInputStream(file);
-            if (!assembleSmaliFile(file, dexBuilder, mApiLevel)) {
-                Common.setStatus(mContext.getString(R.string.assembling, file.getName()) + " : " + mContext.getString(R.string.failed));
+            if (!assembleSmaliFile(file, dexBuilder, api)) {
+                Common.setStatus(context.getString(R.string.assembling, file.getName()) + " : " + context.getString(R.string.failed));
                 Common.setError(Common.getError() + 1);
                 Common.getErrorList().add(file.getAbsolutePath());
                 throw new RuntimeException("Could not smali file: " + file.getName());
             }
             Common.setSuccess(Common.getSuccess() + 1);
-            Common.setStatus(mContext.getString(R.string.assembling, file.getName()) + " : " + mContext.getString(R.string.success));
+            Common.setStatus(context.getString(R.string.assembling, file.getName()) + " : " + context.getString(R.string.success));
             inStream.close();
         } catch (Exception ignored) {}
     }
 
-    private List<File> getSmaliFiles(File file) {
+    private static List<File> getSmaliFiles(File file, List<File> fileList) {
         for (File files : Objects.requireNonNull(file.listFiles())) {
             if (files.isDirectory()) {
-                getSmaliFiles(files);
+                getSmaliFiles(files, fileList);
             } else if (files.getName().endsWith(".smali")) {
-                mFiles.add(files);
+                fileList.add(files);
             }
         }
-        return mFiles;
+        return fileList;
     }
 
     private static boolean assembleSmaliFile(File smaliFile, DexBuilder dexBuilder, int apiLevel) throws Exception {
@@ -113,8 +113,8 @@ public class SmaliToDex {
             dexBuilder = new DexBuilder(Opcodes.getDefault());
         }
 
-        for (File file : getSmaliFiles(mSmaliDir)) {
-            buildFile(file, dexBuilder);
+        for (File file : getSmaliFiles(mSmaliDir, mFiles)) {
+            buildFile(mApiLevel, file, dexBuilder, mContext);
         }
         try {
             dexBuilder.writeTo(new FileDataStore(mDexFile));
