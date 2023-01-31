@@ -44,7 +44,7 @@ public class APKEditorUtils {
         }
     }
 
-    static void zip(File path, File zip) {
+    public static void zip(File path, File zip) {
         try {
             for (File mFile : Objects.requireNonNull(path.listFiles())) {
                 if (mFile.isDirectory()) {

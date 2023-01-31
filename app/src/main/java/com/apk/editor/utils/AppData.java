@@ -1,8 +1,6 @@
 package com.apk.editor.utils;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -11,8 +9,6 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
-import com.apk.editor.R;
-import com.apk.editor.activities.APKSignActivity;
 import com.apk.editor.utils.recyclerViewItems.PackageItems;
 
 import java.io.File;
@@ -24,7 +20,6 @@ import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
 import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
-import in.sunilpaulmathew.sCommon.Utils.sSingleItemDialog;
 import in.sunilpaulmathew.sCommon.Utils.sUtils;
 
 /*
@@ -109,53 +104,6 @@ public class AppData {
         } else {
             imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
         }
-    }
-
-    public static String[] getSigningOptionsMenu(Context context) {
-        return new String[] {
-                context.getString(R.string.signing_default),
-                context.getString(R.string.signing_custom)
-        };
-    }
-
-    public static sSingleItemDialog getExportOptionsMenu(String packageName, Context context) {
-        return new sSingleItemDialog(0, null, new String[] {
-                context.getString(R.string.export_storage),
-                context.getString(R.string.export_resign)
-        }, context) {
-
-            @Override
-            public void onItemSelected(int itemPosition) {
-                if (itemPosition == 0) {
-                    APKData.exportApp(packageName, context);
-                } else {
-                    if (!sUtils.getBoolean("firstSigning", false, context)) {
-                        getSigningOptionsMenu(packageName, context).show();
-                    } else {
-                        APKData.reSignAPKs(packageName, false, (Activity) context);
-                    }
-                }
-            }
-        };
-    }
-
-    public static sSingleItemDialog getSigningOptionsMenu(String packageName, Context context) {
-        return new sSingleItemDialog(0, null, new String[] {
-                context.getString(R.string.signing_default),
-                context.getString(R.string.signing_custom)
-        }, context) {
-
-            @Override
-            public void onItemSelected(int itemPosition) {
-                sUtils.saveBoolean("firstSigning", true, context);
-                if (itemPosition == 0) {
-                    APKData.reSignAPKs(packageName,false, (Activity) context);
-                } else {
-                    Intent signing = new Intent(context, APKSignActivity.class);
-                    context.startActivity(signing);
-                }
-            }
-        };
     }
 
 }

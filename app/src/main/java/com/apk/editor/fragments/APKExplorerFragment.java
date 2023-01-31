@@ -25,12 +25,12 @@ import com.apk.editor.activities.ImageViewActivity;
 import com.apk.editor.activities.TextEditorActivity;
 import com.apk.editor.activities.TextViewActivity;
 import com.apk.editor.adapters.APKExplorerAdapter;
-import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.Projects;
+import com.apk.editor.utils.tasks.DeleteProject;
+import com.apk.editor.utils.tasks.ExportToStorage;
+import com.apk.editor.utils.tasks.SignAPK;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -79,13 +79,16 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                 })
                 .setPositiveButton(getString(R.string.build), (dialog, id) -> {
                     if (!sUtils.getBoolean("firstSigning", false, requireActivity())) {
-                        new sSingleItemDialog(0, null, AppData.getSigningOptionsMenu(requireActivity()), requireActivity()) {
+                        new sSingleItemDialog(0, null, new String[] {
+                                getString(R.string.signing_default),
+                                getString(R.string.signing_custom)
+                        }, requireActivity()) {
 
                             @Override
                             public void onItemSelected(int itemPosition) {
                                 sUtils.saveBoolean("firstSigning", true, requireActivity());
                                 if (itemPosition == 0) {
-                                    APKData.prepareSignedAPK(requireActivity());
+                                    new SignAPK(requireActivity()).execute();
                                 } else {
                                     Intent signing = new Intent(requireActivity(), APKSignActivity.class);
                                     startActivity(signing);
@@ -93,7 +96,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                             }
                         }.show();
                     } else {
-                        APKData.prepareSignedAPK(requireActivity());
+                        new SignAPK(requireActivity()).execute();
                     }
                 }).show());
 
@@ -168,7 +171,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                                                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                                         },requireActivity());
                             } else {
-                                Projects.exportToStorage(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position),
+                                new ExportToStorage(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position),
                                         new File(APKExplorer.getData(getFilesList(),true, requireActivity()).get(position)).getName(),
                                         Common.getAppID(), requireActivity()).execute();
                             }
@@ -205,12 +208,12 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                     .setNeutralButton(getString(R.string.cancel), (dialog, id) -> {
                     })
                     .setNegativeButton(getString(R.string.discard), (dialog, id) -> {
-                        Projects.deleteProject(new File(requireActivity().getCacheDir(), Common.getAppID()), requireActivity());
+                        new DeleteProject(new File(requireActivity().getCacheDir(), Common.getAppID()), requireActivity()).execute();
                         requireActivity().finish();
                     })
                     .setPositiveButton(getString(R.string.save), (dialog, id) -> requireActivity().finish()).show();
         } else if (sUtils.getString("projectAction", null, requireActivity()).equals(getString(R.string.delete))) {
-            Projects.deleteProject(new File(requireActivity().getCacheDir(), Common.getAppID()), requireActivity());
+            new DeleteProject(new File(requireActivity().getCacheDir(), Common.getAppID()), requireActivity()).execute();
             requireActivity().finish();
         } else {
             requireActivity().finish();

@@ -97,7 +97,7 @@ public class TextViewActivity extends AppCompatActivity {
 
             @Override
             public void doInBackground() {
-                mTextViewAdapter = new TextViewAdapter(APKExplorer.getTextViewData(mPath, searchWord, TextViewActivity.this), searchWord);
+                mTextViewAdapter = new TextViewAdapter(APKExplorer.getTextViewData(mPath, searchWord, false, TextViewActivity.this), searchWord);
             }
 
             @Override

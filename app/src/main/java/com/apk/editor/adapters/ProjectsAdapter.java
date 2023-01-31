@@ -19,6 +19,7 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
+import com.apk.editor.utils.tasks.DeleteProject;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -94,7 +95,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                     .setNegativeButton(R.string.cancel, (dialog, id) -> {
                     })
                     .setPositiveButton(R.string.delete, (dialog, id) -> {
-                        Projects.deleteProject(new File(data.get(position)), v.getContext());
+                        new DeleteProject(new File(data.get(position)), v.getContext()).execute();
                         data.remove(position);
                         notifyItemRemoved(position);
                         notifyDataSetChanged();

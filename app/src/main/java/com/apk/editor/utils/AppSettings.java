@@ -1,7 +1,5 @@
 package com.apk.editor.utils;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -9,13 +7,10 @@ import android.os.Environment;
 
 import com.apk.editor.MainActivity;
 import com.apk.editor.R;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
 import in.sunilpaulmathew.sCommon.Utils.sSerializableItems;
 import in.sunilpaulmathew.sCommon.Utils.sSingleChoiceDialog;
 import in.sunilpaulmathew.sCommon.Utils.sUtils;
@@ -340,17 +335,6 @@ public class AppSettings {
         }.show();
     }
 
-    public static void deleteAppSettings(Activity activity) {
-        new MaterialAlertDialogBuilder(activity)
-                .setIcon(R.mipmap.ic_launcher)
-                .setTitle(R.string.warning)
-                .setMessage(activity.getString(R.string.clear_cache_message))
-                .setNegativeButton(activity.getString(R.string.cancel), (dialog, id) -> {
-                })
-                .setPositiveButton(activity.getString(R.string.delete), (dialog, id) -> clearAppSettings(activity).execute()
-                ).show();
-    }
-
     public static boolean isCustomKey(Context context) {
         return sUtils.getString("PrivateKey", null, context) != null &&
                 sUtils.getString("X509Certificate", null, context) != null;
@@ -360,85 +344,6 @@ public class AppSettings {
         Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
-    }
-
-    private static sExecutor clearAppSettings(Activity activity) {
-        return new sExecutor() {
-            private ProgressDialog mProgressDialog;
-            @Override
-            public void onPreExecute() {
-                mProgressDialog = new ProgressDialog(activity);
-                mProgressDialog.setMessage(activity.getString(R.string.clearing_cache_message));
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                mProgressDialog.setIcon(R.mipmap.ic_launcher);
-                mProgressDialog.setTitle(R.string.app_name);
-                mProgressDialog.setIndeterminate(true);
-                mProgressDialog.setCancelable(false);
-                mProgressDialog.show();
-            }
-
-            @Override
-            public void doInBackground() {
-                sUtils.delete(activity.getCacheDir());
-                sUtils.delete(activity.getFilesDir());
-                if (APKEditorUtils.isFullVersion(activity) && AppSettings.isCustomKey(activity)) {
-                    sUtils.saveString("PrivateKey", null, activity);
-                    sUtils.delete(new File(activity.getFilesDir(), "signing/APKEditor.pk8"));
-                    sUtils.saveString("X509Certificate", null, activity);
-                    sUtils.delete(new File(activity.getFilesDir(), "signing/APKEditorCert"));
-                }
-            }
-
-            @Override
-            public void onPostExecute() {
-                try {
-                    mProgressDialog.dismiss();
-                } catch (IllegalArgumentException ignored) {
-                }
-                activity.finish();
-            }
-        };
-    }
-
-    public static sExecutor transferExportedApps(Context context){
-        return new sExecutor() {
-            private File sourceDir;
-            private ProgressDialog mProgressDialog;
-
-            @Override
-            public void onPreExecute() {
-                mProgressDialog = new ProgressDialog(context);
-                mProgressDialog.setMessage(context.getString(R.string.transfer_exported_apk));
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                mProgressDialog.setIcon(R.mipmap.ic_launcher);
-                mProgressDialog.setTitle(R.string.app_name);
-                mProgressDialog.setIndeterminate(true);
-                mProgressDialog.setCancelable(false);
-                mProgressDialog.show();
-            }
-
-            @Override
-            public void doInBackground() {
-                File destDir;
-                if (sUtils.getString("exportAPKsPath", "externalFiles", context).equals("internalStorage")) {
-                    sourceDir = context.getExternalFilesDir("");
-                    destDir = new File(Environment.getExternalStorageDirectory(), "/AEE/exportedAPKs");
-                } else {
-                    destDir = context.getExternalFilesDir("");
-                    sourceDir = new File(Environment.getExternalStorageDirectory(), "/AEE/exportedAPKs");
-                }
-                sUtils.copyDir(sourceDir, destDir);
-            }
-
-            @Override
-            public void onPostExecute() {
-                sUtils.delete(sourceDir);
-                try {
-                    mProgressDialog.dismiss();
-                } catch (IllegalArgumentException ignored) {
-                }
-            }
-        };
     }
 
 }

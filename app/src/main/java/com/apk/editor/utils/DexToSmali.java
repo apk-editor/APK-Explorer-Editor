@@ -23,7 +23,7 @@ public class DexToSmali {
     private final int mAPI;
     private final String mDEXName;
 
-    DexToSmali(boolean debugInfo, File apkFile, File outDir, int api, String dexName) {
+    public DexToSmali(boolean debugInfo, File apkFile, File outDir, int api, String dexName) {
         this.mDebugInfo = debugInfo;
         this.mApkFile = apkFile;
         this.mOutDir = outDir;
@@ -31,7 +31,7 @@ public class DexToSmali {
         this.mDEXName = dexName;
     }
 
-    void execute() {
+    public void execute() {
         try {
             final BaksmaliOptions options = new BaksmaliOptions();
             // options

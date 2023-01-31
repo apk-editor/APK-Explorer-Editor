@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +34,8 @@ import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.ExternalAPKData;
-import com.apk.editor.utils.SplitAPKInstaller;
+import com.apk.editor.utils.dialogs.InvalidFileDialog;
+import com.apk.editor.utils.dialogs.SelectBundleDialog;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
@@ -198,6 +200,13 @@ public class APKsFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= 29) {
             Intent installer = new Intent(Intent.ACTION_GET_CONTENT);
             installer.setType("*/*");
+            String[] mimeTypes = {
+                    "application/vnd.android.package-archive",
+                    "application/xapk-package-archive",
+                    "application/octet-stream",
+                    "application/vnd.apkm"
+            };
+            installer.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
             installer.addCategory(Intent.CATEGORY_OPENABLE);
             installer.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             installerFilePicker.launch(installer);
@@ -257,25 +266,11 @@ public class APKsFragment extends Fragment {
                 if (mExtension.equals("apk")) {
                     Common.getAPKList().add(mFile.getAbsolutePath());
                     Common.setFinishStatus(true);
-                    APKExplorer.handleAPKs(activity);
+                    APKExplorer.handleAPKs(false, activity);
                 } else if (mExtension.equals("apkm") || mExtension.equals("apks") || mExtension.equals("xapk")) {
-                    new MaterialAlertDialogBuilder(activity)
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(R.string.split_apk_installer)
-                            .setMessage(getString(R.string.install_bundle_question))
-                            .setCancelable(false)
-                            .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
-                            })
-                            .setPositiveButton(R.string.install, (dialogInterface, i) ->
-                                    SplitAPKInstaller.handleAppBundle(mFile.getAbsolutePath(), activity)).show();
+                    new SelectBundleDialog(mFile.getAbsolutePath(), false, activity).show();
                 } else {
-                    new MaterialAlertDialogBuilder(activity)
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(R.string.split_apk_installer)
-                            .setMessage(getString(R.string.wrong_extension, ".apks/.apkm/.xapk"))
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.cancel, (dialogInterface, i) -> {
-                            }).show();
+                    new InvalidFileDialog(false, activity).show();
                 }
                 Common.setProgress(false, mProgress);
             }
@@ -284,19 +279,23 @@ public class APKsFragment extends Fragment {
 
     private sExecutor handleMultipleAPKs(ClipData uriFiles, Activity activity) {
         return new sExecutor() {
+            private final File mParentDir = new File(activity.getExternalCacheDir(), "APKs");
 
             @Override
             public void onPreExecute() {
                 Common.setProgress(true, mProgress);
-                sUtils.delete(activity.getExternalFilesDir("APK"));
+                if (mParentDir.exists()) {
+                    sUtils.delete(mParentDir);
+                }
+                sUtils.mkdir(mParentDir);
                 Common.getAPKList().clear();
             }
 
             @Override
             public void doInBackground() {
                 for (int i = 0; i < uriFiles.getItemCount(); i++) {
-                    String mExtension = ExternalAPKData.getExtension(uriFiles.getItemAt(i).getUri(), requireActivity());
-                    File mFile = new File(activity.getExternalFilesDir("APK"), "APK" + i + "." + mExtension);
+                    String fileName = Objects.requireNonNull(DocumentFile.fromSingleUri(activity, uriFiles.getItemAt(i).getUri())).getName();
+                    File mFile = new File(mParentDir, Objects.requireNonNull(fileName));
                     try (FileOutputStream outputStream = new FileOutputStream(mFile, false)) {
                         InputStream inputStream = activity.getContentResolver().openInputStream(uriFiles.getItemAt(i).getUri());
                         int read;
@@ -305,7 +304,7 @@ public class APKsFragment extends Fragment {
                             outputStream.write(bytes, 0, read);
                         }
                         // In this case, we don't really care about app bundles!
-                        if (Objects.equals(mExtension, "apk")) {
+                        if (mFile.getName().endsWith(".apk")) {
                             Common.getAPKList().add(mFile.getAbsolutePath());
                         }
                         inputStream.close();
@@ -316,7 +315,7 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void onPostExecute() {
-                APKExplorer.handleAPKs(activity);
+                APKExplorer.handleAPKs(false, activity);
                 Common.setProgress(false, mProgress);
             }
         };

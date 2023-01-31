@@ -16,6 +16,8 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.SettingsAdapter;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppSettings;
+import com.apk.editor.utils.dialogs.ClearAppSettingsDialog;
+import com.apk.editor.utils.tasks.TransferApps;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -108,14 +110,14 @@ public class SettingsActivity extends AppCompatActivity {
                                                 R.drawable.ic_export, SettingsActivity.this), getString(R.string.export_path_apks), AppSettings
                                                 .getExportAPKsPath(SettingsActivity.this), null));
                                         mRecycleViewAdapter.notifyItemChanged(position);
-                                        AppSettings.transferExportedApps(SettingsActivity.this).execute();
+                                        new TransferApps(SettingsActivity.this).execute();
                                     } else if (itemPosition == 1) {
                                         sUtils.saveString("exportAPKsPath", "internalStorage", SettingsActivity.this);
                                         mData.set(position, new sSerializableItems(sUtils.getDrawable(
                                                 R.drawable.ic_export, SettingsActivity.this), getString(R.string.export_path_apks), AppSettings
                                                 .getExportAPKsPath(SettingsActivity.this), null));
                                         mRecycleViewAdapter.notifyItemChanged(position);
-                                        AppSettings.transferExportedApps(SettingsActivity.this).execute();
+                                        new TransferApps(SettingsActivity.this).execute();
                                     }
                                 }
                             }.show();
@@ -242,7 +244,7 @@ public class SettingsActivity extends AppCompatActivity {
                         }
                     }.show();
                 } else {
-                    AppSettings.deleteAppSettings(this);
+                    new ClearAppSettingsDialog(this).show();
                 }
             }
         });

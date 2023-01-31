@@ -21,7 +21,7 @@ import com.apk.editor.activities.FilePickerActivity;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.Projects;
+import com.apk.editor.utils.tasks.ExportToStorage;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -124,7 +124,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                                                         android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                                                 }, (Activity) v.getContext());
                                     } else {
-                                        Projects.exportToStorage(data.get(position), new File(data.get(position)).getName(), Common.getAppID(), v.getContext()).execute();
+                                        new ExportToStorage(data.get(position), new File(data.get(position)).getName(), Common.getAppID(), v.getContext()).execute();
                                     }
                                 }).show();
                         break;

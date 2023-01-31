@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.ImageViewActivity;
-import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.dialogs.ExportOptionsDialog;
+import com.apk.editor.utils.dialogs.SigningOptionsDialog;
 import com.apk.editor.utils.recyclerViewItems.PackageItems;
+import com.apk.editor.utils.tasks.ExploreAPK;
+import com.apk.editor.utils.tasks.ExportApp;
+import com.apk.editor.utils.tasks.ResignAPKs;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -90,14 +92,14 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                 }
                 if (APKEditorUtils.isFullVersion(v.getContext())) {
                     if (sUtils.getString("exportAPKs", null, v.getContext()) == null) {
-                        AppData.getExportOptionsMenu(data.get(position).getPackageName(), v.getContext()).show();
+                        new ExportOptionsDialog(data.get(position).getPackageName(), false, (Activity) v.getContext()).show();
                     } else if (sUtils.getString("exportAPKs", null, v.getContext()).equals(v.getContext().getString(R.string.export_storage))) {
-                        APKData.exportApp(data.get(position).getPackageName(), v.getContext());
+                        new ExportApp(data.get(position).getPackageName(), v.getContext()).execute();
                     } else {
                         if (!sUtils.getBoolean("firstSigning", false, v.getContext())) {
-                            AppData.getSigningOptionsMenu(data.get(position).getPackageName(), v.getContext()).show();
+                            new SigningOptionsDialog(data.get(position).getPackageName(), false, v.getContext()).show();
                         } else {
-                            APKData.reSignAPKs(data.get(position).getPackageName(), false, (Activity) v.getContext());
+                            new ResignAPKs(data.get(position).getPackageName(), false, false, (Activity) v.getContext()).execute();
                         }
                     }
                 } else {
@@ -107,7 +109,9 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                             .setMessage(v.getContext().getString(R.string.export_app_question, data.get(position).getAppName()))
                             .setNegativeButton(R.string.cancel, (dialog, id) -> {
                             })
-                            .setPositiveButton(R.string.export, (dialog, id) -> APKData.exportApp(data.get(position).getPackageName(), v.getContext())).show();
+                            .setPositiveButton(R.string.export, (dialog, id) ->
+                                    new ExportApp(data.get(position).getPackageName(), v.getContext()).execute()
+                            ).show();
                 }
                 return false;
             });
@@ -137,7 +141,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
 
         @Override
         public void onClick(View view) {
-            APKExplorer.exploreAPK(data.get(getAdapterPosition()).getPackageName(), view.getContext());
+            new ExploreAPK(data.get(getAdapterPosition()).getPackageName(), view.getContext()).execute();
         }
     }
 

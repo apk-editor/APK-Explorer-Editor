@@ -20,12 +20,6 @@ import java.util.List;
  */
 public class ExternalAPKData {
 
-    private static boolean mFMInstall = false;
-
-    public static boolean isFMInstall() {
-        return mFMInstall;
-    }
-
     @SuppressLint("StringFormatInvalid")
     public static List<String> getData(Context context) {
         List<String> mData = new ArrayList<>();
@@ -139,10 +133,6 @@ public class ExternalAPKData {
             default:
                 return sdkVersion;
         }
-    }
-
-    public static void isFMInstall(boolean b) {
-        mFMInstall = b;
     }
 
 }

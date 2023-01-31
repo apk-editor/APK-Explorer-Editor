@@ -32,7 +32,7 @@ public class ManifestFragment extends Fragment {
 
         if (mAPKParser.getManifest() != null) {
             try {
-                mRecyclerView.setAdapter(new TextViewAdapter(APKExplorer.getTextViewData(mAPKParser.getManifest(), null, requireActivity()), null));
+                mRecyclerView.setAdapter(new TextViewAdapter(APKExplorer.getTextViewData(mAPKParser.getManifest(), null, true, requireActivity()), null));
             } catch (Exception ignored) {
             }
         }

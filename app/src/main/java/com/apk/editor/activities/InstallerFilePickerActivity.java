@@ -93,8 +93,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                         .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
                         })
                         .setPositiveButton(getString(R.string.install), (dialogInterface, i) -> {
-                            SplitAPKInstaller.handleAppBundle(APKExplorer.getData(getFilesList(), false, this).get(position), this);
-                            finish();
+                            SplitAPKInstaller.handleAppBundle(true, APKExplorer.getData(getFilesList(), false, this).get(position), this);
                         }).show();
             } else if (APKExplorer.getData(getFilesList(), false, this).get(position).endsWith(".apk")) {
                 if (Common.getAPKList().contains(APKExplorer.getData(getFilesList(), false, this).get(position))) {
@@ -109,7 +108,9 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
             }
         });
 
-        Common.getSelectCard().setOnClickListener(v -> APKExplorer.handleAPKs(this));
+        Common.getSelectCard().setOnClickListener(v -> {
+            APKExplorer.handleAPKs(true, this);
+        });
 
         mSortButton.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(this, mSortButton);

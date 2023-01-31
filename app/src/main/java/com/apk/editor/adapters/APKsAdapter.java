@@ -21,6 +21,10 @@ import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SplitAPKInstaller;
+import com.apk.editor.utils.dialogs.ShareBundleDialog;
+import com.apk.editor.utils.dialogs.SignatureMismatchDialog;
+import com.apk.editor.utils.tasks.SaveAPKtoDownloads;
+import com.apk.editor.utils.tasks.SaveBundletoDownloads;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -76,7 +80,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 }
                 holder.mCard.setOnClickListener(v -> {
                     if (APKEditorUtils.isFullVersion(v.getContext()) && data.get(position).contains("_aee-signed") && !sUtils.getBoolean("signature_warning", false, v.getContext())) {
-                        APKData.showSignatureErrorDialog(v.getContext());
+                        new SignatureMismatchDialog(v.getContext()).show();
                     } else {
                         new MaterialAlertDialogBuilder(v.getContext())
                                 .setIcon(R.mipmap.ic_launcher)
@@ -84,7 +88,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                                 .setMessage(v.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
-                                .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installSplitAPKs(null, data.get(position) + "/base.apk", (Activity) v.getContext())).show();
+                                .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installSplitAPKs(false, null, data.get(position) + "/base.apk", (Activity) v.getContext())).show();
                     }
                 });
                 holder.mCard.setOnLongClickListener(v -> {
@@ -96,17 +100,17 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                         popupMenu.setOnMenuItemClickListener(item -> {
                             switch (item.getItemId()) {
                                 case 0:
-                                    APKData.shareAppBundleDialog(data.get(position), holder.mCard.getContext()).show();
+                                    new ShareBundleDialog(data.get(position), holder.mCard.getContext()).show();
                                     break;
                                 case 1:
-                                    APKData.shareAppBundle(data.get(position), true, v.getContext()).execute();
+                                    new SaveBundletoDownloads(data.get(position), true, v.getContext()).execute();
                                     break;
                             }
                             return false;
                         });
                         popupMenu.show();
                     } else {
-                        APKData.shareAppBundleDialog(data.get(position), holder.mCard.getContext()).show();
+                        new ShareBundleDialog(data.get(position), holder.mCard.getContext()).show();
                     }
                     return false;
                 });
@@ -145,7 +149,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 holder.mSize.setVisibility(View.VISIBLE);
                 holder.mCard.setOnClickListener(v -> {
                     if (APKEditorUtils.isFullVersion(v.getContext()) && data.get(position).contains("_aee-signed.apk") && !sUtils.getBoolean("signature_warning", false, v.getContext())) {
-                        APKData.showSignatureErrorDialog(v.getContext());
+                        new SignatureMismatchDialog(v.getContext()).show();
                     } else {
                         new MaterialAlertDialogBuilder(v.getContext())
                                 .setIcon(R.mipmap.ic_launcher)
@@ -153,7 +157,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                                 .setMessage(v.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
-                                .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installAPK(new File(data.get(position)), (Activity) v.getContext())).show();
+                                .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installAPK(false, new File(data.get(position)), (Activity) v.getContext())).show();
                     }
                 });
                 holder.mCard.setOnLongClickListener(v -> {
@@ -165,10 +169,10 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                         popupMenu.setOnMenuItemClickListener(item -> {
                             switch (item.getItemId()) {
                                 case 0:
-                                    APKData.shareAPK(data.get(position), v.getContext());
+                                    APKData.shareFile(new File(data.get(position)), "application/java-archive", v.getContext());
                                     break;
                                 case 1:
-                                    APKData.saveToDownloads(new File(data.get(position)), v.getContext()).execute();
+                                    new SaveAPKtoDownloads(new File(data.get(position)), v.getContext()).execute();
                                     break;
                             }
                             return false;
@@ -182,7 +186,8 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                                 .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
                                 })
                                 .setPositiveButton(v.getContext().getString(R.string.share), (dialog, id) ->
-                                        APKData.shareAPK(data.get(position), v.getContext())).show();
+                                        APKData.shareFile(new File(data.get(position)), "application/java-archive", v.getContext())
+                                ).show();
                     }
                     return false;
                 });

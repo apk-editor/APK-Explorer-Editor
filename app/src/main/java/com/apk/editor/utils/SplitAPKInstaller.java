@@ -54,7 +54,7 @@ public class SplitAPKInstaller {
         return totalSize;
     }
 
-    public static void handleAppBundle(String path, Activity activity) {
+    public static void handleAppBundle(boolean exit, String path, Activity activity) {
         new sExecutor() {
             private final File mFile = new File(activity.getExternalCacheDir(), "splits");
             private ProgressDialog mProgressDialog;
@@ -101,19 +101,19 @@ public class SplitAPKInstaller {
                 Intent installer = new Intent(activity, InstallerFilePickerActivity.class);
                 installer.putExtra(InstallerFilePickerActivity.TITLE_INTENT, activity.getString(R.string.select_apk));
                 activity.startActivity(installer);
+
+                if (exit) {
+                    activity.finish();
+                }
             }
         }.execute();
     }
 
-    public static void installSplitAPKs(List<String> apks, String path, Activity activity) {
+    public static void installSplitAPKs(boolean exit, List<String> apks, String path, Activity activity) {
         new sExecutor() {
 
             @Override
             public void onPreExecute() {
-                if (ExternalAPKData.isFMInstall()) {
-                    ExternalAPKData.isFMInstall(false);
-                    activity.finish();
-                }
                 sUtils.saveString("installationStatus", "waiting", activity);
                 Intent installIntent = new Intent(activity, InstallerActivity.class);
                 installIntent.putExtra(InstallerActivity.HEADING_INTENT, activity.getString(R.string.split_apk_installer));
@@ -150,20 +150,18 @@ public class SplitAPKInstaller {
 
             @Override
             public void onPostExecute() {
-
+                if (exit) {
+                    activity.finish();
+                }
             }
         }.execute();
     }
 
-    public static void installAPK(File APK, Activity activity) {
+    public static void installAPK(boolean exit, File APK, Activity activity) {
         new sExecutor() {
 
             @Override
             public void onPreExecute() {
-                if (ExternalAPKData.isFMInstall()) {
-                    ExternalAPKData.isFMInstall(false);
-                    activity.finish();
-                }
                 sUtils.saveString("installationStatus", "waiting", activity);
                 Intent installIntent = new Intent(activity, InstallerActivity.class);
                 installIntent.putExtra(InstallerActivity.HEADING_INTENT, activity.getString(R.string.apk_installer));
@@ -184,7 +182,9 @@ public class SplitAPKInstaller {
 
             @Override
             public void onPostExecute() {
-
+                if (exit) {
+                    activity.finish();
+                }
             }
         }.execute();
     }

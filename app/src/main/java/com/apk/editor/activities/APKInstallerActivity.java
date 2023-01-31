@@ -21,7 +21,8 @@ import com.apk.editor.fragments.PermissionsFragment;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.ExternalAPKData;
-import com.apk.editor.utils.SplitAPKInstaller;
+import com.apk.editor.utils.dialogs.InvalidFileDialog;
+import com.apk.editor.utils.dialogs.SelectBundleDialog;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
@@ -109,29 +110,14 @@ public class APKInstallerActivity extends AppCompatActivity {
                 }
                 if (mFile.exists()) {
                     if (mAPKParser.isParsed()) {
-                        ExternalAPKData.isFMInstall(true);
                         loadAPKDetails(activity);
                         if (sPackageUtils.isPackageInstalled(mAPKParser.getPackageName(), activity)) {
                             mInstallText.setText(getString(R.string.update));
                         }
                     } else if (mExtension.equals("apkm") || mExtension.equals("apks") || mExtension.equals("xapk")) {
-                        new MaterialAlertDialogBuilder(activity)
-                                .setIcon(R.mipmap.ic_launcher)
-                                .setTitle(R.string.split_apk_installer)
-                                .setMessage(getString(R.string.install_bundle_question))
-                                .setCancelable(false)
-                                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> finish())
-                                .setPositiveButton(R.string.install, (dialogInterface, i) -> {
-                                    SplitAPKInstaller.handleAppBundle(mFile.getAbsolutePath(), activity);
-                                    finish();
-                                }).show();
+                        new SelectBundleDialog(mFile.getAbsolutePath(), true, activity).show();
                     } else {
-                        new MaterialAlertDialogBuilder(activity)
-                                .setIcon(R.mipmap.ic_launcher)
-                                .setTitle(R.string.split_apk_installer)
-                                .setMessage(getString(R.string.wrong_extension, ".apks/.apkm/.xapk" + mExtension))
-                                .setCancelable(false)
-                                .setPositiveButton(R.string.cancel, (dialogInterface, i) -> finish()).show();
+                        new InvalidFileDialog(true, activity).show();
                     }
                 } else {
                     new MaterialAlertDialogBuilder(activity)
@@ -178,7 +164,7 @@ public class APKInstallerActivity extends AppCompatActivity {
         mCancel.setOnClickListener(v -> finish());
         mInstall.setOnClickListener(v -> {
             Common.getAPKList().add(mFile.getAbsolutePath());
-            APKExplorer.handleAPKs(activity);
+            APKExplorer.handleAPKs(true, activity);
         });
     }
 
