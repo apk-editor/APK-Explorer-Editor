@@ -177,9 +177,15 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                             }
                         })
                         .setPositiveButton(getString(R.string.open_as_text), (dialog1, id1) -> {
-                            Intent textView = new Intent(requireActivity(), TextViewActivity.class);
-                            textView.putExtra(TextViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
-                            startActivity(textView);
+                            Intent intent;
+                            if (APKEditorUtils.isFullVersion(requireActivity())) {
+                                intent = new Intent(requireActivity(), TextEditorActivity.class);
+                                intent.putExtra(TextEditorActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
+                            } else {
+                                intent = new Intent(requireActivity(), TextViewActivity.class);
+                                intent.putExtra(TextViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
+                            }
+                            startActivity(intent);
                         }).show();
             }
         });
