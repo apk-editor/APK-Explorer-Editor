@@ -92,7 +92,6 @@ public class AppSettings {
         }
         mData.add(new sSerializableItems(null, "Connor Tumbleson", "Apktool", "https://github.com/iBotPeaches/Apktool/"));
         mData.add(new sSerializableItems(null, "Ben Gruver", "smali/baksmali", "https://github.com/JesusFreke/smali/"));
-
         mData.add(new sSerializableItems(null, "sunilpaulmathew", "Package Manager", "https://github.com/SmartPack/PackageManager"));
         mData.add(new sSerializableItems(null, "Gospel Gilbert", "App Icon", "https://t.me/gilgreat0295"));
         mData.add(new sSerializableItems(null, "Mohammed Qubati", "Arabic Translation", "https://t.me/Alqubati_MrK"));
@@ -112,6 +111,9 @@ public class AppSettings {
         mData.add(new sSerializableItems(null, "Dodi Studio", "Indonesian Translation", "null"));
         mData.add(new sSerializableItems(null, "Cooky", "Polish Translation", null));
         mData.add(new sSerializableItems(null, "Erős Pista", "Hungarian Translation", null));
+        mData.add(new sSerializableItems(null, "Andrii Chvalov", "Ukrainian Translation", "null"));
+        mData.add(new sSerializableItems(null, "Veydzher", "Ukrainian Translation", null));
+        mData.add(new sSerializableItems(null, "يمني", "Arabic (UAE) Translation", null));
         return mData;
     }
 
@@ -143,6 +145,8 @@ public class AppSettings {
                 return context.getString(R.string.language_in);
             case "hu":
                 return context.getString(R.string.language_hu);
+            case "uk":
+                return context.getString(R.string.language_uk);
             default:
                 return context.getString(R.string.app_theme_auto);
         }
@@ -218,7 +222,8 @@ public class AppSettings {
                 context.getString(R.string.language_vi),
                 context.getString(R.string.language_pl),
                 context.getString(R.string.language_in),
-                context.getString(R.string.language_hu)
+                context.getString(R.string.language_hu),
+                context.getString(R.string.language_uk)
         };
     }
 
@@ -328,6 +333,10 @@ public class AppSettings {
                         break;
                     case 13:
                         sUtils.saveString("appLanguage", "hu", context);
+                        restartApp(context);
+                        break;
+                    case 14:
+                        sUtils.saveString("appLanguage", "uk", context);
                         restartApp(context);
                         break;
                 }
