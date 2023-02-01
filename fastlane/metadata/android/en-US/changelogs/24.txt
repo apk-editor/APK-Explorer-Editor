@@ -1,4 +1,0 @@
-* Improved installer.
-* Updated build tools and dependencies.
-* Updated translations.
-* Miscellaneous changes.

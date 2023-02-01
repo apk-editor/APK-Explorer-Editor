@@ -2,7 +2,7 @@
 
 ![AEE](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png?raw=true)
 
-[![](https://img.shields.io/badge/APK%20Explorer%20&%20Editor%20(AEE)-v0.24-green)](https://github.com/apk-editor/APK-Explorer-Editor/releases)
+[![](https://img.shields.io/badge/APK%20Explorer%20&%20Editor%20(AEE)-v0.25-green)](https://github.com/apk-editor/APK-Explorer-Editor/releases)
 ![](https://img.shields.io/github/downloads/apk-editor/APK-Explorer-Editor/total)
 ![](https://img.shields.io/github/languages/top/apk-editor/APK-Explorer-Editor)
 ![](https://img.shields.io/github/contributors/apk-editor/APK-Explorer-Editor)
@@ -16,7 +16,7 @@ AEE currently supports the following tasks
 * Save/export individual resource files such as icon, fonts, graphics, binary XML files, etc to device storage.
 * Export and easily manage (install, share etc.) APK's/Split APK's into device storage.
 * Includes a feature-rich APK/Split APK/App bundle installer (easily pick and install files from device storage)
-* It is also possible to edit text/binary XML files using an in-built text editor (disabled by default in the <b>Settings</b> menu).
+* Edit text/binary XML files using an in-built text editor (still, a bit buggy especially when working with big APK's).
 * Delete or replaces resources.
 * Assemble modified smali files into new classes (.dex).
 * Create signed APK's/App Bundles after the above-mentioned processes.
@@ -47,7 +47,7 @@ Please help me to translate this application via [POEditor](https://poeditor.com
 
 ## License
 
-    Copyright (C) 2022-2023 APK Explorer & Editor <apkeditor@protonmail.com>
+    Copyright (C) 2023-2024 APK Explorer & Editor <apkeditor@protonmail.com>
 
     APK Explorer & Editor (AEE) is a free softwares: you can redistribute it and/or
     modify it under the terms of the GNU General Public License as published by the

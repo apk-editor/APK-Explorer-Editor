@@ -10,7 +10,7 @@
 * Provides basic information about important resource files.
 * View graphics, texts, binary XML, and many more.
 * Save/Export individual resource files to device storage.
-* It is also possible to edit text/binary XML files using an in-built text editor (disabled by default in the <b>Settings</b> menu).
+* Edit text/binary XML files using an in-built text editor (still, a bit buggy especially when working with big APK's).
 * Delete or replaces resources.
 * Assemble modified smali files into new classes (.dex).
 * Create signed APK's/App Bundles after the above-mentioned processes.

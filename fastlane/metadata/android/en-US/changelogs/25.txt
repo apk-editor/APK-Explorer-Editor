@@ -1,0 +1,11 @@
+* Implemented binary xml (e.g., AndroidManifest.xml) decoding & encoding (might still be buggy for large APKs).
+* Fixed APK signing on Android 11 and above (now used v2, v3, and v4 schemes).
+* Now uses own library to parse APK details.
+* Fixed setting page not showing proper status.
+* Largely improved picking app bundles for installation.
+* Fixed crashes while searching apps.
+* Reorganized and improved coding style.
+* Updated build tools and dependencies.
+* Added Ukrainian and Arabic (UAE) translations.
+* Updated other translations.
+* Miscellaneous changes.
