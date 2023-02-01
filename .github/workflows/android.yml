@@ -1,0 +1,50 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      # Set Current Date As Env Variable
+      - name: Set current date as env variable
+        run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      # Set App Name As Env Variable
+      - name: Set repository name as env variable
+        run: echo "repository_name=AEE" >> $GITHUB_ENV
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      # Run Tests Build
+      - name: Run gradle tests
+        run: ./gradlew test
+
+      # Run Build Project
+      - name: Build gradle project
+        run: ./gradlew build
+
+      # Create APK Release
+      - name: Build apk release project (APK) - ${{ env.main_project_module }} module
+        run: ./gradlew assemble
+
+      # Upload Artifact Build
+      - name: Upload APK Release - ${{ env.repository_name }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.repository_name }} - ${{ env.date_today }} - APK(s) release generated
+          path: app/build/outputs/apk/full/release/
