@@ -56,17 +56,17 @@
     <string name="unsupported_file">"ملف غير مدعوم"</string>
     <string name="unsupported_file_arsc">"لقد حددت \"resources.arsc\"، والتي للأسف من المستحيل على AEE قراءتها.
 
-        ما هو Resources.arsc؟
+ ما هو Resources.arsc؟
         resources.arsc هو ملف موارد ثنائي يحتوي على القيم الخاصة بالتكوين لتطبيق م ، مثل الأعداد الصحيحة، القيم المنطقية والسلاسل، بالإضافة إلى مراجع إلى موارد أكثر تعقيدًا، مثل تخطيطات واجهة المستخدم.
 
-        كيف قراءة Resources.arsc؟
+ كيف قراءة Resources.arsc؟
         يجب استخدام أداة مثل Apktool أو Android Asset Packaging Tool (AAPT) لطباعة محتويات Resources.arsc إلى تنسيق يمكن للبشر قراءته."</string>
     <string name="unsupported_file_dex">"لقد حددت ملف \"DEX\" (.dex)، والذي للأسف يستحيل على AEE قراءته.
 
-        ما هو ملف DEX؟
+ ما هو ملف DEX؟
         يحتوي ملف Dex على شفرة يتم تنفيذها في النهاية بواسطة Android Runtime. يجب أن يحتوي كل ملف APK على ملف \"class.dex\"، والذي يشير إلى أي class أو طرق مستخدمة داخل التطبيق. بشكل أساسي، سيتم تحويل أي نشاط أو كائن أو جزء مستخدم داخل قاعدة التعليمات البرمجية إلى بايت داخل ملف Dex يمكن تشغيله كتطبيق أندرويد.
 
-        كيف تقرأ ملف DEX؟
+ كيف تقرأ ملف DEX؟
         يجب تحويل ملف DEX إلى تنسيق \"jar\" ولاحقًا إلى ملف \"Java\" باستخدام أدوات مثل \"dex2jar\" و \"JD-GUI\"."</string>
     <string name="user">"المستخدم"</string>
     <string name="bundles">"الحزم"</string>

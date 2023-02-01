@@ -141,6 +141,7 @@
     <string name="deleting">"Excluindo '%s'…"</string>
     <string name="grant">"Permitir"</string>
     <string name="important">"Importante"</string>
+    <string name="assembling">"Montagem"</string>
     <string name="copying">"Copiando '%s'…"</string>
     <string name="details">"Detalhes"</string>
     <string name="failed">"Falhou"</string>

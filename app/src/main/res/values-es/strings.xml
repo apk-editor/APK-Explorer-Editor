@@ -131,6 +131,7 @@
     <string name="discard">"Descartar"</string>
     <string name="discard_message">"¿Deshacer los cambios realizados en este archivo?"</string>
     <string name="export_path_apks">"Exportar al directorio(APK's)"</string>
+    <string name="export_path_files_dir">"Directorio de archivos externos"</string>
     <string name="language">"Idioma"</string>
     <string name="transfer_exported_apk">"Transfiriendo APK exportados anteriormente a la nueva ruta…"</string>
     <string name="user_interface">"Interfaz del usuario"</string>
@@ -144,6 +145,30 @@
     <string name="copying">"Copiando '%s'"</string>
     <string name="details">"Detalles"</string>
     <string name="failed">"Fallo"</string>
+    <string name="failed_smali_message">"Estos archivos 'smali' no se pudieron esemblear.
+
+        %s"</string>
     <string name="open">"Abrir"</string>
     <string name="preparing_source">"Preparando la fuente para construir la APK"</string>
+    <string name="resigned_apks_error">"La compilación falló porque hubieron errores en esemblear los archivos 'smali'. Revisa los 'Detalles' para ver más información."</string>
+    <string name="success">"Éxito"</string>
+    <string name="sort_by_installed">"Tiempo instalado"</string>
+    <string name="sort_by_size">"Tamaño"</string>
+    <string name="sort_by_updated">"Tiempo Actualizado"</string>
+    <string name="sort_size">"Pequeño o grande"</string>
+    <string name="start">"Empieza"</string>
+    <string name="android_version">"Android %s"</string>
+    <string name="certificate">"Certificado"</string>
+    <string name="install_bundle_question">"¿Estás seguro que quieres instalar este paquete de aplicaciones?"</string>
+    <string name="loading">"Cargando…"</string>
+    <string name="manifest">"Manifiesto"</string>
+    <string name="permissions">"Permisos"</string>
+    <string name="save_to_downloads">"Guardalo a Descargas"</string>
+    <string name="saving">"Guardando…"</string>
+    <string name="sdk_compile">"SDK de compilación: %s"</string>
+    <string name="sdk_minimum">"SDK mínimo: %s"</string>
+    <string name="signing_select_question">"¿Deseás usar el archivo seleccionado como el nuevo %s?"</string>
+    <string name="cancelling">"Cancelando…"</string>
+    <string name="replace_file_question">"¿Deseás reemplazar a %s con el archivo seleccionado?"</string>
+    <string name="update">"Actualiza"</string>
 </resources>
