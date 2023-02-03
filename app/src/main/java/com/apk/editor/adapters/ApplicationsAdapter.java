@@ -1,5 +1,6 @@
 package com.apk.editor.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -50,6 +51,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
         return new ViewHolder(rowItem);
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onBindViewHolder(@NonNull ApplicationsAdapter.ViewHolder holder, int position) {
         try {

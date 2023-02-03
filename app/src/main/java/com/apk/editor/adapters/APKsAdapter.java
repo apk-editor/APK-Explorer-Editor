@@ -6,13 +6,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,8 +21,8 @@ import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SplitAPKInstaller;
 import com.apk.editor.utils.dialogs.ShareBundleDialog;
 import com.apk.editor.utils.dialogs.SignatureMismatchDialog;
-import com.apk.editor.utils.tasks.SaveAPKtoDownloads;
-import com.apk.editor.utils.tasks.SaveBundletoDownloads;
+import com.apk.editor.utils.menus.APKOptionsMenu;
+import com.apk.editor.utils.menus.BundleOptionsMenu;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -54,7 +52,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
         return new ViewHolder(rowItem);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint({"NotifyDataSetChanged", "StringFormatInvalid"})
     @Override
     public void onBindViewHolder(@NonNull APKsAdapter.ViewHolder holder, int position) {
         try {
@@ -79,38 +77,35 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                     holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.version, sAPKUtils.getVersionName(data.get(position) + "/base.apk", holder.mAppName.getContext())));
                 }
                 holder.mCard.setOnClickListener(v -> {
-                    if (APKEditorUtils.isFullVersion(v.getContext()) && data.get(position).contains("_aee-signed") && !sUtils.getBoolean("signature_warning", false, v.getContext())) {
-                        new SignatureMismatchDialog(v.getContext()).show();
+                    if (APKEditorUtils.isFullVersion(v.getContext())) {
+                        if (data.get(position).contains("_aee-signed") && !sUtils.getBoolean("signature_warning", false, v.getContext())) {
+                            new SignatureMismatchDialog(v.getContext()).show();
+                        } else {
+                            new MaterialAlertDialogBuilder(v.getContext())
+                                    .setIcon(R.mipmap.ic_launcher)
+                                    .setTitle(R.string.app_name)
+                                    .setMessage(v.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
+                                    .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                                    })
+                                    .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installSplitAPKs(false, null,
+                                            data.get(position) + "/base.apk", (Activity) v.getContext())
+                                    ).show();
+                        }
                     } else {
-                        new MaterialAlertDialogBuilder(v.getContext())
-                                .setIcon(R.mipmap.ic_launcher)
-                                .setTitle(R.string.app_name)
-                                .setMessage(v.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
-                                .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                                })
-                                .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installSplitAPKs(false, null, data.get(position) + "/base.apk", (Activity) v.getContext())).show();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            new BundleOptionsMenu(data.get(position), v);
+                        } else {
+                            new ShareBundleDialog(data.get(position), holder.mCard.getContext()).show();
+                        }
                     }
                 });
                 holder.mCard.setOnLongClickListener(v -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
-                        Menu menu = popupMenu.getMenu();
-                        menu.add(Menu.NONE, 0, Menu.NONE, R.string.share);
-                        menu.add(Menu.NONE, 1, Menu.NONE, R.string.save_to_downloads);
-                        popupMenu.setOnMenuItemClickListener(item -> {
-                            switch (item.getItemId()) {
-                                case 0:
-                                    new ShareBundleDialog(data.get(position), holder.mCard.getContext()).show();
-                                    break;
-                                case 1:
-                                    new SaveBundletoDownloads(data.get(position), true, v.getContext()).execute();
-                                    break;
-                            }
-                            return false;
-                        });
-                        popupMenu.show();
-                    } else {
-                        new ShareBundleDialog(data.get(position), holder.mCard.getContext()).show();
+                    if (APKEditorUtils.isFullVersion(v.getContext())) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            new BundleOptionsMenu(data.get(position), v);
+                        } else {
+                            new ShareBundleDialog(data.get(position), holder.mCard.getContext()).show();
+                        }
                     }
                     return false;
                 });
@@ -148,46 +143,33 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 holder.mSize.setTextColor(sUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
                 holder.mSize.setVisibility(View.VISIBLE);
                 holder.mCard.setOnClickListener(v -> {
-                    if (APKEditorUtils.isFullVersion(v.getContext()) && data.get(position).contains("_aee-signed.apk") && !sUtils.getBoolean("signature_warning", false, v.getContext())) {
-                        new SignatureMismatchDialog(v.getContext()).show();
+                    if (APKEditorUtils.isFullVersion(v.getContext())) {
+                        if (data.get(position).contains("_aee-signed.apk") && !sUtils.getBoolean("signature_warning", false, v.getContext())) {
+                            new SignatureMismatchDialog(v.getContext()).show();
+                        } else {
+                            new MaterialAlertDialogBuilder(v.getContext())
+                                    .setIcon(R.mipmap.ic_launcher)
+                                    .setTitle(R.string.app_name)
+                                    .setMessage(v.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
+                                    .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                                    })
+                                    .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installAPK(false, new File(data.get(position)), (Activity) v.getContext())).show();
+                        }
                     } else {
-                        new MaterialAlertDialogBuilder(v.getContext())
-                                .setIcon(R.mipmap.ic_launcher)
-                                .setTitle(R.string.app_name)
-                                .setMessage(v.getContext().getString(R.string.install_question, new File(data.get(position)).getName()))
-                                .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                                })
-                                .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installAPK(false, new File(data.get(position)), (Activity) v.getContext())).show();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            new APKOptionsMenu(new File(data.get(position)), v);
+                        } else {
+                            APKData.shareFile(new File(data.get(position)), "application/java-archive", v.getContext());
+                        }
                     }
                 });
                 holder.mCard.setOnLongClickListener(v -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
-                        Menu menu = popupMenu.getMenu();
-                        menu.add(Menu.NONE, 0, Menu.NONE, R.string.share);
-                        menu.add(Menu.NONE, 1, Menu.NONE, R.string.save_to_downloads);
-                        popupMenu.setOnMenuItemClickListener(item -> {
-                            switch (item.getItemId()) {
-                                case 0:
-                                    APKData.shareFile(new File(data.get(position)), "application/java-archive", v.getContext());
-                                    break;
-                                case 1:
-                                    new SaveAPKtoDownloads(new File(data.get(position)), v.getContext()).execute();
-                                    break;
-                            }
-                            return false;
-                        });
-                        popupMenu.show();
-                    } else {
-                        new MaterialAlertDialogBuilder(v.getContext())
-                                .setIcon(R.mipmap.ic_launcher)
-                                .setTitle(R.string.app_name)
-                                .setMessage(v.getContext().getString(R.string.share_message, sAPKUtils.getAPKName(data.get(position), v.getContext())))
-                                .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
-                                })
-                                .setPositiveButton(v.getContext().getString(R.string.share), (dialog, id) ->
-                                        APKData.shareFile(new File(data.get(position)), "application/java-archive", v.getContext())
-                                ).show();
+                    if (APKEditorUtils.isFullVersion(v.getContext())) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            new APKOptionsMenu(new File(data.get(position)), v);
+                        } else {
+                            APKData.shareFile(new File(data.get(position)), "application/java-archive", v.getContext());
+                        }
                     }
                     return false;
                 });

@@ -35,10 +35,8 @@ import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.dialogs.InvalidFileDialog;
 import com.apk.editor.utils.dialogs.SelectBundleDialog;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,14 +67,18 @@ public class APKsFragment extends Fragment {
         AppCompatImageButton mSearchButton = mRootView.findViewById(R.id.search_button);
         AppCompatImageButton mSortButton = mRootView.findViewById(R.id.sort_button);
         AppCompatImageButton mAddButton = mRootView.findViewById(R.id.add_button);
-        MaterialCardView mInstall = mRootView.findViewById(R.id.add);
-        MaterialTextView mSelectText = mRootView.findViewById(R.id.select_text);
+        LinearLayoutCompat mBottomLayout = mRootView.findViewById(R.id.layout_bottom);
         TabLayout mTabLayout = mRootView.findViewById(R.id.tab_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
-        mSelectText.setText(getString(APKEditorUtils.isFullVersion(requireActivity()) ? R.string.select_storage : R.string.install_storage));
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+
+        if (!APKEditorUtils.isFullVersion(requireActivity())) {
+            LinearLayoutCompat.LayoutParams lp = (LinearLayoutCompat.LayoutParams) mRecyclerView.getLayoutParams();
+            lp.setMargins(0, 0, 0 , 0);
+            mRecyclerView.setLayoutParams(lp);
+            mBottomLayout.setVisibility(View.GONE);
+        }
 
         Common.getAPKsTitle().setText(getString(R.string.apps_exported));
         mTabLayout.setVisibility(View.VISIBLE);
@@ -165,7 +167,7 @@ public class APKsFragment extends Fragment {
         });
 
         mAddButton.setOnClickListener(v -> launchInstallerFilePicker());
-        mInstall.setOnClickListener(v -> launchInstallerFilePicker());
+        mBottomLayout.setOnClickListener(v -> launchInstallerFilePicker());
 
         return mRootView;
     }

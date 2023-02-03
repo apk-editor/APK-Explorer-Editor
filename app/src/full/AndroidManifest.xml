@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" >
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application>
+        <activity android:name=".activities.APKInstallerActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:label="@string/split_apk_installer"
+            tools:ignore="AppLinkUrlError"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/vnd.android.package-archive" />
+                <data android:mimeType="application/xapk-package-archive" />
+                <data android:mimeType="application/octet-stream" />
+                <data android:mimeType="application/vnd.apkm" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.APKSignActivity"
+            android:exported="false" />
+
+        <activity android:name=".activities.FilePickerActivity"
+            android:exported="false" />
+
+        <activity android:name=".activities.InstallerActivity"
+            android:exported="false" />
+
+        <activity android:name=".activities.InstallerFilePickerActivity"
+            android:exported="false" />
+
+        <activity android:name=".activities.TextEditorActivity"
+            android:exported="false" />
+
+        <service android:name=".services.InstallerService"
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.apk.editor.provider"

@@ -8,7 +8,6 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"
         android:orientation="vertical">
 
         <FrameLayout
@@ -89,10 +88,12 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -112,7 +113,6 @@
             android:clickable="false" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/add"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             app:cardBackgroundColor="@color/colorBlack"
@@ -121,11 +121,11 @@
             app:cardCornerRadius="15dp" >
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/select_text"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:textColor="?attr/colorAccent"
                 android:layout_gravity="center_vertical"
+                android:text="@string/select_storage"
                 android:layout_margin="5dp"
                 android:textStyle="bold"
                 android:textSize="17sp"

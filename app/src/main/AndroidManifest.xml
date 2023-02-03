@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
@@ -34,52 +33,19 @@
         <activity android:name=".activities.APKExploreActivity"
             android:exported="false" />
 
-        <activity android:name=".activities.APKInstallerActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
-            android:label="@string/split_apk_installer"
-            tools:ignore="AppLinkUrlError"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/vnd.android.package-archive" />
-                <data android:mimeType="application/xapk-package-archive" />
-                <data android:mimeType="application/octet-stream" />
-                <data android:mimeType="application/vnd.apkm" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".activities.APKSignActivity"
-            android:exported="false" />
-
         <activity android:name=".activities.APKTasksActivity"
             android:exported="false" />
 
         <activity android:name=".activities.DocumentationActivity"
             android:exported="false" />
 
-        <activity android:name=".activities.FilePickerActivity"
-            android:exported="false" />
-
         <activity android:name=".activities.ImageViewActivity"
-            android:exported="false" />
-
-        <activity android:name=".activities.InstallerActivity"
-            android:exported="false" />
-
-        <activity android:name=".activities.InstallerFilePickerActivity"
             android:exported="false" />
 
         <activity android:name=".activities.SettingsActivity"
             android:exported="false" />
 
-        <activity android:name=".activities.TextEditorActivity"
-            android:exported="false" />
-
         <activity android:name=".activities.TextViewActivity"
-            android:exported="false" />
-
-        <service android:name=".services.InstallerService"
             android:exported="false" />
     </application>
 </manifest>
