@@ -84,7 +84,6 @@ public class AppSettings {
     public static List<sSerializableItems> getCredits(Context context) {
         List<sSerializableItems> mData = new ArrayList<>();
         mData.add(new sSerializableItems(null, "Willi Ye", "Kernel Adiutor", "https://github.com/Grarak/KernelAdiutor"));
-        mData.add(new sSerializableItems(null, "Hsiafan", "APK parser", "https://github.com/hsiafan/apk-parser"));
         mData.add(new sSerializableItems(null, "Srikanth Reddy Lingala", "Zip4j", "https://github.com/srikanth-lingala/zip4j"));
         mData.add(new sSerializableItems(null, "Aefyr", "SAI", "https://github.com/Aefyr/SAI"));
         if (APKEditorUtils.isFullVersion(context)) {
