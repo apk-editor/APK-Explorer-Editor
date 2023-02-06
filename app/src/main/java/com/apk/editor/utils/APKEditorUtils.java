@@ -9,9 +9,9 @@ import android.util.TypedValue;
 import com.apk.editor.R;
 
 import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 /*
@@ -38,22 +38,23 @@ public class APKEditorUtils {
     }
 
     public static void unzip(String zip, String path) {
-        try {
-            new ZipFile(zip).extractAll(path);
-        } catch (ZipException ignored) {
+        try (ZipFile zipFile = new ZipFile(zip)) {
+            zipFile.extractAll(path);
+        } catch (IOException ignored) {
         }
     }
 
     public static void zip(File path, File zip) {
-        try {
+        try (ZipFile zipFile = new ZipFile(zip)) {
             for (File mFile : Objects.requireNonNull(path.listFiles())) {
                 if (mFile.isDirectory()) {
-                    new ZipFile(zip).addFolder(mFile);
+                    zipFile.addFolder(mFile);
                 } else {
-                    new ZipFile(zip).addFile(mFile);
+                    zipFile.addFile(mFile);
                 }
             }
-        } catch (ZipException ignored) {}
+        } catch (IOException ignored) {
+        }
     }
 
     public static boolean isDocumentsUI(Uri uri) {
