@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
@@ -27,10 +28,14 @@ import in.sunilpaulmathew.sCommon.Utils.sUtils;
  */
 public class AppData {
 
-    public static List<PackageItems> getRawData(Context context) {
+    public static List<PackageItems> getRawData(ProgressBar progressBar, Context context) {
         List<PackageItems> mData = new ArrayList<>();
         List<ApplicationInfo> packages = context.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
         for (ApplicationInfo packageInfo: packages) {
+            progressBar.setMax(packages.size());
+            if (progressBar.getProgress() < packages.size()) {
+                progressBar.setProgress(progressBar.getProgress() + 1);
+            }
             mData.add(new PackageItems(
                     sPackageUtils.getAppName(packageInfo.packageName, context).toString(),
                     packageInfo.packageName,

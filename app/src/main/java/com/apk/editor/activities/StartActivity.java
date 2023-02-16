@@ -58,12 +58,14 @@ public class StartActivity extends AppCompatActivity {
 
             @Override
             public void onPreExecute() {
-                sUtils.saveBoolean("welcome_message", true, activity);
+                if (!sUtils.getBoolean("welcome_message", false, activity)) {
+                    sUtils.saveBoolean("welcome_message", true, activity);
+                }
             }
 
             @Override
             public void doInBackground() {
-                Common.setPackageData(AppData.getRawData(activity));
+                Common.setPackageData(AppData.getRawData(mProgress, activity));
             }
 
             @Override
