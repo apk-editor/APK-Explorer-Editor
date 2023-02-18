@@ -36,15 +36,20 @@ public class AppData {
             if (progressBar.getProgress() < packages.size()) {
                 progressBar.setProgress(progressBar.getProgress() + 1);
             }
-            mData.add(new PackageItems(
-                    sPackageUtils.getAppName(packageInfo.packageName, context).toString(),
-                    packageInfo.packageName,
-                    sAPKUtils.getVersionName(sPackageUtils.getSourceDir(packageInfo.packageName, context), context),
-                    new File(sPackageUtils.getSourceDir(packageInfo.packageName, context)).length(),
-                    Objects.requireNonNull(getPackageInfo(packageInfo.packageName, context)).firstInstallTime,
-                    Objects.requireNonNull(getPackageInfo(packageInfo.packageName, context)).lastUpdateTime,
-                    sPackageUtils.getAppIcon(packageInfo.packageName, context)
-            ));
+            try {
+                PackageItems pi = new PackageItems(
+                        sPackageUtils.getAppName(packageInfo.packageName, context).toString(),
+                        packageInfo.packageName,
+                        sAPKUtils.getVersionName(sPackageUtils.getSourceDir(packageInfo.packageName, context), context),
+                        new File(sPackageUtils.getSourceDir(packageInfo.packageName, context)).length(),
+                        Objects.requireNonNull(getPackageInfo(packageInfo.packageName, context)).firstInstallTime,
+                        Objects.requireNonNull(getPackageInfo(packageInfo.packageName, context)).lastUpdateTime,
+                        sPackageUtils.getAppIcon(packageInfo.packageName, context)
+                );
+                // If PackageItems construction survived, then add
+                mData.add(pi);
+            } catch (Exception ignored) {
+            }
         }
         return mData;
     }
