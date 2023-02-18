@@ -33,9 +33,6 @@ public class AppData {
         List<ApplicationInfo> packages = context.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
         for (ApplicationInfo packageInfo: packages) {
             progressBar.setMax(packages.size());
-            if (progressBar.getProgress() < packages.size()) {
-                progressBar.setProgress(progressBar.getProgress() + 1);
-            }
             try {
                 PackageItems pi = new PackageItems(
                         sPackageUtils.getAppName(packageInfo.packageName, context).toString(),
@@ -49,6 +46,9 @@ public class AppData {
                 // If PackageItems construction survived, then add
                 mData.add(pi);
             } catch (Exception ignored) {
+            }
+            if (progressBar.getProgress() < packages.size()) {
+                progressBar.setProgress(progressBar.getProgress() + 1);
             }
         }
         return mData;
