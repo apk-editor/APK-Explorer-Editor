@@ -134,7 +134,7 @@
     <string name="copying">"Menyalin '%s'…"</string>
     <string name="details">"Rincian"</string>
     <string name="failed">"Gagal"</string>
-    <string name="failed_smali_message">"File 'smali' berikut gagal dirakit!"</string>
+    <string name="failed_smali_message">"File 'smali' berikut gagal dirakit!\n\n%s"</string>
     <string name="open">"Gagal"</string>
     <string name="preparing_source">"Menyiapkan sumber untuk pembuatan APK…"</string>
     <string name="resigned_apks_error">"Pembangunan dibatalkan karena kesalahan dalam merakit file 'smali'.  Silakan periksa 'Rincian' untuk mengetahui lebih lanjut!"</string>

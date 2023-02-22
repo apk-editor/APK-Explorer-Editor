@@ -32,7 +32,7 @@
     <string name="rate_us">"Оценить AEE"</string>
     <string name="rate_us_Summary">"Оценить или/и оставить отзыв в Google Play"</string>
     <string name="replace">"Заменить"</string>
-    <string name="replace_question">"Заменить% s на"</string>
+    <string name="replace_question">"Заменить %s на"</string>
     <string name="report_issue">"Сообщить об ошибке"</string>
     <string name="report_issue_summary">"Сообщить об ошибке на GitHub"</string>
     <string name="save">"Сохранить"</string>
@@ -44,7 +44,7 @@
     <string name="share">"Поделиться"</string>
     <string name="share_message">"Поделиться %s?"</string>
     <string name="share_with">"Поделится с помощью"</string>
-    <string name="signing">"Подпись% s…"</string>
+    <string name="signing">"Подпись %s…"</string>
     <string name="size">"Размер: %s"</string>
     <string name="source_code">"Исходный код"</string>
     <string name="source_code_summary">"Ознакомьтесь с исходным кодом AEE"</string>
@@ -78,7 +78,7 @@
     <string name="select">"Выбрать"</string>
     <string name="signing_custom">"Сконфигурировать кастомный ключ"</string>
     <string name="signing_default">"Подписать дефолтным ключом"</string>
-    <string name="signing_question">"Используйте \"% s\" в качестве нового"</string>
+    <string name="signing_question">"Используйте \"%s\" в качестве нового"</string>
     <string name="signing_title">"Подпись APK"</string>
     <string name="apk_installer">"AEE Установщик APK"</string>
     <string name="bundle_install_question">"Вы действительно хотите установить пакет приложения '%s'?"</string>

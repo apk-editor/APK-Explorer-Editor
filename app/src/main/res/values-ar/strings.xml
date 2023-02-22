@@ -137,20 +137,20 @@
     <string name="language">"اللغة"</string>
     <string name="transfer_exported_apk">"تحويل APK المصدرة مسبقاً لمسار جديد…"</string>
     <string name="user_interface">"واجهة المستخدم"</string>
-    <string name="decompiling">"فك ترجمة '٪ s' …"</string>
-    <string name="deleting">"جارٍ حذف \"٪ s\" …"</string>
+    <string name="decompiling">"فك ترجمة '%s' …"</string>
+    <string name="deleting">"جارٍ حذف \"%s\" …"</string>
     <string name="grant">"منح"</string>
     <string name="important">"الأهميه"</string>
     <string name="assembling">"تجميع
-        '٪س'"</string>
+        '%s'"</string>
     <string name="build">"بناء"</string>
-    <string name="building">"البنايات'…"</string>
-    <string name="copying">"جاري نسخ '٪ s' …"</string>
+    <string name="building">"البنايات '%s'…"</string>
+    <string name="copying">"جاري نسخ '%s' …"</string>
     <string name="details">"تفاصيل"</string>
     <string name="failed">"باءت بالفشل"</string>
     <string name="failed_smali_message">"فشل تجميع ملفات \"smali\" التالية.
 
-        ٪س"</string>
+        %s"</string>
     <string name="open">"فتح"</string>
     <string name="preparing_source">"جارٍ تحضير المصدر لبناء APK…"</string>
     <string name="resigned_apks_error">"تم إحباط البناء بسبب أخطاء في تجميع ملفات \"smali\". يرجى التحقق من \"التفاصيل\" لمعرفة المزيد."</string>
@@ -160,7 +160,7 @@
     <string name="sort_by_updated">"الوقت المحدث"</string>
     <string name="sort_size">"صغير إلى كبير"</string>
     <string name="start">"يبدأ"</string>
-    <string name="android_version">"Android٪ s"</string>
+    <string name="android_version">"Android %s"</string>
     <string name="certificate">"شهادة"</string>
     <string name="install_bundle_question">"هل أنت متأكد من تثبيت حزمة التطبيق المحددة؟"</string>
     <string name="loading">"تحميل…"</string>
@@ -168,7 +168,7 @@
     <string name="permissions">"أذونات"</string>
     <string name="save_to_downloads">"حفظ في التنزيلات"</string>
     <string name="saving">"إنقاذ…"</string>
-    <string name="sdk_compile">"تجميع SDK:٪ s"</string>
-    <string name="sdk_minimum">"الحد الأدنى من SDK:٪ s"</string>
-    <string name="signing_select_question">"هل تريد استخدام الملف المحدد باعتباره٪ s الجديد؟"</string>
+    <string name="sdk_compile">"تجميع SDK: %s"</string>
+    <string name="sdk_minimum">"الحد الأدنى من SDK: %s"</string>
+    <string name="signing_select_question">"هل تريد استخدام الملف المحدد باعتباره %s الجديد؟"</string>
 </resources>
