@@ -139,9 +139,9 @@
     <string name="deleting">"Borrando '%s'"</string>
     <string name="grant">"Permitir"</string>
     <string name="important">"Importante"</string>
-    <string name="assembling">"Ensamblar"</string>
+    <string name="assembling">"Ensamblar\n\'%s\"</string>
     <string name="build">"Construir"</string>
-    <string name="building">"Construyendo"</string>
+    <string name="building">"Construyendo\'%s\'…"</string>
     <string name="copying">"Copiando '%s'"</string>
     <string name="details">"Detalles"</string>
     <string name="failed">"Fallo"</string>

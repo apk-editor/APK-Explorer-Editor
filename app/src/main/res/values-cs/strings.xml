@@ -44,7 +44,7 @@
     <string name="share">"Sdílet"</string>
     <string name="share_message">"Sdílet %s?"</string>
     <string name="share_with">"Sdílet s"</string>
-    <string name="signing">"Přihlašování% s…"</string>
+    <string name="signing">"Přihlašování %s…"</string>
     <string name="size">"Velikost:%s"</string>
     <string name="source_code">"Zdrojový kod"</string>
     <string name="source_code_summary">"Překontrolovat source code of AEE"</string>
