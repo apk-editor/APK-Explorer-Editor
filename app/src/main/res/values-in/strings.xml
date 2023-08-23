@@ -54,8 +54,20 @@
     <string name="system">"Sistem"</string>
     <string name="unknown_file_message">"AEE tidak menangani '%s' saat ini.  Jika Anda mengetahui format file ini, Anda dapat mengekspor file ini ke penyimpanan perangkat dan mencoba mengedit menggunakan aplikasi pihak ketiga yang didukung.  Sebagai alternatif, Anda dapat mencoba membukanya sebagai file teks?"</string>
     <string name="unsupported_file">"File tidak didukung"</string>
-    <string name="unsupported_file_arsc">"Anda memilih 'resources.arsc', yang sayangnya tidak mungkin dibaca oleh AEE.  Apa itu resources.arsc?  resources.arsc adalah file sumber daya biner yang berisi nilai spesifik konfigurasi aplikasi, seperti bilangan bulat, boolean, dan string, serta referensi ke sumber daya yang lebih kompleks, seperti tata letak UI.  Bagaimana cara membaca resources.arsc?  Alat seperti Apktool atau Android Asset Packaging Tool (AAPT) akan digunakan untuk mencetak konten resources.arsc ke dalam format yang dapat dibaca manusia."</string>
-    <string name="unsupported_file_dex">"Anda memilih file 'DEX' (.dex), yang sayangnya tidak mungkin dibaca oleh AEE.  Apa itu file DEX?  File Dex memiliki kode yang akhirnya dieksekusi oleh Android Runtime.  Setiap APK harus memiliki file 'classes.dex', yang mereferensikan semua kelas atau metode yang digunakan dalam aplikasi.  Pada dasarnya, Aktivitas, Objek, atau Fragmen apa pun yang digunakan dalam basis kode akan diubah menjadi byte dalam file Dex yang dapat dijalankan sebagai aplikasi Android.  Bagaimana cara membaca file DEX?  File DEX akan dikonversi ke format 'jar' dan kemudian menjadi file 'Java' menggunakan alat seperti 'dex2jar' dan 'JD-GUI'."</string>
+    <string name="unsupported_file_arsc">"Anda memilih 'resources.arsc', yang sayangnya tidak mungkin dibaca oleh AEE.
+
+        Apa itu resources.arsc?
+        resources.arsc adalah file sumber daya biner yang berisi nilai spesifik konfigurasi aplikasi, seperti bilangan bulat, boolean, dan string, serta referensi ke sumber daya yang lebih kompleks, seperti tata letak UI.
+
+        Bagaimana cara membaca resources.arsc?
+        Alat seperti Apktool atau Android Asset Packaging Tool (AAPT) akan digunakan untuk mencetak konten resources.arsc ke dalam format yang dapat dibaca manusia."</string>
+    <string name="unsupported_file_dex">"Anda memilih file 'DEX' (.dex), yang sayangnya tidak mungkin dibaca oleh AEE.
+
+        Apa itu file DEX?
+        File Dex memiliki kode yang akhirnya dieksekusi oleh Android Runtime.  Setiap APK harus memiliki file 'classes.dex', yang mereferensikan semua kelas atau metode yang digunakan dalam aplikasi.  Pada dasarnya, Aktivitas, Objek, atau Fragmen apa pun yang digunakan dalam basis kode akan diubah menjadi byte dalam file Dex yang dapat dijalankan sebagai aplikasi Android.
+
+        Bagaimana cara membaca file DEX?
+        File DEX akan dikonversi ke format 'jar' dan kemudian menjadi file 'Java' menggunakan alat seperti 'dex2jar' dan 'JD-GUI'."</string>
     <string name="user">"User"</string>
     <string name="bundles">"Berkas"</string>
     <string name="preparing_bundle">"Menyiapkan berkas aplikasi untuk dibagikan…"</string>
@@ -134,7 +146,7 @@
     <string name="copying">"Menyalin '%s'…"</string>
     <string name="details">"Rincian"</string>
     <string name="failed">"Gagal"</string>
-    <string name="failed_smali_message">"File 'smali' berikut gagal dirakit!\n\n%s"</string>
+    <string name="failed_smali_message">"File 'smali' berikut gagal dirakit!"</string>
     <string name="open">"Gagal"</string>
     <string name="preparing_source">"Menyiapkan sumber untuk pembuatan APK…"</string>
     <string name="resigned_apks_error">"Pembangunan dibatalkan karena kesalahan dalam merakit file 'smali'.  Silakan periksa 'Rincian' untuk mengetahui lebih lanjut!"</string>
@@ -155,4 +167,8 @@
     <string name="sdk_compile">"Kompilasi SDK: %s"</string>
     <string name="sdk_minimum">"SDK Minimum: %s"</string>
     <string name="signing_select_question">"Gunakan file yang dipilih sebagai %s baru?"</string>
+    <string name="cancelling">"Membatalkan…"</string>
+    <string name="replace_file_question">"Ganti %s dengan fail terpilih?"</string>
+    <string name="update">"Perbarui"</string>
+    <string name="clearing_cache_message">"Membersihkan cache…"</string>
 </resources>

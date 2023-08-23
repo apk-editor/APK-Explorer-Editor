@@ -16,8 +16,8 @@
     <string name="export">"Exportálás"</string>
     <string name="export_question">"Exportálja az eszköz tárhelyére?"</string>
     <string name="export_complete_message">"A kiválasztott forrás sikeresen exportálva ide: '%s'!"</string>
-    <string name="exploring">"%s felfedezése…"</string>
-    <string name="explore_error_status">"Nem sikerült a(z) %s felfedezése!"</string>
+    <string name="exploring">"%s átvizsgálása…"</string>
+    <string name="explore_error_status">"%s átvizsgálása nem sikerült"</string>
     <string name="install">"Telepít"</string>
     <string name="install_question">"Telepíti: %s?"</string>
     <string name="installing">"%s telepítése…"</string>
@@ -57,7 +57,7 @@
     <string name="unsupported_file_arsc">"Ön a 'resources.arsc' elemet választotta, amit sajnos az AEE nem tud elolvasni.
 
         Mi az resources.arsc?
-        A resources.arsc egy bináris erőforrásfájl, amely egy alkalmazás konfiguráció-specifikus értékeit tartalmazza, például egész számokat, logikai értékeket és karakterláncokat, valamint hivatkozásokat összetettebb erőforrásokra, például UI-elrendezésekre.
+        erőforrásfájl, amely egy alkalmazás konfiguráció-specifikus értékeit tartalmazza, például egész számokat, logikai értékeket és karakterláncokat, valamint hivatkozásokat összetettebb erőforrásokra, például UI-elrendezésekre.
 
         Hogyan kell olvasni a resources.arsc-t?
         Olyan eszközöket kell használni, mint az Apktool vagy az Android Asset Packaging Tool (AAPT) a resources.arsc fájl tartalmának ember által olvasható formátumba történő kinyomtatására."</string>
@@ -114,11 +114,11 @@
     <string name="clear_cache">"Gyorsítótár törlése"</string>
     <string name="clear_cache_summary">"Törölje az AEE belső beállításait"</string>
     <string name="clear_cache_message">"Az exportált alkalmazások kivételével minden eltávolításra kerül."</string>
-    <string name="export_options">"Exportálásra (APK'-k)"</string>
+    <string name="export_options">"Exportálásnál (APK'-k)"</string>
     <string name="export_path_default">"Belső tárhely/AEE"</string>
     <string name="export_path_download">"Letölt"</string>
     <string name="export_path_resources">"Exportálási útvonal (nem APK-k)"</string>
-    <string name="installer_action">"Az APK'-k telepítéséről"</string>
+    <string name="installer_action">"Az APK'-k telepítésénél"</string>
     <string name="project_exist_action">"Egy projektből való kilépésnél"</string>
     <string name="prompt">"Súgó"</string>
     <string name="settings">"Beállítások"</string>
@@ -174,4 +174,11 @@
     <string name="cancelling">"Visszavonás…"</string>
     <string name="replace_file_question">"%s fájlt lecseréli a kiválasztott fájlra?"</string>
     <string name="update">"Frissítés"</string>
+    <string name="signing_summary">"Az APK-k egyéni kulccsal történő aláírásához az AEE-nek pk8 formátumú privát kulcsra és egy ugyanabból a kulcsból exportált X509-tanúsítványra van szüksége. Kattintson ide, ha többet szeretne megtudni a privát kulcs és az X509-tanúsítvány létrehozásáról."</string>
+    <string name="x509_certificate">"X509-tanúsítvány"</string>
+    <string name="x509_certificate_summary">"Egyéni X509-tanúsítvány kiválasztása"</string>
+    <string name="clearing_cache_message">"Gyorsítótár törlés…"</string>
+    <string name="root">"Root"</string>
+    <string name="xml_corrupted">"Az XML karakterlánc sérült. Megszakítás…"</string>
+    <string name="xml_decode_failed">"%s dekódolása nem sikerült"</string>
 </resources>

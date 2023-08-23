@@ -44,7 +44,7 @@
     <string name="share">"Sdílet"</string>
     <string name="share_message">"Sdílet %s?"</string>
     <string name="share_with">"Sdílet s"</string>
-    <string name="signing">"Přihlašování %s…"</string>
+    <string name="signing">"Přihlašování% s…"</string>
     <string name="size">"Velikost:%s"</string>
     <string name="source_code">"Zdrojový kod"</string>
     <string name="source_code_summary">"Překontrolovat source code of AEE"</string>
@@ -102,9 +102,7 @@
     <string name="apk_corrupted">"Soubory APK jsou poškozené! Přerušení."</string>
     <string name="install_resign">"Znovu podepsat a amp; Nainstalovat"</string>
     <string name="resign_only">"Znovu podepsat"</string>
-    <string name="resigned_apks_path">"Vygenerují se znovu podepsané soubory APK!
-
-        Cesta: '%s'"</string>
+    <string name="resigned_apks_path">"Vygenerují se znovu podepsané soubory APK! Cesta: '%s'"</string>
     <string name="resigning_apks">"Opětovné podepsání vybraných souborů APK…"</string>
     <string name="select_storage">"Vyberte z úložiště"</string>
     <string name="sort_by">"Setřídit aplikace"</string>
@@ -137,6 +135,11 @@
     <string name="language">"Jazyk"</string>
     <string name="transfer_exported_apk">"Přenos dříve exportovaných souborů APK na novou cestu …"</string>
     <string name="user_interface">"uživatelské rozhraní"</string>
+    <string name="decompiling">"Dekompilování '%s'…"</string>
+    <string name="deleting">"Mazání '%s'…"</string>
+    <string name="important">"důležité "</string>
+    <string name="assembling">"Sestavení
+        '%s'"</string>
     <string name="details">"Detaily"</string>
     <string name="open">"Otevřít"</string>
     <string name="success">"Úspěch"</string>
