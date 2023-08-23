@@ -23,7 +23,8 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 19, 2021
@@ -82,13 +83,13 @@ public class APKSignActivity extends AppCompatActivity {
     }
 
     private void setStatus() {
-        if (sUtils.getString("PrivateKey", null, this) != null) {
-            mKeySummary.setText(sUtils.getString("PrivateKey", null, this));
+        if (sCommonUtils.getString("PrivateKey", null, this) != null) {
+            mKeySummary.setText(sCommonUtils.getString("PrivateKey", null, this));
             mClearKey.setColorFilter(Color.RED);
             mClearKey.setVisibility(View.VISIBLE);
             mClearKey.setOnClickListener(v -> {
-                sUtils.saveString("PrivateKey", null, this);
-                sUtils.delete(new File(getFilesDir(), "signing/APKEditor.pk8"));
+                sCommonUtils.saveString("PrivateKey", null, this);
+                sFileUtils.delete(new File(getFilesDir(), "signing/APKEditor.pk8"));
                 mKeySummary.setText(getString(R.string.private_key_summary));
                 mClearKey.setVisibility(View.GONE);
             });
@@ -96,13 +97,13 @@ public class APKSignActivity extends AppCompatActivity {
             mClearKey.setVisibility(View.GONE);
         }
 
-        if (sUtils.getString("X509Certificate", null, this) != null) {
-            mCertSummary.setText(sUtils.getString("X509Certificate", null, this));
+        if (sCommonUtils.getString("X509Certificate", null, this) != null) {
+            mCertSummary.setText(sCommonUtils.getString("X509Certificate", null, this));
             mClearCert.setColorFilter(Color.RED);
             mClearCert.setVisibility(View.VISIBLE);
             mClearCert.setOnClickListener(v -> {
-                sUtils.saveString("X509Certificate", null, this);
-                sUtils.delete(new File(getFilesDir(), "signing/APKEditorCert"));
+                sCommonUtils.saveString("X509Certificate", null, this);
+                sFileUtils.delete(new File(getFilesDir(), "signing/APKEditorCert"));
                 mCertSummary.setText(getString(R.string.x509_certificate_summary));
                 mClearCert.setVisibility(View.GONE);
             });
@@ -125,8 +126,8 @@ public class APKSignActivity extends AppCompatActivity {
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
                                 .setPositiveButton(R.string.select, (dialog, id) -> {
-                                    sUtils.saveString("X509Certificate", new File(getFilesDir(), "signing/APKEditorCert").getAbsolutePath(), this);
-                                    sUtils.copy(uriFile, new File(getFilesDir(), "signing/APKEditorCert"), this);
+                                    sCommonUtils.saveString("X509Certificate", new File(getFilesDir(), "signing/APKEditorCert").getAbsolutePath(), this);
+                                    sFileUtils.copy(uriFile, new File(getFilesDir(), "signing/APKEditorCert"), this);
                                     setStatus();
                                 }).show();
                     }
@@ -147,8 +148,8 @@ public class APKSignActivity extends AppCompatActivity {
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
                                 .setPositiveButton(R.string.select, (dialog, id) -> {
-                                    sUtils.saveString("PrivateKey", new File(getFilesDir(), "signing/APKEditor.pk8").getAbsolutePath(), this);
-                                    sUtils.copy(uriFile, new File(getFilesDir(), "signing/APKEditor.pk8"), this);
+                                    sCommonUtils.saveString("PrivateKey", new File(getFilesDir(), "signing/APKEditor.pk8").getAbsolutePath(), this);
+                                    sFileUtils.copy(uriFile, new File(getFilesDir(), "signing/APKEditor.pk8"), this);
                                     setStatus();
                                 }).show();
                     }

@@ -12,8 +12,8 @@ import com.apk.editor.utils.APKEditorUtils;
 
 import java.io.File;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 28, 2023
@@ -49,7 +49,7 @@ public class SaveBundletoDownloads extends sExecutor {
     @Override
     public void doInBackground() {
         if (mFile.exists()) {
-            sUtils.delete(mFile);
+            sFileUtils.delete(mFile);
         }
         APKEditorUtils.zip(new File(mPath), mFile);
         if (mExportOnly) {

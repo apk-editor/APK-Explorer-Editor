@@ -1,5 +1,6 @@
 package com.apk.editor.activities;
 
+import android.annotation.SuppressLint;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,9 +19,9 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 
-import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
-import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
+import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
+import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -29,6 +30,7 @@ public class ImageViewActivity extends AppCompatActivity {
 
     public static final String PATH_INTENT = "path";
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +63,7 @@ public class ImageViewActivity extends AppCompatActivity {
                             } else {
                                 String mExportPath;
                                 if (Build.VERSION.SDK_INT < 29) {
-                                    sUtils.mkdir(new File(Projects.getExportPath(this), Common.getAppID()));
+                                    sFileUtils.mkdir(new File(Projects.getExportPath(this), Common.getAppID()));
                                     mExportPath = Projects.getExportPath(this) + "/" + Common.getAppID();
                                 } else {
                                     mExportPath = Projects.getExportPath(this);

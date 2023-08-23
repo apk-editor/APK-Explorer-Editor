@@ -1,5 +1,6 @@
 package com.apk.editor.utils.tasks;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 
@@ -8,9 +9,9 @@ import com.apk.editor.utils.APKData;
 
 import java.io.File;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
+import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 28, 2023
@@ -26,6 +27,7 @@ public class ExportApp extends sExecutor {
         mContext = context;
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onPreExecute() {
         mProgressDialog = new ProgressDialog(mContext);
@@ -37,7 +39,7 @@ public class ExportApp extends sExecutor {
         mProgressDialog.setCancelable(false);
         mProgressDialog.show();
         if (!APKData.getExportAPKsPath(mContext).exists()) {
-            sUtils.mkdir(APKData.getExportAPKsPath(mContext));
+            sFileUtils.mkdir(APKData.getExportAPKsPath(mContext));
         }
     }
 
@@ -46,16 +48,16 @@ public class ExportApp extends sExecutor {
         if (APKData.isAppBundle(sPackageUtils.getSourceDir(mPackageName, mContext))) {
             File mParent = new File(APKData.getExportAPKsPath(mContext) , mPackageName);
             if (mParent.exists()) {
-                sUtils.delete(mParent);
+                sFileUtils.delete(mParent);
             }
-            sUtils.mkdir(mParent);
+            sFileUtils.mkdir(mParent);
             for (String mSplits : APKData.splitApks(sPackageUtils.getSourceDir(mPackageName, mContext))) {
                 if (mSplits.endsWith(".apk")) {
-                    sUtils.copy(new File(mSplits), new File(mParent, new File(mSplits).getName()));
+                    sFileUtils.copy(new File(mSplits), new File(mParent, new File(mSplits).getName()));
                 }
             }
         } else {
-            sUtils.copy(new File(sPackageUtils.getSourceDir(mPackageName, mContext)), new File(APKData.getExportAPKsPath(mContext),  mPackageName + ".apk"));
+            sFileUtils.copy(new File(sPackageUtils.getSourceDir(mPackageName, mContext)), new File(APKData.getExportAPKsPath(mContext),  mPackageName + ".apk"));
         }
     }
 

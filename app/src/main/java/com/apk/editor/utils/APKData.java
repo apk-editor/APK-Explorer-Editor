@@ -24,8 +24,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -35,8 +36,8 @@ public class APKData {
     public static List<String> getData(Context context) {
         List<String> mData = new ArrayList<>();
         for (File mFile : getAPKList(context)) {
-            if (sUtils.getString("apkTypes", "apks", context).equals("bundles")) {
-                if (mFile.exists() && mFile.isDirectory() && sUtils.exist(new File(mFile.toString(), "base.apk"))) {
+            if (sCommonUtils.getString("apkTypes", "apks", context).equals("bundles")) {
+                if (mFile.exists() && mFile.isDirectory() && sFileUtils.exist(new File(mFile.toString(), "base.apk"))) {
                     if (Common.getSearchWord() == null) {
                         mData.add(mFile.getAbsolutePath());
                     } else if (Common.isTextMatched(mFile.getAbsolutePath(), Common.getSearchWord())) {
@@ -57,7 +58,7 @@ public class APKData {
             }
         }
         Collections.sort(mData);
-        if (!sUtils.getBoolean("az_order", true, context)) {
+        if (!sCommonUtils.getBoolean("az_order", true, context)) {
             Collections.reverse(mData);
         }
         return mData;
@@ -65,13 +66,13 @@ public class APKData {
 
     private static File[] getAPKList(Context context) {
         if (!getExportAPKsPath(context).exists()) {
-            sUtils.mkdir(getExportAPKsPath(context));
+            sFileUtils.mkdir(getExportAPKsPath(context));
         }
         return getExportAPKsPath(context).listFiles();
     }
 
     public static File getExportAPKsPath(Context context) {
-        if (Build.VERSION.SDK_INT < 29 && sUtils.getString("exportAPKsPath", "externalFiles", context).equals("internalStorage")) {
+        if (Build.VERSION.SDK_INT < 29 && sCommonUtils.getString("exportAPKsPath", "externalFiles", context).equals("internalStorage")) {
             return new File(Environment.getExternalStorageDirectory(), "/AEE/exportedAPKs");
         } else {
             return context.getExternalFilesDir("");
@@ -94,9 +95,9 @@ public class APKData {
             return;
         }
 
-        sUtils.mkdir(getSigningEnvironmentDir(context));
+        sFileUtils.mkdir(getSigningEnvironmentDir(context));
 
-        sUtils.copyAssetFile("APKEditor.pk8", privateKey, context);
+        sFileUtils.copyAssetFile("APKEditor.pk8", privateKey, context);
     }
 
     private static File getSigningEnvironmentDir(Context context) {
@@ -161,20 +162,20 @@ public class APKData {
                         new SmaliToDex(file, new File(buildDir, file.getName()), 0, context).execute();
                     } else {
                         // Otherwise, use the original one from the backup folder
-                        if (sUtils.exist(new File(backupPath, file.getName()))) {
-                            sUtils.copy(new File(backupPath, file.getName()), new File(buildDir, file.getName()));
+                        if (sFileUtils.exist(new File(backupPath, file.getName()))) {
+                            sFileUtils.copy(new File(backupPath, file.getName()), new File(buildDir, file.getName()));
                         }
                     }
                 } else if (file.isDirectory() && file.getName().equals("META-INF")) {
                     if (new File(file, "services").exists()) {
-                        sUtils.copyDir(new File(file, "services"), new File(buildDir, "META-INF/services"));
+                        sFileUtils.copyDir(new File(file, "services"), new File(buildDir, "META-INF/services"));
                     }
                 } else {
                     if (!fileToExclude(file)) {
                         if (file.isDirectory()) {
-                            sUtils.copyDir(file, new File(buildDir, file.getName()));
+                            sFileUtils.copyDir(file, new File(buildDir, file.getName()));
                         } else {
-                            sUtils.copy(file, new File(buildDir, file.getName()));
+                            sFileUtils.copy(file, new File(buildDir, file.getName()));
                         }
                     }
                 }
@@ -192,7 +193,7 @@ public class APKData {
             values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
             Uri uri = context.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
             OutputStream outputStream = context.getContentResolver().openOutputStream(uri);
-            sUtils.copyStream(inputStream, outputStream);
+            sFileUtils.copyStream(inputStream, outputStream);
         } catch (IOException ignored) {
         }
     }

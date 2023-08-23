@@ -35,8 +35,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sSingleItemDialog;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
+import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -53,7 +55,7 @@ public class APKExplorer {
                 }
             }
             Collections.sort(mDir, String.CASE_INSENSITIVE_ORDER);
-            if (!sUtils.getBoolean("az_order", true, activity)) {
+            if (!sCommonUtils.getBoolean("az_order", true, activity)) {
                 Collections.reverse(mDir);
             }
             mData.addAll(mDir);
@@ -69,7 +71,7 @@ public class APKExplorer {
                 }
             }
             Collections.sort(mFiles, String.CASE_INSENSITIVE_ORDER);
-            if (!sUtils.getBoolean("az_order", true, activity)) {
+            if (!sCommonUtils.getBoolean("az_order", true, activity)) {
                 Collections.reverse(mFiles);
             }
             mData.addAll(mFiles);
@@ -124,9 +126,9 @@ public class APKExplorer {
     }
 
     public static JSONObject getAppData(String path) {
-        if (sUtils.read(new File(path)) == null) return null;
+        if (sFileUtils.read(new File(path)) == null) return null;
         try {
-            return new JSONObject(sUtils.read(new File(path)));
+            return new JSONObject(sFileUtils.read(new File(path)));
         } catch (JSONException ignored) {
         }
         return null;
@@ -134,12 +136,12 @@ public class APKExplorer {
 
     public static void setIcon(AppCompatImageButton icon, Drawable drawable, Context context) {
         icon.setImageDrawable(drawable);
-        icon.setColorFilter(sUtils.isDarkTheme(context) ? ContextCompat.getColor(context, R.color.colorWhite) :
+        icon.setColorFilter(sThemeUtils.isDarkTheme(context) ? ContextCompat.getColor(context, R.color.colorWhite) :
                 ContextCompat.getColor(context, R.color.colorBlack));
     }
 
     public static int getSpanCount(Activity activity) {
-        return sUtils.getOrientation(activity) == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1;
+        return sCommonUtils.getOrientation(activity) == Configuration.ORIENTATION_LANDSCAPE ? 2 : 1;
     }
 
     public static String getAppName(String path) {
@@ -167,12 +169,12 @@ public class APKExplorer {
             try (FileInputStream inputStream = new FileInputStream(path)) {
                 text = new aXMLDecoder().decode(inputStream).trim();
             } catch (Exception e) {
-                sUtils.toast(context.getString(R.string.xml_decode_failed, new File(path).getName()), context).show();
+                sCommonUtils.toast(context.getString(R.string.xml_decode_failed, new File(path).getName()), context).show();
             }
         } else if (parsedManifest) {
             text = path;
         } else {
-            text = sUtils.read(new File(path));
+            text = sFileUtils.read(new File(path));
         }
         if (text != null) {
             for (String line : text.split("\\r?\\n")) {
@@ -241,13 +243,13 @@ public class APKExplorer {
                 SplitAPKInstaller.installAPK(exit, new File(Common.getAPKList().get(0)), activity);
             }
         } else {
-            sUtils.snackBar(activity.findViewById(android.R.id.content), activity.getString(R.string.installation_status_bad_apks)).show();
+            sCommonUtils.snackBar(activity.findViewById(android.R.id.content), activity.getString(R.string.installation_status_bad_apks)).show();
         }
     }
 
     public static void handleAPKs(boolean exit, Activity activity) {
         if (APKEditorUtils.isFullVersion(activity)) {
-            if (sUtils.getString("installerAction", null, activity) == null) {
+            if (sCommonUtils.getString("installerAction", null, activity) == null) {
                 new sSingleItemDialog(0, null, new String[] {
                         activity.getString(R.string.install),
                         activity.getString(R.string.install_resign),
@@ -256,17 +258,17 @@ public class APKExplorer {
 
                     @Override
                     public void onItemSelected(int itemPosition) {
-                        sUtils.saveBoolean("firstSigning", true, activity);
+                        sCommonUtils.saveBoolean("firstSigning", true, activity);
                         if (itemPosition == 0) {
                             installAPKs(exit, activity);
                         } else if (itemPosition == 1) {
-                            if (!sUtils.getBoolean("firstSigning", false, activity)) {
+                            if (!sCommonUtils.getBoolean("firstSigning", false, activity)) {
                                 new SigningOptionsDialog(null, exit, activity).show();
                             } else {
                                 new ResignAPKs(null, true, exit, activity).execute();
                             }
                         } else {
-                            if (!sUtils.getBoolean("firstSigning", false, activity)) {
+                            if (!sCommonUtils.getBoolean("firstSigning", false, activity)) {
                                 new SigningOptionsDialog(null, exit, activity).show();
                             } else {
                                 new ResignAPKs(null, false, exit, activity).execute();
@@ -274,10 +276,10 @@ public class APKExplorer {
                         }
                     }
                 }.show();
-            } else if (sUtils.getString("installerAction", null, activity).equals(activity.getString(R.string.install))) {
+            } else if (sCommonUtils.getString("installerAction", null, activity).equals(activity.getString(R.string.install))) {
                 installAPKs(exit, activity);
             } else {
-                if (!sUtils.getBoolean("firstSigning", false, activity)) {
+                if (!sCommonUtils.getBoolean("firstSigning", false, activity)) {
                     new SigningOptionsDialog(null, exit, activity).show();
                 } else {
                     new ResignAPKs(null,true, exit, activity).execute();

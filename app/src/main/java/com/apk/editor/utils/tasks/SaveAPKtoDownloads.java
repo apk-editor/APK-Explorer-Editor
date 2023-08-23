@@ -11,7 +11,7 @@ import com.apk.editor.utils.APKData;
 
 import java.io.File;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 28, 2023

@@ -11,9 +11,10 @@ import com.apk.editor.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.sunilpaulmathew.sCommon.Utils.sSerializableItems;
-import in.sunilpaulmathew.sCommon.Utils.sSingleChoiceDialog;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sSerializableItems;
+import in.sunilpaulmathew.sCommon.Dialog.sSingleChoiceDialog;
+import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 25, 2021
@@ -117,7 +118,7 @@ public class AppSettings {
     }
 
     public static String getLanguage(Context context) {
-        switch (sUtils.getLanguage(context)) {
+        switch (sThemeUtils.getLanguage(context)) {
             case "en_US":
                 return context.getString(R.string.language_en);
             case "ar":
@@ -158,7 +159,7 @@ public class AppSettings {
     }
 
     public static String getExportAPKsPath(Context context) {
-        String exportAPKPath = sUtils.getString("exportAPKsPath", "externalFiles", context);
+        String exportAPKPath = sCommonUtils.getString("exportAPKsPath", "externalFiles", context);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && exportAPKPath.equals("internalStorage")) {
             return context.getString(R.string.export_path_default);
         } else {
@@ -168,9 +169,9 @@ public class AppSettings {
 
     public static String getExportPath(Context context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            if (sUtils.getString("exportPath", null, context) != null && sUtils.getString("exportPath", null, context).equals(Environment.getExternalStorageDirectory().toString())) {
+            if (sCommonUtils.getString("exportPath", null, context) != null && sCommonUtils.getString("exportPath", null, context).equals(Environment.getExternalStorageDirectory().toString())) {
                 return context.getString(R.string.sdcard);
-            } else if (sUtils.getString("exportPath", null, context) != null && sUtils.getString("exportPath", null, context).equals(Environment.getExternalStorageDirectory().toString() + "/AEE")) {
+            } else if (sCommonUtils.getString("exportPath", null, context) != null && sCommonUtils.getString("exportPath", null, context).equals(Environment.getExternalStorageDirectory().toString() + "/AEE")) {
                 return context.getString(R.string.export_path_default);
             } else {
                 return context.getString(R.string.export_path_download);
@@ -181,24 +182,24 @@ public class AppSettings {
     }
 
     public static String getAPKs(Context context) {
-        if (sUtils.getString("exportAPKs", null, context) != null) {
-            return sUtils.getString("exportAPKs", null, context);
+        if (sCommonUtils.getString("exportAPKs", null, context) != null) {
+            return sCommonUtils.getString("exportAPKs", null, context);
         } else {
             return context.getString(R.string.prompt);
         }
     }
 
     public static String getProjectExistAction(Context context) {
-        if (sUtils.getString("projectAction", null, context) != null) {
-            return sUtils.getString("projectAction", null, context);
+        if (sCommonUtils.getString("projectAction", null, context) != null) {
+            return sCommonUtils.getString("projectAction", null, context);
         } else {
             return context.getString(R.string.prompt);
         }
     }
 
     public static String getInstallerAction(Context context) {
-        if (sUtils.getString("installerAction", null, context) != null) {
-            return sUtils.getString("installerAction", null, context);
+        if (sCommonUtils.getString("installerAction", null, context) != null) {
+            return sCommonUtils.getString("installerAction", null, context);
         } else {
             return context.getString(R.string.prompt);
         }
@@ -285,75 +286,75 @@ public class AppSettings {
             public void onItemSelected(int itemPosition) {
                 switch (itemPosition) {
                     case  0:
-                        sUtils.saveString("appLanguage", java.util.Locale.getDefault().getLanguage(), context);
+                        sCommonUtils.saveString("appLanguage", java.util.Locale.getDefault().getLanguage(), context);
                         restartApp(context);
                         break;
                     case 1:
-                        sUtils.saveString("appLanguage", "ar", context);
+                        sCommonUtils.saveString("appLanguage", "ar", context);
                         restartApp(context);
                         break;
                     case 2:
-                        sUtils.saveString("appLanguage", "zh", context);
+                        sCommonUtils.saveString("appLanguage", "zh", context);
                         restartApp(context);
                         break;
                     case 3:
-                        sUtils.saveString("appLanguage", "cs", context);
+                        sCommonUtils.saveString("appLanguage", "cs", context);
                         restartApp(context);
                         break;
                     case 4:
-                        sUtils.saveString("appLanguage", "de", context);
+                        sCommonUtils.saveString("appLanguage", "de", context);
                         restartApp(context);
                         break;
                     case 5:
-                        sUtils.saveString("appLanguage", "en_US", context);
+                        sCommonUtils.saveString("appLanguage", "en_US", context);
                         restartApp(context);
                         break;
                     case 6:
-                        sUtils.saveString("appLanguage", "fr", context);
+                        sCommonUtils.saveString("appLanguage", "fr", context);
                         restartApp(context);
                         break;
                     case 7:
-                        sUtils.saveString("appLanguage", "es", context);
+                        sCommonUtils.saveString("appLanguage", "es", context);
                         restartApp(context);
                         break;
                     case 8:
-                        sUtils.saveString("appLanguage", "ru", context);
+                        sCommonUtils.saveString("appLanguage", "ru", context);
                         restartApp(context);
                         break;
                     case 9:
-                        sUtils.saveString("appLanguage", "tr", context);
+                        sCommonUtils.saveString("appLanguage", "tr", context);
                         restartApp(context);
                         break;
                     case 10:
-                        sUtils.saveString("appLanguage", "vi", context);
+                        sCommonUtils.saveString("appLanguage", "vi", context);
                         restartApp(context);
                         break;
                     case 11:
-                        sUtils.saveString("appLanguage", "pl", context);
+                        sCommonUtils.saveString("appLanguage", "pl", context);
                         restartApp(context);
                         break;
                     case 12:
-                        sUtils.saveString("appLanguage", "in", context);
+                        sCommonUtils.saveString("appLanguage", "in", context);
                         restartApp(context);
                         break;
                     case 13:
-                        sUtils.saveString("appLanguage", "hu", context);
+                        sCommonUtils.saveString("appLanguage", "hu", context);
                         restartApp(context);
                         break;
                     case 14:
-                        sUtils.saveString("appLanguage", "uk", context);
+                        sCommonUtils.saveString("appLanguage", "uk", context);
                         restartApp(context);
                         break;
                     case 15:
-                        sUtils.saveString("appLanguage", "hi", context);
+                        sCommonUtils.saveString("appLanguage", "hi", context);
                         restartApp(context);
                         break;
                     case 16:
-                        sUtils.saveString("appLanguage", "lt", context);
+                        sCommonUtils.saveString("appLanguage", "lt", context);
                         restartApp(context);
                         break;
                     case 17:
-                        sUtils.saveString("appLanguage", "th", context);
+                        sCommonUtils.saveString("appLanguage", "th", context);
                         restartApp(context);
                         break;
                 }
@@ -362,8 +363,8 @@ public class AppSettings {
     }
 
     public static boolean isCustomKey(Context context) {
-        return sUtils.getString("PrivateKey", null, context) != null &&
-                sUtils.getString("X509Certificate", null, context) != null;
+        return sCommonUtils.getString("PrivateKey", null, context) != null &&
+                sCommonUtils.getString("X509Certificate", null, context) != null;
     }
 
     private static void restartApp(Context context) {

@@ -12,7 +12,7 @@ import com.apk.axml.APKParser;
 import com.apk.editor.R;
 import com.google.android.material.textview.MaterialTextView;
 
-import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
+import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on November 07, 2021

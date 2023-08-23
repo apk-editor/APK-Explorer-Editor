@@ -27,8 +27,8 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -67,23 +67,23 @@ public class ApplicationsFragment extends Fragment {
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                String mStatus = sUtils.getString("appTypes", "all", requireActivity());
+                String mStatus = sCommonUtils.getString("appTypes", "all", requireActivity());
                 switch (tab.getPosition()) {
                     case 0:
                         if (!mStatus.equals("all")) {
-                            sUtils.saveString("appTypes", "all", requireActivity());
+                            sCommonUtils.saveString("appTypes", "all", requireActivity());
                             loadApps(requireActivity());
                         }
                         break;
                     case 1:
                         if (!mStatus.equals("system")) {
-                            sUtils.saveString("appTypes", "system", requireActivity());
+                            sCommonUtils.saveString("appTypes", "system", requireActivity());
                             loadApps(requireActivity());
                         }
                         break;
                     case 2:
                         if (!mStatus.equals("user")) {
-                            sUtils.saveString("appTypes", "user", requireActivity());
+                            sCommonUtils.saveString("appTypes", "user", requireActivity());
                             loadApps(requireActivity());
                         }
                         break;
@@ -139,7 +139,7 @@ public class ApplicationsFragment extends Fragment {
     }
 
     private int getTabPosition(Activity activity) {
-        String mStatus = sUtils.getString("appTypes", "all", activity);
+        String mStatus = sCommonUtils.getString("appTypes", "all", activity);
         if (mStatus.equals("user")) {
             return 2;
         } else if (mStatus.equals("system")) {
@@ -179,19 +179,19 @@ public class ApplicationsFragment extends Fragment {
         SubMenu sort = menu.addSubMenu(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_by));
 
         sort.add(0, 1, Menu.NONE, getString(R.string.sort_by_name)).setCheckable(true)
-                .setChecked(sUtils.getBoolean("sort_name", false, activity));
+                .setChecked(sCommonUtils.getBoolean("sort_name", false, activity));
         sort.add(0, 2, Menu.NONE, getString(R.string.sort_by_id)).setCheckable(true)
-                .setChecked(sUtils.getBoolean("sort_id", true, activity));
+                .setChecked(sCommonUtils.getBoolean("sort_id", true, activity));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             sort.add(0, 3, Menu.NONE, getString(R.string.sort_by_installed)).setCheckable(true)
-                    .setChecked(sUtils.getBoolean("sort_installed", false, activity));
+                    .setChecked(sCommonUtils.getBoolean("sort_installed", false, activity));
             sort.add(0, 4, Menu.NONE, getString(R.string.sort_by_updated)).setCheckable(true)
-                    .setChecked(sUtils.getBoolean("sort_updated", false, activity));
+                    .setChecked(sCommonUtils.getBoolean("sort_updated", false, activity));
             sort.add(0, 5, Menu.NONE, getString(R.string.sort_by_size)).setCheckable(true)
-                    .setChecked(sUtils.getBoolean("sort_size", false, activity));
+                    .setChecked(sCommonUtils.getBoolean("sort_size", false, activity));
         }
-        menu.add(Menu.NONE, 6, Menu.NONE, getString(sUtils.getBoolean("sort_size", false, activity) ?
-                R.string.sort_size : R.string.sort_order)).setCheckable(true).setChecked(sUtils.getBoolean(
+        menu.add(Menu.NONE, 6, Menu.NONE, getString(sCommonUtils.getBoolean("sort_size", false, activity) ?
+                R.string.sort_size : R.string.sort_order)).setCheckable(true).setChecked(sCommonUtils.getBoolean(
                         "az_order", true, activity));
         sort.setGroupCheckable(0, true, true);
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -199,57 +199,57 @@ public class ApplicationsFragment extends Fragment {
                 case 0:
                     break;
                 case 1:
-                    if (!sUtils.getBoolean("sort_name", false, activity)) {
-                        sUtils.saveBoolean("sort_name", true, activity);
-                        sUtils.saveBoolean("sort_id", false, activity);
-                        sUtils.saveBoolean("sort_installed", false, activity);
-                        sUtils.saveBoolean("sort_updated", false, activity);
-                        sUtils.saveBoolean("sort_size", false, activity);
+                    if (!sCommonUtils.getBoolean("sort_name", false, activity)) {
+                        sCommonUtils.saveBoolean("sort_name", true, activity);
+                        sCommonUtils.saveBoolean("sort_id", false, activity);
+                        sCommonUtils.saveBoolean("sort_installed", false, activity);
+                        sCommonUtils.saveBoolean("sort_updated", false, activity);
+                        sCommonUtils.saveBoolean("sort_size", false, activity);
                         loadApps(activity);
                     }
                     break;
                 case 2:
-                    if (!sUtils.getBoolean("sort_id", true, activity)) {
-                        sUtils.saveBoolean("sort_name", false, activity);
-                        sUtils.saveBoolean("sort_id", true, activity);
-                        sUtils.saveBoolean("sort_installed", false, activity);
-                        sUtils.saveBoolean("sort_updated", false, activity);
-                        sUtils.saveBoolean("sort_size", false, activity);
+                    if (!sCommonUtils.getBoolean("sort_id", true, activity)) {
+                        sCommonUtils.saveBoolean("sort_name", false, activity);
+                        sCommonUtils.saveBoolean("sort_id", true, activity);
+                        sCommonUtils.saveBoolean("sort_installed", false, activity);
+                        sCommonUtils.saveBoolean("sort_updated", false, activity);
+                        sCommonUtils.saveBoolean("sort_size", false, activity);
                         loadApps(activity);
                     }
                     break;
                 case 3:
-                    if (!sUtils.getBoolean("sort_installed", false, activity)) {
-                        sUtils.saveBoolean("sort_name", false, activity);
-                        sUtils.saveBoolean("sort_id", false, activity);
-                        sUtils.saveBoolean("sort_installed", true, activity);
-                        sUtils.saveBoolean("sort_updated", false, activity);
-                        sUtils.saveBoolean("sort_size", false, activity);
+                    if (!sCommonUtils.getBoolean("sort_installed", false, activity)) {
+                        sCommonUtils.saveBoolean("sort_name", false, activity);
+                        sCommonUtils.saveBoolean("sort_id", false, activity);
+                        sCommonUtils.saveBoolean("sort_installed", true, activity);
+                        sCommonUtils.saveBoolean("sort_updated", false, activity);
+                        sCommonUtils.saveBoolean("sort_size", false, activity);
                         loadApps(activity);
                     }
                     break;
                 case 4:
-                    if (!sUtils.getBoolean("sort_updated", false, activity)) {
-                        sUtils.saveBoolean("sort_name", false, activity);
-                        sUtils.saveBoolean("sort_id", false, activity);
-                        sUtils.saveBoolean("sort_installed", false, activity);
-                        sUtils.saveBoolean("sort_updated", true, activity);
-                        sUtils.saveBoolean("sort_size", false, activity);
+                    if (!sCommonUtils.getBoolean("sort_updated", false, activity)) {
+                        sCommonUtils.saveBoolean("sort_name", false, activity);
+                        sCommonUtils.saveBoolean("sort_id", false, activity);
+                        sCommonUtils.saveBoolean("sort_installed", false, activity);
+                        sCommonUtils.saveBoolean("sort_updated", true, activity);
+                        sCommonUtils.saveBoolean("sort_size", false, activity);
                         loadApps(activity);
                     }
                     break;
                 case 5:
-                    if (!sUtils.getBoolean("sort_size", false, activity)) {
-                        sUtils.saveBoolean("sort_name", false, activity);
-                        sUtils.saveBoolean("sort_id", false, activity);
-                        sUtils.saveBoolean("sort_installed", false, activity);
-                        sUtils.saveBoolean("sort_updated", false, activity);
-                        sUtils.saveBoolean("sort_size", true, activity);
+                    if (!sCommonUtils.getBoolean("sort_size", false, activity)) {
+                        sCommonUtils.saveBoolean("sort_name", false, activity);
+                        sCommonUtils.saveBoolean("sort_id", false, activity);
+                        sCommonUtils.saveBoolean("sort_installed", false, activity);
+                        sCommonUtils.saveBoolean("sort_updated", false, activity);
+                        sCommonUtils.saveBoolean("sort_size", true, activity);
                         loadApps(activity);
                     }
                     break;
                 case 6:
-                    sUtils.saveBoolean("az_order", !sUtils.getBoolean("az_order", true, activity), activity);
+                    sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, activity), activity);
                     loadApps(activity);
                     break;
             }

@@ -1,5 +1,6 @@
 package com.apk.editor.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -29,9 +30,10 @@ import com.google.android.material.textview.MaterialTextView;
 import java.io.File;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
+import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 05, 2021
@@ -43,6 +45,7 @@ public class FilePickerActivity extends AppCompatActivity {
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,17 +93,17 @@ public class FilePickerActivity extends AppCompatActivity {
                         })
                         .setPositiveButton(Common.getFileToReplace() != null ? R.string.replace : R.string.select, (dialog, id) -> {
                             if (Common.getFileToReplace() != null) {
-                                sUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(Common.getFileToReplace()));
+                                sFileUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(Common.getFileToReplace()));
                                 Common.setFileToReplace(null);
                             }  else {
-                                sUtils.mkdir(new File(getFilesDir(), "signing"));
+                                sFileUtils.mkdir(new File(getFilesDir(), "signing"));
                                 if (Common.hasPrivateKey()) {
-                                    sUtils.saveString("PrivateKey", APKExplorer.getData(getFilesList(), true, this).get(position), this);
-                                    sUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(getFilesDir(), "signing/APKEditor.pk8"));
+                                    sCommonUtils.saveString("PrivateKey", APKExplorer.getData(getFilesList(), true, this).get(position), this);
+                                    sFileUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(getFilesDir(), "signing/APKEditor.pk8"));
                                     Common.setPrivateKeyStatus(false);
                                 } else {
-                                    sUtils.saveString("X509Certificate", APKExplorer.getData(getFilesList(), true, this).get(position), this);
-                                    sUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(getFilesDir(), "signing/APKEditor"));
+                                    sCommonUtils.saveString("X509Certificate", APKExplorer.getData(getFilesList(), true, this).get(position), this);
+                                    sFileUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(getFilesDir(), "signing/APKEditor"));
                                     Common.setRSATemplateStatus(false);
                                 }
                             }
@@ -113,10 +116,10 @@ public class FilePickerActivity extends AppCompatActivity {
             PopupMenu popupMenu = new PopupMenu(this, mSortButton);
             Menu menu = popupMenu.getMenu();
             menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
-                    .setChecked(sUtils.getBoolean("az_order", true, this));
+                    .setChecked(sCommonUtils.getBoolean("az_order", true, this));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
-                    sUtils.saveBoolean("az_order", !sUtils.getBoolean("az_order", true, this), this);
+                    sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, this), this);
                     reload(this);
                 }
                 return false;

@@ -9,8 +9,8 @@ import com.apk.editor.utils.Common;
 
 import java.io.File;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 28, 2023
@@ -41,7 +41,7 @@ public class DeleteProject extends sExecutor {
 
     @Override
     public void doInBackground() {
-        sUtils.delete(mFile);
+        sFileUtils.delete(mFile);
     }
 
     @Override

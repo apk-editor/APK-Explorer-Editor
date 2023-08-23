@@ -1,5 +1,6 @@
 package com.apk.editor.utils.tasks;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 
@@ -8,8 +9,8 @@ import com.apk.editor.utils.Projects;
 
 import java.io.File;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 28, 2023
@@ -27,6 +28,7 @@ public class ExportProject extends sExecutor {
         mContext = context;
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onPreExecute() {
         mProgressDialog = new ProgressDialog(mContext);
@@ -37,14 +39,14 @@ public class ExportProject extends sExecutor {
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setCancelable(false);
         mProgressDialog.show();
-        if (sUtils.exist(new File(Projects.getExportPath(mContext), mName))) {
-            sUtils.delete(new File(Projects.getExportPath(mContext), mName));
+        if (sFileUtils.exist(new File(Projects.getExportPath(mContext), mName))) {
+            sFileUtils.delete(new File(Projects.getExportPath(mContext), mName));
         }
     }
 
     @Override
     public void doInBackground() {
-        sUtils.copyDir(mFile, new File(Projects.getExportPath(mContext), mName));
+        sFileUtils.copyDir(mFile, new File(Projects.getExportPath(mContext), mName));
     }
 
     @Override

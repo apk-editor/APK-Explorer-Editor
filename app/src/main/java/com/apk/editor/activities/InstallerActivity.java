@@ -1,5 +1,6 @@
 package com.apk.editor.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -22,9 +23,10 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
-import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
+import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -107,10 +109,10 @@ public class InstallerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (sUtils.getString("installationStatus", "waiting", this).equals("waiting")) {
+        if (sCommonUtils.getString("installationStatus", "waiting", this).equals("waiting")) {
             return;
         }
-        if (sUtils.getString("installationStatus", "waiting", this).equals(getString(R.string.installation_status_success))) {
+        if (sCommonUtils.getString("installationStatus", "waiting", this).equals(getString(R.string.installation_status_success))) {
             Common.getPackageData().add(new PackageItems(
                     sPackageUtils.getAppName(Common.getPackageName(), this).toString(),
                     Common.getPackageName(),
@@ -121,8 +123,8 @@ public class InstallerActivity extends AppCompatActivity {
                     sPackageUtils.getAppIcon(Common.getPackageName(), this)
             ));
         }
-        if (sUtils.exist(new File(getCacheDir(),"splits"))) {
-            sUtils.delete(new File(getCacheDir(),"splits"));
+        if (sFileUtils.exist(new File(getCacheDir(),"splits"))) {
+            sFileUtils.delete(new File(getCacheDir(),"splits"));
         }
         super.onBackPressed();
     }
@@ -142,6 +144,7 @@ public class InstallerActivity extends AppCompatActivity {
         RefreshThread(InstallerActivity activity) {
             mInstallerActivityRef = new WeakReference<>(activity);
         }
+        @SuppressLint("StringFormatInvalid")
         @Override
         public void run() {
             try {
@@ -152,7 +155,7 @@ public class InstallerActivity extends AppCompatActivity {
                         break;
                     }
                     activity.runOnUiThread(() -> {
-                        String installationStatus = sUtils.getString("installationStatus", "waiting", activity);
+                        String installationStatus = sCommonUtils.getString("installationStatus", "waiting", activity);
                         if (installationStatus.equals("waiting")) {
                             try {
                                 if (activity.getIntent().getStringExtra(PATH_INTENT) != null) {

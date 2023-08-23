@@ -9,8 +9,9 @@ import com.apk.editor.utils.AppSettings;
 
 import java.io.File;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 28, 2023
@@ -38,13 +39,13 @@ public class ClearAppSettings extends sExecutor {
 
     @Override
     public void doInBackground() {
-        sUtils.delete(mActivity.getCacheDir());
-        sUtils.delete(mActivity.getFilesDir());
+        sFileUtils.delete(mActivity.getCacheDir());
+        sFileUtils.delete(mActivity.getFilesDir());
         if (APKEditorUtils.isFullVersion(mActivity) && AppSettings.isCustomKey(mActivity)) {
-            sUtils.saveString("PrivateKey", null, mActivity);
-            sUtils.delete(new File(mActivity.getFilesDir(), "signing/APKEditor.pk8"));
-            sUtils.saveString("X509Certificate", null, mActivity);
-            sUtils.delete(new File(mActivity.getFilesDir(), "signing/APKEditorCert"));
+            sCommonUtils.saveString("PrivateKey", null, mActivity);
+            sFileUtils.delete(new File(mActivity.getFilesDir(), "signing/APKEditor.pk8"));
+            sCommonUtils.saveString("X509Certificate", null, mActivity);
+            sFileUtils.delete(new File(mActivity.getFilesDir(), "signing/APKEditorCert"));
         }
     }
 

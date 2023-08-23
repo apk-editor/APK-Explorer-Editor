@@ -30,9 +30,9 @@ import com.google.android.material.textview.MaterialTextView;
 import java.io.File;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 21, 2021
@@ -92,9 +92,8 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                         .setMessage(getString(R.string.bundle_install_question, new File(APKExplorer.getData(getFilesList(), false, this).get(position)).getName()))
                         .setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
                         })
-                        .setPositiveButton(getString(R.string.install), (dialogInterface, i) -> {
-                            SplitAPKInstaller.handleAppBundle(true, APKExplorer.getData(getFilesList(), false, this).get(position), this);
-                        }).show();
+                        .setPositiveButton(getString(R.string.install), (dialogInterface, i) -> SplitAPKInstaller.handleAppBundle(true, APKExplorer.getData(
+                                getFilesList(), false, this).get(position), this)).show();
             } else if (APKExplorer.getData(getFilesList(), false, this).get(position).endsWith(".apk")) {
                 if (Common.getAPKList().contains(APKExplorer.getData(getFilesList(), false, this).get(position))) {
                     Common.getAPKList().remove(APKExplorer.getData(getFilesList(), false, this).get(position));
@@ -104,22 +103,20 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                 mRecycleViewAdapter.notifyItemChanged(position);
                 Common.getSelectCard().setVisibility(Common.getAPKList().isEmpty() ? View.GONE : View.VISIBLE);
             } else {
-                sUtils.snackBar(findViewById(android.R.id.content), getString(R.string.wrong_extension, ".apks/.apkm/.xapk")).show();
+                sCommonUtils.snackBar(findViewById(android.R.id.content), getString(R.string.wrong_extension, ".apks/.apkm/.xapk")).show();
             }
         });
 
-        Common.getSelectCard().setOnClickListener(v -> {
-            APKExplorer.handleAPKs(true, this);
-        });
+        Common.getSelectCard().setOnClickListener(v -> APKExplorer.handleAPKs(true, this));
 
         mSortButton.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(this, mSortButton);
             Menu menu = popupMenu.getMenu();
             menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
-                    .setChecked(sUtils.getBoolean("az_order", true, this));
+                    .setChecked(sCommonUtils.getBoolean("az_order", true, this));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
-                    sUtils.saveBoolean("az_order", !sUtils.getBoolean("az_order", true, this), this);
+                    sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, this), this);
                     reload(this);
                 }
                 return false;

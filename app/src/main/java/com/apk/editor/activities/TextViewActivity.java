@@ -21,8 +21,8 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -50,7 +50,7 @@ public class TextViewActivity extends AppCompatActivity {
 
         mPath = getIntent().getStringExtra(PATH_INTENT);
 
-        if (mPath != null && sUtils.exist(new File(mPath))) {
+        if (mPath != null && sFileUtils.exist(new File(mPath))) {
             mTitle.setText(new File(mPath).getName());
         }
 

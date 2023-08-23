@@ -1,5 +1,6 @@
 package com.apk.editor.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -37,10 +38,11 @@ import com.google.android.material.textview.MaterialTextView;
 import java.io.File;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
-import in.sunilpaulmathew.sCommon.Utils.sSingleItemDialog;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
+import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 05, 2021
@@ -52,6 +54,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
     private RecyclerView mRecyclerView;
     private APKExplorerAdapter mRecycleViewAdapter;
 
+    @SuppressLint("StringFormatInvalid")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -78,7 +81,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                 })
                 .setPositiveButton(getString(R.string.build), (dialog, id) -> {
-                    if (!sUtils.getBoolean("firstSigning", false, requireActivity())) {
+                    if (!sCommonUtils.getBoolean("firstSigning", false, requireActivity())) {
                         new sSingleItemDialog(0, null, new String[] {
                                 getString(R.string.signing_default),
                                 getString(R.string.signing_custom)
@@ -86,7 +89,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
 
                             @Override
                             public void onItemSelected(int itemPosition) {
-                                sUtils.saveBoolean("firstSigning", true, requireActivity());
+                                sCommonUtils.saveBoolean("firstSigning", true, requireActivity());
                                 if (itemPosition == 0) {
                                     new SignAPK(requireActivity()).execute();
                                 } else {
@@ -119,10 +122,10 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             PopupMenu popupMenu = new PopupMenu(requireActivity(), mSortButton);
             Menu menu = popupMenu.getMenu();
             menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
-                    .setChecked(sUtils.getBoolean("az_order", true, requireActivity()));
+                    .setChecked(sCommonUtils.getBoolean("az_order", true, requireActivity()));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
-                    sUtils.saveBoolean("az_order", !sUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
+                    sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
                     reload(requireActivity());
                 }
                 return false;
@@ -206,7 +209,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
     }
 
     private void retainDialog() {
-        if (sUtils.getString("projectAction", null, requireActivity()) == null) {
+        if (sCommonUtils.getString("projectAction", null, requireActivity()) == null) {
             new MaterialAlertDialogBuilder(requireActivity())
                     .setIcon(R.mipmap.ic_launcher)
                     .setTitle(R.string.app_name)
@@ -218,7 +221,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                         requireActivity().finish();
                     })
                     .setPositiveButton(getString(R.string.save), (dialog, id) -> requireActivity().finish()).show();
-        } else if (sUtils.getString("projectAction", null, requireActivity()).equals(getString(R.string.delete))) {
+        } else if (sCommonUtils.getString("projectAction", null, requireActivity()).equals(getString(R.string.delete))) {
             new DeleteProject(new File(requireActivity().getCacheDir(), Common.getAppID()), requireActivity()).execute();
             requireActivity().finish();
         } else {
@@ -272,7 +275,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
                                 .setPositiveButton(R.string.replace, (dialog, id) -> {
-                                    sUtils.copy(uriFile, new File(Common.getFileToReplace()), requireActivity());
+                                    sFileUtils.copy(uriFile, new File(Common.getFileToReplace()), requireActivity());
                                     reload(requireActivity());
                                 }).show();
                     }

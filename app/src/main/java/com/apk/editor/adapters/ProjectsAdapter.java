@@ -29,8 +29,8 @@ import java.text.DateFormat;
 import java.util.List;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
+import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 06, 2021
@@ -50,7 +50,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
         return new ViewHolder(rowItem);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint({"NotifyDataSetChanged", "StringFormatInvalid"})
     @Override
     public void onBindViewHolder(@NonNull ProjectsAdapter.ViewHolder holder, int position) {
         try {
@@ -101,7 +101,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                         notifyDataSetChanged();
                     }).show());
             holder.mTotalSize.setVisibility(View.VISIBLE);
-            holder.mTotalSize.setTextColor(sUtils.isDarkTheme(holder.mTotalSize.getContext()) ? Color.GREEN : Color.BLACK);
+            holder.mTotalSize.setTextColor(sThemeUtils.isDarkTheme(holder.mTotalSize.getContext()) ? Color.GREEN : Color.BLACK);
             holder.mDelete.setColorFilter(Color.RED);
         } catch (NullPointerException ignored) {}
     }

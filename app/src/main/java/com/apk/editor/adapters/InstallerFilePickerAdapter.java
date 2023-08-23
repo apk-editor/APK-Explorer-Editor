@@ -19,8 +19,8 @@ import com.google.android.material.textview.MaterialTextView;
 import java.io.File;
 import java.util.List;
 
-import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 21, 2021
@@ -48,7 +48,7 @@ public class InstallerFilePickerAdapter extends RecyclerView.Adapter<InstallerFi
         try {
             if (new File(this.data.get(position)).isDirectory()) {
                 holder.mIcon.setImageDrawable(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_folder));
-                if (sUtils.isDarkTheme(holder.mIcon.getContext())) {
+                if (sThemeUtils.isDarkTheme(holder.mIcon.getContext())) {
                     holder.mIcon.setBackground(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_circle));
                 }
                 holder.mIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mIcon.getContext()));
@@ -70,14 +70,14 @@ public class InstallerFilePickerAdapter extends RecyclerView.Adapter<InstallerFi
                     }
                     Common.getSelectCard().setVisibility(Common.getAPKList().isEmpty() ? View.GONE : View.VISIBLE);
                 });
-                holder.mSize.setText(sAPKUtils.getAPKSize(data.get(position)));
+                holder.mSize.setText(sAPKUtils.getAPKSize(new File(this.data.get(position)).length()));
                 holder.mSize.setVisibility(View.VISIBLE);
                 holder.mCheckBox.setVisibility(View.VISIBLE);
             } else {
                 holder.mIcon.setImageDrawable(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_bundle));
-                holder.mIcon.setColorFilter(sUtils.isDarkTheme(holder.mIcon.getContext()) ? ContextCompat.getColor(
+                holder.mIcon.setColorFilter(sThemeUtils.isDarkTheme(holder.mIcon.getContext()) ? ContextCompat.getColor(
                         holder.mIcon.getContext(), R.color.colorWhite) : ContextCompat.getColor(holder.mIcon.getContext(), R.color.colorBlack));
-                holder.mSize.setText(sAPKUtils.getAPKSize(data.get(position)));
+                holder.mSize.setText(sAPKUtils.getAPKSize(new File(this.data.get(position)).length()));
                 holder.mSize.setVisibility(View.VISIBLE);
             }
             holder.mTitle.setText(new File(this.data.get(position)).getName());

@@ -46,8 +46,19 @@ android {
 dependencies {
     implementation 'com.android.tools.build:apksig:7.4.2'
     implementation 'com.github.apk-editor:aXML:743632cf62'
-    implementation 'com.github.sunilpaulmathew:CrashReporter:93ff4f0'
-    implementation 'com.github.sunilpaulmathew:sCommon:8c5666a002'
+    implementation 'com.github.sunilpaulmathew:CrashReporter:4f24aa11c2'
+
+    def sCommon_Version = '8c5666a002'
+    implementation "com.github.sunilpaulmathew.sCommon:apkutils:${sCommon_Version}"
+    implementation "com.github.sunilpaulmathew.sCommon:adapters:${sCommon_Version}"
+    implementation "com.github.sunilpaulmathew.sCommon:credits:${sCommon_Version}"
+    implementation "com.github.sunilpaulmathew.sCommon:fileutils:${sCommon_Version}"
+    implementation "com.github.sunilpaulmathew.sCommon:installerutils:${sCommon_Version}"
+    implementation "com.github.sunilpaulmathew.sCommon:packageutils:${sCommon_Version}"
+    implementation "com.github.sunilpaulmathew.sCommon:permissionutils:${sCommon_Version}"
+    implementation "com.github.sunilpaulmathew.sCommon:themeutils:${sCommon_Version}"
+    implementation "com.github.sunilpaulmathew.sCommon:translatorutils:${sCommon_Version}"
+
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'net.lingala.zip4j:zip4j:2.11.3'
     implementation 'org.smali:baksmali:2.5.2'

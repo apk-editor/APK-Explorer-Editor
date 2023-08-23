@@ -17,8 +17,8 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
 
-import in.sunilpaulmathew.sCommon.Utils.sSerializableItems;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sSerializableItems;
+import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 31, 2021
@@ -48,10 +48,10 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
         } else {
             holder.Description.setVisibility(View.GONE);
         }
-        if (sUtils.isDarkTheme(holder.Title.getContext())) {
+        if (sThemeUtils.isDarkTheme(holder.Title.getContext())) {
             holder.Title.setTextColor(APKEditorUtils.getThemeAccentColor(holder.Title.getContext()));
         }
-        holder.mIcon.setColorFilter(sUtils.isDarkTheme(holder.Title.getContext()) ? Color.WHITE : Color.BLACK);
+        holder.mIcon.setColorFilter(sThemeUtils.isDarkTheme(holder.Title.getContext()) ? Color.WHITE : Color.BLACK);
         if (data.get(position).getIcon() != null) {
             holder.mIcon.setImageDrawable(data.get(position).getIcon());
         } else {

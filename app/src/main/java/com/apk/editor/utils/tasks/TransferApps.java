@@ -8,8 +8,9 @@ import com.apk.editor.R;
 
 import java.io.File;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 28, 2023
@@ -39,19 +40,19 @@ public class TransferApps extends sExecutor {
     @Override
     public void doInBackground() {
         File destDir;
-        if (sUtils.getString("exportAPKsPath", "externalFiles", mContext).equals("internalStorage")) {
+        if (sCommonUtils.getString("exportAPKsPath", "externalFiles", mContext).equals("internalStorage")) {
             mSourceFile = mContext.getExternalFilesDir("");
             destDir = new File(Environment.getExternalStorageDirectory(), "/AEE/exportedAPKs");
         } else {
             destDir = mContext.getExternalFilesDir("");
             mSourceFile = new File(Environment.getExternalStorageDirectory(), "/AEE/exportedAPKs");
         }
-        sUtils.copyDir(mSourceFile, destDir);
+        sFileUtils.copyDir(mSourceFile, destDir);
     }
 
     @Override
     public void onPostExecute() {
-        sUtils.delete(mSourceFile);
+        sFileUtils.delete(mSourceFile);
         try {
             mProgressDialog.dismiss();
         } catch (IllegalArgumentException ignored) {

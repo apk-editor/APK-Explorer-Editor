@@ -19,9 +19,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
-import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -59,9 +59,9 @@ public class AppData {
         try {
             boolean mAppType;
             for (PackageItems packageItem : Common.getPackageData()) {
-                if (sUtils.getString("appTypes", "all", context).equals("system")) {
+                if (sCommonUtils.getString("appTypes", "all", context).equals("system")) {
                     mAppType = sPackageUtils.isSystemApp(packageItem.getPackageName(), context);
-                } else if (sUtils.getString("appTypes", "all", context).equals("user")) {
+                } else if (sCommonUtils.getString("appTypes", "all", context).equals("user")) {
                     mAppType = !sPackageUtils.isSystemApp(packageItem.getPackageName(), context);
                 } else {
                     mAppType = true;
@@ -75,18 +75,18 @@ public class AppData {
                     }
                 }
             }
-            if (sUtils.getBoolean("sort_name", false, context)) {
+            if (sCommonUtils.getBoolean("sort_name", false, context)) {
                 Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getAppName(), rhs.getAppName()));
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sUtils.getBoolean("sort_size", false, context)) {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getBoolean("sort_size", false, context)) {
                 Collections.sort(mData, Comparator.comparingLong(PackageItems::getAPKSize));
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sUtils.getBoolean("sort_installed", false, context)) {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getBoolean("sort_installed", false, context)) {
                 Collections.sort(mData, Comparator.comparingLong(PackageItems::getInstalledTime));
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sUtils.getBoolean("sort_updated", false, context)) {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getBoolean("sort_updated", false, context)) {
                 Collections.sort(mData, Comparator.comparingLong(PackageItems::getUpdatedTime));
             } else {
                 Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getPackageName(), rhs.getPackageName()));
             }
-            if (!sUtils.getBoolean("az_order", true, context)) {
+            if (!sCommonUtils.getBoolean("az_order", true, context)) {
                 Collections.reverse(mData);
             }
         } catch (NullPointerException ignored) {}

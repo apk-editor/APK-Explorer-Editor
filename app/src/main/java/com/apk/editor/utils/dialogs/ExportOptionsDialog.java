@@ -6,8 +6,8 @@ import com.apk.editor.R;
 import com.apk.editor.utils.tasks.ExportApp;
 import com.apk.editor.utils.tasks.ResignAPKs;
 
-import in.sunilpaulmathew.sCommon.Utils.sSingleItemDialog;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 30, 2023
@@ -34,7 +34,7 @@ public class ExportOptionsDialog extends sSingleItemDialog {
         if (position == 0) {
             new ExportApp(mPackageName, mActivity).execute();
         } else {
-            if (!sUtils.getBoolean("firstSigning", false, mActivity)) {
+            if (!sCommonUtils.getBoolean("firstSigning", false, mActivity)) {
                 new SigningOptionsDialog(mPackageName, mExit, mActivity).show();
             } else {
                 new ResignAPKs(mPackageName, false, mExit, mActivity).execute();

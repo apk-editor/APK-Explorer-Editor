@@ -32,9 +32,9 @@ import java.io.File;
 import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.Adapters.sPagerAdapter;
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
+import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 27, 2021
@@ -86,7 +86,7 @@ public class APKInstallerActivity extends AppCompatActivity {
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
 
-                sUtils.delete(getExternalFilesDir("APK"));
+                sFileUtils.delete(getExternalFilesDir("APK"));
                 String fileName = Objects.requireNonNull(DocumentFile.fromSingleUri(activity, uri)).getName();
                 mFile = new File(getExternalFilesDir("APK"), Objects.requireNonNull(fileName));
                 Common.getAPKList().clear();
@@ -94,7 +94,7 @@ public class APKInstallerActivity extends AppCompatActivity {
 
             @Override
             public void doInBackground() {
-                sUtils.copy(uri, mFile, activity);
+                sFileUtils.copy(uri, mFile, activity);
                 try {
                     mAPKParser = new APKParser();
                     mAPKParser.parse(mFile.getAbsolutePath(), activity);

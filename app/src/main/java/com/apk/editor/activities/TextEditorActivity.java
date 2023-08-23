@@ -1,5 +1,6 @@
 package com.apk.editor.activities;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -34,8 +35,10 @@ import java.io.StringReader;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
+import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 25, 2021
@@ -62,7 +65,7 @@ public class TextEditorActivity extends AppCompatActivity {
 
         String mPath = getIntent().getStringExtra(PATH_INTENT);
 
-        mText.setTextColor(sUtils.isDarkTheme(this) ? Color.WHITE : Color.BLACK);
+        mText.setTextColor(sThemeUtils.isDarkTheme(this) ? Color.WHITE : Color.BLACK);
 
         mTitle.setText(new File(mPath).getName());
 
@@ -83,10 +86,11 @@ public class TextEditorActivity extends AppCompatActivity {
                         invalid = true;
                     }
                 } else {
-                    text = sUtils.read(new File(mPath));
+                    text = sFileUtils.read(new File(mPath));
                 }
             }
 
+            @SuppressLint("StringFormatInvalid")
             @Override
             public void onPostExecute() {
                 if (text != null) {
@@ -94,7 +98,7 @@ public class TextEditorActivity extends AppCompatActivity {
                     mTextContents = text;
                 }
                 if (invalid) {
-                    sUtils.toast(getString(R.string.xml_decode_failed, new File(mPath).getName()), TextEditorActivity.this).show();
+                    sCommonUtils.toast(getString(R.string.xml_decode_failed, new File(mPath).getName()), TextEditorActivity.this).show();
                 }
                 mProgressLayout.setVisibility(View.GONE);
             }
@@ -133,12 +137,12 @@ public class TextEditorActivity extends AppCompatActivity {
                                             invalid = true;
                                         }
                                     } else {
-                                        sUtils.create(text, new File(mPath));
+                                        sFileUtils.create(text, new File(mPath));
                                         if (mPath.contains("classes") && mPath.contains(".dex")) {
                                             try {
-                                                JSONObject jsonObject = new JSONObject(sUtils.read(new File(getCacheDir(), Common.getAppID() + "/.aeeBackup/appData")));
+                                                JSONObject jsonObject = new JSONObject(sFileUtils.read(new File(getCacheDir(), Common.getAppID() + "/.aeeBackup/appData")));
                                                 jsonObject.put("smali_edited", true);
-                                                sUtils.create(jsonObject.toString(), new File(getCacheDir(), Common.getAppID() + "/.aeeBackup/appData"));
+                                                sFileUtils.create(jsonObject.toString(), new File(getCacheDir(), Common.getAppID() + "/.aeeBackup/appData"));
                                             } catch (JSONException ignored) {
                                             }
                                         }
@@ -148,7 +152,7 @@ public class TextEditorActivity extends AppCompatActivity {
                                 @Override
                                 public void onPostExecute() {
                                     if (invalid) {
-                                        sUtils.toast(getString(R.string.xml_corrupted), TextEditorActivity.this).show();
+                                        sCommonUtils.toast(getString(R.string.xml_corrupted), TextEditorActivity.this).show();
                                     }
                                     mProgressLayout.setVisibility(View.GONE);
                                     finish();

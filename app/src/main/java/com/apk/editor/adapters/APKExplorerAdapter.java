@@ -28,9 +28,10 @@ import com.google.android.material.textview.MaterialTextView;
 import java.io.File;
 import java.util.List;
 
-import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
-import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
+import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
+import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -54,12 +55,12 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
         return new APKExplorerAdapter.ViewHolder(rowItem);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint({"NotifyDataSetChanged", "StringFormatInvalid"})
     @Override
     public void onBindViewHolder(@NonNull APKExplorerAdapter.ViewHolder holder, int position) {
         if (new File(data.get(position)).isDirectory()) {
             holder.mIcon.setImageDrawable(ContextCompat.getDrawable(holder.mTitle.getContext(), R.drawable.ic_folder));
-            if (sUtils.isDarkTheme(holder.mIcon.getContext())) {
+            if (sThemeUtils.isDarkTheme(holder.mIcon.getContext())) {
                 holder.mIcon.setBackground(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_circle));
             }
             holder.mIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mTitle.getContext()));
@@ -84,7 +85,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
             }
         }
         holder.mTitle.setText(new File(data.get(position)).getName());
-        holder.mDescription.setText(sAPKUtils.getAPKSize(data.get(position)));
+        holder.mDescription.setText(sAPKUtils.getAPKSize(new File(data.get(position)).getName().length()));
         holder.mSettings.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
             Menu menu = popupMenu.getMenu();
@@ -105,7 +106,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                 })
                                 .setPositiveButton(R.string.delete, (dialog, id) -> {
-                                    sUtils.delete(new File(data.get(position)));
+                                    sFileUtils.delete(new File(data.get(position)));
                                     data.remove(position);
                                     notifyDataSetChanged();
                                 }).show();

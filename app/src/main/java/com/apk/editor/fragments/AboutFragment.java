@@ -19,8 +19,8 @@ import com.apk.editor.utils.APKEditorUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.sunilpaulmathew.sCommon.Utils.sSerializableItems;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sSerializableItems;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -33,7 +33,7 @@ public class AboutFragment extends Fragment {
         View mRootView = inflater.inflate(R.layout.fragment_about, container, false);
 
         RecyclerView mRecyclerView = mRootView.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), sUtils.getOrientation(requireActivity()) == Configuration.ORIENTATION_LANDSCAPE ? 3 : 2));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), sCommonUtils.getOrientation(requireActivity()) == Configuration.ORIENTATION_LANDSCAPE ? 3 : 2));
         AboutAdapter mRecycleViewAdapter = new AboutAdapter(getData());
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
@@ -42,19 +42,19 @@ public class AboutFragment extends Fragment {
 
     private List<sSerializableItems> getData() {
         List<sSerializableItems> mData = new ArrayList<>();
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.mipmap.ic_launcher, requireActivity()), getString(R.string.app_name), getString(R.string.version, BuildConfig.VERSION_NAME),null));
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_github, requireActivity()), getString(R.string.source_code), getString(R.string.source_code_summary),"https://github.com/apk-editor/APK-Explorer-Editor"));
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_support, requireActivity()), getString(R.string.support_group), getString(R.string.support_group_summary), "https://t.me/apkexplorer"));
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_issue, requireActivity()), getString(R.string.report_issue), getString(R.string.report_issue_summary), "https://github.com/apk-editor/APK-Explorer-Editor/issues/new"));
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_share, requireActivity()), getString(R.string.invite_friends), getString(R.string.invite_friends_Summary), null));
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_book, requireActivity()),getString(R.string.documentation), getString(R.string.documentation_summary), null));
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_translate, requireActivity()), getString(R.string.translations), getString(R.string.translations_summary),null));
-        mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_credits, requireActivity()), getString(R.string.credits), getString(R.string.credits_summary), null));
+        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.mipmap.ic_launcher, requireActivity()), getString(R.string.app_name), getString(R.string.version, BuildConfig.VERSION_NAME),null));
+        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_github, requireActivity()), getString(R.string.source_code), getString(R.string.source_code_summary),"https://github.com/apk-editor/APK-Explorer-Editor"));
+        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_support, requireActivity()), getString(R.string.support_group), getString(R.string.support_group_summary), "https://t.me/apkexplorer"));
+        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_issue, requireActivity()), getString(R.string.report_issue), getString(R.string.report_issue_summary), "https://github.com/apk-editor/APK-Explorer-Editor/issues/new"));
+        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_share, requireActivity()), getString(R.string.invite_friends), getString(R.string.invite_friends_Summary), null));
+        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_book, requireActivity()),getString(R.string.documentation), getString(R.string.documentation_summary), null));
+        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_translate, requireActivity()), getString(R.string.translations), getString(R.string.translations_summary),null));
+        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_credits, requireActivity()), getString(R.string.credits), getString(R.string.credits_summary), null));
         if (APKEditorUtils.isFullVersion(requireActivity())) {
-            mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_donate, requireActivity()), getString(R.string.donations), getString(R.string.donations_summary),"https://www.paypal.me/menacherry/"));
+            mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_donate, requireActivity()), getString(R.string.donations), getString(R.string.donations_summary),"https://www.paypal.me/menacherry/"));
         } else {
-            mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_privacy, requireActivity()), getString(R.string.privacy_policy), getString(R.string.privacy_policy_summary), "https://github.com/apk-editor/APK-Explorer-Editor/blob/master/privacy-policy.md"));
-            mData.add(new sSerializableItems(sUtils.getDrawable(R.drawable.ic_rate, requireActivity()),getString(R.string.rate_us), getString(R.string.rate_us_Summary), "https://play.google.com/store/apps/details?id=com.apk.explorer"));
+            mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_privacy, requireActivity()), getString(R.string.privacy_policy), getString(R.string.privacy_policy_summary), "https://github.com/apk-editor/APK-Explorer-Editor/blob/master/privacy-policy.md"));
+            mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_rate, requireActivity()),getString(R.string.rate_us), getString(R.string.rate_us_Summary), "https://play.google.com/store/apps/details?id=com.apk.explorer"));
         }
         return mData;
     }

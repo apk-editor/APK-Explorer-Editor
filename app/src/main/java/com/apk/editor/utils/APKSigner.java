@@ -21,7 +21,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Collections;
 
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 16, 2023
@@ -49,7 +49,7 @@ public class APKSigner {
     private static X509Certificate getCertificate(File certificateFile) throws CertificateException {
         String certificateString;
         if (certificateFile.exists()) {
-            certificateString =sUtils.read(certificateFile);
+            certificateString = sFileUtils.read(certificateFile);
         } else {
             certificateString = "-----BEGIN CERTIFICATE-----\n" +
                     "MIICyTCCAbGgAwIBAgIEfNgbbDANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwpB\n" +

@@ -14,7 +14,7 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.APKDetailsAdapter;
 import com.apk.editor.utils.ExternalAPKData;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on November 07, 2021

@@ -28,10 +28,10 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
 
-import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
-import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
-import in.sunilpaulmathew.sCommon.Utils.sPermissionUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
+import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -69,22 +69,21 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                 holder.mAppName.setText(data.get(position).getAppName());
             }
             holder.mVersion.setText(holder.mAppName.getContext().getString(R.string.version, data.get(position).getAppVersion()));
-            holder.mSize.setText(holder.mAppName.getContext().getString(R.string.size, sAPKUtils.getAPKSize(sPackageUtils
-                    .getSourceDir(data.get(position).getPackageName(), holder.mAppName.getContext()))));
+            holder.mSize.setText(holder.mAppName.getContext().getString(R.string.size, sAPKUtils.getAPKSize(data.get(position).getAPKSize())));
             holder.mVersion.setTextColor(Color.RED);
-            holder.mSize.setTextColor(sUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
+            holder.mSize.setTextColor(sThemeUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
             holder.mAppIcon.setOnClickListener(v -> {
                 Common.setAppID(data.get(position).getPackageName());
                 Intent imageView = new Intent(v.getContext(), ImageViewActivity.class);
                 v.getContext().startActivity(imageView);
             });
-            if (!sUtils.isDarkTheme(holder.mCard.getContext())) {
+            if (!sThemeUtils.isDarkTheme(holder.mCard.getContext())) {
                 holder.mCard.setCardBackgroundColor(Color.LTGRAY);
             }
             holder.mSize.setVisibility(View.VISIBLE);
             holder.mVersion.setVisibility(View.VISIBLE);
             holder.mCard.setOnLongClickListener(v -> {
-                if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext()) && sUtils.getString("exportAPKsPath", "externalFiles",
+                if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext()) && sCommonUtils.getString("exportAPKsPath", "externalFiles",
                         v.getContext()).equals("internalStorage")) {
                     sPermissionUtils.requestPermission(
                             new String[] {
@@ -93,12 +92,12 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                     return true;
                 }
                 if (APKEditorUtils.isFullVersion(v.getContext())) {
-                    if (sUtils.getString("exportAPKs", null, v.getContext()) == null) {
+                    if (sCommonUtils.getString("exportAPKs", null, v.getContext()) == null) {
                         new ExportOptionsDialog(data.get(position).getPackageName(), false, (Activity) v.getContext()).show();
-                    } else if (sUtils.getString("exportAPKs", null, v.getContext()).equals(v.getContext().getString(R.string.export_storage))) {
+                    } else if (sCommonUtils.getString("exportAPKs", null, v.getContext()).equals(v.getContext().getString(R.string.export_storage))) {
                         new ExportApp(data.get(position).getPackageName(), v.getContext()).execute();
                     } else {
-                        if (!sUtils.getBoolean("firstSigning", false, v.getContext())) {
+                        if (!sCommonUtils.getBoolean("firstSigning", false, v.getContext())) {
                             new SigningOptionsDialog(data.get(position).getPackageName(), false, v.getContext()).show();
                         } else {
                             new ResignAPKs(data.get(position).getPackageName(), false, false, (Activity) v.getContext()).execute();

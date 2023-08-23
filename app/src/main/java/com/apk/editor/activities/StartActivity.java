@@ -15,9 +15,9 @@ import com.apk.editor.utils.Common;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sThemeUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -37,7 +37,7 @@ public class StartActivity extends AppCompatActivity {
         MaterialTextView mText = findViewById(R.id.text);
         mProgress = findViewById(R.id.progress_bar);
 
-        if (!sUtils.getBoolean("welcome_message", false, this)) {
+        if (!sCommonUtils.getBoolean("welcome_message", false, this)) {
             mText.setVisibility(View.VISIBLE);
             mStartCard.setVisibility(View.VISIBLE);
             mProgress.setVisibility(View.GONE);
@@ -58,8 +58,8 @@ public class StartActivity extends AppCompatActivity {
 
             @Override
             public void onPreExecute() {
-                if (!sUtils.getBoolean("welcome_message", false, activity)) {
-                    sUtils.saveBoolean("welcome_message", true, activity);
+                if (!sCommonUtils.getBoolean("welcome_message", false, activity)) {
+                    sCommonUtils.saveBoolean("welcome_message", true, activity);
                 }
             }
 

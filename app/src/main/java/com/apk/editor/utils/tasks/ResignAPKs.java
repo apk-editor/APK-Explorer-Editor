@@ -1,5 +1,6 @@
 package com.apk.editor.utils.tasks;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.view.WindowManager;
@@ -15,9 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
+import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 28, 2023
@@ -38,6 +40,7 @@ public class ResignAPKs extends sExecutor {
         mActivity = activity;
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onPreExecute() {
         mProgressDialog = new ProgressDialog(mActivity);
@@ -82,9 +85,9 @@ public class ResignAPKs extends sExecutor {
                     mParent = new File(APKData.getExportAPKsPath(mActivity), apkNameString + "_aee-signed");
                 }
                 if (mParent.exists()) {
-                    sUtils.delete(mParent);
+                    sFileUtils.delete(mParent);
                 }
-                sUtils.mkdir(mParent);
+                sFileUtils.mkdir(mParent);
                 for (String mSplits : Common.getAPKList()) {
                     APKData.signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), mActivity);
                 }
@@ -95,13 +98,14 @@ public class ResignAPKs extends sExecutor {
                     mParent = new File(APKData.getExportAPKsPath(mActivity), apkNameString + "_aee-signed.apk");
                 }
                 if (mParent.exists()) {
-                    sUtils.delete(mParent);
+                    sFileUtils.delete(mParent);
                 }
                 APKData.signApks(new File(Common.getAPKList().get(0)), mParent, mActivity);
             }
         }
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onPostExecute() {
         try {
@@ -109,7 +113,7 @@ public class ResignAPKs extends sExecutor {
         } catch (IllegalArgumentException ignored) {
         }
         if (mDetectedPackageName == null && mPackageName == null) {
-            sUtils.snackBar(mActivity.findViewById(android.R.id.content), mActivity.getString(R.string.installation_status_bad_apks)).show();
+            sCommonUtils.snackBar(mActivity.findViewById(android.R.id.content), mActivity.getString(R.string.installation_status_bad_apks)).show();
         } else {
             if (mPackageName == null) {
                 mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

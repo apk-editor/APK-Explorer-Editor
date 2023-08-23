@@ -44,8 +44,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -91,17 +92,17 @@ public class APKsFragment extends Fragment {
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                String mStatus = sUtils.getString("apkTypes", "apks", requireActivity());
+                String mStatus = sCommonUtils.getString("apkTypes", "apks", requireActivity());
                 switch (tab.getPosition()) {
                     case 0:
                         if (!mStatus.equals("apks")) {
-                            sUtils.saveString("apkTypes", "apks", requireActivity());
+                            sCommonUtils.saveString("apkTypes", "apks", requireActivity());
                             loadAPKs(requireActivity());
                         }
                         break;
                     case 1:
                         if (!mStatus.equals("bundles")) {
-                            sUtils.saveString("apkTypes", "bundles", requireActivity());
+                            sCommonUtils.saveString("apkTypes", "bundles", requireActivity());
                             loadAPKs(requireActivity());
                         }
                         break;
@@ -137,10 +138,10 @@ public class APKsFragment extends Fragment {
             PopupMenu popupMenu = new PopupMenu(requireActivity(), mSortButton);
             Menu menu = popupMenu.getMenu();
             menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
-                    .setChecked(sUtils.getBoolean("az_order", true, requireActivity()));
+                    .setChecked(sCommonUtils.getBoolean("az_order", true, requireActivity()));
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
-                    sUtils.saveBoolean("az_order", !sUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
+                    sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
                     loadAPKs(requireActivity());
                 }
                 return false;
@@ -173,7 +174,7 @@ public class APKsFragment extends Fragment {
     }
 
     private int getTabPosition(Activity activity) {
-        String mStatus = sUtils.getString("apkTypes", "apks", activity);
+        String mStatus = sCommonUtils.getString("apkTypes", "apks", activity);
         if (mStatus.equals("bundles")) {
             return 1;
         } else {
@@ -182,14 +183,14 @@ public class APKsFragment extends Fragment {
     }
 
     private void launchInstallerFilePicker() {
-        if (!sUtils.getBoolean("firstInstall", false, requireActivity())) {
+        if (!sCommonUtils.getBoolean("firstInstall", false, requireActivity())) {
             new MaterialAlertDialogBuilder(requireActivity())
                     .setIcon(R.mipmap.ic_launcher)
                     .setTitle(R.string.split_apk_installer)
                     .setMessage(getString(R.string.installer_message))
                     .setCancelable(false)
                     .setPositiveButton(getString(R.string.got_it), (dialog, id) -> {
-                        sUtils.saveBoolean("firstInstall", true, requireActivity());
+                        sCommonUtils.saveBoolean("firstInstall", true, requireActivity());
                         launchAEEInstaller();
                     }).show();
         } else {
@@ -250,7 +251,7 @@ public class APKsFragment extends Fragment {
             @Override
             public void onPreExecute() {
                 Common.setProgress(true, mProgress);
-                sUtils.delete(activity.getExternalFilesDir("APK"));
+                sFileUtils.delete(activity.getExternalFilesDir("APK"));
                 Common.getAPKList().clear();
             }
 
@@ -258,7 +259,7 @@ public class APKsFragment extends Fragment {
             public void doInBackground() {
                 String fileName = Objects.requireNonNull(DocumentFile.fromSingleUri(activity, uriFile)).getName();
                 mFile = new File(activity.getExternalFilesDir("APK"), Objects.requireNonNull(fileName));
-                sUtils.copy(uriFile, mFile, activity);
+                sFileUtils.copy(uriFile, mFile, activity);
             }
 
             @Override
@@ -285,9 +286,9 @@ public class APKsFragment extends Fragment {
             public void onPreExecute() {
                 Common.setProgress(true, mProgress);
                 if (mParentDir.exists()) {
-                    sUtils.delete(mParentDir);
+                    sFileUtils.delete(mParentDir);
                 }
-                sUtils.mkdir(mParentDir);
+                sFileUtils.mkdir(mParentDir);
                 Common.getAPKList().clear();
             }
 

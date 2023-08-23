@@ -1,5 +1,6 @@
 package com.apk.editor.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
@@ -16,7 +17,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -35,15 +37,15 @@ public class Projects {
             }
         }
         Collections.sort(mData);
-        if (!sUtils.getBoolean("az_order", true, context)) {
+        if (!sCommonUtils.getBoolean("az_order", true, context)) {
             Collections.reverse(mData);
         }
         return mData;
     }
 
     public static String getExportPath(Context context) {
-        if (Build.VERSION.SDK_INT < 29 && sUtils.getString("exportPath", null, context) != null) {
-            return sUtils.getString("exportPath", null, context);
+        if (Build.VERSION.SDK_INT < 29 && sCommonUtils.getString("exportPath", null, context) != null) {
+            return sCommonUtils.getString("exportPath", null, context);
         } else {
             return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
         }
@@ -52,18 +54,19 @@ public class Projects {
     public static void exportProject(File file, Context context) {
         new EditTextInterface(null, context.getString(R.string.app_name), context) {
 
+            @SuppressLint("StringFormatInvalid")
             @Override
             public void positiveButtonLister(Editable s) {
                 String text = s.toString().trim();
                 if (text.isEmpty()) {
-                    sUtils.toast(context.getString(R.string.name_empty), context).show();
+                    sCommonUtils.toast(context.getString(R.string.name_empty), context).show();
                     return;
                 }
                 if (text.contains(" ")) {
                     text = text.replace(" ", "_");
                 }
                 String name = text;
-                if (sUtils.exist(new File(Projects.getExportPath(context), text))) {
+                if (sFileUtils.exist(new File(Projects.getExportPath(context), text))) {
                     new MaterialAlertDialogBuilder(context)
                             .setMessage(context.getString(R.string.export_project_replace, text))
                             .setNegativeButton(R.string.cancel, (dialog2, ii) -> {

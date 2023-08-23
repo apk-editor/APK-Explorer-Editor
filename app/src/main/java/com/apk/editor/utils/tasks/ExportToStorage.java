@@ -1,5 +1,6 @@
 package com.apk.editor.utils.tasks;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
@@ -12,8 +13,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 28, 2023
@@ -32,6 +33,7 @@ public class ExportToStorage extends sExecutor {
         mContext = context;
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onPreExecute() {
         mProgressDialog = new ProgressDialog(mContext);
@@ -47,7 +49,7 @@ public class ExportToStorage extends sExecutor {
     @Override
     public void doInBackground() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            sUtils.mkdir(new File(Projects.getExportPath(mContext), mFolder));
+            sFileUtils.mkdir(new File(Projects.getExportPath(mContext), mFolder));
             mExportPath = Projects.getExportPath(mContext) + "/" + Common.getAppID();
         } else {
             mExportPath = Projects.getExportPath(mContext);
@@ -55,10 +57,11 @@ public class ExportToStorage extends sExecutor {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             APKData.saveToDownload(new File(mSource), mName, mContext);
         } else {
-            sUtils.copy(new File(mSource), new File(mExportPath, mName));
+            sFileUtils.copy(new File(mSource), new File(mExportPath, mName));
         }
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onPostExecute() {
         try {

@@ -22,7 +22,8 @@ import java.util.Objects;
 
 import in.sunilpaulmathew.crashreporter.Utils.CrashReporter;
 import in.sunilpaulmathew.sCommon.Adapters.sPagerAdapter;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Set App Language
-        sUtils.setLanguage(this);
+        sThemeUtils.setLanguage(this);
         setContentView(R.layout.activity_main);
 
         new CrashReporter("E-Mail: apkeditor@protonmail.com", this).initialize();
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             mExit = false;
             finish();
         } else {
-            sUtils.snackBar(findViewById(android.R.id.content), getString(R.string.press_back)).show();
+            sCommonUtils.snackBar(findViewById(android.R.id.content), getString(R.string.press_back)).show();
             mExit = true;
             mHandler.postDelayed(() -> mExit = false, 2000);
         }

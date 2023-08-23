@@ -5,7 +5,7 @@ import android.content.Context;
 import com.apk.editor.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 30, 2023
@@ -20,7 +20,7 @@ public class SignatureMismatchDialog {
                 .setTitle(R.string.app_name)
                 .setMessage(context.getString(R.string.signature_warning))
                 .setPositiveButton(R.string.got_it, (dialog, id) ->
-                        sUtils.saveBoolean("signature_warning", true, context));
+                        sCommonUtils.saveBoolean("signature_warning", true, context));
     }
 
     public void show() {

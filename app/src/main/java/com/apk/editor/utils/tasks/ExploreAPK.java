@@ -21,9 +21,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sExecutor;
-import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
+import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 28, 2023
@@ -39,6 +39,7 @@ public class ExploreAPK extends sExecutor {
         mContext = context;
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onPreExecute() {
         Common.isBuilding(false);
@@ -54,8 +55,8 @@ public class ExploreAPK extends sExecutor {
             Intent apkTasks = new Intent(mContext, APKTasksActivity.class);
             mContext.startActivity(apkTasks);
             Common.setStatus(mContext.getString(R.string.exploring, sPackageUtils.getAppName(mPackageName, mContext)));
-        } else if (!sUtils.exist(new File(mBackUpPath, "appData"))) {
-            sUtils.delete(mExplorePath);
+        } else if (!sFileUtils.exist(new File(mBackUpPath, "appData"))) {
+            sFileUtils.delete(mExplorePath);
         }
     }
 
@@ -63,8 +64,8 @@ public class ExploreAPK extends sExecutor {
     @Override
     public void doInBackground() {
         if (!mExplorePath.exists()) {
-            sUtils.mkdir(mExplorePath);
-            sUtils.mkdir(mBackUpPath);
+            sFileUtils.mkdir(mExplorePath);
+            sFileUtils.mkdir(mBackUpPath);
             // Store basic information about the app
             try {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -76,18 +77,18 @@ public class ExploreAPK extends sExecutor {
                 mJSONObject.put("app_name", sPackageUtils.getAppName(mPackageName, mContext));
                 mJSONObject.put("package_name", mPackageName);
                 mJSONObject.put("smali_edited", false);
-                sUtils.create(mJSONObject.toString(), new File(mBackUpPath, "appData"));
+                sFileUtils.create(mJSONObject.toString(), new File(mBackUpPath, "appData"));
             } catch (JSONException ignored) {
             }
             APKEditorUtils.unzip(sPackageUtils.getSourceDir(mPackageName, mContext), mExplorePath.getAbsolutePath());
             // Decompile dex file(s)
             for (File files : Objects.requireNonNull(mExplorePath.listFiles())) {
                 if (files.getName().startsWith("classes") && files.getName().endsWith(".dex") && !Common.isCancelled()) {
-                    sUtils.mkdir(mBackUpPath);
-                    sUtils.copy(files, new File(mBackUpPath, files.getName()));
-                    sUtils.delete(files);
+                    sFileUtils.mkdir(mBackUpPath);
+                    sFileUtils.copy(files, new File(mBackUpPath, files.getName()));
+                    sFileUtils.delete(files);
                     File mDexExtractPath = new File(mExplorePath, files.getName());
-                    sUtils.mkdir(mDexExtractPath);
+                    sFileUtils.mkdir(mDexExtractPath);
                     Common.setStatus(mContext.getString(R.string.decompiling, files.getName()));
                     new DexToSmali(false, new File(sPackageUtils.getSourceDir(mPackageName, mContext)),
                             mDexExtractPath, 0, files.getName()).execute();
@@ -95,7 +96,7 @@ public class ExploreAPK extends sExecutor {
             }
         }
         if (Common.isCancelled()) {
-            sUtils.delete(mExplorePath);
+            sFileUtils.delete(mExplorePath);
             Common.isCancelled(false);
             Common.setFinishStatus(true);
         }

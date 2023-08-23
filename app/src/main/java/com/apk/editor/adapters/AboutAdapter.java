@@ -23,10 +23,11 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
 
-import in.sunilpaulmathew.sCommon.Utils.sCreditsUtils;
-import in.sunilpaulmathew.sCommon.Utils.sSerializableItems;
-import in.sunilpaulmathew.sCommon.Utils.sTranslatorUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sSerializableItems;
+import in.sunilpaulmathew.sCommon.Credits.sCreditsUtils;
+import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
+import in.sunilpaulmathew.sCommon.TranslatorUtils.sTranslatorUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -50,16 +51,16 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull AboutAdapter.ViewHolder holder, int position) {
         holder.Title.setText(data.get(position).getTextOne());
         holder.Description.setText(data.get(position).getTextTwo());
-        if (sUtils.isDarkTheme(holder.Title.getContext())) {
+        if (sThemeUtils.isDarkTheme(holder.Title.getContext())) {
             holder.Title.setTextColor(APKEditorUtils.getThemeAccentColor(holder.Title.getContext()));
         }
         if (position != 0) {
-            holder.mIcon.setColorFilter(sUtils.isDarkTheme(holder.Title.getContext()) ? Color.WHITE : Color.BLACK);
+            holder.mIcon.setColorFilter(sThemeUtils.isDarkTheme(holder.Title.getContext()) ? Color.WHITE : Color.BLACK);
         }
         holder.mIcon.setImageDrawable(data.get(position).getIcon());
         holder.mRVLayout.setOnClickListener(v -> {
             if (data.get(position).getTextThree() != null) {
-                sUtils.launchUrl(data.get(position).getTextThree(), (Activity) v.getContext());
+                sCommonUtils.launchUrl(data.get(position).getTextThree(), (Activity) v.getContext());
             } else if (position == 0) {
                 Intent settings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 settings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -74,9 +75,9 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
                         (Activity) v.getContext()).show();
             } else if (position == 7) {
                 new sCreditsUtils(AppSettings.getCredits(v.getContext()),
-                        sUtils.getDrawable(R.mipmap.ic_launcher, v.getContext()),
-                        sUtils.getDrawable(R.drawable.ic_back, v.getContext()),
-                        sUtils.getColor(R.color.colorBlue, v.getContext()),
+                        sCommonUtils.getDrawable(R.mipmap.ic_launcher, v.getContext()),
+                        sCommonUtils.getDrawable(R.drawable.ic_back, v.getContext()),
+                        sCommonUtils.getColor(R.color.colorBlue, v.getContext()),
                         18, v.getContext().getString(R.string.app_name), "2023-2024, APK Explorer & Editor",
                         BuildConfig.VERSION_NAME).launchCredits(v.getContext());
             } else {

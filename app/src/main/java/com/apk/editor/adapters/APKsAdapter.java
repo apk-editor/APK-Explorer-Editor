@@ -31,8 +31,10 @@ import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.Utils.sAPKUtils;
-import in.sunilpaulmathew.sCommon.Utils.sUtils;
+import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
+import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -71,14 +73,14 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 }
                 if (sAPKUtils.getPackageName(data.get(position) + "/base.apk", holder.mAppName.getContext()) == null) {
                     holder.mAppName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                    holder.mCard.setOnClickListener(v -> sUtils.snackBar(v, v.getContext().getString(R.string.apk_corrupted)).show());
+                    holder.mCard.setOnClickListener(v -> sCommonUtils.snackBar(v, v.getContext().getString(R.string.apk_corrupted)).show());
                 }
                 if (sAPKUtils.getVersionName(data.get(position) + "/base.apk", holder.mAppName.getContext()) != null) {
                     holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.version, sAPKUtils.getVersionName(data.get(position) + "/base.apk", holder.mAppName.getContext())));
                 }
                 holder.mCard.setOnClickListener(v -> {
                     if (APKEditorUtils.isFullVersion(v.getContext())) {
-                        if (data.get(position).contains("_aee-signed") && !sUtils.getBoolean("signature_warning", false, v.getContext())) {
+                        if (data.get(position).contains("_aee-signed") && !sCommonUtils.getBoolean("signature_warning", false, v.getContext())) {
                             new SignatureMismatchDialog(v.getContext()).show();
                         } else {
                             new MaterialAlertDialogBuilder(v.getContext())
@@ -131,20 +133,20 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                         holder.mAppName.setText(new File(data.get(position)).getName());
                     }
                     holder.mAppName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                    holder.mCard.setOnClickListener(v -> sUtils.snackBar(v, v.getContext().getString(R.string.apk_corrupted)).show());
+                    holder.mCard.setOnClickListener(v -> sCommonUtils.snackBar(v, v.getContext().getString(R.string.apk_corrupted)).show());
                 }
-                if (!sUtils.isDarkTheme(holder.mCard.getContext())) {
+                if (!sThemeUtils.isDarkTheme(holder.mCard.getContext())) {
                     holder.mCard.setCardBackgroundColor(Color.LTGRAY);
                 }
                 if (sAPKUtils.getVersionName(data.get(position), holder.mAppName.getContext()) != null) {
                     holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.version, sAPKUtils.getVersionName(data.get(position), holder.mAppName.getContext())));
                 }
-                holder.mSize.setText(holder.mSize.getContext().getString(R.string.size, sAPKUtils.getAPKSize(data.get(position))));
-                holder.mSize.setTextColor(sUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
+                holder.mSize.setText(holder.mSize.getContext().getString(R.string.size, sAPKUtils.getAPKSize(new File(data.get(position)).length())));
+                holder.mSize.setTextColor(sThemeUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
                 holder.mSize.setVisibility(View.VISIBLE);
                 holder.mCard.setOnClickListener(v -> {
                     if (APKEditorUtils.isFullVersion(v.getContext())) {
-                        if (data.get(position).contains("_aee-signed.apk") && !sUtils.getBoolean("signature_warning", false, v.getContext())) {
+                        if (data.get(position).contains("_aee-signed.apk") && !sCommonUtils.getBoolean("signature_warning", false, v.getContext())) {
                             new SignatureMismatchDialog(v.getContext()).show();
                         } else {
                             new MaterialAlertDialogBuilder(v.getContext())
@@ -185,7 +187,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                 })
                 .setPositiveButton(R.string.delete, (dialog, id) -> {
-                    sUtils.delete(new File(data.get(position)));
+                    sFileUtils.delete(new File(data.get(position)));
                     data.remove(position);
                     notifyItemRemoved(position);
                     notifyDataSetChanged();
