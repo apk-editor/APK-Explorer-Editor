@@ -2,14 +2,19 @@ package com.apk.editor.utils.tasks;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKTasksActivity;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.ZipAlign;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 import in.sunilpaulmathew.sCommon.Utils.sExecutor;
 import in.sunilpaulmathew.sCommon.Utils.sPackageUtils;
@@ -59,6 +64,17 @@ public class SignAPK extends sExecutor {
             return;
         }
         APKEditorUtils.zip(mBuildDir, mTMPZip);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Common.setStatus(mActivity.getString(R.string.zip_aligning));
+            try {
+                RandomAccessFile apkUnaligned = new RandomAccessFile(mTMPZip, "r");
+                FileOutputStream apkAligned = new FileOutputStream(new File(mActivity.getCacheDir(), "tmp_zipAligned.apk"));
+                ZipAlign.alignZip(apkUnaligned, apkAligned);
+                mTMPZip = new File(mActivity.getCacheDir(), "tmp_zipAligned.apk");
+                sUtils.delete(new File(mActivity.getCacheDir(), "tmp.apk"));
+            } catch (IOException ignored) {
+            }
+        }
         File mParent;
         if (sPackageUtils.isPackageInstalled(Common.getAppID(), mActivity) && APKData.isAppBundle(sPackageUtils
                 .getSourceDir(Common.getAppID(), mActivity))) {

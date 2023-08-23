@@ -9,6 +9,8 @@ import android.util.TypedValue;
 import com.apk.editor.R;
 
 import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.model.enums.CompressionMethod;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +52,13 @@ public class APKEditorUtils {
                 if (mFile.isDirectory()) {
                     zipFile.addFolder(mFile);
                 } else {
-                    zipFile.addFile(mFile);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && mFile.getName().equalsIgnoreCase("resources.arsc")) {
+                        ZipParameters zipParameters = new ZipParameters();
+                        zipParameters.setCompressionMethod(CompressionMethod.STORE);
+                        zipFile.addFile(mFile, zipParameters);
+                    } else {
+                        zipFile.addFile(mFile);
+                    }
                 }
             }
         } catch (IOException ignored) {

@@ -165,4 +165,5 @@
     <string name="xml_corrupted">XML string is corrupted. Aborting…</string>
     <string name="xml_decode_failed">Failed to decode %s</string>
     <string name="yes">Yes</string>
+    <string name="zip_aligning">Zip aligning…</string>
 </resources>
