@@ -44,11 +44,11 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.tools.build:apksig:7.4.0'
+    implementation 'com.android.tools.build:apksig:7.4.2'
     implementation 'com.github.apk-editor:aXML:743632cf62'
     implementation 'com.github.sunilpaulmathew:CrashReporter:93ff4f0'
     implementation 'com.github.sunilpaulmathew:sCommon:241ad35be0'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'net.lingala.zip4j:zip4j:2.11.3'
     implementation 'org.smali:baksmali:2.5.2'
     implementation 'org.smali:smali:2.5.2'
