@@ -1,0 +1,180 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="about">"के बारे में "</string>
+    <string name="all">"सभी"</string>
+    <string name="apks">"APK's"</string>
+    <string name="apps">"Apps"</string>
+    <string name="apps_exported">"एपीके निर्यात करें"</string>
+    <string name="apps_installed">"इंस्टॉल किए गए ऐप्स"</string>
+    <string name="cancel">"रद्द करना"</string>
+    <string name="delete">"मिटाना"</string>
+    <string name="delete_question">"%s हटाएँ?"</string>
+    <string name="documentation">"प्रलेखन"</string>
+    <string name="documentation_summary">"Aee दस्तावेज़ देखें"</string>
+    <string name="donations">"दान"</string>
+    <string name="donations_summary">"Aee के विकास का समर्थन करें"</string>
+    <string name="export">"निर्यात"</string>
+    <string name="export_question">"डिवाइस स्टोरेज में निर्यात करें?"</string>
+    <string name="export_complete_message">"चयनित संसाधन सफलतापूर्वक '%s' में निर्यात किया गया है"</string>
+    <string name="exploring">"%s की खोज"</string>
+    <string name="explore_error_status">"%s का पता लगाने में विफल"</string>
+    <string name="install">"स्थापित करना"</string>
+    <string name="install_question">"%s स्थापित करें?"</string>
+    <string name="installing">"%s इंस्टॉल किया जा रहा है"</string>
+    <string name="invite_friends">"मित्रों को आमंत्रित करें"</string>
+    <string name="invite_friends_Summary">"AEE आज़माने के लिए अपने दोस्तों को आमंत्रित करें"</string>
+    <string name="last_modified">"अंतिम बार संशोधित "</string>
+    <string name="open_as_text">"पाठ के रूप में खोलें"</string>
+    <string name="permission_denied_message">"डिवाइस स्टोरेज तक पहुंचने की अनुमति अस्वीकार कर दी गई"</string>
+    <string name="preparing_apk">"%s एपीके तैयार किया जा रहा है"</string>
+    <string name="press_back">"एपीके एक्सप्लोरर को बंद करने के लिए फिर से बैक बटन दबाएँ"</string>
+    <string name="projects">"परियोजनाओं"</string>
+    <string name="rate_us">"Rate Aee"</string>
+    <string name="rate_us_Summary">"Rate or/and Review Aee in Google Play"</string>
+    <string name="replace">"बदलना"</string>
+    <string name="replace_question">"%s को से बदलें"</string>
+    <string name="report_issue">"रिपोर्ट मुद्दा"</string>
+    <string name="report_issue_summary">"Github पर कोई मुद्दा उठाएँ"</string>
+    <string name="save">"Save"</string>
+    <string name="save_projects_question">"भविष्य में उपयोग के लिए प्रोजेक्ट सहेजें?"</string>
+    <string name="save_question">"इस फ़ाइल में किए गए परिवर्तन सहेजें"</string>
+    <string name="save_apk_message">"क्या आप वर्तमान संशोधन के साथ एक Signed Apk तैयार करना चाहते हैं?"</string>
+    <string name="sdcard">"आंतरिक स्टोरेज"</string>
+    <string name="search">"खोज"</string>
+    <string name="share">"शेयर करना"</string>
+    <string name="share_message">"%s साझा करें?"</string>
+    <string name="share_with">"के साथ शेयर करें"</string>
+    <string name="signing">"Signing '%s'"</string>
+    <string name="size">"आकार: %s"</string>
+    <string name="source_code">"सोर्स कोड"</string>
+    <string name="source_code_summary">"Aee का सोर्स कोड देखें"</string>
+    <string name="split_apk_installer">"एई स्प्लिट एपीके इंस्टॉलर"</string>
+    <string name="support_group">"सहायता समूह"</string>
+    <string name="support_group_summary">"एई सहायता समूह से जुड़ें"</string>
+    <string name="system">"प्रणाली"</string>
+    <string name="unknown_file_message">"AEE इस समय '%s' को संभाल नहीं पाता है। यदि आप इस फ़ाइल प्रारूप को जानते हैं, तो आप इस फ़ाइल को डिवाइस स्टोरेज में निर्यात कर सकते हैं और समर्थित तृतीय-पक्ष एप्लिकेशन का उपयोग करके संपादन का प्रयास कर सकते हैं। वैकल्पिक रूप से, आप इसे टेक्स्ट फ़ाइल के रूप में खोलने का प्रयास कर सकते हैं?"</string>
+    <string name="unsupported_file">"असमर्थित फ़ाइल"</string>
+    <string name="unsupported_file_arsc">"आपने 'resources.arsc' चुना है, जिसे दुर्भाग्य से AEE के लिए पढ़ना असंभव है।
+
+        संसाधन.arsc क्या है?
+        resource.arsc एक बाइनरी संसाधन फ़ाइल है जिसमें किसी एप्लिकेशन के कॉन्फ़िगरेशन-विशिष्ट मान, जैसे पूर्णांक, बूलियन और स्ट्रिंग्स, साथ ही यूआई लेआउट जैसे अधिक जटिल संसाधनों के संदर्भ शामिल हैं।
+
+        resource.arsc कैसे पढ़ें?
+        Apktool या Android एसेट पैकेजिंग टूल (AAPT) जैसे टूल का उपयोग resource.arsc की सामग्री को मानव-पठनीय प्रारूप में प्रिंट करने के लिए किया जाएगा।"</string>
+    <string name="unsupported_file_dex">"आपने एक 'DEX' (.dex) फ़ाइल चुनी है, जिसे दुर्भाग्य से AEE के लिए पढ़ना असंभव है।
+
+        DEX फ़ाइल क्या है?
+        डेक्स फ़ाइल में कोड होता है जो अंततः एंड्रॉइड रनटाइम द्वारा निष्पादित होता है। प्रत्येक एपीके में एक 'classes.dex' फ़ाइल होनी चाहिए, जो किसी ऐप के भीतर उपयोग की जाने वाली किसी भी कक्षा या विधियों का संदर्भ देती है। अनिवार्य रूप से, कोड बेस के भीतर उपयोग की जाने वाली कोई भी गतिविधि, ऑब्जेक्ट या फ़्रैगमेंट एक डेक्स फ़ाइल के भीतर बाइट्स में तब्दील हो जाएगी जिसे एंड्रॉइड ऐप के रूप में चलाया जा सकता है।
+
+        DEX फ़ाइल कैसे पढ़ें?
+        एक DEX फ़ाइल को 'dex2jar' और 'JD-GUI' जैसे टूल का उपयोग करके 'jar' प्रारूप में और बाद में 'Java' फ़ाइल में परिवर्तित किया जाएगा।"</string>
+    <string name="user">"उपयोगकर्ता"</string>
+    <string name="bundles">"बंडल"</string>
+    <string name="preparing_bundle">"साझा करने के लिए App Bundle तैयार किया जा रहा है"</string>
+    <string name="privacy_policy">"गोपनीयता नीति"</string>
+    <string name="privacy_policy_summary">"गोपनीयता नीति पढ़ें"</string>
+    <string name="private_key">"निजी चाबी"</string>
+    <string name="private_key_summary">"कस्टम निजी कुंजी चुनें"</string>
+    <string name="select">"चयन करें"</string>
+    <string name="signing_custom">"Custom key कॉन्फ़िगर करें"</string>
+    <string name="signing_default">"डिफ़ॉल्ट कुंजी से Sign करें"</string>
+    <string name="signing_question">"'%s' को नये के रूप में प्रयोग करें"</string>
+    <string name="signing_title">"Apk Signing"</string>
+    <string name="apk_installer">"एई एपीके इंस्टॉलर"</string>
+    <string name="bundle_install_question">"क्या आप निश्चित रूप से ऐप बंडल '%s' इंस्टॉल करना चाहते हैं?"</string>
+    <string name="export_app_question">"'%s' को डिवाइस स्टोरेज में निर्यात करें"</string>
+    <string name="export_project_question">"इस प्रोजेक्ट फ़ोल्डर की एक प्रतिलिपि डिवाइड स्टोरेज में बनाएं?"</string>
+    <string name="export_project_replace">"'%s' पहले से मौजूद है. क्या आप इसे रिप्लेस करना चाहते हैं?"</string>
+    <string name="export_resign">"Export &amp; Re-sign"</string>
+    <string name="export_storage">"Storage में निर्यात करें"</string>
+    <string name="exporting">"%s निर्यात किया जा रहा है…"</string>
+    <string name="got_it">"समझ गया"</string>
+    <string name="install_storage">"Storage से स्थापित करें "</string>
+    <string name="installer_message">"एईई स्प्लिट एपीके इंस्टॉलर सामान्य एपीके, स्प्लिट एपीके के साथ-साथ 'एक्सएपीके', 'एपीकेएस' और 'एपीकेएम' ऐप बंडलों को संभालेगा। किसी इंस्टॉलेशन को आरंभ करने के लिए, बस अगली स्क्रीन से इंस्टॉलेशन फ़ाइल का चयन करें और ऑनस्क्रीन निर्देशों का पालन करें।"</string>
+    <string name="installation_cancel_message">"क्या आप निश्चित रूप से Installation रद्द करना चाहते हैं?"</string>
+    <string name="name_empty">"नाम खाली नहीं होना चाहिए. रद्द हो रहा है…"</string>
+    <string name="ok">"ठीक"</string>
+    <string name="preparing_bundle_install">"'%s' installation के लिए तैयारी की जा रही है …"</string>
+    <string name="select_apk">"Split Apk's का चयन करें"</string>
+    <string name="signature_warning">"Signature mismatch के कारण इंस्टॉलेशन विफलता से बचने के लिए AEE signed apk/App Bundle स्थापित करना करने से पहले ऐप के पुराने संस्करण (यदि मौजूद है) को अनइंस्टॉल करना महत्वपूर्ण है।"</string>
+    <string name="wrong_extension">"कृपया %s एक्सटेंशन वाली फ़ाइल चुनें "</string>
+    <string name="yes">"हाँ"</string>
+    <string name="apk_corrupted">"Apk file(s) दूषित हो गई है, रद्द हो रही है…"</string>
+    <string name="install_resign">"Re-sign &amp; install"</string>
+    <string name="resign_only">"Re-sign Only"</string>
+    <string name="resigned_apks_path">"Path: '%s'"</string>
+    <string name="resigning_apks">"Re-signing चयनित Apk's"</string>
+    <string name="select_storage">"भंडारण से चयन करें"</string>
+    <string name="sort_by">"ऐप्स को क्रमबद्ध करें"</string>
+    <string name="sort_by_name">"नाम"</string>
+    <string name="sort_by_id">"पैकेज आईडी"</string>
+    <string name="sort_order">"A-Z"</string>
+    <string name="clear_cache">"Cache को साफ़ करें "</string>
+    <string name="clear_cache_summary">"Aee की आंतरिक सेटिंग्स हटाएँ"</string>
+    <string name="clear_cache_message">"निर्यात किए गए एप्लिकेशन को छोड़कर, सब कुछ हटा दिया जाएगा।"</string>
+    <string name="export_options">"(Apk's) निर्यात पर"</string>
+    <string name="export_path_default">"Internal Storage /एईई"</string>
+    <string name="export_path_download">"डाउनलोड करना "</string>
+    <string name="export_path_resources">"निर्यात पथ"</string>
+    <string name="installer_action">"एपीके इंस्टॉल करने पर"</string>
+    <string name="project_exist_action">"किसी प्रोजेक्ट से बाहर निकलने पर"</string>
+    <string name="prompt">"Prompt"</string>
+    <string name="settings">"Settings"</string>
+    <string name="settings_general">"सामान्य"</string>
+    <string name="settings_misc">"मिश्रित "</string>
+    <string name="sign_apk_custom">"Custom key"</string>
+    <string name="sign_apk_default">"डिफ़ॉल्ट key"</string>
+    <string name="sign_apk_with">"साइन एपीके के साथ"</string>
+    <string name="warning">"चेतावनी"</string>
+    <string name="file_path_error">"बाह्य फ़ाइल प्रबंधक से फ़ाइल पथ प्राप्त करने में विफल"</string>
+    <string name="text_editor">"Aee Text Editor"</string>
+    <string name="discard">"खारिज करना"</string>
+    <string name="discard_message">"इस फ़ाइल में किए गए परिवर्तनों को त्यागें"</string>
+    <string name="export_path_apks">"निर्यात path (APK's)"</string>
+    <string name="export_path_files_dir">"बाहरी फ़ाइलें निर्देशिका"</string>
+    <string name="language">"भाषा"</string>
+    <string name="transfer_exported_apk">"पहले से निर्यात किए गए APK's को नए path पर स्थानांतरित करना"</string>
+    <string name="user_interface">"प्रयोक्ता इंटरफ़ेस"</string>
+    <string name="decompiling">"'%s' को विघटित करना"</string>
+    <string name="deleting">"'%s' मिटाया जा रहा है"</string>
+    <string name="grant">"अनुदान"</string>
+    <string name="important">"महत्वपूर्ण"</string>
+    <string name="assembling">"'%s' कोडांतरण"</string>
+    <string name="build">"निर्माण"</string>
+    <string name="building">"बिल्डिंग '%s'"</string>
+    <string name="copying">"'%s' की प्रतिलिपि बनाई जा रही है"</string>
+    <string name="details">"विवरण"</string>
+    <string name="failed">"असफल"</string>
+    <string name="failed_smali_message">"निम्नलिखित 'स्माली' फ़ाइलें असेंबल करने में विफल रहीं।
+
+        %s"</string>
+    <string name="open">"खुला"</string>
+    <string name="preparing_source">"Apk Building के लिए स्रोत तैयार किया जा रहा है "</string>
+    <string name="resigned_apks_error">"'स्माली' फ़ाइलों को असेंबल करने में त्रुटियों के कारण बिल्डिंग निरस्त कर दी गई है। अधिक जानने के लिए कृपया 'विवरण' जांचें।"</string>
+    <string name="success">"सफलता"</string>
+    <string name="sort_by_installed">"स्थापित समय"</string>
+    <string name="sort_by_size">"आकार"</string>
+    <string name="sort_by_updated">"अद्यतन समय"</string>
+    <string name="sort_size">"छोटे से बड़ा"</string>
+    <string name="start">"शुरू"</string>
+    <string name="android_version">"एंड्रॉइड %s"</string>
+    <string name="certificate">"प्रमाणपत्र"</string>
+    <string name="install_bundle_question">"क्या आप निश्चित रूप से चयनित ऐप बंडल इंस्टॉल करना चाहते हैं?"</string>
+    <string name="loading">"लोड हो रहा है…"</string>
+    <string name="manifest">"घोषणापत्र"</string>
+    <string name="permissions">"अनुमति"</string>
+    <string name="save_to_downloads">"डाउनलोड में सहेजें"</string>
+    <string name="saving">"सहेजा जा रहा है…"</string>
+    <string name="sdk_compile">"एसडीके संकलित करें: %s"</string>
+    <string name="sdk_minimum">"न्यूनतम एसडीके: %s"</string>
+    <string name="cancelling">"रद्द कर रहा है "</string>
+    <string name="replace_file_question">"%s को चयनित फ़ाइल से बदलें?"</string>
+    <string name="update">"अद्यतन"</string>
+    <string name="signing_summary">"कस्टम कुंजी के साथ एपीके पर हस्ताक्षर करने के लिए, एईई को pk8 प्रारूप में एक निजी कुंजी और उसी कुंजी से निर्यात किए गए X509 Certificate की आवश्यकता होती है। निजी कुंजी और X509 Certificate बनाने के बारे में अधिक पढ़ने के लिए यहां क्लिक करें।"</string>
+    <string name="x509_certificate">" X509Certificate"</string>
+    <string name="x509_certificate_summary">"कस्टम X509Certificate चुनें"</string>
+    <string name="clearing_cache_message">"Cache साफ़ किया जा रहा है…"</string>
+    <string name="root">"Root"</string>
+    <string name="xml_corrupted">"XML स्ट्रिंग दूषित है. रद्द हो रहा है"</string>
+    <string name="xml_decode_failed">"%s को डिकोड करने में विफल"</string>
+</resources>

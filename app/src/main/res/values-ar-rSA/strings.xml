@@ -1,0 +1,176 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="about">"حول"</string>
+    <string name="all">"الكل"</string>
+    <string name="apks">"التطبيقات"</string>
+    <string name="apps">"التطبيقات"</string>
+    <string name="apps_exported">"التطبيقات المصدرة"</string>
+    <string name="apps_installed">"التطبيقات المثبتة"</string>
+    <string name="cancel">"إلغاء"</string>
+    <string name="delete">"حذف"</string>
+    <string name="delete_question">"حذف٪s؟"</string>
+    <string name="documentation">"نيئة"</string>
+    <string name="documentation_summary">"تحقق من وثيقة AEE"</string>
+    <string name="donations">"الاشتراك"</string>
+    <string name="donations_summary">"ادعم تطوير AEE"</string>
+    <string name="export">"تصدير"</string>
+    <string name="export_question">"تصدير إلى ذاكرة تخزين الهاتف"</string>
+    <string name="export_complete_message">"تم تصدير المورد المحدد بنجاح إلى '٪s'!"</string>
+    <string name="exploring">"استكشاف٪s …"</string>
+    <string name="explore_error_status">"فشل استكشاف٪s!"</string>
+    <string name="install">"تثبيت"</string>
+    <string name="install_question">"تثبيت٪s"</string>
+    <string name="installing">"يتم التثبيت٪s …"</string>
+    <string name="invite_friends">"دعوة أصدقاء"</string>
+    <string name="invite_friends_Summary">"ادعو أصدقاءك لتجربة AEE"</string>
+    <string name="last_modified">"آخر تعديل:٪s"</string>
+    <string name="open_as_text">"افتح كنص"</string>
+    <string name="permission_denied_message">"تم رفض الإذن بالكتابة إلى ذاكرة!"</string>
+    <string name="preparing_apk">"يتم إعداد تطبيق٪s…"</string>
+    <string name="press_back">"اضغط زر الرجوع مرة أخرى لإغلاق متصفح التطبيق!"</string>
+    <string name="projects">"المشاريع"</string>
+    <string name="rate_us">"تقييم التطبيق"</string>
+    <string name="rate_us_Summary">"تقييم أو / مراجعة AEE على متجر جوجل"</string>
+    <string name="replace">"استبدال"</string>
+    <string name="replace_question">"استبدل٪s مع"</string>
+    <string name="report_issue">"إبلاغ عن مشكلة"</string>
+    <string name="report_issue_summary">"رفع مشكلة إلى GitHub"</string>
+    <string name="save">"حفظ"</string>
+    <string name="save_projects_question">"هل تريد حفظ المشروع للاستخدام لاحقًا؟"</string>
+    <string name="save_question">"حفظ التغييرات المجراة على هذا الملف؟"</string>
+    <string name="save_apk_message">"هل تريد إعداد ملف موقع بالتعديلات الحالية؟"</string>
+    <string name="sdcard">"الذاكرة الخارجية"</string>
+    <string name="search">"بحث …"</string>
+    <string name="share">"مشاركة"</string>
+    <string name="share_message">"مشاركة٪s؟"</string>
+    <string name="share_with">"مع"</string>
+    <string name="signing">"يتم التوقيع٪s…"</string>
+    <string name="size">"الحجم:٪s"</string>
+    <string name="source_code">"الشفرة المصدرية"</string>
+    <string name="source_code_summary">"تحقق من الشفرة المصدرية لـ AEE"</string>
+    <string name="split_apk_installer">"التطبيقات مثبت المنفصلة AEE"</string>
+    <string name="support_group">"مجموعة الدعم"</string>
+    <string name="support_group_summary">"انضم مجموعة دعم AEE"</string>
+    <string name="system">"النظام"</string>
+    <string name="unknown_file_message">"لا يتعامل AEE مع '٪s' في الوقت الحالي. تنسيق الملف هذا ، تصدير هذا الملف إلى ذاكرة تخزين ومحاولة تعديل تطبيق آخر مدعوم. كبديل ، يمكنك فتحه كملف نصي؟"</string>
+    <string name="unsupported_file">"ملف غير مدعوم"</string>
+    <string name="unsupported_file_arsc">"لقد حددت \"resources.arsc\" ، مشاهدة للأسف من المستحيل على AEE قراءتها.
+
+        ما هو Resources.arsc؟
+        resources.arsc هو ملف ثنائي الكل في القيم الخاصة بالتكوين بالتساوي م ، صحيح ، القيم المنطقية والسلاسل ، بالإضافة إلى مراجع إلى موارد أكثر تعقيدًا ، مثل تخطيطات واجهة المستخدم.
+
+        كيف قراءة Resources.arsc؟
+        استخدام أداة مثل Apktool أو Android Asset Packaging Tool (AAPT) لطباعة محتويات Resources.arsc إلى تنسيق يمكن للبشرته."</string>
+    <string name="unsupported_file_dex">"لقد حددت ملف \"DEX\" (.dex) ، والذي للأسف يستحيل على AEE قراءته.
+
+        ما هو ملف DEX؟
+        ملف Dex. يجب أن يحتوي على كل ملف. بشكل أساسي ، سيتم تحويل نشاط أو جزء مستخدم داخل قاعدة جمعة داخل ملف Dex يمكن تجميعه في أي تطبيق تجميعة.
+
+        كيف تقرأ ملف DEX؟
+        يجب تحويل ملف DEX إلى تنسيق \"jar\" ولاحقًا إلى ملف \"Java\" باستخدام أدوات مثل \"dex2jar\" و \"JD-GUI\"."</string>
+    <string name="user">"المستخدم"</string>
+    <string name="bundles">"الحزم"</string>
+    <string name="preparing_bundle">"يتم إعداد التطبيق للمشاركة …"</string>
+    <string name="privacy_policy">"سياسة الخصوصية"</string>
+    <string name="privacy_policy_summary">"إقرأ سياسة الخصوصية"</string>
+    <string name="private_key">"مفتاح خاص"</string>
+    <string name="private_key_summary">"اختر مفتاحاً خاصاً محدداً"</string>
+    <string name="select">"اختر"</string>
+    <string name="signing_custom">"تكوين مفتاح محدد"</string>
+    <string name="signing_default">"أشّر بالمفتاح الافتراضي"</string>
+    <string name="signing_question">"استخدم كجديد '٪s'"</string>
+    <string name="signing_title">"أشّر APK"</string>
+    <string name="apk_installer">"مثبت AEE APK"</string>
+    <string name="bundle_install_question">"هل أنت متأكد من حزمة التطبيق '٪s'؟"</string>
+    <string name="export_app_question">"تصدير '٪s' ذاكرة تخزين؟"</string>
+    <string name="export_project_question">"صنع نسخة من مجلد هذا المشروع لذاكرة؟"</string>
+    <string name="export_project_replace">"'٪ ' موجود! هل تريد بمحارقه؟"</string>
+    <string name="export_resign">"تصدير و إعادة تأشير"</string>
+    <string name="export_storage">"تصدير للذاكرة"</string>
+    <string name="exporting">"تصدير٪s …"</string>
+    <string name="got_it">"فهمت"</string>
+    <string name="install_storage">"تسطيب من كريم"</string>
+    <string name="installer_message">"AEE مجزء مثبت APK سوف يتعامل مع APK العادية ، وأجزاء APK ك 'xapk' ، 'apks' وحزم التطبيقات apkm. من أجل تهيئة ما ، ببساطة حدد ملف التثبيت (ملفات) الشاشة التالية واتبع التعليمات التي تظهر على الشاشة."</string>
+    <string name="installation_cancel_message">"هل أنت متأكد من إلغاء التثبيت؟"</string>
+    <string name="name_empty">"الاسم يجب أن يكون فارغاً! إلغاء"</string>
+    <string name="ok">"حسناً"</string>
+    <string name="preparing_bundle_install">"تهيئة '٪s' للتثبيت …"</string>
+    <string name="select_apk">"اختيار شطر APK"</string>
+    <string name="signature_warning">"إلغاء التثبيت بسبب عدم تطابق التوقيع القديم!"</string>
+    <string name="wrong_extension">"الرجاء اختيار ملف بلعبة٪s."</string>
+    <string name="yes">"نعم"</string>
+    <string name="apk_corrupted">"ملف (ات) معطوبة! إجهاض."</string>
+    <string name="install_resign">"إعادة تأشير وتثبيت"</string>
+    <string name="resign_only">"إعادة تأشير فقط"</string>
+    <string name="resigned_apks_path">"إعادة تأشير ملف (ات) تم توليدها!
+
+        مسار: '٪s'"</string>
+    <string name="resigning_apks">"إعادة تأشير APK مختارة"</string>
+    <string name="select_storage">"اختر من ذاكرة التخزين"</string>
+    <string name="sort_by">"نظم التطبيقات"</string>
+    <string name="sort_by_name">"الاسم"</string>
+    <string name="sort_by_id">" هوية"</string>
+    <string name="sort_order">"أ-ب"</string>
+    <string name="clear_cache">"تنظيف الكاش"</string>
+    <string name="clear_cache_summary">"إزالة الإعدادات الداخلية ل AEE"</string>
+    <string name="clear_cache_message">"أي شيء ، عدا المصدرة ، سيزال!"</string>
+    <string name="export_options">"يتم تصدير (APK)"</string>
+    <string name="export_path_default">"ذاكرة داخلية / AEE"</string>
+    <string name="export_path_download">"تنزيل"</string>
+    <string name="export_path_resources">"مسار تصدير (اللا- APK)"</string>
+    <string name="installer_action">"جار التثبيت APK"</string>
+    <string name="project_exist_action">"جار الخروج من المشروع"</string>
+    <string name="prompt">"عاجل"</string>
+    <string name="settings">"الإعدادات"</string>
+    <string name="settings_general">"عام"</string>
+    <string name="settings_misc">"متفرقات"</string>
+    <string name="sign_apk_custom">"مفتاح مخصص"</string>
+    <string name="sign_apk_default">"مفتاح إفتراضي"</string>
+    <string name="sign_apk_with">"توقيع APK باستخدام"</string>
+    <string name="warning">"تحذير"</string>
+    <string name="file_path_error">"فشل في الحصول على مسار الملف من مدير ملفات خارجي!"</string>
+    <string name="text_editor">"معدل نصوص AEE"</string>
+    <string name="discard">"مرفوض"</string>
+    <string name="discard_message">"رفض المجرات على هذا الملف"</string>
+    <string name="export_path_apks">"مسار تصدير (APK)"</string>
+    <string name="export_path_files_dir">"قاموس الملفات الخاجية"</string>
+    <string name="language">"اللغة"</string>
+    <string name="transfer_exported_apk">"تحويل APK المصدرة لمسار جديد …"</string>
+    <string name="user_interface">"واجهة المستخدم"</string>
+    <string name="decompiling">"فك ترجمة '٪s' …"</string>
+    <string name="deleting">"تم حذف \"٪s\" …"</string>
+    <string name="grant">"منح"</string>
+    <string name="important">"الأهميه"</string>
+    <string name="assembling">"تجميع
+        '٪ س'"</string>
+    <string name="build">"بناء"</string>
+    <string name="building">"البنايات …"</string>
+    <string name="copying">"جاري نسخ '٪s' …"</string>
+    <string name="details">"تفاصيل"</string>
+    <string name="failed">"خطأت بالفشل"</string>
+    <string name="failed_smali_message">"فشل تجميع ملفات \"smali\" التالية.
+
+        ٪ س"</string>
+    <string name="open">"فتح"</string>
+    <string name="preparing_source">"إعداد تحضير المصدر لبناء APK…"</string>
+    <string name="resigned_apks_error">"تم إحباط البناء بسبب أخطاء في تجميع ملفات \"smali\". يرجى التحقق من \"التفاصيل\" لمعرفة المزيد."</string>
+    <string name="success">"نجاح"</string>
+    <string name="sort_by_installed">"وقت التثبيت"</string>
+    <string name="sort_by_size">"مقاس"</string>
+    <string name="sort_by_updated">"الوقت المحدث"</string>
+    <string name="sort_size">"صغير إلى كبير"</string>
+    <string name="start">"يبدأ"</string>
+    <string name="android_version">"أندرويد ٪s"</string>
+    <string name="certificate">"شهادة"</string>
+    <string name="install_bundle_question">"هل أنت متأكد من تثبيت حزمة التطبيق؟"</string>
+    <string name="loading">"تحميل …"</string>
+    <string name="manifest">"قائمة"</string>
+    <string name="permissions">"أذونات"</string>
+    <string name="save_to_downloads">"حفظ في التنزيلات"</string>
+    <string name="saving">"إنقاذ …"</string>
+    <string name="sdk_compile">"تجميع SDK: ٪s"</string>
+    <string name="sdk_minimum">"الحد الأدنى من SDK: ٪s"</string>
+    <string name="signing_select_question">"هل تريد استخدام الملف المحدد من ٪s الجديد؟"</string>
+    <string name="signing_summary">"التوقيع_الملخص"</string>
+    <string name="root">"جذر"</string>
+</resources>

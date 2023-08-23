@@ -1,0 +1,184 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="about">"À propos"</string>
+    <string name="all">"Tous"</string>
+    <string name="apks">"APK"</string>
+    <string name="apps">"Applications"</string>
+    <string name="apps_exported">"APK exportés"</string>
+    <string name="apps_installed">"Applications installées"</string>
+    <string name="cancel">"Annuler"</string>
+    <string name="delete">"Supprimer"</string>
+    <string name="delete_question">"Supprimer %s ?"</string>
+    <string name="documentation">"Documentation"</string>
+    <string name="documentation_summary">"Consulter la documentation AEE"</string>
+    <string name="donations">"Donations"</string>
+    <string name="donations_summary">"Soutenir le développement de l'AEE"</string>
+    <string name="export">"Exporter"</string>
+    <string name="export_question">"Exporter vers le stockage de l'appareil ?"</string>
+    <string name="export_complete_message">"La ressource sélectionnée est exportée avec succès dans '%s'"</string>
+    <string name="exploring">"Exploration de %s…"</string>
+    <string name="explore_error_status">"Impossible d'explorer %s"</string>
+    <string name="install">"Installer"</string>
+    <string name="install_question">"Installer %s ?"</string>
+    <string name="installing">"Installation de %s…"</string>
+    <string name="invite_friends">"Inviter des amis"</string>
+    <string name="invite_friends_Summary">"Invitez vos amis à essayer AEE"</string>
+    <string name="last_modified">"Dernière modification : %s"</string>
+    <string name="open_as_text">"Ouvrir en tant que texte"</string>
+    <string name="permission_denied_message">"Autorisation refusée pour accéder au stockage de l'appareil"</string>
+    <string name="preparing_apk">"Préparation de l'APK %s…"</string>
+    <string name="press_back">"Appuyez à nouveau sur le bouton de retour pour fermer APK Explorer"</string>
+    <string name="projects">"Projets"</string>
+    <string name="rate_us">"Notez AEE"</string>
+    <string name="rate_us_Summary">"Noter ou/et évaluer AEE dans Google Play"</string>
+    <string name="replace">"Remplacer"</string>
+    <string name="replace_question">"Remplacez %s par"</string>
+    <string name="report_issue">"Signaler un problème"</string>
+    <string name="report_issue_summary">"Soulever un problème sur GitHub"</string>
+    <string name="save">"Sauvegarder"</string>
+    <string name="save_projects_question">"Enregistrer le projet pour une utilisation future ?"</string>
+    <string name="save_question">"Enregistrer les modifications apportées à ce fichier ?"</string>
+    <string name="save_apk_message">"Voulez-vous préparer un APK signé avec les modifications actuelles ?"</string>
+    <string name="sdcard">"Stockage interne"</string>
+    <string name="search">"Rechercher…"</string>
+    <string name="share">"Partager"</string>
+    <string name="share_message">"Partagez %s ?"</string>
+    <string name="share_with">"Partager avec"</string>
+    <string name="signing">"Signature de '%s'…"</string>
+    <string name="size">"Taille : %s"</string>
+    <string name="source_code">"Code source"</string>
+    <string name="source_code_summary">"Consulter le code source d'AEE"</string>
+    <string name="split_apk_installer">"Installateur AEE Split APK"</string>
+    <string name="support_group">"Groupe de soutien"</string>
+    <string name="support_group_summary">"Rejoignez le groupe de soutien AEE"</string>
+    <string name="system">"Système"</string>
+    <string name="unknown_file_message">"AEE ne gère pas '%s' pour le moment. Si vous connaissez ce format de fichier, vous pouvez exporter ce fichier dans le stockage de l'appareil et essayer de le modifier à l'aide d'une application tierce prise en charge. Alternativement, vous pouvez essayer de l'ouvrir en tant que fichier texte ?"</string>
+    <string name="unsupported_file">"Fichier non supporté"</string>
+    <string name="unsupported_file_arsc">"Vous avez sélectionné 'resources.arsc', qui est malheureusement impossible à lire pour AEE.
+
+        Qu'est-ce que resources.arsc ?
+        resources.arsc est un fichier de ressources binaires contenant les valeurs spécifiques à la configuration d'une application, telles que des entiers, des booléens et des chaînes, ainsi que des références à des ressources plus complexes, telles que les dispositions d'interface utilisateur.
+
+        Comment lire resources.arsc ?
+        Des outils tels que Apktool ou Android Asset Packaging Tool (AAPT) doivent être utilisés pour imprimer le contenu de resources.arsc dans un format lisible par l'homme."</string>
+    <string name="unsupported_file_dex">"Vous avez sélectionné un fichier 'DEX' (.dex), qui est malheureusement impossible à lire pour AEE.
+
+        Qu'est-ce qu'un fichier DEX ?
+        Un fichier Dex contient du code qui est finalement exécuté par Android Runtime. Chaque APK doit avoir un fichier \"classes.dex\", qui fait référence à toutes les classes ou méthodes utilisées dans une application. Essentiellement, toute activité, objet ou fragment utilisé dans la base de code sera transformé en octets dans un fichier Dex pouvant être exécuté en tant qu'application Android.
+
+        Comment lire un fichier DEX ?
+        Un fichier DEX doit être converti au format 'jar' et plus tard en fichier 'Java' à l'aide d'outils tels que 'dex2jar' et 'JD-GUI'."</string>
+    <string name="user">"Utilisateur"</string>
+    <string name="bundles">"Liasses"</string>
+    <string name="preparing_bundle">"Préparation du bundle d'applications pour le partage…"</string>
+    <string name="privacy_policy">"politique de confidentialité"</string>
+    <string name="privacy_policy_summary">"Lire la politique de confidentialité"</string>
+    <string name="private_key">"Clé privée"</string>
+    <string name="private_key_summary">"Sélectionnez une clé privée personnalisée"</string>
+    <string name="select">"Sélectionner"</string>
+    <string name="signing_custom">"Configurer la clé personnalisée"</string>
+    <string name="signing_default">"Signer avec la clé par défaut"</string>
+    <string name="signing_question">"Utilisez '%s' comme nouveau"</string>
+    <string name="signing_title">"Signature APK"</string>
+    <string name="apk_installer">"Installateur AEE APK"</string>
+    <string name="bundle_install_question">"Êtes-vous sûr d'avoir installé l'ensemble d'applications '%s' ?"</string>
+    <string name="export_app_question">"Exporter '%s' vers l'espace de stockage de l'appareil ?"</string>
+    <string name="export_project_question">"Faire une copie de ce dossier de projet dans l'espace de stockage de l'appareil ?"</string>
+    <string name="export_project_replace">"'%s' existe déjà. Voulez-vous le remplacer?"</string>
+    <string name="export_resign">"Exporter et re-signer"</string>
+    <string name="export_storage">"Exporter vers le stockage"</string>
+    <string name="exporting">"Exportation de %s…"</string>
+    <string name="got_it">"J'ai compris"</string>
+    <string name="install_storage">"Installer à partir du stockage"</string>
+    <string name="installer_message">"Le programme d'installation AEE Split APK gérera les APK normaux, les APK fractionnés ainsi que les ensembles d'applications 'xapk', 'apks' et 'apkm'. Pour initialiser une installation, sélectionnez simplement le(s) fichier(s) d'installation dans l'écran suivant et suivez les instructions à l'écran."</string>
+    <string name="installation_cancel_message">"Voulez-vous vraiment annuler l'installation ?"</string>
+    <string name="name_empty">"Le nom ne doit pas être vide. Abandon…"</string>
+    <string name="ok">"D'ACCORD"</string>
+    <string name="preparing_bundle_install">"Préparation de '%s' pour l'installation…"</string>
+    <string name="select_apk">"Sélectionnez Diviser les APK"</string>
+    <string name="signature_warning">"Il est important de désinstaller l'ancienne version (le cas échéant) de l'application avant d'installer un bundle APK/App signé AEE pour éviter un échec de l'installation en raison d'une incompatibilité de signature."</string>
+    <string name="wrong_extension">"Veuillez sélectionner un fichier avec l'extension %s."</string>
+    <string name="yes">"Oui"</string>
+    <string name="apk_corrupted">"Le ou les fichiers APK sont corrompus. Abandon…"</string>
+    <string name="install_resign">"Re-signer et installer"</string>
+    <string name="resign_only">"Re-signer uniquement"</string>
+    <string name="resigned_apks_path">"Le ou les fichiers APK resignés sont générés.
+
+        Chemin : '%s'"</string>
+    <string name="resigning_apks">"Re-signer les fichiers APK sélectionnés…"</string>
+    <string name="select_storage">"Sélectionnez dans le stockage"</string>
+    <string name="sort_by">"Trier les applications"</string>
+    <string name="sort_by_name">"Nom"</string>
+    <string name="sort_by_id">"Identifiant du package"</string>
+    <string name="sort_order">"A-Z"</string>
+    <string name="clear_cache">"Vider le cache"</string>
+    <string name="clear_cache_summary">"Supprimer les paramètres internes d'AEE"</string>
+    <string name="clear_cache_message">"Tout, sauf les applications exportées, sera supprimé."</string>
+    <string name="export_options">"À l'exportation (APK)"</string>
+    <string name="export_path_default">"Stockage interne/AEE"</string>
+    <string name="export_path_download">"Télécharger"</string>
+    <string name="export_path_resources">"Chemin d'exportation (non-APK)"</string>
+    <string name="installer_action">"Sur l'installation des APK"</string>
+    <string name="project_exist_action">"À la sortie d'un projet"</string>
+    <string name="prompt">"Rapide"</string>
+    <string name="settings">"Paramètres"</string>
+    <string name="settings_general">"Général"</string>
+    <string name="settings_misc">"Divers"</string>
+    <string name="sign_apk_custom">"Clé personnalisée"</string>
+    <string name="sign_apk_default">"Clé par défaut"</string>
+    <string name="sign_apk_with">"Signer les APK avec"</string>
+    <string name="warning">"Avertissement"</string>
+    <string name="file_path_error">"Impossible d'obtenir le chemin du fichier à partir du gestionnaire de fichiers externe"</string>
+    <string name="text_editor">"Éditeur de texte AEE"</string>
+    <string name="discard">"Jeter"</string>
+    <string name="discard_message">"Supprimer les modifications apportées à ce fichier ?"</string>
+    <string name="export_path_apks">"Chemin d'exportation (APK)"</string>
+    <string name="export_path_files_dir">"Répertoire des fichiers externes"</string>
+    <string name="language">"Langue"</string>
+    <string name="transfer_exported_apk">"Transfert des fichiers APK précédemment exportés vers un nouveau chemin…"</string>
+    <string name="user_interface">"Interface utilisateur"</string>
+    <string name="decompiling">"Décompilation de '%s'…"</string>
+    <string name="deleting">"Suppression de '%s'…"</string>
+    <string name="grant">"Accorder"</string>
+    <string name="important">"Important"</string>
+    <string name="assembling">"Assemblage
+        '%s'"</string>
+    <string name="build">"Construire"</string>
+    <string name="building">"Bâtiments'…"</string>
+    <string name="copying">"Copie de '%s'…"</string>
+    <string name="details">"Détails"</string>
+    <string name="failed">"Échoué"</string>
+    <string name="failed_smali_message">"Les fichiers 'smali' suivants ne sont pas assemblés.
+
+        %s"</string>
+    <string name="open">"Ouvrir"</string>
+    <string name="preparing_source">"Préparation de la source pour la création de l'APK…"</string>
+    <string name="resigned_apks_error">"La construction est interrompue en raison d'erreurs dans l'assemblage des fichiers 'smali'. Veuillez consulter les \"Détails\" pour en savoir plus."</string>
+    <string name="success">"Succès"</string>
+    <string name="sort_by_installed">"Temps d'installation"</string>
+    <string name="sort_by_size">"Taille"</string>
+    <string name="sort_by_updated">"Heure mise à jour"</string>
+    <string name="sort_size">"Petit à grand"</string>
+    <string name="start">"Commencer"</string>
+    <string name="android_version">"Android %s"</string>
+    <string name="certificate">"Certificat"</string>
+    <string name="install_bundle_question">"Êtes-vous sûr d'installer le groupe d'applications sélectionné ?"</string>
+    <string name="loading">"Chargement…"</string>
+    <string name="manifest">"Manifeste"</string>
+    <string name="permissions">"Autorisations"</string>
+    <string name="save_to_downloads">"Enregistrer dans les téléchargements"</string>
+    <string name="saving">"Économie…"</string>
+    <string name="sdk_compile">"Compiler le SDK : %s"</string>
+    <string name="sdk_minimum">"Kit de développement logiciel minimal : %s"</string>
+    <string name="signing_select_question">"Utiliser le fichier sélectionné comme nouveau %s ?"</string>
+    <string name="cancelling">"Annulation…"</string>
+    <string name="replace_file_question">"Remplacer %s par le fichier sélectionné ?"</string>
+    <string name="update">"Mise à jour"</string>
+    <string name="signing_summary">"Afin de signer les APK avec une clé personnalisée, AEE nécessite une clé privée au format pk8 et un certificat X509 exporté à partir de la même clé. Cliquez ici pour en savoir plus sur la création d'une clé privée et d'un certificat X509."</string>
+    <string name="x509_certificate">"X509Certificat"</string>
+    <string name="x509_certificate_summary">"Sélectionnez le certificat X509 personnalisé"</string>
+    <string name="clearing_cache_message">"Effacement du cache…"</string>
+    <string name="root">"Racine"</string>
+    <string name="xml_corrupted">"La chaîne XML est corrompue. Abandon…"</string>
+    <string name="xml_decode_failed">"Impossible de décoder %s"</string>
+</resources>

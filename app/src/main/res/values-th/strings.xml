@@ -1,0 +1,184 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="about">"เกี่ยวกับเรา"</string>
+    <string name="all">"ทั้งหมด"</string>
+    <string name="apks">"APK's"</string>
+    <string name="apps">"แอพ"</string>
+    <string name="apps_exported">"แตกไฟล์ APK's"</string>
+    <string name="apps_installed">"ติดตั้งแอพ"</string>
+    <string name="cancel">"ยกเลิก"</string>
+    <string name="delete">"ลบ"</string>
+    <string name="delete_question">"ลบ %s?"</string>
+    <string name="documentation">"เอกสาร"</string>
+    <string name="documentation_summary">"ตรวจเอกสาร AEE "</string>
+    <string name="donations">"การบริจาค"</string>
+    <string name="donations_summary">"รองรับการพัฒนา AEE"</string>
+    <string name="export">"ส่งออก"</string>
+    <string name="export_question">"ส่งออกไปยังที่เก็บข้อมูลอุปกรณ์ไหม"</string>
+    <string name="export_complete_message">"ทรัพยากรที่เลือกส่งออกไปยัง '%s' สำเร็จแล้ว"</string>
+    <string name="exploring">"กำลังสำรวจ %s…"</string>
+    <string name="explore_error_status">"ล้มเหลวในการสำรวจ %s"</string>
+    <string name="install">"ติดตั้ง"</string>
+    <string name="install_question">"ติดตั้ง %s?"</string>
+    <string name="installing">"กำลังติดตั้ง %s…"</string>
+    <string name="invite_friends">"เชิญเพื่อน ๆ"</string>
+    <string name="invite_friends_Summary">"ชวนเพื่อนมาลองใช้ AEE"</string>
+    <string name="last_modified">"แก้ไขล่าสุด: %s"</string>
+    <string name="open_as_text">"เปิดเป็นข้อความ"</string>
+    <string name="permission_denied_message">"สิทธิ์ถูกปฏิเสธสำหรับการเข้าถึงที่เก็บข้อมูลอุปกรณ์"</string>
+    <string name="preparing_apk">"กำลังเตรียม %s APK…"</string>
+    <string name="press_back">"กดปุ่มย้อนกลับอีกครั้งเพื่อปิด APK Explorer"</string>
+    <string name="projects">"โครงการ"</string>
+    <string name="rate_us">"ให้คะแนน AEE"</string>
+    <string name="rate_us_Summary">"ให้คะแนนหรือ/และรีวิว AEE ใน Google Play"</string>
+    <string name="replace">"แทนที่"</string>
+    <string name="replace_question">"แทนที่ %s ด้วย"</string>
+    <string name="report_issue">"รายงานปัญหา"</string>
+    <string name="report_issue_summary">"แจ้งปัญหาที่ GitHub"</string>
+    <string name="save">"บันทึก"</string>
+    <string name="save_projects_question">"บันทึกโปรเจ็กต์เพื่อใช้ในอนาคตไหม"</string>
+    <string name="save_question">"บันทึกการเปลี่ยนแปลงที่ทำในไฟล์นี้ไหม"</string>
+    <string name="save_apk_message">"คุณต้องการเตรียม APK ที่ลงชื่อด้วยการแก้ไขปัจจุบันหรือไม่"</string>
+    <string name="sdcard">"ที่เก็บข้อมูลภายใน"</string>
+    <string name="search">"ค้นหา…"</string>
+    <string name="share">"แบ่งปัน"</string>
+    <string name="share_message">"แชร์ %s ไหม"</string>
+    <string name="share_with">"ร่วมกับ"</string>
+    <string name="signing">"กำลังเซ็นชื่อ '%s'…"</string>
+    <string name="size">"ขนาด: %s"</string>
+    <string name="source_code">"รหัสแหล่งที่มา"</string>
+    <string name="source_code_summary">"ตรวจสอบซอร์สโค้ดของ AEE"</string>
+    <string name="split_apk_installer">"โปรแกรมติดตั้ง AEE Split APK"</string>
+    <string name="support_group">"กลุ่มสนับสนุน"</string>
+    <string name="support_group_summary">"เข้าร่วมกลุ่มสนับสนุน AEE"</string>
+    <string name="system">"ระบบ"</string>
+    <string name="unknown_file_message">"AEE ไม่รองรับ '%s' ในขณะนี้ หากคุณทราบรูปแบบไฟล์นี้ คุณอาจส่งออกไฟล์นี้ไปยังที่เก็บข้อมูลอุปกรณ์และลองแก้ไขโดยใช้แอปพลิเคชันของบุคคลที่สามที่รองรับ หรือคุณอาจลองเปิดเป็นไฟล์ข้อความ?"</string>
+    <string name="unsupported_file">"ไฟล์ที่ไม่รองรับ"</string>
+    <string name="unsupported_file_arsc">"คุณได้รับเลือก 'resources.arsc' ซึ่ง AEE ไม่สามารถอ่านได้
+
+        Resource.arsc คืออะไร
+        Resource.arsc เป็นไฟล์ทรัพยากรไบนารีที่มีค่าเฉพาะการกำหนดค่าของแอปพลิเคชัน เช่น จำนวนเต็ม บูลีน และสตริง รวมถึงการอ้างอิงไปยังทรัพยากรที่ซับซ้อนมากขึ้น เช่น เค้าโครง UI
+
+        จะอ่าน Resources.arsc ได้อย่างไร?
+        เครื่องมือต่างๆ เช่น Apktool หรือ Android Asset Packaging Tool (AAPT) จะต้องใช้เพื่อพิมพ์เนื้อหาของ Resources.arsc ในรูปแบบที่มนุษย์อ่านได้"</string>
+    <string name="unsupported_file_dex">"คุณได้รับเลือกไฟล์ 'DEX' (.dex) ซึ่ง AEE ไม่สามารถอ่านได้
+
+        ไฟล์ DEX คืออะไร??
+        ไฟล์ Dex มีรหัสที่รันไทม์ Android ในที่สุด APK ทุกอันควรมีไฟล์ 'classes.dex' ซึ่งอ้างอิงคลาสหรือเมธอดใดๆ ที่ใช้ภายในแอป โดยพื้นฐานแล้ว กิจกรรม ออบเจกต์ หรือแฟรกเมนต์ใดๆ ที่ใช้ภายในโค้ดเบสจะถูกแปลงเป็นไบต์ภายในไฟล์ Dex ที่สามารถเรียกใช้เป็นแอป Android ได้
+
+        จะอ่านไฟล์ DEX ได้อย่างไร?
+        ไฟล์ DEX จะถูกแปลงเป็นรูปแบบ 'jar' และต่อมาเป็นไฟล์ 'Java' โดยใช้เครื่องมือเช่น 'dex2jar' และ 'JD-GUI'"</string>
+    <string name="user">"ผู้ใช้"</string>
+    <string name="bundles">"การรวมกลุ่ม"</string>
+    <string name="preparing_bundle">"กำลังเตรียม App Bundle สำหรับการแชร์…"</string>
+    <string name="privacy_policy">"นโยบายความเป็นส่วนตัว"</string>
+    <string name="privacy_policy_summary">"อ่านนโยบายความเป็นส่วนตัว"</string>
+    <string name="private_key">"คีย์ส่วนตัว"</string>
+    <string name="private_key_summary">"เลือกรหัสส่วนตัวที่กำหนดเอง"</string>
+    <string name="select">"เลือก"</string>
+    <string name="signing_custom">"กำหนดค่าคีย์แบบกำหนดเอง"</string>
+    <string name="signing_default">"ลงชื่อเข้าใช้ด้วยคีย์เริ่มต้น"</string>
+    <string name="signing_question">"ใช้ '%s' เป็นชื่อใหม่"</string>
+    <string name="signing_title">"การลงชื่อ APK"</string>
+    <string name="apk_installer">"โปรแกรมติดตั้ง AEE APK"</string>
+    <string name="bundle_install_question">"คุณแน่ใจหรือไม่ว่าจะติดตั้ง App Bundle '%s'"</string>
+    <string name="export_app_question">"ส่งออก '%s' ไปยังที่เก็บข้อมูลอุปกรณ์หรือไม่"</string>
+    <string name="export_project_question">"ทำสำเนาโฟลเดอร์โปรเจ็กต์นี้ลงในที่เก็บข้อมูลอุปกรณ์ไหม"</string>
+    <string name="export_project_replace">"'%s' มีอยู่แล้ว คุณต้องการแทนที่หรือไม่"</string>
+    <string name="export_resign">"ส่งออก &amp; ลงชื่อใหม่"</string>
+    <string name="export_storage">"ส่งออกไปยังที่เก็บข้อมูล"</string>
+    <string name="exporting">"กำลังส่งออก %s…"</string>
+    <string name="got_it">"เข้าใจแล้ว"</string>
+    <string name="install_storage">"ติดตั้งจากที่เก็บข้อมูล"</string>
+    <string name="installer_message">"โปรแกรมติดตั้ง AEE Split APK จะจัดการ APK ปกติ, แยก APK รวมถึงชุดแอป 'xapk', 'apks' และ 'apkm' เพื่อเริ่มต้นการติดตั้ง เพียงเลือกไฟล์การติดตั้งจากหน้าจอถัดไปและทำตามคำแนะนำบนหน้าจอ"</string>
+    <string name="installation_cancel_message">"คุณแน่ใจหรือที่จะยกเลิกการติดตั้ง?"</string>
+    <string name="name_empty">"ชื่อต้องไม่ว่างเปล่า กำลังยกเลิก…"</string>
+    <string name="ok">"ตกลง"</string>
+    <string name="preparing_bundle_install">"กำลังเตรียม '%s' สำหรับการติดตั้ง…"</string>
+    <string name="select_apk">"เลือก Split APK"</string>
+    <string name="signature_warning">"สิ่งสำคัญคือต้องถอนการติดตั้งแอปเวอร์ชันเก่า (ถ้ามี) ก่อนติดตั้งชุด APK/แอปที่ลงชื่อ AEE เพื่อหลีกเลี่ยงความล้มเหลวในการติดตั้งเนื่องจากลายเซ็นไม่ตรงกัน"</string>
+    <string name="wrong_extension">"โปรดเลือกไฟล์ที่มีนามสกุล %s"</string>
+    <string name="yes">"ใช่"</string>
+    <string name="apk_corrupted">"ไฟล์ APK เสียหาย กำลังยกเลิก…"</string>
+    <string name="install_resign">"ลงชื่อใหม่และติดตั้ง"</string>
+    <string name="resign_only">"ลงชื่อซ้ำเท่านั้น"</string>
+    <string name="resigned_apks_path">"ไฟล์ APK ที่ลงนามใหม่จะถูกสร้างขึ้น
+
+        เส้นทาง: '%s'"</string>
+    <string name="resigning_apks">"ลงนาม APK ที่เลือกอีกครั้ง…"</string>
+    <string name="select_storage">"เลือกจากที่เก็บข้อมูล"</string>
+    <string name="sort_by">"จัดเรียงแอพ"</string>
+    <string name="sort_by_name">"ชื่อ"</string>
+    <string name="sort_by_id">"รหัสแพ็คเกจ"</string>
+    <string name="sort_order">"ก-ฮ"</string>
+    <string name="clear_cache">"ล้างแคช"</string>
+    <string name="clear_cache_summary">"ลบการตั้งค่าภายในของ AEE"</string>
+    <string name="clear_cache_message">"ทุกอย่างยกเว้นแอปพลิเคชันที่ส่งออกจะถูกลบออก"</string>
+    <string name="export_options">"ในการส่งออก (APK)"</string>
+    <string name="export_path_default">"ที่เก็บข้อมูลภายใน/AEE"</string>
+    <string name="export_path_download">"ดาวน์โหลด"</string>
+    <string name="export_path_resources">"เส้นทางการส่งออก (ไม่ใช่ของ APK)"</string>
+    <string name="installer_action">"ในการติดตั้ง APK"</string>
+    <string name="project_exist_action">"เมื่อออกจากโครงการ"</string>
+    <string name="prompt">"พรอมต์"</string>
+    <string name="settings">"การตั้งค่า"</string>
+    <string name="settings_general">"ทั่วไป"</string>
+    <string name="settings_misc">"เบ็ดเตล็ด"</string>
+    <string name="sign_apk_custom">"คีย์ที่กำหนดเอง"</string>
+    <string name="sign_apk_default">"คีย์เริ่มต้น"</string>
+    <string name="sign_apk_with">"ลงชื่อ APK ด้วย"</string>
+    <string name="warning">"คำเตือน"</string>
+    <string name="file_path_error">"ไม่สามารถรับเส้นทางไฟล์จากตัวจัดการไฟล์ภายนอก"</string>
+    <string name="text_editor">"โปรแกรมแก้ไขข้อความ AEE"</string>
+    <string name="discard">"ทิ้ง"</string>
+    <string name="discard_message">"ละทิ้งการเปลี่ยนแปลงที่ทำในไฟล์นี้ไหม"</string>
+    <string name="export_path_apks">"เส้นทางการส่งออก (APK)"</string>
+    <string name="export_path_files_dir">"ไดเร็กทอรีไฟล์ภายนอก"</string>
+    <string name="language">"ภาษา"</string>
+    <string name="transfer_exported_apk">"กำลังโอน APK ที่ส่งออกก่อนหน้านี้ไปยังเส้นทางใหม่…"</string>
+    <string name="user_interface">"หน้าจอผู้ใช้"</string>
+    <string name="decompiling">"กำลังถอดรหัส '%s'…"</string>
+    <string name="deleting">"กำลังลบ '%s'…"</string>
+    <string name="grant">"ยินยอม"</string>
+    <string name="important">"สำคัญ"</string>
+    <string name="assembling">"การประกอบ
+        '%s'"</string>
+    <string name="build">"สร้าง"</string>
+    <string name="building">"กำลังสร้าง'%s'…"</string>
+    <string name="copying">"กำลังคัดลอก '%s'…"</string>
+    <string name="details">"รายละเอียด"</string>
+    <string name="failed">"ล้มเหลว"</string>
+    <string name="failed_smali_message">"ไฟล์ 'smali' ต่อไปนี้ไม่สามารถรวบรวมได้
+
+        %s"</string>
+    <string name="open">"เปิด"</string>
+    <string name="preparing_source">"กำลังเตรียมซอร์สสำหรับการสร้าง APK…"</string>
+    <string name="resigned_apks_error">"อาคารถูกยกเลิกเนื่องจากข้อผิดพลาดในการประกอบไฟล์ 'smali' กรุณาตรวจสอบ 'รายละเอียด' เพื่อหาข้อมูลเพิ่มเติม"</string>
+    <string name="success">"ความสำเร็จ"</string>
+    <string name="sort_by_installed">"เวลาที่ติดตั้ง"</string>
+    <string name="sort_by_size">"ขนาด"</string>
+    <string name="sort_by_updated">"อัปเดตเวลา"</string>
+    <string name="sort_size">"เล็กไปใหญ่"</string>
+    <string name="start">"เริ่ม"</string>
+    <string name="android_version">"แอนดรอยด์ %s"</string>
+    <string name="certificate">"ใบรับรอง"</string>
+    <string name="install_bundle_question">"แน่ใจไหมว่าจะติดตั้ง App Bundle ที่เลือก"</string>
+    <string name="loading">"กำลังโหลด…"</string>
+    <string name="manifest">"รายการ"</string>
+    <string name="permissions">"สิทธิ์"</string>
+    <string name="save_to_downloads">"บันทึกลงดาวน์โหลด"</string>
+    <string name="saving">"ประหยัด…"</string>
+    <string name="sdk_compile">"รวบรวม SDK: %s"</string>
+    <string name="sdk_minimum">"SDK ขั้นต่ำ: %s"</string>
+    <string name="signing_select_question">"ใช้ไฟล์ที่เลือกเป็น %s ใหม่หรือไม่"</string>
+    <string name="cancelling">"กำลังยกเลิก…"</string>
+    <string name="replace_file_question">"แทนที่ %s ด้วยไฟล์ที่เลือก?"</string>
+    <string name="update">"อัปเดต"</string>
+    <string name="signing_summary">"ในการลงนาม APK ด้วยรหัสที่กำหนดเอง AEE ต้องใช้รหัสส่วนตัวในรูปแบบ pk8 และใบรับรอง X509 ที่ส่งออกจากรหัสเดียวกัน คลิกที่นี่เพื่ออ่านเพิ่มเติมเกี่ยวกับการสร้างคีย์ส่วนตัวและ X509Certificate"</string>
+    <string name="x509_certificate">"X509ใบรับรอง"</string>
+    <string name="x509_certificate_summary">"เลือก X509Certificate แบบกำหนดเอง"</string>
+    <string name="clearing_cache_message">"กำลังล้างแคช…"</string>
+    <string name="root">"ราก"</string>
+    <string name="xml_corrupted">"สตริง XML เสียหาย กำลังยกเลิก…"</string>
+    <string name="xml_decode_failed">"ไม่สามารถถอดรหัส %s"</string>
+</resources>
