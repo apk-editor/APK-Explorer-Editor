@@ -100,6 +100,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                         notifyItemRemoved(position);
                         notifyDataSetChanged();
                     }).show());
+            holder.mCard.setCardBackgroundColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
+            holder.mCard.setStrokeColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
             holder.mTotalSize.setVisibility(View.VISIBLE);
             holder.mTotalSize.setTextColor(sThemeUtils.isDarkTheme(holder.mTotalSize.getContext()) ? Color.GREEN : Color.BLACK);
             holder.mDelete.setColorFilter(Color.RED);

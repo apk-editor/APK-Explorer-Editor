@@ -116,6 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             app:cardBackgroundColor="@color/colorBlack"
+            app:strokeColor="@color/colorBlack"
             android:layout_marginTop="-16dp"
             android:layout_gravity="bottom"
             app:cardCornerRadius="15dp" >

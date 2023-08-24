@@ -135,9 +135,6 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                     holder.mAppName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.mCard.setOnClickListener(v -> sCommonUtils.snackBar(v, v.getContext().getString(R.string.apk_corrupted)).show());
                 }
-                if (!sThemeUtils.isDarkTheme(holder.mCard.getContext())) {
-                    holder.mCard.setCardBackgroundColor(Color.LTGRAY);
-                }
                 if (sAPKUtils.getVersionName(data.get(position), holder.mAppName.getContext()) != null) {
                     holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.version, sAPKUtils.getVersionName(data.get(position), holder.mAppName.getContext())));
                 }
@@ -176,6 +173,8 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                     return false;
                 });
             }
+            holder.mCard.setCardBackgroundColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
+            holder.mCard.setStrokeColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
             holder.mVersion.setVisibility(View.VISIBLE);
             holder.mVersion.setTextColor(Color.RED);
         } catch (NullPointerException ignored) {

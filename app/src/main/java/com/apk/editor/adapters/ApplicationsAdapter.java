@@ -77,9 +77,8 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                 Intent imageView = new Intent(v.getContext(), ImageViewActivity.class);
                 v.getContext().startActivity(imageView);
             });
-            if (!sThemeUtils.isDarkTheme(holder.mCard.getContext())) {
-                holder.mCard.setCardBackgroundColor(Color.LTGRAY);
-            }
+            holder.mCard.setCardBackgroundColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
+            holder.mCard.setStrokeColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
             holder.mSize.setVisibility(View.VISIBLE);
             holder.mVersion.setVisibility(View.VISIBLE);
             holder.mCard.setOnLongClickListener(v -> {
