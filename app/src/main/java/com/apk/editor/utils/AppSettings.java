@@ -114,6 +114,11 @@ public class AppSettings {
         mData.add(new sSerializableItems(null, "Andrii Chvalov", "Ukrainian Translation", "null"));
         mData.add(new sSerializableItems(null, "Veydzher", "Ukrainian Translation", null));
         mData.add(new sSerializableItems(null, "يمني", "Arabic (UAE) Translation", null));
+        mData.add(new sSerializableItems(null, "Thibault Pitoiset", "French (Belgium) Translation", "null"));
+        mData.add(new sSerializableItems(null, "Mohd Ayan", "Hindi Translation", null));
+        mData.add(new sSerializableItems(null, "tas", "Lithuanian Translation", null));
+        mData.add(new sSerializableItems(null, "vuvov11", "Thai Translation", null));
+        mData.add(new sSerializableItems(null, "Me", "Arabic (SA) Translation", null));
         return mData;
     }
 

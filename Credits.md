@@ -31,5 +31,10 @@ APK Explorer & Editor (AEE) is, and as always, an open-source project which is r
 * Erős Pista - Hungarian Translation
 * Andrii Chvalov &  Veydzher - Ukrainian Translation
 * يمني - Arabic (UAE) Translation
+* Thibault Pitoiset - French (Belgium) Translation 
+* Mohd Ayan - Hindi Translation
+* tas - Lithuanian Translation 
+* vuvov11 - Thai Translation
+* Me - Arabic (SA) Translation
 
 _If you think I missed your name, please let me know._
