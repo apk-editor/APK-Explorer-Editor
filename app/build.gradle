@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 26
-        versionName "v0.26"
+        versionCode 27
+        versionName "v0.27"
         vectorDrawables.useSupportLibrary = true
         testFunctionalTest = false
         testHandleProfiling = false
