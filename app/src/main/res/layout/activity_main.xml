@@ -31,6 +31,7 @@
             android:layout_marginEnd="40dp"
             app:itemIconTint="@color/colorBlue"
             app:itemTextColor="@color/colorBlue"
+            app:itemActiveIndicatorStyle="@null"
             android:background="@color/colorBlack"
             app:menu="@menu/navigation_main"
             app:labelVisibilityMode="labeled"
