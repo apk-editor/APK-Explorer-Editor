@@ -147,10 +147,10 @@ public class AppSettings {
                 return context.getString(R.string.language_hu);
             case "uk":
                 return context.getString(R.string.language_uk);
-            case "lt":
-                return context.getString(R.string.language_lt);
             case "hi":
                 return context.getString(R.string.language_hi);
+            case "lt":
+                return context.getString(R.string.language_lt);
             case "th":
                 return context.getString(R.string.language_th);
             default:
@@ -229,7 +229,10 @@ public class AppSettings {
                 context.getString(R.string.language_pl),
                 context.getString(R.string.language_in),
                 context.getString(R.string.language_hu),
-                context.getString(R.string.language_uk)
+                context.getString(R.string.language_uk),
+                context.getString(R.string.language_hi),
+                context.getString(R.string.language_lt),
+                context.getString(R.string.language_th)
         };
     }
 
