@@ -12,6 +12,7 @@ import com.apk.editor.utils.Projects;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
+import java.util.List;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
@@ -22,13 +23,15 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 public class ExportToStorage extends sExecutor {
 
     private final Context mContext;
+    private final File mSourceFile;
+    private final List<File> mSourceFiles;
     private ProgressDialog mProgressDialog;
-    private final String mSource, mName, mFolder;
+    private final String mFolder;
     private String mExportPath = null;
 
-    public ExportToStorage(String source, String name, String folder, Context context) {
-        mSource = source;
-        mName = name;
+    public ExportToStorage(File sourceFile, List<File> sourceFiles, String folder, Context context) {
+        mSourceFile = sourceFile;
+        mSourceFiles = sourceFiles;
         mFolder = folder;
         mContext = context;
     }
@@ -37,7 +40,7 @@ public class ExportToStorage extends sExecutor {
     @Override
     public void onPreExecute() {
         mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setMessage(mContext.getString(R.string.exporting, new File(mSource).getName()));
+        mProgressDialog.setMessage(mContext.getString(R.string.exporting, mSourceFile != null && mSourceFile.exists() ? mSourceFile.getName() : ""));
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mProgressDialog.setIcon(R.mipmap.ic_launcher);
         mProgressDialog.setTitle(R.string.app_name);
@@ -55,9 +58,25 @@ public class ExportToStorage extends sExecutor {
             mExportPath = Projects.getExportPath(mContext);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            APKData.saveToDownload(new File(mSource), mName, mContext);
+            if (mSourceFiles != null && mSourceFiles.size() > 0) {
+                for (File file : mSourceFiles) {
+                    if (file.exists()) {
+                        APKData.saveToDownload(file, file.getName(), mContext);
+                    }
+                }
+            } else {
+                APKData.saveToDownload(mSourceFile, mSourceFile.getName(), mContext);
+            }
         } else {
-            sFileUtils.copy(new File(mSource), new File(mExportPath, mName));
+            if (mSourceFiles != null && mSourceFiles.size() > 0) {
+                for (File file : mSourceFiles) {
+                    if (file.exists()) {
+                        sFileUtils.copy(file, new File(mExportPath, file.getName()));
+                    }
+                }
+            } else {
+                sFileUtils.copy(mSourceFile, new File(mExportPath, mSourceFile.getName()));
+            }
         }
     }
 

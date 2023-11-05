@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +30,7 @@ import com.apk.editor.adapters.APKExplorerAdapter;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.tasks.DeleteFile;
 import com.apk.editor.utils.tasks.DeleteProject;
 import com.apk.editor.utils.tasks.ExportToStorage;
 import com.apk.editor.utils.tasks.SignAPK;
@@ -123,10 +125,50 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             Menu menu = popupMenu.getMenu();
             menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
                     .setChecked(sCommonUtils.getBoolean("az_order", true, requireActivity()));
+            if (Common.getFiles() != null && Common.getFiles().size() > 0) {
+                menu.add(Menu.NONE, 1, Menu.NONE, getString(R.string.export_selected_files));
+                if (APKEditorUtils.isFullVersion(requireActivity())) {
+                    menu.add(Menu.NONE, 2, Menu.NONE, getString(R.string.delete_selected_files));
+                }
+            }
+            if (APKEditorUtils.isFullVersion(requireActivity()) && !Objects.requireNonNull(new File(Common.getPath()).getParentFile()).getPath().equals(requireActivity().getCacheDir().getPath())) {
+                menu.add(Menu.NONE, 3, Menu.NONE, getString(R.string.delete_folder));
+            }
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
                     sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
                     reload(requireActivity());
+                } else if (item.getItemId() == 1) {
+                    if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext())) {
+                        sPermissionUtils.requestPermission(
+                                new String[] {
+                                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                }, (Activity) v.getContext());
+                    } else {
+                        new ExportToStorage(null, Common.getFiles(), Common.getAppID(), requireActivity()).execute();
+                    }
+                } else if (item.getItemId() == 2) {
+                    for (File file : Common.getFiles()) {
+                        if (file.exists()) {
+                            new DeleteFile(file, v.getContext()) {
+
+                                @Override
+                                public void onPostExecute() {
+                                    reload(requireActivity());
+                                }
+                            }.execute();
+                        }
+                    }
+                } else if (item.getItemId() == 3) {
+                    new DeleteFile(new File(Common.getPath()), v.getContext()) {
+
+                        @Override
+                        public void onPostExecute() {
+                            Common.setPath(Objects.requireNonNull(new File(Common.getPath()).getParentFile()).getPath());
+                            Common.clearFilesList();
+                            reload(requireActivity());
+                        }
+                    }.execute();
                 }
                 return false;
             });
@@ -136,6 +178,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         mRecycleViewAdapter.setOnItemClickListener((position, v) -> {
             if (new File(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position)).isDirectory()) {
                 Common.setPath(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
+                Common.clearFilesList();
                 reload(requireActivity());
             } else if (APKExplorer.isTextFile(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position))) {
                 Intent intent;
@@ -172,11 +215,10 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                                 sPermissionUtils.requestPermission(
                                         new String[] {
                                                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        },requireActivity());
+                                        }, requireActivity());
                             } else {
-                                new ExportToStorage(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position),
-                                        new File(APKExplorer.getData(getFilesList(),true, requireActivity()).get(position)).getName(),
-                                        Common.getAppID(), requireActivity()).execute();
+                                new ExportToStorage(new File(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position)),
+                                        null, Common.getAppID(), requireActivity()).execute();
                             }
                         })
                         .setPositiveButton(getString(R.string.open_as_text), (dialog1, id1) -> {
@@ -200,6 +242,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                     retainDialog();
                 } else {
                     Common.setPath(Objects.requireNonNull(new File(Common.getPath()).getParentFile()).getPath());
+                    Common.clearFilesList();
                     reload(requireActivity());
                 }
             }

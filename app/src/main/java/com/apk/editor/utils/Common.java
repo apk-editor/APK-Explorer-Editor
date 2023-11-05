@@ -8,6 +8,7 @@ import com.apk.editor.utils.recyclerViewItems.PackageItems;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class Common {
     private static AppCompatEditText mSearchWordApks, mSearchWordApps, mSearchWordProjects;
     private static boolean mBuilding = false, mBusy = false, mCancel = false, mFinish = false,
             mPrivateKey = false, mReloading = false, mRSATemplate = false;
+    private static List<File> mFile = null;
     private static List<PackageItems> mPackageData = null;
     private static final List<String> mAPKList = new ArrayList<>(), mErrorList = new ArrayList<>();
     private static int mError = 0, mSuccess = 0;
@@ -84,6 +86,10 @@ public class Common {
         return mSuccess;
     }
 
+    public static List<File> getFiles() {
+        return mFile;
+    }
+
     public static List<PackageItems> getPackageData() {
         return mPackageData;
     }
@@ -140,6 +146,17 @@ public class Common {
         return mStatus;
     }
 
+    public static void addToFilesList(File file) {
+        if (mFile == null) {
+            mFile = new ArrayList<>();
+        }
+        mFile.add(file);
+    }
+
+    public static void clearFilesList() {
+        mFile = null;
+    }
+
     public static void initializeAPKsSearchWord(View view, int id) {
         mSearchWordApks = view.findViewById(id);
     }
@@ -178,6 +195,11 @@ public class Common {
 
     public static void isReloading(boolean b) {
         mReloading = b;
+    }
+
+    public static void removeFromFilesList(File file) {
+        if (mFile == null || mFile.size() == 0) return;
+        mFile.remove(file);
     }
 
     public static void setFinishStatus(boolean b) {

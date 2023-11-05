@@ -26,6 +26,8 @@
     <string name="decompiling">Decompiling \'%s\'…</string>
     <string name="delete">Delete</string>
     <string name="delete_question">Delete %s?</string>
+    <string name="delete_folder">Delete folder</string>
+    <string name="delete_selected_files">Delete selected files</string>
     <string name="deleting">Deleting \'%s\'…</string>
     <string name="details">Details</string>
     <string name="documentation">Documentation</string>
@@ -47,6 +49,7 @@
     <string name="export_path_resources">Export Path (non-APK\'s)</string>
     <string name="export_question">Export to device storage?</string>
     <string name="export_resign">Export &amp; Re-sign</string>
+    <string name="export_selected_files">Export selected files</string>
     <string name="export_storage">Export to storage</string>
     <string name="exporting">Exporting %s…</string>
     <string name="exploring">Exploring %s…</string>
