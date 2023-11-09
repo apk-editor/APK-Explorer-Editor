@@ -27,6 +27,9 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.Objects;
 
@@ -94,6 +97,14 @@ public class FilePickerActivity extends AppCompatActivity {
                         .setPositiveButton(Common.getFileToReplace() != null ? R.string.replace : R.string.select, (dialog, id) -> {
                             if (Common.getFileToReplace() != null) {
                                 sFileUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(Common.getFileToReplace()));
+                                if (Common.getFileToReplace().contains("classes") && Common.getFileToReplace().contains(".dex")) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(sFileUtils.read(new File(getCacheDir(), Common.getAppID() + "/.aeeBackup/appData")));
+                                        jsonObject.put("smali_edited", true);
+                                        sFileUtils.create(jsonObject.toString(), new File(getCacheDir(), Common.getAppID() + "/.aeeBackup/appData"));
+                                    } catch (JSONException ignored) {
+                                    }
+                                }
                                 Common.setFileToReplace(null);
                             }  else {
                                 sFileUtils.mkdir(new File(getFilesDir(), "signing"));

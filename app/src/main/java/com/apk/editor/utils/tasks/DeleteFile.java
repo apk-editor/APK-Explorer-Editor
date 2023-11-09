@@ -7,6 +7,10 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.apk.editor.R;
+import com.apk.editor.utils.Common;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -44,6 +48,14 @@ public abstract class DeleteFile {
         executors.execute(() -> {
 
             sFileUtils.delete(mFile);
+            if (mFile.getAbsolutePath().contains("classes") && mFile.getAbsolutePath().contains(".dex")) {
+                try {
+                    JSONObject jsonObject = new JSONObject(sFileUtils.read(new File(mContext.getCacheDir(), Common.getAppID() + "/.aeeBackup/appData")));
+                    jsonObject.put("smali_edited", true);
+                    sFileUtils.create(jsonObject.toString(), new File(mContext.getCacheDir(), Common.getAppID() + "/.aeeBackup/appData"));
+                } catch (JSONException ignored) {
+                }
+            }
 
             new Handler(Looper.getMainLooper()).post(() -> {
 

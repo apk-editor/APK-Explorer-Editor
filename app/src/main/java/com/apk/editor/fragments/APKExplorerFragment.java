@@ -37,6 +37,9 @@ import com.apk.editor.utils.tasks.SignAPK;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.Objects;
 
@@ -319,6 +322,14 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                                 })
                                 .setPositiveButton(R.string.replace, (dialog, id) -> {
                                     sFileUtils.copy(uriFile, new File(Common.getFileToReplace()), requireActivity());
+                                    if (Common.getFileToReplace().contains("classes") && Common.getFileToReplace().contains(".dex")) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(sFileUtils.read(new File(requireActivity().getCacheDir(), Common.getAppID() + "/.aeeBackup/appData")));
+                                            jsonObject.put("smali_edited", true);
+                                            sFileUtils.create(jsonObject.toString(), new File(requireActivity().getCacheDir(), Common.getAppID() + "/.aeeBackup/appData"));
+                                        } catch (JSONException ignored) {
+                                        }
+                                    }
                                     reload(requireActivity());
                                 }).show();
                     }
