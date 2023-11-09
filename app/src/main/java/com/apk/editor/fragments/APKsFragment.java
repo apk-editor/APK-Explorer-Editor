@@ -3,7 +3,6 @@ package com.apk.editor.fragments;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
+import com.apk.editor.activities.APKInstallerActivity;
 import com.apk.editor.activities.InstallerFilePickerActivity;
 import com.apk.editor.adapters.APKsAdapter;
 import com.apk.editor.utils.APKData;
@@ -33,8 +33,6 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.dialogs.InvalidFileDialog;
-import com.apk.editor.utils.dialogs.SelectBundleDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 
@@ -244,40 +242,6 @@ public class APKsFragment extends Fragment {
         }.execute();
     }
 
-    private sExecutor handleSingleInstallationEvent(Uri uriFile, Activity activity) {
-        return new sExecutor() {
-            private File mFile = null;
-
-            @Override
-            public void onPreExecute() {
-                Common.setProgress(true, mProgress);
-                sFileUtils.delete(activity.getExternalFilesDir("APK"));
-                Common.getAPKList().clear();
-            }
-
-            @Override
-            public void doInBackground() {
-                String fileName = Objects.requireNonNull(DocumentFile.fromSingleUri(activity, uriFile)).getName();
-                mFile = new File(activity.getExternalFilesDir("APK"), Objects.requireNonNull(fileName));
-                sFileUtils.copy(uriFile, mFile, activity);
-            }
-
-            @Override
-            public void onPostExecute() {
-                if (mFile.getName().endsWith("apk")) {
-                    Common.getAPKList().add(mFile.getAbsolutePath());
-                    Common.setFinishStatus(true);
-                    APKExplorer.handleAPKs(false, activity);
-                } else if (mFile.getName().endsWith("apkm") || mFile.getName().endsWith("apks") || mFile.getName().endsWith("xapk")) {
-                    new SelectBundleDialog(mFile.getAbsolutePath(), false, activity).show();
-                } else {
-                    new InvalidFileDialog(false, activity).show();
-                }
-                Common.setProgress(false, mProgress);
-            }
-        };
-    }
-
     private sExecutor handleMultipleAPKs(ClipData uriFiles, Activity activity) {
         return new sExecutor() {
             private final File mParentDir = new File(activity.getExternalCacheDir(), "APKs");
@@ -331,7 +295,9 @@ public class APKsFragment extends Fragment {
                     if (data.getClipData() != null) {
                         handleMultipleAPKs(data.getClipData(), requireActivity()).execute();
                     } else if (data.getData() != null) {
-                        handleSingleInstallationEvent(data.getData(), requireActivity()).execute();
+                        Intent intent = new Intent(requireActivity(), APKInstallerActivity.class);
+                        intent.putExtra("apkFileUri", data.getData().toString());
+                        startActivity(intent);
                     }
                 }
             }

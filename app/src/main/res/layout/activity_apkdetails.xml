@@ -13,17 +13,42 @@
 
         <include layout="@layout/app_title_layout" />
 
-        <com.google.android.material.tabs.TabLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabGravity="center"
-            android:layout_gravity="center"
-            app:tabMode="scrollable"
-            android:textAlignment="center"
             android:background="@color/colorBlack"
-            app:tabTextColor="@color/colorWhite"
-            app:tabSelectedTextColor="@color/colorBlue"
-            android:id="@+id/tab_Layout" />
+            android:layout_gravity="center" >
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center" >
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/explore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorBlack"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_explore"
+                    android:tint="@color/colorWhite"
+                    android:layout_marginStart="10dp" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabGravity="center"
+                    android:layout_gravity="center"
+                    app:tabMode="scrollable"
+                    android:textAlignment="center"
+                    android:background="@color/colorBlack"
+                    app:tabTextColor="@color/colorWhite"
+                    app:tabSelectedTextColor="@color/colorBlue"
+                    android:id="@+id/tab_Layout" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </FrameLayout>
 
         <androidx.viewpager.widget.ViewPager
             android:layout_width="match_parent"
@@ -46,8 +71,8 @@
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/colorBlue"
             android:layout_gravity="center"
-            android:layout_margin="15dp"
-            app:cardCornerRadius="15dp">
+            android:layout_margin="10dp"
+            app:cardCornerRadius="25dp">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
@@ -74,7 +99,7 @@
                     android:text="@string/cancel"
                     android:textStyle="bold"
                     android:gravity="center"
-                    android:textSize="20sp" />
+                    android:textSize="17sp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </com.google.android.material.card.MaterialCardView>
 
@@ -84,8 +109,8 @@
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/colorBlue"
             android:layout_gravity="center"
-            android:layout_margin="15dp"
-            app:cardCornerRadius="15dp">
+            android:layout_margin="10dp"
+            app:cardCornerRadius="25dp">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
@@ -105,7 +130,7 @@
                     android:text="@string/install"
                     android:textStyle="bold"
                     android:gravity="center"
-                    android:textSize="20sp" />
+                    android:textSize="17sp" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:layout_width="16dp"

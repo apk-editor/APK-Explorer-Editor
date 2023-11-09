@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Objects;
 
+import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
@@ -32,10 +33,12 @@ public class ExploreAPK extends sExecutor {
 
     private final Context mContext;
     private File mBackUpPath, mExplorePath;
+    private final File mAPKFile;
     private final String mPackageName;
 
-    public ExploreAPK(String packageName, Context context) {
+    public ExploreAPK(String packageName, File apkFile, Context context) {
         mPackageName = packageName;
+        mAPKFile = apkFile;
         mContext = context;
     }
 
@@ -45,8 +48,8 @@ public class ExploreAPK extends sExecutor {
         Common.isBuilding(false);
         Common.isCancelled(false);
         Common.setFinishStatus(false);
-        Common.setAppID(mPackageName);
-        mExplorePath = new File(mContext.getCacheDir().getPath(), mPackageName);
+        Common.setAppID(mPackageName != null ? mPackageName : mAPKFile.getName());
+        mExplorePath = new File(mContext.getCacheDir().getPath(), mPackageName != null ? mPackageName : mAPKFile.getName());
         mBackUpPath = new File(mExplorePath, ".aeeBackup");
         Common.setPath(mExplorePath.getAbsolutePath());
         if (!mExplorePath.exists()) {
@@ -54,7 +57,7 @@ public class ExploreAPK extends sExecutor {
             Common.setStatus(null);
             Intent apkTasks = new Intent(mContext, APKTasksActivity.class);
             mContext.startActivity(apkTasks);
-            Common.setStatus(mContext.getString(R.string.exploring, sPackageUtils.getAppName(mPackageName, mContext)));
+            Common.setStatus(mContext.getString(R.string.exploring, mPackageName != null ? sPackageUtils.getAppName(mPackageName, mContext) : mAPKFile.getName()));
         } else if (!sFileUtils.exist(new File(mBackUpPath, "appData"))) {
             sFileUtils.delete(mExplorePath);
         }
@@ -69,18 +72,30 @@ public class ExploreAPK extends sExecutor {
             // Store basic information about the app
             try {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                Bitmap.createScaledBitmap(APKExplorer.drawableToBitmap(sPackageUtils.getAppIcon(mPackageName, mContext)),
-                        150, 150, true).compress(Bitmap.CompressFormat.PNG,100, byteArrayOutputStream);
-                byte[] byteArray = byteArrayOutputStream.toByteArray();
-                JSONObject mJSONObject = new JSONObject();
-                mJSONObject.put("app_icon", Base64.encodeToString(byteArray, Base64.DEFAULT));
-                mJSONObject.put("app_name", sPackageUtils.getAppName(mPackageName, mContext));
-                mJSONObject.put("package_name", mPackageName);
-                mJSONObject.put("smali_edited", false);
-                sFileUtils.create(mJSONObject.toString(), new File(mBackUpPath, "appData"));
+                if (mPackageName != null) {
+                    Bitmap.createScaledBitmap(APKExplorer.drawableToBitmap(sPackageUtils.getAppIcon(mPackageName, mContext)),
+                            150, 150, true).compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
+                    JSONObject mJSONObject = new JSONObject();
+                    mJSONObject.put("app_icon", Base64.encodeToString(byteArray, Base64.DEFAULT));
+                    mJSONObject.put("app_name", sPackageUtils.getAppName(mPackageName, mContext));
+                    mJSONObject.put("package_name", mPackageName);
+                    mJSONObject.put("smali_edited", false);
+                    sFileUtils.create(mJSONObject.toString(), new File(mBackUpPath, "appData"));
+                } else {
+                    Bitmap.createScaledBitmap(APKExplorer.drawableToBitmap(sAPKUtils.getAPKIcon(mAPKFile.getAbsolutePath(), mContext)),
+                            150, 150, true).compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
+                    JSONObject mJSONObject = new JSONObject();
+                    mJSONObject.put("app_icon", Base64.encodeToString(byteArray, Base64.DEFAULT));
+                    mJSONObject.put("app_name", mAPKFile.getName());
+                    mJSONObject.put("package_name", sAPKUtils.getPackageName(mAPKFile.getAbsolutePath(), mContext));
+                    mJSONObject.put("smali_edited", false);
+                    sFileUtils.create(mJSONObject.toString(), new File(mBackUpPath, "appData"));
+                }
             } catch (JSONException ignored) {
             }
-            APKEditorUtils.unzip(sPackageUtils.getSourceDir(mPackageName, mContext), mExplorePath.getAbsolutePath());
+            APKEditorUtils.unzip(mPackageName != null ? sPackageUtils.getSourceDir(mPackageName, mContext) : mAPKFile.getAbsolutePath(), mExplorePath.getAbsolutePath());
             // Decompile dex file(s)
             for (File files : Objects.requireNonNull(mExplorePath.listFiles())) {
                 if (files.getName().startsWith("classes") && files.getName().endsWith(".dex") && !Common.isCancelled()) {
@@ -90,8 +105,8 @@ public class ExploreAPK extends sExecutor {
                     File mDexExtractPath = new File(mExplorePath, files.getName());
                     sFileUtils.mkdir(mDexExtractPath);
                     Common.setStatus(mContext.getString(R.string.decompiling, files.getName()));
-                    new DexToSmali(false, new File(sPackageUtils.getSourceDir(mPackageName, mContext)),
-                            mDexExtractPath, 0, files.getName()).execute();
+                    new DexToSmali(false, mPackageName != null ? new File(sPackageUtils.getSourceDir(mPackageName, mContext))
+                            : mAPKFile, mDexExtractPath, 0, files.getName()).execute();
                 }
             }
         }

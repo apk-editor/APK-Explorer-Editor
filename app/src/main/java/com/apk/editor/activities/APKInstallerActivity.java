@@ -8,6 +8,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.documentfile.provider.DocumentFile;
@@ -23,6 +24,7 @@ import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.dialogs.InvalidFileDialog;
 import com.apk.editor.utils.dialogs.SelectBundleDialog;
+import com.apk.editor.utils.tasks.ExploreAPK;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
@@ -41,6 +43,7 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
  */
 public class APKInstallerActivity extends AppCompatActivity {
 
+    private AppCompatImageButton mExploreIcon;
     private AppCompatImageView mAppIcon;
     private APKParser mAPKParser;
     private File mFile = null;
@@ -55,6 +58,7 @@ public class APKInstallerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apkdetails);
 
+        mExploreIcon = findViewById(R.id.explore);
         mAppIcon = findViewById(R.id.app_image);
         mAppName = findViewById(R.id.app_title);
         mPackageID = findViewById(R.id.package_id);
@@ -66,7 +70,12 @@ public class APKInstallerActivity extends AppCompatActivity {
         mTabLayout = findViewById(R.id.tab_Layout);
         mViewPager = findViewById(R.id.view_pager);
 
-        if (getIntent().getData() != null) {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null && bundle.containsKey("apkFileUri")) {
+            if (bundle.getString("apkFileUri") != null) {
+                manageInstallation(Uri.parse(bundle.getString("apkFileUri")), this).execute();
+            }
+        } else if (getIntent().getData() != null) {
             manageInstallation(getIntent().getData(), this).execute();
         }
     }
@@ -165,6 +174,11 @@ public class APKInstallerActivity extends AppCompatActivity {
         mInstall.setOnClickListener(v -> {
             Common.getAPKList().add(mFile.getAbsolutePath());
             APKExplorer.handleAPKs(true, activity);
+        });
+
+        mExploreIcon.setOnClickListener(v -> {
+            new ExploreAPK(null, mFile, activity).execute();
+            activity.finish();
         });
     }
 

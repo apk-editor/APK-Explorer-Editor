@@ -71,7 +71,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
         String mAppName = APKExplorer.getAppName(Common.getPath() + "/.aeeBackup/appData");
-        Common.setAppID(APKExplorer.getPackageName(Common.getPath() + "/.aeeBackup/appData"));
+        Common.setAppID(new File(Common.getPath()).getName());
         mTitle.setText(getString(R.string.root));
 
         mBack.setOnClickListener(v -> retainDialog());
