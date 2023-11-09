@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -14,7 +13,6 @@ import android.widget.FrameLayout;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +31,7 @@ import java.io.File;
 import java.util.List;
 
 import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
 import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
@@ -85,63 +84,58 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                     APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_file), holder.mIcon.getContext());
                 }
             }
-            holder.mLayout.setOnLongClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
-                Menu menu = popupMenu.getMenu();
-                if (APKEditorUtils.isFullVersion(v.getContext())) {
-                    menu.add(Menu.NONE, 0, Menu.NONE, R.string.delete);
-                }
-                menu.add(Menu.NONE, 1, Menu.NONE, R.string.export);
-                if (APKEditorUtils.isFullVersion(v.getContext())) {
-                    menu.add(Menu.NONE, 2, Menu.NONE, R.string.replace);
-                }
-                popupMenu.setOnMenuItemClickListener(item -> {
-                    switch (item.getItemId()) {
-                        case 0:
-                            new MaterialAlertDialogBuilder(v.getContext())
-                                    .setIcon(R.mipmap.ic_launcher)
-                                    .setTitle(R.string.app_name)
-                                    .setMessage(v.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))
-                                    .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                                    })
-                                    .setPositiveButton(R.string.delete, (dialog, id) -> deleteFile(position, v.getContext())
-                                    ).show();
-                            break;
-                        case 1:
-                            new MaterialAlertDialogBuilder(v.getContext())
-                                    .setIcon(R.mipmap.ic_launcher)
-                                    .setTitle(R.string.app_name)
-                                    .setMessage(R.string.export_question)
-                                    .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
-                                    })
-                                    .setPositiveButton(v.getContext().getString(R.string.export), (dialog, id) -> {
-                                        if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext())) {
-                                            sPermissionUtils.requestPermission(
-                                                    new String[] {
-                                                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                                    }, (Activity) v.getContext());
-                                        } else {
-                                            new ExportToStorage(new File(data.get(position)), null, Common.getAppID(), v.getContext()).execute();
-                                        }
-                                    }).show();
-                            break;
-                        case 2:
-                            Common.setFileToReplace(data.get(position));
-                            if (Build.VERSION.SDK_INT >= 29) {
-                                Intent replace = new Intent(Intent.ACTION_GET_CONTENT);
-                                replace.setType("*/*");
-                                mActivityResultLauncher.launch(replace);
+            if (APKEditorUtils.isFullVersion(holder.mLayout.getContext())) {
+                holder.mLayout.setOnLongClickListener(v -> {
+                    new sSingleItemDialog(0, null, new String[]{
+                            v.getContext().getString(R.string.delete),
+                            v.getContext().getString(R.string.export),
+                            v.getContext().getString(R.string.replace)
+                    }, v.getContext()) {
+
+                        @Override
+                        public void onItemSelected(int itemPosition) {
+                            if (itemPosition == 0) {
+                                new MaterialAlertDialogBuilder(v.getContext())
+                                        .setIcon(R.mipmap.ic_launcher)
+                                        .setTitle(R.string.app_name)
+                                        .setMessage(v.getContext().getString(R.string.delete_question, new File(data.get(position)).getName()))
+                                        .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                                        })
+                                        .setPositiveButton(R.string.delete, (dialog, id) -> deleteFile(position, v.getContext())
+                                        ).show();
+                            } else if (itemPosition == 1) {
+                                new MaterialAlertDialogBuilder(v.getContext())
+                                        .setIcon(R.mipmap.ic_launcher)
+                                        .setTitle(R.string.app_name)
+                                        .setMessage(R.string.export_question)
+                                        .setNegativeButton(v.getContext().getString(R.string.cancel), (dialog, id) -> {
+                                        })
+                                        .setPositiveButton(v.getContext().getString(R.string.export), (dialog, id) -> {
+                                            if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext())) {
+                                                sPermissionUtils.requestPermission(
+                                                        new String[]{
+                                                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                                        }, (Activity) v.getContext());
+                                            } else {
+                                                new ExportToStorage(new File(data.get(position)), null, Common.getAppID(), v.getContext()).execute();
+                                            }
+                                        }).show();
                             } else {
-                                Intent filePicker = new Intent(v.getContext(), FilePickerActivity.class);
-                                v.getContext().startActivity(filePicker);
+                                Common.setFileToReplace(data.get(position));
+                                if (Build.VERSION.SDK_INT >= 29) {
+                                    Intent replace = new Intent(Intent.ACTION_GET_CONTENT);
+                                    replace.setType("*/*");
+                                    mActivityResultLauncher.launch(replace);
+                                } else {
+                                    Intent filePicker = new Intent(v.getContext(), FilePickerActivity.class);
+                                    v.getContext().startActivity(filePicker);
+                                }
                             }
-                            break;
-                    }
-                    return false;
+                        }
+                    }.show();
+                    return true;
                 });
-                popupMenu.show();
-                return true;
-            });
+            }
 
             holder.mCheckBox.setOnClickListener(v -> {
                 if (holder.mCheckBox.isChecked()) {
