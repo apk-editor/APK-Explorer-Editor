@@ -71,16 +71,16 @@ public class APKInstallerActivity extends AppCompatActivity {
         mViewPager = findViewById(R.id.view_pager);
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null && bundle.containsKey("apkFileUri")) {
-            if (bundle.getString("apkFileUri") != null) {
-                manageInstallation(Uri.parse(bundle.getString("apkFileUri")), this).execute();
-            }
+        if (bundle != null && bundle.containsKey("apkFileUri") && bundle.getString("apkFileUri") != null) {
+            manageInstallation(Uri.parse(bundle.getString("apkFileUri")), null, this).execute();
+        } else if (bundle != null && bundle.containsKey("apkFilePath") && bundle.getString("apkFilePath") != null) {
+            manageInstallation(null, bundle.getString("apkFilePath"), this).execute();
         } else if (getIntent().getData() != null) {
-            manageInstallation(getIntent().getData(), this).execute();
+            manageInstallation(getIntent().getData(), null, this).execute();
         }
     }
 
-    private sExecutor manageInstallation(Uri uri, Activity activity) {
+    private sExecutor manageInstallation(Uri uri, String filePath, Activity activity) {
         return new sExecutor() {
             private ProgressDialog mProgressDialog;
 
@@ -96,14 +96,20 @@ public class APKInstallerActivity extends AppCompatActivity {
                 mProgressDialog.show();
 
                 sFileUtils.delete(getExternalFilesDir("APK"));
-                String fileName = Objects.requireNonNull(DocumentFile.fromSingleUri(activity, uri)).getName();
-                mFile = new File(getExternalFilesDir("APK"), Objects.requireNonNull(fileName));
+                if (filePath == null) {
+                    String fileName = Objects.requireNonNull(DocumentFile.fromSingleUri(activity, uri)).getName();
+                    mFile = new File(getExternalFilesDir("APK"), Objects.requireNonNull(fileName));
+                }
                 Common.getAPKList().clear();
             }
 
             @Override
             public void doInBackground() {
-                sFileUtils.copy(uri, mFile, activity);
+                if (filePath != null) {
+                    mFile = new File(filePath);
+                } else {
+                    sFileUtils.copy(uri, mFile, activity);
+                }
                 try {
                     mAPKParser = new APKParser();
                     mAPKParser.parse(mFile.getAbsolutePath(), activity);

@@ -236,15 +236,7 @@ public class APKExplorer {
     }
 
     private static void installAPKs(boolean exit, Activity activity) {
-        if (APKData.findPackageName(activity) != null) {
-            if (Common.getAPKList().size() > 1) {
-                SplitAPKInstaller.installSplitAPKs(exit, Common.getAPKList(), null, activity);
-            } else {
-                SplitAPKInstaller.installAPK(exit, new File(Common.getAPKList().get(0)), activity);
-            }
-        } else {
-            sCommonUtils.snackBar(activity.findViewById(android.R.id.content), activity.getString(R.string.installation_status_bad_apks)).show();
-        }
+        SplitAPKInstaller.installSplitAPKs(exit, Common.getAPKList(), null, activity);
     }
 
     public static void handleAPKs(boolean exit, Activity activity) {

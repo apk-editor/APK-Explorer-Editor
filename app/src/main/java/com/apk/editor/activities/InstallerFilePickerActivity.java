@@ -2,6 +2,7 @@ package com.apk.editor.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.adapters.InstallerFilePickerAdapter;
+import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SplitAPKInstaller;
@@ -107,7 +109,20 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
             }
         });
 
-        Common.getSelectCard().setOnClickListener(v -> APKExplorer.handleAPKs(true, this));
+        Common.getSelectCard().setOnClickListener(v -> {
+            if (APKData.findPackageName(this) != null) {
+                if (Common.getAPKList().size() > 1) {
+                    APKExplorer.handleAPKs(true, this);
+                } else {
+                    Intent intent = new Intent(this, APKInstallerActivity.class);
+                    intent.putExtra("apkFilePath", Common.getAPKList().get(0));
+                    startActivity(intent);
+                    finish();
+                }
+            } else {
+                sCommonUtils.snackBar(findViewById(android.R.id.content), getString(R.string.installation_status_bad_apks)).show();
+            }
+        });
 
         mSortButton.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(this, mSortButton);
