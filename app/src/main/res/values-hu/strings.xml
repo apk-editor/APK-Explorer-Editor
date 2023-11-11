@@ -57,7 +57,7 @@
     <string name="unsupported_file_arsc">"Ön a 'resources.arsc' elemet választotta, amit sajnos az AEE nem tud elolvasni.
 
         Mi az resources.arsc?
-        erőforrásfájl, amely egy alkalmazás konfiguráció-specifikus értékeit tartalmazza, például egész számokat, logikai értékeket és karakterláncokat, valamint hivatkozásokat összetettebb erőforrásokra, például UI-elrendezésekre.
+        A resources.arsc egy bináris erőforrásfájl, amely egy alkalmazás konfiguráció-specifikus értékeit tartalmazza, például egész számokat, logikai értékeket és karakterláncokat, valamint hivatkozásokat összetettebb erőforrásokra, például UI-elrendezésekre.
 
         Hogyan kell olvasni a resources.arsc-t?
         Olyan eszközöket kell használni, mint az Apktool vagy az Android Asset Packaging Tool (AAPT) a resources.arsc fájl tartalmának ember által olvasható formátumba történő kinyomtatására."</string>
@@ -181,4 +181,5 @@
     <string name="root">"Root"</string>
     <string name="xml_corrupted">"Az XML karakterlánc sérült. Megszakítás…"</string>
     <string name="xml_decode_failed">"%s dekódolása nem sikerült"</string>
+    <string name="zip_aligning">"Zip igazítás…"</string>
 </resources>
