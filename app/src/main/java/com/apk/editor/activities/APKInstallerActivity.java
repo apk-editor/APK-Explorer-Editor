@@ -183,7 +183,7 @@ public class APKInstallerActivity extends AppCompatActivity {
         });
 
         mExploreIcon.setOnClickListener(v -> {
-            new ExploreAPK(null, mFile, activity).execute();
+            new ExploreAPK(null, mFile, null, activity).execute();
             activity.finish();
         });
     }

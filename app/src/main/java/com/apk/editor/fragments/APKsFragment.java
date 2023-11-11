@@ -33,6 +33,7 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.tasks.ExploreAPK;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 
@@ -71,13 +72,6 @@ public class APKsFragment extends Fragment {
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-
-        if (!APKEditorUtils.isFullVersion(requireActivity())) {
-            LinearLayoutCompat.LayoutParams lp = (LinearLayoutCompat.LayoutParams) mRecyclerView.getLayoutParams();
-            lp.setMargins(0, 0, 0 , 0);
-            mRecyclerView.setLayoutParams(lp);
-            mBottomLayout.setVisibility(View.GONE);
-        }
 
         Common.getAPKsTitle().setText(getString(R.string.apps_exported));
         mTabLayout.setVisibility(View.VISIBLE);
@@ -181,18 +175,26 @@ public class APKsFragment extends Fragment {
     }
 
     private void launchInstallerFilePicker() {
-        if (!sCommonUtils.getBoolean("firstInstall", false, requireActivity())) {
-            new MaterialAlertDialogBuilder(requireActivity())
-                    .setIcon(R.mipmap.ic_launcher)
-                    .setTitle(R.string.split_apk_installer)
-                    .setMessage(getString(R.string.installer_message))
-                    .setCancelable(false)
-                    .setPositiveButton(getString(R.string.got_it), (dialog, id) -> {
-                        sCommonUtils.saveBoolean("firstInstall", true, requireActivity());
-                        launchAEEInstaller();
-                    }).show();
+        if (APKEditorUtils.isFullVersion(requireActivity())) {
+            if (!sCommonUtils.getBoolean("firstInstall", false, requireActivity())) {
+                new MaterialAlertDialogBuilder(requireActivity())
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setTitle(R.string.split_apk_installer)
+                        .setMessage(getString(R.string.installer_message))
+                        .setCancelable(false)
+                        .setPositiveButton(getString(R.string.got_it), (dialog, id) -> {
+                            sCommonUtils.saveBoolean("firstInstall", true, requireActivity());
+                            launchAEEInstaller();
+                        }).show();
+            } else {
+                launchAEEInstaller();
+            }
         } else {
-            launchAEEInstaller();
+            Intent installer = new Intent(Intent.ACTION_GET_CONTENT);
+            installer.setType("application/vnd.android.package-archive");
+            installer.addCategory(Intent.CATEGORY_OPENABLE);
+            installer.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
+            explorerFilePicker.launch(installer);
         }
     }
 
@@ -298,6 +300,19 @@ public class APKsFragment extends Fragment {
                         Intent intent = new Intent(requireActivity(), APKInstallerActivity.class);
                         intent.putExtra("apkFileUri", data.getData().toString());
                         startActivity(intent);
+                    }
+                }
+            }
+    );
+
+    ActivityResultLauncher<Intent> explorerFilePicker = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
+
+                    if (data.getData() != null) {
+                        new ExploreAPK(null, null, data.getData(), requireActivity()).execute();
                     }
                 }
             }

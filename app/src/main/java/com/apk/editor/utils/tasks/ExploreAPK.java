@@ -4,7 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Base64;
+
+import androidx.documentfile.provider.DocumentFile;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
@@ -33,12 +36,14 @@ public class ExploreAPK extends sExecutor {
 
     private final Context mContext;
     private File mBackUpPath, mExplorePath;
-    private final File mAPKFile;
+    private File mAPKFile;
     private final String mPackageName;
+    private final Uri mUri;
 
-    public ExploreAPK(String packageName, File apkFile, Context context) {
+    public ExploreAPK(String packageName, File apkFile, Uri uri, Context context) {
         mPackageName = packageName;
         mAPKFile = apkFile;
+        mUri = uri;
         mContext = context;
     }
 
@@ -48,6 +53,11 @@ public class ExploreAPK extends sExecutor {
         Common.isBuilding(false);
         Common.isCancelled(false);
         Common.setFinishStatus(false);
+        if (mUri != null) {
+            String fileName = Objects.requireNonNull(DocumentFile.fromSingleUri(mContext, mUri)).getName();
+            mAPKFile = new File(mContext.getExternalFilesDir("APK"), Objects.requireNonNull(fileName));
+            sFileUtils.copy(mUri, mAPKFile, mContext);
+        }
         Common.setAppID(mPackageName != null ? mPackageName : mAPKFile.getName());
         mExplorePath = new File(mContext.getCacheDir().getPath(), mPackageName != null ? mPackageName : mAPKFile.getName());
         mBackUpPath = new File(mExplorePath, ".aeeBackup");
