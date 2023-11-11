@@ -119,6 +119,10 @@ public class AppSettings {
         mData.add(new sSerializableItems(null, "tas", "Lithuanian Translation", null));
         mData.add(new sSerializableItems(null, "vuvov11", "Thai Translation", null));
         mData.add(new sSerializableItems(null, "Me", "Arabic (SA) Translation", null));
+        mData.add(new sSerializableItems(null, "asdfqw", "Chinese (zh-Hans) Translation", null));
+        mData.add(new sSerializableItems(null, "Fsotm. mai", "Chinese (zh-Hans) Translation", null));
+        mData.add(new sSerializableItems(null, "sardonicdozen", "Chinese (zh-Hans) Translation", null));
+        mData.add(new sSerializableItems(null, "始", "Chinese (zh-Hans) Translation", null));
         return mData;
     }
 
