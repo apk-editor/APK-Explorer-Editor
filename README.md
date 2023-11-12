@@ -2,7 +2,7 @@
 
 ![AEE](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png?raw=true)
 
-[![](https://img.shields.io/badge/APK%20Explorer%20&%20Editor%20(AEE)-v0.27-green)](https://github.com/apk-editor/APK-Explorer-Editor/releases)
+[![](https://img.shields.io/badge/APK%20Explorer%20&%20Editor%20(AEE)-v0.28-green)](https://github.com/apk-editor/APK-Explorer-Editor/releases)
 ![](https://img.shields.io/github/downloads/apk-editor/APK-Explorer-Editor/total)
 ![](https://img.shields.io/github/languages/top/apk-editor/APK-Explorer-Editor)
 ![](https://img.shields.io/github/contributors/apk-editor/APK-Explorer-Editor)
@@ -12,7 +12,7 @@
 
 ## Features
 AEE currently supports the following tasks
-* Explore an installed application and navigate through its contents.
+* Explore an installed application or APK file picked from storage and navigate through its contents.
 * Save/export individual resource files such as icon, fonts, graphics, binary XML files, etc to device storage.
 * Export and easily manage (install, share etc.) APK's/Split APK's into device storage.
 * Includes a feature-rich APK/Split APK/App bundle installer (easily pick and install files from device storage)

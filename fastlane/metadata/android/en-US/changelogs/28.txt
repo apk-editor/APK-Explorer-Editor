@@ -1,0 +1,6 @@
+* Implement exploring APK files picked from storage.
+* Added option to batch delete and export files from APK explorer.
+* Show APK details before installation (only for single APK installation).
+* Updated build tools and dependencies.
+* Updated translations.
+* Miscellaneous changes.

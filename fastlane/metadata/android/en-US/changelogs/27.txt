@@ -1,8 +1,0 @@
-* Fixed signed APK's failing to install after building.
-* Switched to Material3 daynight theme.
-* Shows progress while loading main UI.
-* Fixed some crashes on app launch.
-* Updated build tools and dependencies.
-* Added Hindi, Lithuanian, Thai and Arabic (SA) translations.
-* Updated other translations.
-* Miscellaneous changes.
