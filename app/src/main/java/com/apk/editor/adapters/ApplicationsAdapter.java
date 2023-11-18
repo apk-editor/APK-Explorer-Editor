@@ -55,7 +55,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
     @Override
     public void onBindViewHolder(@NonNull ApplicationsAdapter.ViewHolder holder, int position) {
         try {
-            holder.mAppIcon.setImageDrawable(data.get(position).getAppIcon());
+            data.get(position).loadAppIcon(holder.mAppIcon);
             if (Common.getSearchWord() != null && Common.isTextMatched(data.get(position).getPackageName(), Common.getSearchWord())) {
                 holder.mAppID.setText(APKEditorUtils.fromHtml(data.get(position).getPackageName().replace(Common.getSearchWord(), "<b><i><font color=\"" +
                         Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));

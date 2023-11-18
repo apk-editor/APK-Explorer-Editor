@@ -114,13 +114,8 @@ public class InstallerActivity extends AppCompatActivity {
         }
         if (sCommonUtils.getString("installationStatus", "waiting", this).equals(getString(R.string.installation_status_success))) {
             Common.getPackageData().add(new PackageItems(
-                    sPackageUtils.getAppName(Common.getPackageName(), this).toString(),
                     Common.getPackageName(),
-                    sAPKUtils.getVersionName(sPackageUtils.getSourceDir(Common.getPackageName(), this), this),
-                    new File(sPackageUtils.getSourceDir(Common.getPackageName(), this)).length(),
-                    Objects.requireNonNull(AppData.getPackageInfo(Common.getPackageName(), this)).firstInstallTime,
-                    Objects.requireNonNull(AppData.getPackageInfo(Common.getPackageName(), this)).lastUpdateTime,
-                    sPackageUtils.getAppIcon(Common.getPackageName(), this)
+                    this
             ));
         }
         if (sFileUtils.exist(new File(getCacheDir(),"splits"))) {
