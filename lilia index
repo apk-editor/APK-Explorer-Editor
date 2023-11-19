@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>index</title>
+</head>
+<meta charset="UTF-8">
+
+        
+    <style>
+        body{
+            font-family: ariel, sans-serif;
+            margin: 0;
+        }
+        .sidebar{
+            background: linear-gradient(45deg, rgb(61, 165, 160), rgb(59, 139, 135));
+            float: right;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 5px 10px black;
+            height: 50vh;
+            padding: 10px;
+            position: sticky; top: 1%; width: 250px;
+        }
+    
+        .sidebar a{
+            display: block;
+            color: rgb(150, 4, 187);
+            text-decoration: none;
+            font-size: 25px;
+            padding: 14px 25px;
+    
+        }
+        .sidebar a:hover{
+            background: linear-Gradient(45deg, rgb(247, 108, 74), rgb(243, 199, 4));
+            border-radius: 50px;
+            box-shadow: 0 0 10px black;
+    
+        }
+        .sidebar img{
+            width: 50px;
+            height: 50px;
+        }
+       
+        body{
+            font-family: ariel, sans-serif;
+            margin: 0;
+            background-color:rgb(167, 144, 14);
+            box-shadow: 0 0 10px black;
+            text-decoration: none;
+            color: rgb(251, 248, 252);
+           font-family: 'Times New Roman', Times, serif;
+
+        }
+        nav{
+            background-size: 200;
+            background-color: rgb(55, 184, 55);
+            text-align: center;
+            
+        }
+        .nav a:hover{
+            background: linear-Gradient(45deg, rgb(247, 108, 74), rgb(243, 199, 4));
+            border-radius: 100px;
+            box-shadow: 0 0 10px rgb(138, 47, 67);
+        }
+        
+        h1 {
+                    font-size: 36px;
+                }
+            
+                nav ul {
+                    list-style: none;
+                    padding: 0;
+                }
+            
+                nav li {
+                    display: inline;
+                    margin-right: 20px;
+                }
+            
+                a {
+                    text-decoration: none;
+                    color: #3a10f5;
+                }
+        </style>
+
+<body>
+       <!-- sidebar -->
+       <aside class="sidebar">    
+        <h1>Selection</h1>
+        <a href="#ME">ABOUT ME <img src="1.jpg"></a>
+        <a href="#family">FAMILY <img src="3.jpg"></a>
+        <a href="#friends">FRIENDS<img src="7.jpg"></a>
+        </aside>
+
+        <nav class="nav">
+            <h1>My Index</h1>
+ 
+    
+          
+            <div class="welcome-text">
+                <a href="lilia gallery.html#Photo"><strong>Photo</strong></a>
+                <a href="lilia gallery.html#music"><strong>Music </strong></a>
+                <a href="lilia gallery.html#movie"><strong>Movie</strong> </a>
+            </div>        
+        </nav>
+
+        <section id="ME">
+            <h4>section 1</h4>
+            <section id="ME">     
+                <h2><img src="1.jpg" alt="" height="150" weight="150">Me: Lilia Precillas Sarcol  </a></h2>  
+                
+                <article><p>Title: Journey of Independence and Exploration: The Story of Lilia Precillas Sarcol</p>
+                    Introduction:
+                    Lilia Precillas Sarcol, born and raised in the picturesque town of San Isidro, Mahayag, Zamboanga del Sur, has embarked on a unique and adventurous journey through life. Currently residing in the vibrant town of Molave, Lilia has discovered the beauty of independence and the joy of self-discovery. In this article, we will delve into Lilia's background, her passion for adventure, and her pursuit of education in the field of computer science.
+                    
+                    Early Life in San Isidro, Mahayag:
+                    Lilia's roots are deeply embedded in the rich cultural tapestry of San Isidro, Mahayag. Growing up in this close-knit community, she developed a strong sense of connection to her heritage and an appreciation for the simple joys of life. The lush landscapes and warm community spirit of San Isidro laid the foundation for Lilia's love for exploration and connection with nature.
+                    
+                    Embracing Independence in Molave:
+                    Currently residing in Molave, Lilia has embraced the opportunity to live independently. Living alone has provided her with a unique perspective on life, teaching her valuable lessons about self-reliance and resilience. In the quietude of Molave, Lilia has found the space to appreciate life's nuances and to nurture her adventurous spirit.
+                    
+                    The Adventurous Soul:
+                    Lilia's adventurous nature sets her apart. She is a person who finds solace in exploration and thrives on new experiences. Her love for travel has taken her to various places, allowing her to immerse herself in different cultures and landscapes. This passion for adventure serves as a source of inspiration, fueling her zest for life.
+                    
+                    Educational Pursuits:
+                    Lilia is not only an explorer of the external world but also of the intellectual realm. Currently enrolled as a third-year irregular college student, she is pursuing a Bachelor of Science degree with a major in Computer Science at Blancia College Foundation, INC. This four-year program encompasses the study of computing concepts, algorithmic foundations, and the latest developments in the field of computing.
+                    
+                    The Journey in Computer Science:
+                    Lilia's choice of pursuing a degree in Computer Science reflects her keen interest in technology and innovation. As a student at Blancia College Foundation, INC., she is dedicated to mastering the intricacies of the discipline. The program not only equips her with theoretical knowledge but also provides hands-on experience, preparing her for a future in the dynamic field of computer science.
+                    
+                    Conclusion:
+                    Lilia Precillas Sarcol's journey from the serene landscapes of San Isidro, Mahayag, to the independent life in Molave is a testament to her spirit of exploration and resilience. As she delves into the world of computer science, her story becomes one of curiosity, adventure, and a pursuit of knowledge. Lilia's path serves as an inspiration to those who value both the simplicity of life's joys and the complexities of intellectual growth. </article>
+                
+                </section>
+                <section id="family">
+                <h4> Section2</h4>
+                <h2><img src="3.jpg" alt="" height="150" weight="150"> Sarcol FAMILY</a></h2>
+                <article><p> Title: The Sarcol Family: A Tapestry of Laughter, Love, and Generosity</p> 
+
+                    Introduction:
+                    Nestled in the warm embrace of Molave, the Sarcol family stands as a testament to the enduring power of familial bonds. Lilia Precillas Sarcol, a spirited individual with a passion for adventure and learning, is a proud member of a family that knows how to blend love, laughter, and generosity. In this article, we explore the dynamics of the Sarcol family, where occasional get-togethers become vibrant celebrations of joy, humor, and a shared commitment to helping others.
+                    
+                    A Snapshot of Family Life:
+                    The Sarcol family, residing in the heart of Molave, finds joy in the simple pleasures of togetherness. While daily routines may keep them occupied, they make it a point to come together regularly, cherishing moments of bonding and laughter. These occasions are not just family gatherings; they are the threads that weave the fabric of their close-knit relationships.
+                    
+                    Humor as the Heartbeat:
+                    At the core of the Sarcol family gatherings is an abundance of humor. Lilia and her family members share a lighthearted approach to life, turning even the most mundane moments into opportunities for laughter. Inside jokes, playful banter, and shared anecdotes create an atmosphere where joy becomes the currency of connection.
+                    
+                    The Art of Get-Togethers:
+                    When the Sarcol family gathers, it's not just a routine event; it's a carnival of happiness. From themed dinners to impromptu game nights, every get-together is infused with a sense of festivity. Lilia and her family have mastered the art of creating memorable experiences, ensuring that each gathering becomes a cherished chapter in the book of family memories.
+                    
+                    Generosity in Action:
+                    Beyond the laughter and merriment, the Sarcol family is defined by a spirit of generosity. They extend a helping hand not only to each other but also to those in need within their community. Whether it's lending a listening ear, offering practical assistance, or actively participating in community initiatives, the Sarcol family understands the profound impact of kindness.
+                    
+                    Bonds Beyond Blood:
+                    What sets the Sarcol family apart is their ability to extend their familial warmth beyond blood ties. Friends, neighbors, and even strangers are welcomed into their fold, experiencing firsthand the inclusive love that defines the Sarcol household. The family's generosity extends to creating a sense of community and interconnectedness that goes beyond traditional family boundaries.
+                    
+                    Conclusion:
+                    In the heart of Molave, the Sarcol family stands as a beacon of joy, humor, and benevolence. Their occasional get-togethers are not just family reunions; they are vibrant celebrations of life, echoing with laughter and resonating with the spirit of generosity. Lilia Precillas Sarcol and her family exemplify the transformative power of familial bonds, proving that a tapestry woven with love, laughter, and a commitment to helping others can create a legacy that transcends generations.   
+       </article>
+            </section>
+            <article id="friends">  
+            <h4> Section3</h4>
+            <section>
+               <h2><img src="7.jpg" alt="" height="150" weight="150">FRIENDS</a></h2>
+               <article><p>Title: A Tale of Enduring Friendship: Lilia Precillas Sarcol and Her Happy Cohort</p>
+
+                Introduction:
+                In the bustling town of Molave, where the rhythm of life moves at its own unique pace, a group of friends has forged a bond that goes beyond the ordinary. Lilia Precillas Sarcol, an adventurous soul with a zest for life, has found herself surrounded by a circle of friends who share not only in her joys and triumphs but also in the everyday happiness that comes from working together. This is the story of their two-year journey, marked by camaraderie, shared laughter, and the strength of a friendship that withstands the test of time.
+                
+                The Genesis of Friendship:
+                Two years ago, fate brought together Lilia and her friends in the professional realm. Little did they know that the relationships forged in the workplace would blossom into something truly special. United by common goals and a shared passion for their work, this eclectic group quickly discovered that they were not just colleagues but kindred spirits.
+                
+                The Power of Shared Laughter:
+                One of the defining features of Lilia's friendship circle is their collective ability to find joy in the little things. From inside jokes to shared smiles during challenging moments, this group has mastered the art of turning ordinary workdays into celebrations of camaraderie. Their infectious laughter resonates in the workplace, creating an environment that fosters creativity, collaboration, and genuine happiness.
+                
+                Celebrating Milestones Together:
+                Two years may seem like a short span, but for Lilia and her friends, it has been a journey filled with shared achievements and milestones. Whether it's completing a challenging project, reaching professional milestones, or celebrating personal victories, this group knows how to lift each other up. Their success is not just individual but collective, a testament to the strength of their bonds.
+                
+                Support in Professional and Personal Realms:
+                Beyond the confines of the workplace, Lilia and her friends have become pillars of support for each other. Whether facing professional challenges or navigating the complexities of life, this group stands united. Their shared experiences have created a foundation of trust and understanding, allowing each member to thrive both personally and professionally.
+                
+                The Resilience of Friendship:
+                Two years may be a relatively short time, but in the world of friendships, it's enough to reveal the depth of connections. Lilia and her friends have weathered storms together, emerging stronger and more tightly knit. Their friendship is a testament to the fact that true bonds can withstand the tests of time, distance, and the ebb and flow of life.
+                
+                Conclusion:
+                In the heart of Molave, amidst the hum of daily life and the challenges of the professional world, Lilia Precillas Sarcol and her friends have woven a tapestry of friendship that radiates joy and resilience. Their two-year journey is a celebration of shared laughter, mutual support, and the enduring strength of a friendship that continues to flourish. As they navigate the path ahead, Lilia and her happy cohort stand as a testament to the profound impact of genuine connections in both work and life
+
+              </article>
+            </section>
+                   
+                <!-- The rest of your web page content goes here -->
+                    <footer>
+                        
+                        <p>Follow us on social media:
+                            <a href="https://www.facebook.com/lia.sarcol">Facebook</a>  </p>
+                            <p>contact #: 09096436508 </p>
+                            
+                         
+                        </p>
+                    </footer>
+            
+</body>
+</html>
