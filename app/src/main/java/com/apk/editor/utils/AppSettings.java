@@ -198,6 +198,14 @@ public class AppSettings {
         }
     }
 
+    public static String getDecompileSettingString(Context context) {
+        return context.getString(getDecompileSetting(context) ?
+                R.string.decompile_on : R.string.decompile_off);
+    }
+    public static Boolean getDecompileSetting(Context context) {
+        return sCommonUtils.getBoolean("decompileSetting", true, context);
+    }
+
     public static String getProjectExistAction(Context context) {
         if (sCommonUtils.getString("projectAction", null, context) != null) {
             return sCommonUtils.getString("projectAction", null, context);

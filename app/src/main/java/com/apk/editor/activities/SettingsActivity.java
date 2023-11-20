@@ -53,6 +53,7 @@ public class SettingsActivity extends AppCompatActivity {
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_theme, this), getString(R.string.app_theme), sThemeUtils.getAppTheme(this), null));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_translate, this), getString(R.string.language), AppSettings.getLanguage(this), null));
         mData.add(new sSerializableItems(null, getString(R.string.settings_general), null, null));
+        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, this), getString(R.string.decompile_setting), AppSettings.getDecompileSettingString(this), null));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_projects, this), getString(R.string.project_exist_action), AppSettings.getProjectExistAction(this), null));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_export, this), getString(R.string.export_path_apks), AppSettings.getExportAPKsPath(this), null));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_export, this), getString(R.string.export_path_resources), AppSettings.getExportPath(this), null));
@@ -72,6 +73,10 @@ public class SettingsActivity extends AppCompatActivity {
                 } else if (position == 2) {
                     AppSettings.setLanguage(this);
                 } else if (position == 4) {
+                    sCommonUtils.saveBoolean("decompileSetting", !AppSettings.getDecompileSetting(this), this);
+                    mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, this), getString(R.string.decompile_setting), AppSettings.getDecompileSettingString(this), null));
+                    mRecycleViewAdapter.notifyItemChanged(position);
+                } else if (position == 5) {
                     new sSingleChoiceDialog(R.drawable.ic_projects, getString(R.string.project_exist_action),
                             AppSettings.getProjectExitingMenu(this), AppSettings.getProjectExitingMenuPosition(this), this) {
 
@@ -92,7 +97,7 @@ public class SettingsActivity extends AppCompatActivity {
                             }
                         }
                     }.show();
-                } else if (position == 5) {
+                } else if (position == 6) {
                     if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
                         sPermissionUtils.requestPermission(
                                 new String[] {
@@ -124,7 +129,7 @@ public class SettingsActivity extends AppCompatActivity {
                             }.show();
                         }
                     }
-                } else if (position == 6) {
+                } else if (position == 7) {
                     if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, this)) {
                         sPermissionUtils.requestPermission(
                                 new String[] {
@@ -160,7 +165,7 @@ public class SettingsActivity extends AppCompatActivity {
                             }.show();
                         }
                     }
-                } else if (APKEditorUtils.isFullVersion(this) && position == 8) {
+                } else if (APKEditorUtils.isFullVersion(this) && position == 9) {
                     new sSingleChoiceDialog(R.drawable.ic_android, getString(R.string.export_options),
                             AppSettings.getExportingAPKMenu(this), AppSettings.getExportingAPKsPosition(this), this) {
 
@@ -187,7 +192,7 @@ public class SettingsActivity extends AppCompatActivity {
                             }
                         }
                     }.show();
-                } else if (APKEditorUtils.isFullVersion(this) && position == 9) {
+                } else if (APKEditorUtils.isFullVersion(this) && position == 10) {
                     new sSingleChoiceDialog(R.drawable.ic_installer, getString(R.string.installer_action),
                             AppSettings.getInstallerMenu(this), AppSettings.getInstallerMenuPosition(this), this) {
 
@@ -214,7 +219,7 @@ public class SettingsActivity extends AppCompatActivity {
                             }
                         }
                     }.show();
-                } else if (APKEditorUtils.isFullVersion(this) && position == 10) {
+                } else if (APKEditorUtils.isFullVersion(this) && position == 11) {
                     new sSingleChoiceDialog(R.drawable.ic_key, getString(R.string.sign_apk_with),
                             new String[] {
                                     getString(R.string.sign_apk_default),
