@@ -24,6 +24,9 @@
     <string name="clearing_cache_message">Clearing Cache…</string>
     <string name="copying">Copying \'%s\'…</string>
     <string name="decompiling">Decompiling \'%s\'…</string>
+    <string name="decompile_setting">Code Decompilation</string>
+    <string name="decompile_on">Decompile code to smali</string>
+    <string name="decompile_off">Don\'t decompile code (faster)</string>
     <string name="delete">Delete</string>
     <string name="delete_question">Delete %s?</string>
     <string name="delete_folder">Delete folder</string>

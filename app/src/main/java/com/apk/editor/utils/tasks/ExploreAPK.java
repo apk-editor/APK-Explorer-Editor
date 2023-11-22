@@ -14,6 +14,7 @@ import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.activities.APKTasksActivity;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.DexToSmali;
 
@@ -107,16 +108,18 @@ public class ExploreAPK extends sExecutor {
             }
             APKEditorUtils.unzip(mPackageName != null ? sPackageUtils.getSourceDir(mPackageName, mContext) : mAPKFile.getAbsolutePath(), mExplorePath.getAbsolutePath());
             // Decompile dex file(s)
-            for (File files : Objects.requireNonNull(mExplorePath.listFiles())) {
-                if (files.getName().startsWith("classes") && files.getName().endsWith(".dex") && !Common.isCancelled()) {
-                    sFileUtils.mkdir(mBackUpPath);
-                    sFileUtils.copy(files, new File(mBackUpPath, files.getName()));
-                    sFileUtils.delete(files);
-                    File mDexExtractPath = new File(mExplorePath, files.getName());
-                    sFileUtils.mkdir(mDexExtractPath);
-                    Common.setStatus(mContext.getString(R.string.decompiling, files.getName()));
-                    new DexToSmali(false, mPackageName != null ? new File(sPackageUtils.getSourceDir(mPackageName, mContext))
-                            : mAPKFile, mDexExtractPath, 0, files.getName()).execute();
+            if (AppSettings.getDecompileSetting(mContext)) {
+                for (File files : Objects.requireNonNull(mExplorePath.listFiles())) {
+                    if (files.getName().startsWith("classes") && files.getName().endsWith(".dex") && !Common.isCancelled()) {
+                        sFileUtils.mkdir(mBackUpPath);
+                        sFileUtils.copy(files, new File(mBackUpPath, files.getName()));
+                        sFileUtils.delete(files);
+                        File mDexExtractPath = new File(mExplorePath, files.getName());
+                        sFileUtils.mkdir(mDexExtractPath);
+                        Common.setStatus(mContext.getString(R.string.decompiling, files.getName()));
+                        new DexToSmali(false, mPackageName != null ? new File(sPackageUtils.getSourceDir(mPackageName, mContext))
+                                : mAPKFile, mDexExtractPath, 0, files.getName()).execute();
+                    }
                 }
             }
         }
