@@ -1,55 +1,70 @@
 package com.apk.editor.utils.recyclerViewItems;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
 
+import androidx.appcompat.widget.AppCompatImageButton;
+
+import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.Common;
+
+import java.io.File;
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on September 05, 2021
  */
 public class PackageItems implements Serializable {
+    private final String mPackageName;
+    private final Context mContext;
+    private Drawable mAppIcon;
 
-    private final Drawable mAppIcon;
-    private final long mAPKSize, mInstalledTime, mUpdatedTime;
-    private final String mAppName, mPackageName, mVersion;
-
-    public PackageItems(String name, String packageName, String version, long apkSize, long installedTime,
-                        long updatedTime, Drawable icon) {
-        this.mAppName = name;
+    public PackageItems(String packageName, Context context) {
         this.mPackageName = packageName;
-        this.mVersion = version;
-        this.mAPKSize = apkSize;
-        this.mInstalledTime = installedTime;
-        this.mUpdatedTime = updatedTime;
-        this.mAppIcon = icon;
+        this.mContext = context;
+    }
+    public String getPackageName() {
+        return mPackageName;
     }
 
     public Drawable getAppIcon() {
         return mAppIcon;
     }
 
-    public long getAPKSize() {
-        return mAPKSize;
-    }
+    public void loadAppIcon(AppCompatImageButton view) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
+        executor.execute(() -> {
+            mAppIcon = sPackageUtils.getAppIcon(mPackageName, mContext);
+
+            handler.post(() -> {
+                view.setImageDrawable(mAppIcon);
+            });
+        });
+    }
     public long getInstalledTime() {
-        return mInstalledTime;
+        return Objects.requireNonNull(AppData.getPackageInfo(mPackageName, mContext)).firstInstallTime;
     }
-
     public long getUpdatedTime() {
-        return mUpdatedTime;
+        return Objects.requireNonNull(AppData.getPackageInfo(mPackageName, mContext)).lastUpdateTime;
     }
-
     public String getAppName() {
-        return mAppName;
+        return sPackageUtils.getAppName(mPackageName, mContext).toString();
     }
-
-    public String getPackageName() {
-        return mPackageName;
+    public long getAPKSize() {
+        return new File(sPackageUtils.getSourceDir(mPackageName, mContext)).length();
     }
-
     public String getAppVersion() {
-        return mVersion;
+        return sAPKUtils.getVersionName(sPackageUtils.getSourceDir(mPackageName, mContext), mContext);
     }
 
 }
