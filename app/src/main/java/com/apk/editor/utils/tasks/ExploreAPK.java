@@ -14,7 +14,6 @@ import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.activities.APKTasksActivity;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.DexToSmali;
 
@@ -26,6 +25,7 @@ import java.io.File;
 import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
@@ -38,13 +38,15 @@ public class ExploreAPK extends sExecutor {
     private final Context mContext;
     private File mBackUpPath, mExplorePath;
     private File mAPKFile;
+    private final int mOptions;
     private final String mPackageName;
     private final Uri mUri;
 
-    public ExploreAPK(String packageName, File apkFile, Uri uri, Context context) {
+    public ExploreAPK(String packageName, File apkFile, Uri uri, int options, Context context) {
         mPackageName = packageName;
         mAPKFile = apkFile;
         mUri = uri;
+        mOptions = options;
         mContext = context;
     }
 
@@ -108,7 +110,8 @@ public class ExploreAPK extends sExecutor {
             }
             APKEditorUtils.unzip(mPackageName != null ? sPackageUtils.getSourceDir(mPackageName, mContext) : mAPKFile.getAbsolutePath(), mExplorePath.getAbsolutePath());
             // Decompile dex file(s)
-            if (AppSettings.getDecompileSetting(mContext)) {
+            if (sCommonUtils.getString("decompileSetting", null, mContext) != null && sCommonUtils.getString("decompileSetting",
+                    null, mContext).equals(mContext.getString(R.string.explore_options_full)) || mOptions == 1) {
                 for (File files : Objects.requireNonNull(mExplorePath.listFiles())) {
                     if (files.getName().startsWith("classes") && files.getName().endsWith(".dex") && !Common.isCancelled()) {
                         sFileUtils.mkdir(mBackUpPath);

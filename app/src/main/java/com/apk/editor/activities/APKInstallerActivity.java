@@ -24,7 +24,6 @@ import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.dialogs.InvalidFileDialog;
 import com.apk.editor.utils.dialogs.SelectBundleDialog;
-import com.apk.editor.utils.tasks.ExploreAPK;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
@@ -183,7 +182,7 @@ public class APKInstallerActivity extends AppCompatActivity {
         });
 
         mExploreIcon.setOnClickListener(v -> {
-            new ExploreAPK(null, mFile, null, activity).execute();
+            APKExplorer.exploreApps(null, mFile, null, activity);
             activity.finish();
         });
     }

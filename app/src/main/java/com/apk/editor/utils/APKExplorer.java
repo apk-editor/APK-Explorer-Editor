@@ -1,5 +1,6 @@
 package com.apk.editor.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -21,6 +22,7 @@ import androidx.core.content.ContextCompat;
 import com.apk.axml.aXMLDecoder;
 import com.apk.editor.R;
 import com.apk.editor.utils.dialogs.SigningOptionsDialog;
+import com.apk.editor.utils.tasks.ExploreAPK;
 import com.apk.editor.utils.tasks.ResignAPKs;
 
 import org.json.JSONException;
@@ -162,6 +164,7 @@ public class APKExplorer {
         return null;
     }
 
+    @SuppressLint("StringFormatInvalid")
     public static List<String> getTextViewData(String path, String searchWord, boolean parsedManifest, Context context) {
         List<String> mData = new ArrayList<>();
         String text = null;
@@ -198,20 +201,21 @@ public class APKExplorer {
 
     public static void saveImage(Bitmap bitmap, String dest, Context context) {
         try {
-            OutputStream imageOutStream;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.MediaColumns.DISPLAY_NAME, new File(dest).getName());
                 values.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
                 values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
                 Uri uri = context.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
-                imageOutStream = context.getContentResolver().openOutputStream(uri);
+                OutputStream imageOutStream = context.getContentResolver().openOutputStream(uri);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, imageOutStream);
+                imageOutStream.close();
             } else {
                 File image = new File(dest);
-                imageOutStream = new FileOutputStream(image);
+                FileOutputStream imageOutStream = new FileOutputStream(image);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, imageOutStream);
+                imageOutStream.close();
             }
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, imageOutStream);
-            imageOutStream.close();
         } catch(Exception ignored) {
         }
     }
@@ -279,6 +283,25 @@ public class APKExplorer {
             }
         } else {
             installAPKs(exit, activity);
+        }
+    }
+
+    public static void exploreApps(String packageName, File apkFile, Uri uri, Context context) {
+        if (sCommonUtils.getString("decompileSetting", null, context) == null) {
+            new sSingleItemDialog(0, null, new String[] {
+                    context.getString(R.string.explore_options_simple),
+                    context.getString(R.string.explore_options_full)
+            }, context) {
+
+                @Override
+                public void onItemSelected(int itemPosition) {
+                    new ExploreAPK(packageName, apkFile, uri, itemPosition, context).execute();
+                }
+            }.show();
+        } else if (sCommonUtils.getString("decompileSetting", null, context).equals(context.getString(R.string.explore_options_full))) {
+            new ExploreAPK(packageName, apkFile, uri, 1, context).execute();
+        } else {
+            new ExploreAPK(packageName, apkFile, uri, 0, context).execute();
         }
     }
 

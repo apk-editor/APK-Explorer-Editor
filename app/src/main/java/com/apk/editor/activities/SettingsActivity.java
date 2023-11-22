@@ -53,7 +53,7 @@ public class SettingsActivity extends AppCompatActivity {
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_theme, this), getString(R.string.app_theme), sThemeUtils.getAppTheme(this), null));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_translate, this), getString(R.string.language), AppSettings.getLanguage(this), null));
         mData.add(new sSerializableItems(null, getString(R.string.settings_general), null, null));
-        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, this), getString(R.string.decompile_setting), AppSettings.getDecompileSettingString(this), null));
+        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, this), getString(R.string.explore_options), AppSettings.getExploreOptions(this), null));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_projects, this), getString(R.string.project_exist_action), AppSettings.getProjectExistAction(this), null));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_export, this), getString(R.string.export_path_apks), AppSettings.getExportAPKsPath(this), null));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_export, this), getString(R.string.export_path_resources), AppSettings.getExportPath(this), null));
@@ -73,9 +73,26 @@ public class SettingsActivity extends AppCompatActivity {
                 } else if (position == 2) {
                     AppSettings.setLanguage(this);
                 } else if (position == 4) {
-                    sCommonUtils.saveBoolean("decompileSetting", !AppSettings.getDecompileSetting(this), this);
-                    mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, this), getString(R.string.decompile_setting), AppSettings.getDecompileSettingString(this), null));
-                    mRecycleViewAdapter.notifyItemChanged(position);
+                    new sSingleChoiceDialog(R.drawable.ic_explore, getString(R.string.explore_options),
+                            AppSettings.getExploreOptionsMenu(this), AppSettings.getExploreOptionsMenuPosition(this), this) {
+
+                        @Override
+                        public void onItemSelected(int itemPosition) {
+                            if (itemPosition == 0) {
+                                sCommonUtils.saveString("decompileSetting", getString(R.string.explore_options_simple), SettingsActivity.this);
+                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, SettingsActivity.this), getString(R.string.explore_options), AppSettings.getExploreOptions(SettingsActivity.this), null));
+                                mRecycleViewAdapter.notifyItemChanged(position);
+                            } else if (itemPosition == 1) {
+                                sCommonUtils.saveString("decompileSetting", getString(R.string.explore_options_full), SettingsActivity.this);
+                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, SettingsActivity.this), getString(R.string.explore_options), AppSettings.getExploreOptions(SettingsActivity.this), null));
+                                mRecycleViewAdapter.notifyItemChanged(position);
+                            } else {
+                                sCommonUtils.saveString("decompileSetting", null, SettingsActivity.this);
+                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, SettingsActivity.this), getString(R.string.explore_options), AppSettings.getExploreOptions(SettingsActivity.this), null));
+                                mRecycleViewAdapter.notifyItemChanged(position);
+                            }
+                        }
+                    }.show();
                 } else if (position == 5) {
                     new sSingleChoiceDialog(R.drawable.ic_projects, getString(R.string.project_exist_action),
                             AppSettings.getProjectExitingMenu(this), AppSettings.getProjectExitingMenuPosition(this), this) {

@@ -55,6 +55,15 @@ public class AppSettings {
         }
     }
 
+    public static int getExploreOptionsMenuPosition(Context context) {
+        for (int i = 0; i < getExploreOptionsMenu(context).length; i++) {
+            if (getExploreOptions(context).equals(getExploreOptionsMenu(context)[i])) {
+                return i;
+            }
+        }
+        return 2;
+    }
+
     public static int getExportPathPosition(Context context) {
         for (int i = 0; i < getExportPathMenu(context).length; i++) {
             if (getExportPath(context).equals(getExportPathMenu(context)[i])) {
@@ -198,12 +207,12 @@ public class AppSettings {
         }
     }
 
-    public static String getDecompileSettingString(Context context) {
-        return context.getString(getDecompileSetting(context) ?
-                R.string.decompile_on : R.string.decompile_off);
-    }
-    public static Boolean getDecompileSetting(Context context) {
-        return sCommonUtils.getBoolean("decompileSetting", true, context);
+    public static String getExploreOptions(Context context) {
+        if (sCommonUtils.getString("decompileSetting", null, context) != null) {
+            return sCommonUtils.getString("decompileSetting", null, context);
+        } else {
+            return context.getString(R.string.prompt);
+        }
     }
 
     public static String getProjectExistAction(Context context) {
@@ -265,6 +274,14 @@ public class AppSettings {
         return new String[] {
                 context.getString(R.string.export_path_files_dir),
                 context.getString(R.string.export_path_default)
+        };
+    }
+
+    public static String[] getExploreOptionsMenu(Context context) {
+        return new String[] {
+                context.getString(R.string.explore_options_simple),
+                context.getString(R.string.explore_options_full),
+                context.getString(R.string.prompt)
         };
     }
 

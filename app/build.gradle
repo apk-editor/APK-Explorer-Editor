@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.tools.build:apksig:8.1.3'
+    implementation 'com.android.tools.build:apksig:8.1.4'
     implementation 'com.github.apk-editor:aXML:743632cf62'
     implementation 'com.github.sunilpaulmathew:CrashReporter:4f24aa11c2'
 

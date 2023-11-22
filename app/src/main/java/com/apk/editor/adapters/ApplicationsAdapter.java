@@ -15,11 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apk.editor.R;
 import com.apk.editor.activities.ImageViewActivity;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.dialogs.ExportOptionsDialog;
 import com.apk.editor.utils.dialogs.SigningOptionsDialog;
 import com.apk.editor.utils.recyclerViewItems.PackageItems;
-import com.apk.editor.utils.tasks.ExploreAPK;
 import com.apk.editor.utils.tasks.ExportApp;
 import com.apk.editor.utils.tasks.ResignAPKs;
 import com.google.android.material.card.MaterialCardView;
@@ -55,7 +55,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
     @Override
     public void onBindViewHolder(@NonNull ApplicationsAdapter.ViewHolder holder, int position) {
         try {
-            data.get(position).loadAppIcon(holder.mAppIcon);
+            data.get(position).loadAppIcon(holder.mAppIcon).execute();
             if (Common.getSearchWord() != null && Common.isTextMatched(data.get(position).getPackageName(), Common.getSearchWord())) {
                 holder.mAppID.setText(APKEditorUtils.fromHtml(data.get(position).getPackageName().replace(Common.getSearchWord(), "<b><i><font color=\"" +
                         Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
@@ -141,7 +141,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
 
         @Override
         public void onClick(View view) {
-            new ExploreAPK(data.get(getAdapterPosition()).getPackageName(), null, null, view.getContext()).execute();
+            APKExplorer.exploreApps(data.get(getAdapterPosition()).getPackageName(), null, null, view.getContext());
         }
     }
 

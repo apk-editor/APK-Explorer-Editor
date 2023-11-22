@@ -2,21 +2,17 @@ package com.apk.editor.utils.recyclerViewItems;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.Looper;
 
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.apk.editor.utils.AppData;
-import com.apk.editor.utils.Common;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 
 /*
@@ -39,17 +35,23 @@ public class PackageItems implements Serializable {
         return mAppIcon;
     }
 
-    public void loadAppIcon(AppCompatImageButton view) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
+    public sExecutor loadAppIcon(AppCompatImageButton view) {
+        return new sExecutor() {
 
-        executor.execute(() -> {
-            mAppIcon = sPackageUtils.getAppIcon(mPackageName, mContext);
+            @Override
+            public void onPreExecute() {
+            }
 
-            handler.post(() -> {
+            @Override
+            public void doInBackground() {
+                mAppIcon = sPackageUtils.getAppIcon(mPackageName, mContext);
+            }
+
+            @Override
+            public void onPostExecute() {
                 view.setImageDrawable(mAppIcon);
-            });
-        });
+            }
+        };
     }
     public long getInstalledTime() {
         return Objects.requireNonNull(AppData.getPackageInfo(mPackageName, mContext)).firstInstallTime;

@@ -24,9 +24,6 @@
     <string name="clearing_cache_message">Clearing Cache…</string>
     <string name="copying">Copying \'%s\'…</string>
     <string name="decompiling">Decompiling \'%s\'…</string>
-    <string name="decompile_setting">Code Decompilation</string>
-    <string name="decompile_on">Decompile code to smali</string>
-    <string name="decompile_off">Don\'t decompile code (faster)</string>
     <string name="delete">Delete</string>
     <string name="delete_question">Delete %s?</string>
     <string name="delete_folder">Delete folder</string>
@@ -57,6 +54,9 @@
     <string name="exporting">Exporting %s…</string>
     <string name="exploring">Exploring %s…</string>
     <string name="explore_error_status">Failed to explore %s</string>
+    <string name="explore_options">On Exploring an App</string>
+    <string name="explore_options_full">Full decompile (slower)</string>
+    <string name="explore_options_simple">Simple decompile (faster)</string>
     <string name="failed">Failed</string>
     <string name="failed_smali_message">The following \'smali\' files are failed to assemble.\n\n%s</string>
     <string name="file_path_error">Failed to get file path from external File Manager</string>

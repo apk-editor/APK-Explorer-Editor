@@ -13,7 +13,6 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
-import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.recyclerViewItems.PackageItems;
 import com.google.android.material.card.MaterialCardView;
@@ -113,10 +112,7 @@ public class InstallerActivity extends AppCompatActivity {
             return;
         }
         if (sCommonUtils.getString("installationStatus", "waiting", this).equals(getString(R.string.installation_status_success))) {
-            Common.getPackageData().add(new PackageItems(
-                    Common.getPackageName(),
-                    this
-            ));
+            Common.getPackageData().add(new PackageItems(Common.getPackageName(), this));
         }
         if (sFileUtils.exist(new File(getCacheDir(),"splits"))) {
             sFileUtils.delete(new File(getCacheDir(),"splits"));

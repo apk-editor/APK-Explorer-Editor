@@ -12,14 +12,11 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 import com.apk.editor.utils.recyclerViewItems.PackageItems;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 
@@ -34,10 +31,7 @@ public class AppData {
         for (ApplicationInfo packageInfo: packages) {
             progressBar.setMax(packages.size());
             try {
-                PackageItems pi = new PackageItems(
-                        packageInfo.packageName,
-                        context
-                    );
+                PackageItems pi = new PackageItems(packageInfo.packageName, context);
                 // If PackageItems construction survived, then add
                 mData.add(pi);
             } catch (Exception ignored) {

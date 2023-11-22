@@ -33,7 +33,6 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.tasks.ExploreAPK;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 
@@ -312,7 +311,7 @@ public class APKsFragment extends Fragment {
                     Intent data = result.getData();
 
                     if (data.getData() != null) {
-                        new ExploreAPK(null, null, data.getData(), requireActivity()).execute();
+                        APKExplorer.exploreApps(null, null, data.getData(), requireActivity());
                     }
                 }
             }
