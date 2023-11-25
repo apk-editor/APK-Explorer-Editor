@@ -311,7 +311,7 @@ public class APKsFragment extends Fragment {
                     Intent data = result.getData();
 
                     if (data.getData() != null) {
-                        APKExplorer.exploreApps(null, null, data.getData(), requireActivity());
+                        APKExplorer.exploreApps(null, null, data.getData(), false, requireActivity());
                     }
                 }
             }

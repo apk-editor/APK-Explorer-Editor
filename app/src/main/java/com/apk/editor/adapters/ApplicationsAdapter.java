@@ -141,7 +141,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
 
         @Override
         public void onClick(View view) {
-            APKExplorer.exploreApps(data.get(getAdapterPosition()).getPackageName(), null, null, view.getContext());
+            APKExplorer.exploreApps(data.get(getAdapterPosition()).getPackageName(), null, null, false, (Activity) view.getContext());
         }
     }
 

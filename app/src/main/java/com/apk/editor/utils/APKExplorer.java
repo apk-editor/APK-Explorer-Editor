@@ -286,22 +286,25 @@ public class APKExplorer {
         }
     }
 
-    public static void exploreApps(String packageName, File apkFile, Uri uri, Context context) {
-        if (sCommonUtils.getString("decompileSetting", null, context) == null) {
+    public static void exploreApps(String packageName, File apkFile, Uri uri, boolean exit, Activity activity) {
+        if (sCommonUtils.getString("decompileSetting", null, activity) == null) {
             new sSingleItemDialog(0, null, new String[] {
-                    context.getString(R.string.explore_options_simple),
-                    context.getString(R.string.explore_options_full)
-            }, context) {
+                    activity.getString(R.string.explore_options_simple),
+                    activity.getString(R.string.explore_options_full)
+            }, activity) {
 
                 @Override
                 public void onItemSelected(int itemPosition) {
-                    new ExploreAPK(packageName, apkFile, uri, itemPosition, context).execute();
+                    new ExploreAPK(packageName, apkFile, uri, itemPosition, activity).execute();
+                    if (exit) {
+                        activity.finish();
+                    }
                 }
             }.show();
-        } else if (sCommonUtils.getString("decompileSetting", null, context).equals(context.getString(R.string.explore_options_full))) {
-            new ExploreAPK(packageName, apkFile, uri, 1, context).execute();
+        } else if (sCommonUtils.getString("decompileSetting", null, activity).equals(activity.getString(R.string.explore_options_full))) {
+            new ExploreAPK(packageName, apkFile, uri, 1, activity).execute();
         } else {
-            new ExploreAPK(packageName, apkFile, uri, 0, context).execute();
+            new ExploreAPK(packageName, apkFile, uri, 0, activity).execute();
         }
     }
 
