@@ -55,7 +55,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
     @Override
     public void onBindViewHolder(@NonNull ApplicationsAdapter.ViewHolder holder, int position) {
         try {
-            data.get(position).loadAppIcon(holder.mAppIcon).execute();
+            data.get(position).loadAppIcon(holder.mAppIcon);
             if (Common.getSearchWord() != null && Common.isTextMatched(data.get(position).getPackageName(), Common.getSearchWord())) {
                 holder.mAppID.setText(APKEditorUtils.fromHtml(data.get(position).getPackageName().replace(Common.getSearchWord(), "<b><i><font color=\"" +
                         Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
@@ -104,7 +104,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                     }
                 } else {
                     new MaterialAlertDialogBuilder(v.getContext())
-                            .setIcon(data.get(position).getAppIcon())
+                            .setIcon(holder.mAppIcon.getDrawable())
                             .setTitle(data.get(position).getAppName())
                             .setMessage(v.getContext().getString(R.string.export_app_question, data.get(position).getAppName()))
                             .setNegativeButton(R.string.cancel, (dialog, id) -> {
