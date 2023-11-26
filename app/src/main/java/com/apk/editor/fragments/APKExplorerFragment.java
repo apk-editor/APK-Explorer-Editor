@@ -2,6 +2,7 @@ package com.apk.editor.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -30,6 +31,7 @@ import com.apk.editor.adapters.APKExplorerAdapter;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.DexToSmali;
 import com.apk.editor.utils.tasks.DeleteFile;
 import com.apk.editor.utils.tasks.DeleteProject;
 import com.apk.editor.utils.tasks.ExportToStorage;
@@ -197,13 +199,13 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                 Intent imageView = new Intent(requireActivity(), ImageViewActivity.class);
                 imageView.putExtra(ImageViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
                 startActivity(imageView);
-            } else if (APKExplorer.getData(getFilesList(), true, requireActivity()).get(position).endsWith(".dex") || APKExplorer.getData(getFilesList(), true,
-                    requireActivity()).get(position).endsWith("resources.arsc")) {
+            } else if (APKExplorer.getData(getFilesList(), true, requireActivity()).get(position).endsWith(".dex")) {
+                decompileDexToSmali(new File(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position))).execute();
+            } else if (APKExplorer.getData(getFilesList(), true, requireActivity()).get(position).equalsIgnoreCase("resources.arsc")) {
                 new MaterialAlertDialogBuilder(requireActivity())
                         .setIcon(R.mipmap.ic_launcher)
                         .setTitle(R.string.unsupported_file)
-                        .setMessage(getString(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position).endsWith("resources.arsc") ?
-                                R.string.unsupported_file_arsc :R.string.unsupported_file_dex))
+                        .setMessage(R.string.unsupported_file_arsc)
                         .setPositiveButton(getString(R.string.cancel), (dialog, id) -> {
                         }).show();
             } else {
@@ -252,6 +254,48 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         });
 
         return mRootView;
+    }
+
+    private sExecutor decompileDexToSmali(File inputFile) {
+        return new sExecutor() {
+            private ProgressDialog mProgressDialog;
+            private File mBackUpPath, mExplorePath;
+            private String mDexName = null;
+
+            @SuppressLint("StringFormatInvalid")
+            @Override
+            public void onPreExecute() {
+                mProgressDialog = new ProgressDialog(requireActivity());
+                mProgressDialog.setMessage("\n" + getString(R.string.decompiling, inputFile.getName()));
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mProgressDialog.setIcon(R.mipmap.ic_launcher);
+                mProgressDialog.setTitle(R.string.app_name);
+                mProgressDialog.setIndeterminate(true);
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+                mExplorePath = inputFile.getParentFile();
+                mBackUpPath = new File(mExplorePath,".aeeBackup");
+                mDexName = inputFile.getName();
+            }
+
+            @Override
+            public void doInBackground() {
+                sFileUtils.mkdir(mBackUpPath);
+                sFileUtils.copy(inputFile, new File(mBackUpPath, inputFile.getName()));
+                sFileUtils.delete(inputFile);
+                sFileUtils.mkdir(new File(mExplorePath, mDexName));
+                new DexToSmali(false, new File(mBackUpPath, inputFile.getName()), new File(mExplorePath, mDexName), 0, mDexName).execute();
+            }
+
+            @Override
+            public void onPostExecute() {
+                try {
+                    mProgressDialog.dismiss();
+                } catch (IllegalArgumentException ignored) {
+                }
+                reload(requireActivity());
+            }
+        };
     }
 
     private void retainDialog() {

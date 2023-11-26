@@ -19,13 +19,13 @@ import java.io.File;
 public class DexToSmali {
 
     private final boolean mDebugInfo;
-    private final File mApkFile, mOutDir;
+    private final File mInputFile, mOutDir;
     private final int mAPI;
     private final String mDEXName;
 
-    public DexToSmali(boolean debugInfo, File apkFile, File outDir, int api, String dexName) {
+    public DexToSmali(boolean debugInfo, File inputFile, File outDir, int api, String dexName) {
         this.mDebugInfo = debugInfo;
-        this.mApkFile = apkFile;
+        this.mInputFile = inputFile;
         this.mOutDir = outDir;
         this.mAPI = api;
         this.mDEXName = dexName;
@@ -51,7 +51,7 @@ public class DexToSmali {
                 jobs = 6;
             }
             // create the container
-            MultiDexContainer<? extends DexBackedDexFile> container = DexFileFactory.loadDexContainer(mApkFile, Opcodes.forApi(mAPI));
+            MultiDexContainer<? extends DexBackedDexFile> container = DexFileFactory.loadDexContainer(mInputFile, Opcodes.forApi(mAPI));
             MultiDexContainer.DexEntry<? extends DexBackedDexFile> dexEntry;
             DexBackedDexFile dexFile;
             // If we have 1 item, ignore the passed file. Pull the DexFile we need.
