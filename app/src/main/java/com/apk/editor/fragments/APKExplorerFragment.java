@@ -293,6 +293,8 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
                 }
+                Common.setPath(new File(mExplorePath, mDexName).getAbsolutePath());
+                Common.clearFilesList();
                 reload(requireActivity());
             }
         };
