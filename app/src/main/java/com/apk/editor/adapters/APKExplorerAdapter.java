@@ -146,7 +146,8 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
             });
         }
         holder.mTitle.setText(new File(data.get(position)).getName());
-        holder.mDescription.setText(sAPKUtils.getAPKSize(new File(data.get(position)).getName().length()));
+        holder.mDescription.setText(APKExplorer.getFormattedFileSize(new File(data.get(position))));
+        holder.mDescription.setVisibility(View.VISIBLE);
     }
 
     private void deleteFile(int position, Context context) {

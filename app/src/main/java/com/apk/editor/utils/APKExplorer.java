@@ -239,6 +239,21 @@ public class APKExplorer {
         return bitmap;
     }
 
+    public static String getFormattedFileSize(File file) {
+        long sizeInByte = file.length();
+        if (sizeInByte > 1024) {
+            long sizeInKB = sizeInByte / 1024;
+            long decimal = (sizeInKB - 1024) / 1024;
+            if (sizeInKB > 1024) {
+                return sizeInKB / 1024 + "." + decimal + " MB";
+            } else {
+                return sizeInKB + " KB";
+            }
+        } else {
+            return sizeInByte + " B";
+        }
+    }
+
     private static void installAPKs(boolean exit, Activity activity) {
         SplitAPKInstaller.installSplitAPKs(exit, Common.getAPKList(), null, activity);
     }
