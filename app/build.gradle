@@ -2,13 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion 33
-    buildToolsVersion '33.0.0'
+    compileSdk 34
     namespace 'com.apk.editor'
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 33
+        targetSdk 34
         versionCode 28
         versionName "v0.28"
         vectorDrawables.useSupportLibrary = true
@@ -26,7 +25,11 @@ android {
         }
     }
 
-    flavorDimensions "release"
+    buildFeatures {
+        buildConfig = true
+    }
+
+    flavorDimensions.add("release")
     productFlavors {
         play {
             applicationId "com.apk.explorer"
@@ -59,7 +62,7 @@ dependencies {
     implementation "com.github.sunilpaulmathew.sCommon:themeutils:${sCommon_Version}"
     implementation "com.github.sunilpaulmathew.sCommon:translatorutils:${sCommon_Version}"
 
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'net.lingala.zip4j:zip4j:2.11.5'
     implementation 'org.smali:baksmali:2.5.2'
     implementation 'org.smali:smali:2.5.2'
