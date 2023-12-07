@@ -64,13 +64,13 @@ public class AppData {
                     }
                 }
             }
-            if (sCommonUtils.getBoolean("sort_name", false, context)) {
+            if (sCommonUtils.getInt("sort_apps", 1, context) == 0) {
                 Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getAppName(), rhs.getAppName()));
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getBoolean("sort_size", false, context)) {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getInt("sort_apps", 1, context) == 4) {
                 Collections.sort(mData, Comparator.comparingLong(PackageItems::getAPKSize));
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getBoolean("sort_installed", false, context)) {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getInt("sort_apps", 1, context) == 2) {
                 Collections.sort(mData, Comparator.comparingLong(PackageItems::getInstalledTime));
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getBoolean("sort_updated", false, context)) {
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getInt("sort_apps", 1, context) == 3) {
                 Collections.sort(mData, Comparator.comparingLong(PackageItems::getUpdatedTime));
             } else {
                 Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getPackageName(), rhs.getPackageName()));

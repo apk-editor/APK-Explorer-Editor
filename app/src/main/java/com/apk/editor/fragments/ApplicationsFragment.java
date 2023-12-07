@@ -179,72 +179,53 @@ public class ApplicationsFragment extends Fragment {
         SubMenu sort = menu.addSubMenu(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_by));
 
         sort.add(0, 1, Menu.NONE, getString(R.string.sort_by_name)).setCheckable(true)
-                .setChecked(sCommonUtils.getBoolean("sort_name", false, activity));
+                .setChecked(sCommonUtils.getInt("sort_apps", 1, activity) == 0);
         sort.add(0, 2, Menu.NONE, getString(R.string.sort_by_id)).setCheckable(true)
-                .setChecked(sCommonUtils.getBoolean("sort_id", true, activity));
+                .setChecked(sCommonUtils.getInt("sort_apps", 1, activity) == 1);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             sort.add(0, 3, Menu.NONE, getString(R.string.sort_by_installed)).setCheckable(true)
-                    .setChecked(sCommonUtils.getBoolean("sort_installed", false, activity));
+                    .setChecked(sCommonUtils.getInt("sort_apps", 1, activity) == 2);
             sort.add(0, 4, Menu.NONE, getString(R.string.sort_by_updated)).setCheckable(true)
-                    .setChecked(sCommonUtils.getBoolean("sort_updated", false, activity));
+                    .setChecked(sCommonUtils.getInt("sort_apps", 1, activity) == 3);
             sort.add(0, 5, Menu.NONE, getString(R.string.sort_by_size)).setCheckable(true)
-                    .setChecked(sCommonUtils.getBoolean("sort_size", false, activity));
+                    .setChecked(sCommonUtils.getInt("sort_apps", 1, activity) == 4);
         }
-        menu.add(Menu.NONE, 6, Menu.NONE, getString(sCommonUtils.getBoolean("sort_size", false, activity) ?
-                R.string.sort_size : R.string.sort_order)).setCheckable(true).setChecked(sCommonUtils.getBoolean(
-                        "az_order", true, activity));
+        menu.add(Menu.NONE, 6, Menu.NONE, getString(sCommonUtils.getInt("sort_apps", 1, activity) == 4 ?
+                R.string.sort_size : (sCommonUtils.getInt("sort_apps", 1, activity) == 2 || sCommonUtils
+                        .getInt("sort_apps", 0, activity) == 3) ? R.string.sort_time : R.string.sort_order))
+                .setCheckable(true).setChecked(sCommonUtils.getBoolean("az_order", true, activity));
         sort.setGroupCheckable(0, true, true);
         popupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case 0:
                     break;
                 case 1:
-                    if (!sCommonUtils.getBoolean("sort_name", false, activity)) {
-                        sCommonUtils.saveBoolean("sort_name", true, activity);
-                        sCommonUtils.saveBoolean("sort_id", false, activity);
-                        sCommonUtils.saveBoolean("sort_installed", false, activity);
-                        sCommonUtils.saveBoolean("sort_updated", false, activity);
-                        sCommonUtils.saveBoolean("sort_size", false, activity);
+                    if (sCommonUtils.getInt("sort_apps", 1, activity) != 0) {
+                        sCommonUtils.saveInt("sort_apps", 0, activity);
                         loadApps(activity);
                     }
                     break;
                 case 2:
-                    if (!sCommonUtils.getBoolean("sort_id", true, activity)) {
-                        sCommonUtils.saveBoolean("sort_name", false, activity);
-                        sCommonUtils.saveBoolean("sort_id", true, activity);
-                        sCommonUtils.saveBoolean("sort_installed", false, activity);
-                        sCommonUtils.saveBoolean("sort_updated", false, activity);
-                        sCommonUtils.saveBoolean("sort_size", false, activity);
+                    if (sCommonUtils.getInt("sort_apps", 1, activity) != 1) {
+                        sCommonUtils.saveInt("sort_apps", 1, activity);
                         loadApps(activity);
                     }
                     break;
                 case 3:
-                    if (!sCommonUtils.getBoolean("sort_installed", false, activity)) {
-                        sCommonUtils.saveBoolean("sort_name", false, activity);
-                        sCommonUtils.saveBoolean("sort_id", false, activity);
-                        sCommonUtils.saveBoolean("sort_installed", true, activity);
-                        sCommonUtils.saveBoolean("sort_updated", false, activity);
-                        sCommonUtils.saveBoolean("sort_size", false, activity);
+                    if (sCommonUtils.getInt("sort_apps", 1, activity) != 2) {
+                        sCommonUtils.saveInt("sort_apps", 2, activity);
                         loadApps(activity);
                     }
                     break;
                 case 4:
-                    if (!sCommonUtils.getBoolean("sort_updated", false, activity)) {
-                        sCommonUtils.saveBoolean("sort_name", false, activity);
-                        sCommonUtils.saveBoolean("sort_id", false, activity);
-                        sCommonUtils.saveBoolean("sort_installed", false, activity);
-                        sCommonUtils.saveBoolean("sort_updated", true, activity);
-                        sCommonUtils.saveBoolean("sort_size", false, activity);
+                    if (sCommonUtils.getInt("sort_apps", 1, activity) != 3) {
+                        sCommonUtils.saveInt("sort_apps", 3, activity);
                         loadApps(activity);
                     }
                     break;
                 case 5:
-                    if (!sCommonUtils.getBoolean("sort_size", false, activity)) {
-                        sCommonUtils.saveBoolean("sort_name", false, activity);
-                        sCommonUtils.saveBoolean("sort_id", false, activity);
-                        sCommonUtils.saveBoolean("sort_installed", false, activity);
-                        sCommonUtils.saveBoolean("sort_updated", false, activity);
-                        sCommonUtils.saveBoolean("sort_size", true, activity);
+                    if (sCommonUtils.getInt("sort_apps", 1, activity) != 4) {
+                        sCommonUtils.saveInt("sort_apps", 4, activity);
                         loadApps(activity);
                     }
                     break;
