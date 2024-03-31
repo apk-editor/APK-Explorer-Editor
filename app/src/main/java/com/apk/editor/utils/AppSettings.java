@@ -132,6 +132,7 @@ public class AppSettings {
         mData.add(new sSerializableItems(null, "Fsotm. mai", "Chinese (zh-Hans) Translation", null));
         mData.add(new sSerializableItems(null, "sardonicdozen", "Chinese (zh-Hans) Translation", null));
         mData.add(new sSerializableItems(null, "始", "Chinese (zh-Hans) Translation", null));
+        mData.add(new sSerializableItems(null, "VisionR1", "Greek Translation", "https://github.com/VisionR1"));
         return mData;
     }
 
@@ -171,6 +172,8 @@ public class AppSettings {
                 return context.getString(R.string.language_lt);
             case "th":
                 return context.getString(R.string.language_th);
+            case "el":
+                return context.getString(R.string.language_el);
             default:
                 return context.getString(R.string.app_theme_auto);
         }
@@ -324,77 +327,65 @@ public class AppSettings {
                 switch (itemPosition) {
                     case  0:
                         sCommonUtils.saveString("appLanguage", java.util.Locale.getDefault().getLanguage(), context);
-                        restartApp(context);
                         break;
                     case 1:
                         sCommonUtils.saveString("appLanguage", "ar", context);
-                        restartApp(context);
                         break;
                     case 2:
                         sCommonUtils.saveString("appLanguage", "zh", context);
-                        restartApp(context);
                         break;
                     case 3:
                         sCommonUtils.saveString("appLanguage", "cs", context);
-                        restartApp(context);
                         break;
                     case 4:
                         sCommonUtils.saveString("appLanguage", "de", context);
-                        restartApp(context);
                         break;
                     case 5:
                         sCommonUtils.saveString("appLanguage", "en_US", context);
-                        restartApp(context);
                         break;
                     case 6:
                         sCommonUtils.saveString("appLanguage", "fr", context);
-                        restartApp(context);
                         break;
                     case 7:
                         sCommonUtils.saveString("appLanguage", "es", context);
-                        restartApp(context);
                         break;
                     case 8:
                         sCommonUtils.saveString("appLanguage", "ru", context);
-                        restartApp(context);
                         break;
                     case 9:
                         sCommonUtils.saveString("appLanguage", "tr", context);
-                        restartApp(context);
                         break;
                     case 10:
                         sCommonUtils.saveString("appLanguage", "vi", context);
-                        restartApp(context);
                         break;
                     case 11:
                         sCommonUtils.saveString("appLanguage", "pl", context);
-                        restartApp(context);
                         break;
                     case 12:
                         sCommonUtils.saveString("appLanguage", "in", context);
-                        restartApp(context);
                         break;
                     case 13:
                         sCommonUtils.saveString("appLanguage", "hu", context);
-                        restartApp(context);
                         break;
                     case 14:
                         sCommonUtils.saveString("appLanguage", "uk", context);
-                        restartApp(context);
                         break;
                     case 15:
                         sCommonUtils.saveString("appLanguage", "hi", context);
-                        restartApp(context);
                         break;
                     case 16:
                         sCommonUtils.saveString("appLanguage", "lt", context);
-                        restartApp(context);
                         break;
                     case 17:
                         sCommonUtils.saveString("appLanguage", "th", context);
-                        restartApp(context);
+                        break;
+                    case 18:
+                        sCommonUtils.saveString("appLanguage", "el", context);
                         break;
                 }
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(intent);
             }
         }.show();
     }
@@ -402,12 +393,6 @@ public class AppSettings {
     public static boolean isCustomKey(Context context) {
         return sCommonUtils.getString("PrivateKey", null, context) != null &&
                 sCommonUtils.getString("X509Certificate", null, context) != null;
-    }
-
-    private static void restartApp(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(intent);
     }
 
 }

@@ -37,5 +37,6 @@ APK Explorer & Editor (AEE) is, and as always, an open-source project which is r
 * vuvov11 - Thai Translation
 * Me - Arabic (SA) Translation
 * asdfqw, Fsotm. mai, sardonicdozen, & 始 - Chinese (zh-Hans) Translation
+* [VisionR1](https://github.com/VisionR1) - Greek Translation
 
 _If you think I missed your name, please let me know._
