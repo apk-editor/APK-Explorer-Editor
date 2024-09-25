@@ -1,6 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
+    }
 
     compileSdk 34
     namespace 'com.apk.editor'
