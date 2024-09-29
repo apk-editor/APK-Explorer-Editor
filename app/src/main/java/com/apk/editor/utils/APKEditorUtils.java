@@ -1,7 +1,6 @@
 package com.apk.editor.utils;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Build;
 import android.text.Html;
 import android.util.TypedValue;
@@ -63,10 +62,6 @@ public class APKEditorUtils {
             }
         } catch (IOException ignored) {
         }
-    }
-
-    public static boolean isDocumentsUI(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
 
 }

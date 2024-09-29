@@ -16,7 +16,6 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBlack"
             android:layout_gravity="center" >
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -30,11 +29,10 @@
                     android:id="@+id/explore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorBlack"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_explore"
-                    android:tint="@color/colorWhite"
-                    android:layout_marginStart="10dp" />
+                    android:layout_marginStart="10dp"
+                    android:background="@null" />
 
                 <com.google.android.material.tabs.TabLayout
                     android:layout_width="match_parent"
@@ -43,9 +41,6 @@
                     android:layout_gravity="center"
                     app:tabMode="scrollable"
                     android:textAlignment="center"
-                    android:background="@color/colorBlack"
-                    app:tabTextColor="@color/colorWhite"
-                    app:tabSelectedTextColor="@color/colorBlue"
                     android:id="@+id/tab_Layout" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </FrameLayout>
@@ -69,7 +64,6 @@
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/colorBlue"
             android:layout_gravity="center"
             android:layout_margin="10dp"
             app:cardCornerRadius="25dp">
@@ -86,14 +80,12 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_clear"
-                    android:tint="@color/colorWhite"
                     android:background="@null"
                     android:clickable="false" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
                     android:layout_marginStart="10dp"
                     android:layout_gravity="center"
                     android:text="@string/cancel"
@@ -107,7 +99,6 @@
             android:id="@+id/install"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/colorBlue"
             android:layout_gravity="center"
             android:layout_margin="10dp"
             app:cardCornerRadius="25dp">
@@ -124,7 +115,6 @@
                     android:id="@+id/install_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
                     android:layout_marginEnd="10dp"
                     android:layout_gravity="center"
                     android:text="@string/install"
@@ -136,7 +126,6 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_installer"
-                    android:tint="@color/colorWhite"
                     android:background="@null"
                     android:clickable="false" />
             </androidx.appcompat.widget.LinearLayoutCompat>

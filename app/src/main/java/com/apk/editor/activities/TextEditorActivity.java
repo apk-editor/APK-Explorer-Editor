@@ -31,6 +31,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Objects;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -67,7 +68,7 @@ public class TextEditorActivity extends AppCompatActivity {
 
         mText.setTextColor(sThemeUtils.isDarkTheme(this) ? Color.WHITE : Color.BLACK);
 
-        mTitle.setText(new File(mPath).getName());
+        mTitle.setText(new File(Objects.requireNonNull(mPath)).getName());
 
         new sExecutor() {
             private boolean invalid = false;

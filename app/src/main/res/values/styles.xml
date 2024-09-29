@@ -1,7 +1,10 @@
 <resources>
-    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3.DynamicColors.DayNight.NoActionBar">
         <item name="windowNoTitle">true</item>
-        <item name="colorSecondary">@color/colorBlue</item>
-        <item name="android:statusBarColor">@color/colorBlack</item>
+        <item name="android:textAlignment">gravity</item>
+        <item name="android:textDirection">locale</item>
+        <item name="colorPrimary">?android:attr/textColorPrimary</item>
+        <item name="colorSecondary">?android:attr/colorSecondary</item>
+        <item name="android:statusBarColor">?android:attr/statusBarColor</item>
     </style>
 </resources>

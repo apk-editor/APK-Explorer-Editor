@@ -54,7 +54,6 @@ public class APKTasksActivity extends AppCompatActivity {
             mIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_build));
         } else {
             mIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_explore));
-            mIcon.setColorFilter(ContextCompat.getColor(this, R.color.colorBlue));
         }
 
         mOutputPath.setText(getString(R.string.resigned_apks_path, APKData.getExportAPKsPath(this)));
@@ -154,7 +153,7 @@ public class APKTasksActivity extends AppCompatActivity {
         if (Common.getSuccess() > 0) {
             Common.setSuccess(0);
         }
-        if (Common.getErrorList().size() > 0) {
+        if (!Common.getErrorList().isEmpty()) {
             Common.getErrorList().clear();
         }
     }

@@ -130,7 +130,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             Menu menu = popupMenu.getMenu();
             menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
                     .setChecked(sCommonUtils.getBoolean("az_order", true, requireActivity()));
-            if (Common.getFiles() != null && Common.getFiles().size() > 0) {
+            if (Common.getFiles() != null && !Common.getFiles().isEmpty()) {
                 menu.add(Menu.NONE, 1, Menu.NONE, getString(R.string.export_selected_files));
                 if (APKEditorUtils.isFullVersion(requireActivity())) {
                     menu.add(Menu.NONE, 2, Menu.NONE, getString(R.string.delete_selected_files));

@@ -43,7 +43,7 @@ public class SplitAPKInstaller {
                     totalSize += mFile.length();
                 }
             }
-        } else if (Common.getAPKList().size() > 0) {
+        } else if (!Common.getAPKList().isEmpty()) {
             for (String string : Common.getAPKList()) {
                 if (sFileUtils.exist(new File(string))) {
                     File mFile = new File(string);

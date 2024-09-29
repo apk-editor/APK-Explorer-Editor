@@ -207,8 +207,8 @@ public class APKExplorer {
                 values.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
                 values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
                 Uri uri = context.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
-                OutputStream imageOutStream = context.getContentResolver().openOutputStream(uri);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, imageOutStream);
+                OutputStream imageOutStream = context.getContentResolver().openOutputStream(Objects.requireNonNull(uri));
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, Objects.requireNonNull(imageOutStream));
                 imageOutStream.close();
             } else {
                 File image = new File(dest);

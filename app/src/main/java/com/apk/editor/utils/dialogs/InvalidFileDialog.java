@@ -1,5 +1,6 @@
 package com.apk.editor.utils.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import com.apk.editor.R;
@@ -12,6 +13,7 @@ public class InvalidFileDialog {
 
     private final MaterialAlertDialogBuilder mDialogBuilder;
 
+    @SuppressLint("StringFormatInvalid")
     public InvalidFileDialog(boolean exit, Activity activity) {
         mDialogBuilder = new MaterialAlertDialogBuilder(activity)
                 .setIcon(R.mipmap.ic_launcher)

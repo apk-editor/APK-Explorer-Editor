@@ -1,7 +1,6 @@
 <androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorBlack"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:gravity="center" >
@@ -23,7 +22,6 @@
             android:id="@+id/app_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorBlue"
             android:layout_gravity="start"
             android:textStyle="bold"
             android:gravity="start"
@@ -34,7 +32,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:textColor="@color/colorWhite"
             android:textIsSelectable="true"
             android:visibility="gone"
             android:gravity="start"

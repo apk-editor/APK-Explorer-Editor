@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
+        <FrameLayout
+            android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginBottom="75dp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -21,29 +21,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorBlack" >
+        android:layout_alignParentBottom="true" >
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="75dp"
-            android:layout_marginEnd="40dp"
-            app:itemIconTint="@color/colorBlue"
-            app:itemTextColor="@color/colorBlue"
-            app:itemActiveIndicatorStyle="@null"
-            android:background="@color/colorBlack"
-            app:menu="@menu/navigation_main"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
             app:labelVisibilityMode="labeled"
+            app:menu="@menu/navigation_main"
             android:layout_gravity="bottom" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/settings_menu"
-            android:layout_width="wrap_content"
+            android:layout_width="54dp"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:src="@drawable/ic_settings"
-            android:tint="@color/colorWhite"
             android:background="@null" />
     </FrameLayout>
 </RelativeLayout>

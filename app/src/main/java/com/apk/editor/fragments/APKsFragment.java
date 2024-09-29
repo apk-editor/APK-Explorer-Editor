@@ -266,7 +266,7 @@ public class APKsFragment extends Fragment {
                         InputStream inputStream = activity.getContentResolver().openInputStream(uriFiles.getItemAt(i).getUri());
                         int read;
                         byte[] bytes = new byte[8192];
-                        while ((read = inputStream.read(bytes)) != -1) {
+                        while ((read = Objects.requireNonNull(inputStream).read(bytes)) != -1) {
                             outputStream.write(bytes, 0, read);
                         }
                         // In this case, we don't really care about app bundles!

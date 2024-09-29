@@ -34,7 +34,6 @@ import java.util.Objects;
 import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
-import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -54,7 +53,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
         return new ViewHolder(rowItem);
     }
 
-    @SuppressLint({"NotifyDataSetChanged", "StringFormatInvalid"})
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onBindViewHolder(@NonNull APKsAdapter.ViewHolder holder, int position) {
         try {
@@ -139,7 +138,6 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                     holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.version, sAPKUtils.getVersionName(data.get(position), holder.mAppName.getContext())));
                 }
                 holder.mSize.setText(holder.mSize.getContext().getString(R.string.size, sAPKUtils.getAPKSize(new File(data.get(position)).length())));
-                holder.mSize.setTextColor(sThemeUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
                 holder.mSize.setVisibility(View.VISIBLE);
                 holder.mCard.setOnClickListener(v -> {
                     if (APKEditorUtils.isFullVersion(v.getContext())) {
@@ -173,10 +171,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                     return false;
                 });
             }
-            holder.mCard.setCardBackgroundColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
-            holder.mCard.setStrokeColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
             holder.mVersion.setVisibility(View.VISIBLE);
-            holder.mVersion.setTextColor(Color.RED);
         } catch (NullPointerException ignored) {
         }
         holder.mDelete.setOnClickListener(v -> new MaterialAlertDialogBuilder(v.getContext())
@@ -189,9 +184,8 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                     sFileUtils.delete(new File(data.get(position)));
                     data.remove(position);
                     notifyItemRemoved(position);
-                    notifyDataSetChanged();
+                    notifyItemRangeChanged(position, data.size());
                 }).show());
-        holder.mDelete.setColorFilter(Color.RED);
     }
 
     @Override

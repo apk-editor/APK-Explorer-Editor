@@ -192,7 +192,7 @@ public class APKData {
             values.put(MediaStore.MediaColumns.MIME_TYPE, "*/*");
             values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
             Uri uri = context.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
-            OutputStream outputStream = context.getContentResolver().openOutputStream(uri);
+            OutputStream outputStream = context.getContentResolver().openOutputStream(Objects.requireNonNull(uri));
             sFileUtils.copyStream(inputStream, outputStream);
         } catch (IOException ignored) {
         }

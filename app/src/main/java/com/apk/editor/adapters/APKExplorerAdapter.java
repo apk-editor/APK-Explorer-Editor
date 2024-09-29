@@ -33,7 +33,6 @@ import java.util.List;
 import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
 import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
 import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
-import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -61,10 +60,6 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
     public void onBindViewHolder(@NonNull APKExplorerAdapter.ViewHolder holder, int position) {
         if (new File(data.get(position)).isDirectory()) {
             holder.mIcon.setImageDrawable(ContextCompat.getDrawable(holder.mTitle.getContext(), R.drawable.ic_folder));
-            if (sThemeUtils.isDarkTheme(holder.mIcon.getContext())) {
-                holder.mIcon.setBackground(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_circle));
-            }
-            holder.mIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mTitle.getContext()));
             holder.mCheckBox.setVisibility(View.GONE);
             holder.mDescription.setVisibility(View.GONE);
         } else {

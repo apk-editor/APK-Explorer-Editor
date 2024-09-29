@@ -2,7 +2,6 @@ package com.apk.editor.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.activities.DocumentationActivity;
-import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppSettings;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -51,12 +49,6 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull AboutAdapter.ViewHolder holder, int position) {
         holder.Title.setText(data.get(position).getTextOne());
         holder.Description.setText(data.get(position).getTextTwo());
-        if (sThemeUtils.isDarkTheme(holder.Title.getContext())) {
-            holder.Title.setTextColor(APKEditorUtils.getThemeAccentColor(holder.Title.getContext()));
-        }
-        if (position != 0) {
-            holder.mIcon.setColorFilter(sThemeUtils.isDarkTheme(holder.Title.getContext()) ? Color.WHITE : Color.BLACK);
-        }
         holder.mIcon.setImageDrawable(data.get(position).getIcon());
         holder.mRVLayout.setOnClickListener(v -> {
             if (data.get(position).getTextThree() != null) {
@@ -77,8 +69,9 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
                 new sCreditsUtils(AppSettings.getCredits(v.getContext()),
                         sCommonUtils.getDrawable(R.mipmap.ic_launcher, v.getContext()),
                         sCommonUtils.getDrawable(R.drawable.ic_back, v.getContext()),
-                        sCommonUtils.getColor(R.color.colorBlue, v.getContext()),
-                        18, v.getContext().getString(R.string.app_name), "2023-2024, APK Explorer & Editor",
+                        sCommonUtils.getColor(sThemeUtils.isDarkTheme(v.getContext()) ?
+                                R.color.colorWhite : R.color.colorDark, v.getContext()),
+                        20, v.getContext().getString(R.string.app_name), "2023-2024, APK Explorer & Editor",
                         BuildConfig.VERSION_NAME).launchCredits(v.getContext());
             } else {
                 Intent share_app = new Intent();

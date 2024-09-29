@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
-import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 06, 2021
@@ -50,7 +49,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
         return new ViewHolder(rowItem);
     }
 
-    @SuppressLint({"NotifyDataSetChanged", "StringFormatInvalid"})
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onBindViewHolder(@NonNull ProjectsAdapter.ViewHolder holder, int position) {
         try {
@@ -98,13 +97,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                         new DeleteProject(new File(data.get(position)), v.getContext()).execute();
                         data.remove(position);
                         notifyItemRemoved(position);
-                        notifyDataSetChanged();
+                        notifyItemRangeChanged(position, data.size());
                     }).show());
-            holder.mCard.setCardBackgroundColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
-            holder.mCard.setStrokeColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
             holder.mTotalSize.setVisibility(View.VISIBLE);
-            holder.mTotalSize.setTextColor(sThemeUtils.isDarkTheme(holder.mTotalSize.getContext()) ? Color.GREEN : Color.BLACK);
-            holder.mDelete.setColorFilter(Color.RED);
         } catch (NullPointerException ignored) {}
     }
 

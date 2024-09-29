@@ -31,7 +31,6 @@ import java.util.List;
 import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
-import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -70,15 +69,11 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
             }
             holder.mVersion.setText(holder.mAppName.getContext().getString(R.string.version, data.get(position).getAppVersion()));
             holder.mSize.setText(holder.mAppName.getContext().getString(R.string.size, sAPKUtils.getAPKSize(data.get(position).getAPKSize())));
-            holder.mVersion.setTextColor(Color.RED);
-            holder.mSize.setTextColor(sThemeUtils.isDarkTheme(holder.mSize.getContext()) ? Color.GREEN : Color.BLACK);
             holder.mAppIcon.setOnClickListener(v -> {
                 Common.setAppID(data.get(position).getPackageName());
                 Intent imageView = new Intent(v.getContext(), ImageViewActivity.class);
                 v.getContext().startActivity(imageView);
             });
-            holder.mCard.setCardBackgroundColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
-            holder.mCard.setStrokeColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
             holder.mSize.setVisibility(View.VISIBLE);
             holder.mVersion.setVisibility(View.VISIBLE);
             holder.mCard.setOnLongClickListener(v -> {
@@ -115,7 +110,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                 }
                 return false;
             });
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException | IndexOutOfBoundsException ignored) {}
     }
 
     @Override

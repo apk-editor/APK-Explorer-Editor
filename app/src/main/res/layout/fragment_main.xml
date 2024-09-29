@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="top|center_vertical"
-        android:background="@color/colorBlack"
         android:paddingBottom="5dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
@@ -26,7 +25,6 @@
                 android:id="@+id/app_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorAccent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="80dp"
                 android:textStyle="bold"
@@ -37,8 +35,6 @@
                 android:id="@+id/search_word"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="?attr/colorAccent"
-                android:textColor="@color/colorWhite"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="50dp"
                 android:hint="@string/search"
@@ -54,8 +50,7 @@
             android:layout_marginEnd="40dp"
             android:layout_gravity="end|center_vertical"
             android:src="@drawable/ic_search"
-            android:background="@null"
-            android:tint="@color/colorBlue" />
+            android:background="@null" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/sort_button"
@@ -63,17 +58,13 @@
             android:layout_height="30dp"
             android:layout_gravity="end|center_vertical"
             android:src="@drawable/ic_sort"
-            android:background="@null"
-            android:tint="@color/colorBlue" />
+            android:background="@null" />
     </FrameLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBlack"
-        app:tabSelectedTextColor="?attr/colorAccent"
-        app:tabTextColor="@color/colorWhite"
         android:visibility="gone"
         app:tabGravity="fill"
         app:tabMode="fixed" />

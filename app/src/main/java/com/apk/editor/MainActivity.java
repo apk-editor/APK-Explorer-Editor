@@ -8,7 +8,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.Fragment;
 
 import com.apk.editor.activities.SettingsActivity;
 import com.apk.editor.fragments.APKsFragment;
@@ -17,8 +17,8 @@ import com.apk.editor.fragments.ApplicationsFragment;
 import com.apk.editor.fragments.ProjectsFragment;
 import com.apk.editor.utils.Common;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.Objects;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.MaterialShapeDrawable;
 
 import in.sunilpaulmathew.crashreporter.Utils.CrashReporter;
 import in.sunilpaulmathew.sCommon.Adapters.sPagerAdapter;
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean mExit;
     private final Handler mHandler = new Handler();
+    private Fragment mFragment;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView mBottomNav = findViewById(R.id.bottom_navigation);
         AppCompatImageButton mSettings = findViewById(R.id.settings_menu);
-        ViewPager mViewPager = findViewById(R.id.view_pager);
 
         sPagerAdapter adapter = new sPagerAdapter(getSupportFragmentManager());
 
@@ -54,45 +54,37 @@ public class MainActivity extends AppCompatActivity {
         adapter.AddFragment(new APKsFragment(), null);
         adapter.AddFragment(new AboutFragment(), null);
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(final int i, final float v, final int i2) {
-            }
-            @Override
-            public void onPageSelected(int position) {
-                Objects.requireNonNull(mViewPager.getAdapter()).notifyDataSetChanged();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(final int i) {
-            }
-        });
-
-        mViewPager.setAdapter(adapter);
+        MaterialShapeDrawable shapeDrawable = (MaterialShapeDrawable) mBottomNav.getBackground();
+        shapeDrawable.setShapeAppearanceModel(shapeDrawable.getShapeAppearanceModel()
+                .toBuilder()
+                .setAllCorners(CornerFamily.ROUNDED, 25)
+                .build());
 
         mBottomNav.setOnItemSelectedListener(
                 menuItem -> {
                     switch (menuItem.getItemId()) {
                         case R.id.nav_apps:
-                            mViewPager.setCurrentItem(0);
+                            mFragment = new ApplicationsFragment();
                             break;
                         case R.id.nav_projects:
-                            mViewPager.setCurrentItem(1);
+                            mFragment = new ProjectsFragment();
                             break;
                         case R.id.nav_apks:
-                            mViewPager.setCurrentItem(2);
+                            mFragment = new APKsFragment();
                             break;
                         case R.id.nav_about:
-                            mViewPager.setCurrentItem(3);
+                            mFragment = new AboutFragment();
                             break;
                     }
-                    Objects.requireNonNull(mViewPager.getAdapter()).notifyDataSetChanged();
-                    return false;
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            mFragment).commit();
+                    return true;
                 }
         );
 
         if (savedInstanceState == null) {
-            mViewPager.setCurrentItem(0);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new ApplicationsFragment()).commit();
         }
 
         mSettings.setOnClickListener(v -> {

@@ -11,7 +11,6 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorBlue"
             android:text="@string/permission_denied_message"
             android:layout_marginStart="10dp"
             android:gravity="center_vertical"
@@ -25,7 +24,6 @@
             android:id="@+id/grant_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/colorBlack"
             android:layout_margin="15dp"
             android:layout_gravity="end"
             app:cardCornerRadius="15dp" >
@@ -33,7 +31,6 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
                     android:gravity="center"
                     android:text="@string/grant"
                     android:clickable="false"

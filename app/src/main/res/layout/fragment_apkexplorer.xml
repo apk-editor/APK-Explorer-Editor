@@ -12,7 +12,6 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBlack"
             android:gravity="center_vertical"
             android:padding="10dp" >
 
@@ -20,11 +19,10 @@
                 android:id="@+id/back"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorBlack"
-                android:tint="?attr/colorAccent"
                 android:layout_gravity="center|start"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_back" />
+                android:src="@drawable/ic_back"
+                android:background="@null" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/title"
@@ -34,7 +32,6 @@
                 android:layout_marginEnd="80dp"
                 android:textStyle="bold"
                 android:gravity="center_vertical"
-                android:textColor="?attr/colorAccent"
                 android:textIsSelectable="true"
                 android:textSize="20sp" />
 
@@ -42,12 +39,11 @@
                 android:id="@+id/save"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorBlack"
-                android:tint="?attr/colorAccent"
                 android:layout_gravity="center|end"
                 android:gravity="center_vertical"
                 android:src="@drawable/ic_build"
                 android:layout_marginEnd="40dp"
+                android:background="@null"
                 android:visibility="gone"
                 android:scaleX="-1"/>
 
@@ -55,11 +51,10 @@
                 android:id="@+id/sort"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorBlack"
-                android:tint="?attr/colorAccent"
                 android:layout_gravity="center|end"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_sort" />
+                android:src="@drawable/ic_sort"
+                android:background="@null" />
         </FrameLayout>
 
         <include layout="@layout/progress_layout" />
@@ -78,7 +73,6 @@
         android:textStyle="bold"
         android:gravity="center"
         android:layout_gravity="center"
-        android:textColor="?attr/colorAccent"
         android:textIsSelectable="true"
         android:visibility="gone"
         android:textSize="17sp" />

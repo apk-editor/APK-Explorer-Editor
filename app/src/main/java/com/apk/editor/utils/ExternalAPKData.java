@@ -2,11 +2,6 @@ package com.apk.editor.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.OpenableColumns;
-import android.webkit.MimeTypeMap;
 
 import com.apk.axml.APKParser;
 import com.apk.editor.R;
@@ -48,20 +43,6 @@ public class ExternalAPKData {
         } catch (Exception ignored) {
         }
         return mData;
-    }
-
-    public static String getExtension(Uri uri, Context context) {
-        if (APKEditorUtils.isDocumentsUI(uri)) {
-            @SuppressLint("Recycle")
-            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-               return   MimeTypeMap.getFileExtensionFromUrl(Environment.getExternalStorageDirectory().toString() + "/Download/" + cursor.getString(nameIndex));
-            }
-        } else {
-            return MimeTypeMap.getFileExtensionFromUrl(uri.getPath());
-        }
-        return null;
     }
 
     @SuppressLint("StringFormatInvalid")

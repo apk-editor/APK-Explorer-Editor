@@ -198,7 +198,7 @@ public class Common {
     }
 
     public static void removeFromFilesList(File file) {
-        if (mFile == null || mFile.size() == 0) return;
+        if (mFile == null || mFile.isEmpty()) return;
         mFile.remove(file);
     }
 

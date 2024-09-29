@@ -272,7 +272,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        mBack.setOnClickListener(v -> onBackPressed());
+        mBack.setOnClickListener(v -> finish());
     }
 
 }

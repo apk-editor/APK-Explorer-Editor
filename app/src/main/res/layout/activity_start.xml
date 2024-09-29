@@ -44,7 +44,6 @@
             android:id="@+id/start_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/colorBlue"
             android:layout_marginTop="75dp"
             app:cardCornerRadius="15dp"
             android:visibility="gone" >
@@ -58,7 +57,6 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
                     android:textStyle="bold|italic"
                     android:text="@string/start"
                     android:textAllCaps="true"
@@ -70,7 +68,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_back"
-                    android:tint="@color/colorWhite"
                     android:layout_marginEnd="5dp"
                     android:background="@null"
                     android:clickable="false"

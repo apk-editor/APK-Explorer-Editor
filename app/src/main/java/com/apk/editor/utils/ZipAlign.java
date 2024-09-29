@@ -130,7 +130,7 @@ public class ZipAlign {
 
         // done analyzing! now we're going to stream the aligned zip
         file.seek(0);
-        if (neededAlignments.size() == 0) {
+        if (neededAlignments.isEmpty()) {
             // there is no needed alignment, stream it all!
             byte[] buffer = new byte[8192];
             while (file.read(buffer) != -1) out.write(buffer);

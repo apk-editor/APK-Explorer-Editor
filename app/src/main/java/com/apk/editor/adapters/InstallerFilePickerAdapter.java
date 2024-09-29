@@ -48,9 +48,6 @@ public class InstallerFilePickerAdapter extends RecyclerView.Adapter<InstallerFi
         try {
             if (new File(this.data.get(position)).isDirectory()) {
                 holder.mIcon.setImageDrawable(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_folder));
-                if (sThemeUtils.isDarkTheme(holder.mIcon.getContext())) {
-                    holder.mIcon.setBackground(ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_circle));
-                }
                 holder.mIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mIcon.getContext()));
                 holder.mDescription.setVisibility(View.GONE);
                 holder.mSize.setVisibility(View.GONE);

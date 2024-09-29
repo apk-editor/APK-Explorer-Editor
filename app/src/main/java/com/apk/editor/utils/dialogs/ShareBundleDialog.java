@@ -1,5 +1,6 @@
 package com.apk.editor.utils.dialogs;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.apk.editor.R;
@@ -15,6 +16,7 @@ public class ShareBundleDialog {
 
     private final MaterialAlertDialogBuilder mDialogBuilder;
 
+    @SuppressLint("StringFormatInvalid")
     public ShareBundleDialog(String path, Context context) {
         mDialogBuilder = new MaterialAlertDialogBuilder(context)
                 .setIcon(R.mipmap.ic_launcher)

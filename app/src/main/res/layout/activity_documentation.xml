@@ -9,19 +9,17 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:background="@color/colorBlack">
+            android:gravity="center_vertical" >
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scaleType="center"
-                    android:background="@color/colorBlack"
                     android:layout_gravity="start|center_vertical"
                     android:src="@drawable/ic_back"
-                    android:tint="?attr/colorAccent"
-                    android:layout_marginEnd="10dp" />
+                    android:layout_marginEnd="10dp"
+                    android:background="@null" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
@@ -29,7 +27,6 @@
                     android:gravity="center_vertical"
                     android:layout_gravity="start"
                     android:layout_marginStart="30dp"
-                    android:textColor="?attr/colorAccent"
                     android:text="@string/documentation"
                     android:textStyle="bold"
                     android:textSize="18sp"

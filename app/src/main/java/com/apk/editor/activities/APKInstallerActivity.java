@@ -94,7 +94,7 @@ public class APKInstallerActivity extends AppCompatActivity {
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
 
-                sFileUtils.delete(getExternalFilesDir("APK"));
+                sFileUtils.delete(Objects.requireNonNull(getExternalFilesDir("APK")));
                 if (filePath == null) {
                     String fileName = Objects.requireNonNull(DocumentFile.fromSingleUri(activity, uri)).getName();
                     mFile = new File(getExternalFilesDir("APK"), Objects.requireNonNull(fileName));
