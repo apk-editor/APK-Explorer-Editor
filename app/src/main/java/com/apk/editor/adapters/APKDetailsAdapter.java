@@ -1,6 +1,5 @@
 package com.apk.editor.adapters;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
-
-import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on November 07, 2021
@@ -37,8 +34,6 @@ public class APKDetailsAdapter extends RecyclerView.Adapter<APKDetailsAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull APKDetailsAdapter.ViewHolder holder, int position) {
         holder.mText.setText(data.get(position));
-        holder.mCard.setCardBackgroundColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
-        holder.mCard.setStrokeColor(sThemeUtils.isDarkTheme(holder.mCard.getContext()) ? Color.DKGRAY : Color.LTGRAY);
     }
 
     @Override
