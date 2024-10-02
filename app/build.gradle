@@ -14,8 +14,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdk 34
-        versionCode 28
-        versionName "v0.28"
+        versionCode 29
+        versionName "v0.29"
         vectorDrawables.useSupportLibrary = true
         testFunctionalTest = false
         testHandleProfiling = false
@@ -54,7 +54,7 @@ android {
 
 dependencies {
     implementation 'com.android.tools.build:apksig:8.1.4'
-    implementation 'com.github.apk-editor:aXML:743632cf62'
+    implementation 'com.github.apk-editor:aXML:0381822ba2'
     implementation 'com.github.sunilpaulmathew:CrashReporter:6b6c74abaa'
 
     def sCommon_Version = 'efc9dce669'

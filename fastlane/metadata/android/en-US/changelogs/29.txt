@@ -1,0 +1,6 @@
+* Redesigned app UI according to Material 3 guidelines.
+* Added option to choose decompiling (simple or full).
+* Now decompiles individual dex files.
+* Updated build tools and dependencies.
+* Added Greek translation and updated others.
+* Miscellaneous changes.

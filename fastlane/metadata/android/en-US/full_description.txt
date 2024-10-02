@@ -3,10 +3,10 @@
 <b>Features</b>
 
 * A beautifully designed list view of installed applications.
-* Explore and navigate through the contents of an installed application.
+* Explore an installed application or APK file picked from the device storage and navigate through its contents.
 * Export and easily manage (install, share etc.) APK's/Split APK's into device storage.
 * Includes a feature-rich APK/Split APK/App bundle installer (easily pick and install files from device storage)
-* Easily extract an app icon by single-clicking on it.
+* Easily extract app icons by single-clicking on them.
 * Provides basic information about important resource files.
 * View graphics, texts, binary XML, and many more.
 * Save/Export individual resource files to device storage.
