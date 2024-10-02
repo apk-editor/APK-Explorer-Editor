@@ -71,7 +71,7 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
                         sCommonUtils.getDrawable(R.drawable.ic_back, v.getContext()),
                         sCommonUtils.getColor(sThemeUtils.isDarkTheme(v.getContext()) ?
                                 R.color.colorWhite : R.color.colorDark, v.getContext()),
-                        20, v.getContext().getString(R.string.app_name), "2023-2024, APK Explorer & Editor",
+                        20, v.getContext().getString(R.string.app_name), "2024-2025, APK Explorer & Editor",
                         BuildConfig.VERSION_NAME).launchCredits(v.getContext());
             } else {
                 Intent share_app = new Intent();
