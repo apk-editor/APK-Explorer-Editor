@@ -56,6 +56,7 @@
     <string name="unsupported_file">"Nem támogatott fájl"</string>
     <string name="unsupported_file_arsc">"Ön a 'resources.arsc' elemet választotta, amit sajnos az AEE nem tud elolvasni.
 
+
         Mi az resources.arsc?
         A resources.arsc egy bináris erőforrásfájl, amely egy alkalmazás konfiguráció-specifikus értékeit tartalmazza, például egész számokat, logikai értékeket és karakterláncokat, valamint hivatkozásokat összetettebb erőforrásokra, például UI-elrendezésekre.
 
@@ -64,7 +65,7 @@
     <string name="unsupported_file_dex">"Egy 'DEX' (.dex) fájlt választott, amelyet sajnos az AEE nem tud olvasni.
 
         Mi az a DEX fájl?
-        A Dex fájlok kódját végső soron az Android Runtime hajtja végre.  Minden APK-nak rendelkeznie kell egy 'classes.dex' fájllal, amely hivatkozik az alkalmazáson belül használt osztályokra vagy metódusokra.  Lényegében a kódbázison belül használt bármely tevékenység, objektum, vagy töredék, bájtokká alakul egy Dex-fájlban, amely Android-alkalmazásként futtatható.
+        A Dex fájlok kódját végső soron az Android Runtime hajtja végre. Minden APK-nak rendelkeznie kell egy 'classes.dex' fájllal, amely hivatkozik az alkalmazáson belül használt osztályokra vagy metódusokra. Lényegében a kódbázison belül használt bármely tevékenység, objektum, vagy töredék, bájtokká alakul egy Dex-fájlban, amely Android-alkalmazásként futtatható.
 
         Hogyan lehet olvasni egy DEX fájlt?
         A DEX-fájlt 'jar' formátumra, majd később 'Java' fájllá kell konvertálni olyan eszközök segítségével, mint a 'dex2jar' és a 'JD-GUI'."</string>
@@ -90,7 +91,7 @@
     <string name="exporting">"%s exportálása…"</string>
     <string name="got_it">"Megvan"</string>
     <string name="install_storage">"Telepítés a tárhelyről"</string>
-    <string name="installer_message">"Az AEE Felosztott APK telepítője kezeli a normál APK-kat, a felosztott APK-kat mint az 'xapk', 'apks' és 'apkm' alkalmazás csomagokat.  A telepítés elindításához egyszerűen válassza ki a telepítőfájl(oka)t a következő képernyőn és kövesse a megjelenő utasításokat."</string>
+    <string name="installer_message">"Az AEE Felosztott APK telepítője kezeli a normál APK-kat, a felosztott APK-kat mint az 'xapk', 'apks' és 'apkm' alkalmazás csomagokat. A telepítés elindításához egyszerűen válassza ki a telepítőfájl(oka)t a következő képernyőn és kövesse a megjelenő utasításokat."</string>
     <string name="installation_cancel_message">"Biztosan megszakítja a telepítést?"</string>
     <string name="name_empty">"A név nem lehet üres. Megszakítás."</string>
     <string name="ok">"OK"</string>
@@ -141,7 +142,7 @@
     <string name="deleting">"'%s' törlése…"</string>
     <string name="grant">"Engedélyez"</string>
     <string name="important">"Fontos"</string>
-    <string name="assembling">"Összerakás
+    <string name="assembling">"
         '%s'"</string>
     <string name="build">"Épít"</string>
     <string name="building">"'%s' építése…"</string>
@@ -182,4 +183,10 @@
     <string name="xml_corrupted">"Az XML karakterlánc sérült. Megszakítás…"</string>
     <string name="xml_decode_failed">"%s dekódolása nem sikerült"</string>
     <string name="zip_aligning">"Zip igazítás…"</string>
+    <string name="delete_folder">"Mappa törlése"</string>
+    <string name="delete_selected_files">"A kiválasztott mappa törlése"</string>
+    <string name="export_selected_files">"A kiválasztott fájlok exportálása"</string>
+    <string name="explore_options">"Egy alkalmazás felfedezésénél"</string>
+    <string name="explore_options_full">"Teljes visszafejtés (lassabb)"</string>
+    <string name="explore_options_simple">"Egyszerű visszafejtés (gyorsabb)"</string>
 </resources>

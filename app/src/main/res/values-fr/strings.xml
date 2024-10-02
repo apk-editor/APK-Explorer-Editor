@@ -180,4 +180,8 @@
     <string name="root">"Root"</string>
     <string name="xml_corrupted">"La phrase XML est corrompue. Abandon…"</string>
     <string name="xml_decode_failed">"Échec du décodage de %s"</string>
+    <string name="zip_aligning">"Alignement du zip"</string>
+    <string name="delete_folder">"Supprimer le dossier"</string>
+    <string name="delete_selected_files">"Supprimer les fichiers sélectionnés"</string>
+    <string name="export_selected_files">"Exporter les fichiers sélectionnés"</string>
 </resources>

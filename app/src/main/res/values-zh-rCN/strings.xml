@@ -70,7 +70,7 @@
     <string name="signing_title">"应用签名"</string>
     <string name="apk_installer">"AEE APK 安装器"</string>
     <string name="bundle_install_question">"是否安装拆分应用 '%s' ？"</string>
-    <string name="export_app_question">"是否导出  '%s' 到设备存储？"</string>
+    <string name="export_app_question">"是否导出 '%s' 到设备存储？"</string>
     <string name="export_project_question">"是否将此项目文件夹导出到设备存储？"</string>
     <string name="export_project_replace">"'%s' 已存在！是否替换？"</string>
     <string name="export_resign">"导出并重新签名"</string>
@@ -124,7 +124,7 @@
     <string name="transfer_exported_apk">"正在将之前导出的APK转移到新路径…"</string>
     <string name="user_interface">"用户界面"</string>
     <string name="decompiling">"反编译 %s …"</string>
-    <string name="deleting">"正在删除 %s  …"</string>
+    <string name="deleting">"正在删除 %s …"</string>
     <string name="grant">"授予"</string>
     <string name="important">"重要"</string>
     <string name="assembling">"正在汇编
@@ -163,4 +163,15 @@
     <string name="signing_summary">"要使用自定义密钥签署 APK 文件，本应用需要一枚 pk8 格式的私钥和从同一密钥导出的 X509证书。单击此处了解更多有关创建私钥和 X509证书的内容。"</string>
     <string name="x509_certificate">"X509证书"</string>
     <string name="x509_certificate_summary">"选择自定义的 X509 证书"</string>
+    <string name="clearing_cache_message">"清除缓存中…"</string>
+    <string name="root">"Root"</string>
+    <string name="xml_corrupted">"XML 字符串损坏。中断中…"</string>
+    <string name="xml_decode_failed">"未能解码 %s"</string>
+    <string name="zip_aligning">"正在对齐 Zip…"</string>
+    <string name="delete_folder">"删除文件夹"</string>
+    <string name="delete_selected_files">"删除选中的文件"</string>
+    <string name="export_selected_files">"导出选中的文件"</string>
+    <string name="explore_options">"探索应用时"</string>
+    <string name="explore_options_full">"完整反编译（较慢）"</string>
+    <string name="explore_options_simple">"简单反编译（较快）"</string>
 </resources>
