@@ -161,9 +161,6 @@
     <string name="cancelling">"Скасування…"</string>
     <string name="replace_file_question">"Замінити %s вибраним файлом?"</string>
     <string name="update">"Оновити"</string>
-    <string name="signing_summary">"Щоб підписувати APK власним ключем, AEE вимагає закритий ключ у форматі pk8 і сертифікат X509, експортований із того самого ключа. Натисніть тут, щоб дізнатися більше про створення закритого ключа та сертифіката X509."</string>
-    <string name="x509_certificate">"Сертифікат X509"</string>
-    <string name="x509_certificate_summary">"Вибрати власний сертифікат X509"</string>
     <string name="clearing_cache_message">"Очищення Кеша…"</string>
     <string name="root">"Root"</string>
     <string name="xml_corrupted">"Рядок XML пошкоджено.  Переривання"</string>

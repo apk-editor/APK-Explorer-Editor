@@ -171,6 +171,5 @@
     <string name="sdk_compile">"تجميع SDK: ٪s"</string>
     <string name="sdk_minimum">"الحد الأدنى من SDK: ٪s"</string>
     <string name="signing_select_question">"هل تريد استخدام الملف المحدد من ٪s الجديد؟"</string>
-    <string name="signing_summary">"التوقيع_الملخص"</string>
     <string name="root">"جذر"</string>
 </resources>

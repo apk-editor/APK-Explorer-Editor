@@ -170,9 +170,6 @@
     <string name="cancelling">"रद्द कर रहा है "</string>
     <string name="replace_file_question">"%s को चयनित फ़ाइल से बदलें?"</string>
     <string name="update">"अद्यतन"</string>
-    <string name="signing_summary">"कस्टम कुंजी के साथ एपीके पर हस्ताक्षर करने के लिए, एईई को pk8 प्रारूप में एक निजी कुंजी और उसी कुंजी से निर्यात किए गए X509 Certificate की आवश्यकता होती है। निजी कुंजी और X509 Certificate बनाने के बारे में अधिक पढ़ने के लिए यहां क्लिक करें।"</string>
-    <string name="x509_certificate">" X509Certificate"</string>
-    <string name="x509_certificate_summary">"कस्टम X509Certificate चुनें"</string>
     <string name="clearing_cache_message">"Cache साफ़ किया जा रहा है…"</string>
     <string name="root">"Root"</string>
     <string name="xml_corrupted">"XML स्ट्रिंग दूषित है. रद्द हो रहा है"</string>

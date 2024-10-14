@@ -174,9 +174,6 @@
     <string name="cancelling">"กำลังยกเลิก…"</string>
     <string name="replace_file_question">"แทนที่ %s ด้วยไฟล์ที่เลือก?"</string>
     <string name="update">"อัปเดต"</string>
-    <string name="signing_summary">"ในการลงนาม APK ด้วยรหัสที่กำหนดเอง AEE ต้องใช้รหัสส่วนตัวในรูปแบบ pk8 และใบรับรอง X509 ที่ส่งออกจากรหัสเดียวกัน คลิกที่นี่เพื่ออ่านเพิ่มเติมเกี่ยวกับการสร้างคีย์ส่วนตัวและ X509Certificate"</string>
-    <string name="x509_certificate">"X509ใบรับรอง"</string>
-    <string name="x509_certificate_summary">"เลือก X509Certificate แบบกำหนดเอง"</string>
     <string name="clearing_cache_message">"กำลังล้างแคช…"</string>
     <string name="root">"ราก"</string>
     <string name="xml_corrupted">"สตริง XML เสียหาย กำลังยกเลิก…"</string>

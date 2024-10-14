@@ -175,9 +175,6 @@
     <string name="cancelling">"Visszavonás…"</string>
     <string name="replace_file_question">"%s fájlt lecseréli a kiválasztott fájlra?"</string>
     <string name="update">"Frissítés"</string>
-    <string name="signing_summary">"Az APK-k egyéni kulccsal történő aláírásához az AEE-nek pk8 formátumú privát kulcsra és egy ugyanabból a kulcsból exportált X509-tanúsítványra van szüksége. Kattintson ide, ha többet szeretne megtudni a privát kulcs és az X509-tanúsítvány létrehozásáról."</string>
-    <string name="x509_certificate">"X509-tanúsítvány"</string>
-    <string name="x509_certificate_summary">"Egyéni X509-tanúsítvány kiválasztása"</string>
     <string name="clearing_cache_message">"Gyorsítótár törlés…"</string>
     <string name="root">"Root"</string>
     <string name="xml_corrupted">"Az XML karakterlánc sérült. Megszakítás…"</string>

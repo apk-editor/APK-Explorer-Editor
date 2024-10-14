@@ -174,9 +174,6 @@
     <string name="cancelling">"Отмена…"</string>
     <string name="replace_file_question">"Заменить %s выбранным файлом?"</string>
     <string name="update">"Обновлять"</string>
-    <string name="signing_summary">"Norint pasirašyti APK failus naudojant pasirinktinį raktą, \"AEE\" reikia pk8 formato privataus rakto ir iš to paties rakto eksportuoto \"X509Certificate\". Daugiau informacijos apie privataus rakto ir \"X509Certificate\" kūrimą rasite čia."</string>
-    <string name="x509_certificate">"X509Certificate"</string>
-    <string name="x509_certificate_summary">"Pasirinkite pasirinktinį \"X509Certificate"</string>
     <string name="clearing_cache_message">"Išvalyti talpyklą…"</string>
     <string name="root">"Šaknis"</string>
     <string name="xml_corrupted">"XML eilutė sugadinta. Nutraukiama…"</string>

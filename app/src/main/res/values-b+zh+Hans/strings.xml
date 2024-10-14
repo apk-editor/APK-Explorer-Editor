@@ -160,9 +160,6 @@
     <string name="cancelling">"取消中…"</string>
     <string name="replace_file_question">"用所选文件取代 %s？"</string>
     <string name="update">"更新"</string>
-    <string name="signing_summary">"要使用自定义密钥签署 APK 文件，本应用需要一枚 pk8 格式的私钥和从同一密钥导出的 X509证书。单击此处了解更多有关创建私钥和 X509证书的内容。"</string>
-    <string name="x509_certificate">"X509证书"</string>
-    <string name="x509_certificate_summary">"选择自定义的 X509 证书"</string>
     <string name="clearing_cache_message">"清除缓存中…"</string>
     <string name="root">"Root"</string>
     <string name="xml_corrupted">"XML 字符串损坏。中断中…"</string>

@@ -136,7 +136,6 @@
     <string name="signing_default">Υπογραφή με προεπιλεγμένο Κλειδί</string>
     <string name="signing_question">Χρήση \'%s\' ως το νέο</string>
     <string name="signing_select_question">Χρήση επιλεγμένου αρχείου ως νέο %s?</string>
-    <string name="signing_summary">Για να υπογράψετε τα APKs με ένα προσαρμοσμένο κλειδί, το AEE απαιτεί ιδιωτικό κλειδί σε μορφή pk8 και πιστοποιητικό X509 που εξάγεται από το ίδιο κλειδί. Κάντε κλικ εδώ για να διαβάσετε περισσότερα σχετικά με τη δημιουργία ενός ιδιωτικού κλειδιού και πιστοποιητικού X509.</string>
     <string name="signing_title">Υπογραφή APK</string>
     <string name="size">Μέγεθος: %s</string>
     <string name="sort_by">Ταξινόμηση Εφαρμογών</string>
@@ -167,8 +166,6 @@
     <string name="user_interface">Διεπαφή Χρήστη</string>
     <string name="warning">Προειδοποίηση</string>
     <string name="wrong_extension">Επιλέξτε ένα αρχείο με επέκταση %s.</string>
-    <string name="x509_certificate">Πιστοποιητικό X509</string>
-    <string name="x509_certificate_summary">Επιλογή προσαρμοσμένου πιστοποιητικού X509</string>
     <string name="xml_corrupted">Η συμβολοσειρά XML είναι κατεστραμμένη. Ματαίωση…</string>
     <string name="xml_decode_failed">Αποτυχία αποκωδικοποίησης %s</string>
     <string name="yes">Ναι</string>

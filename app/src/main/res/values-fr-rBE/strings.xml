@@ -174,9 +174,6 @@
     <string name="cancelling">"Annulation…"</string>
     <string name="replace_file_question">"Remplacer %s par le fichier sélectionné ?"</string>
     <string name="update">"Mise à jour"</string>
-    <string name="signing_summary">"Afin de signer les APK avec une clé personnalisée, AEE nécessite une clé privée au format pk8 et un certificat X509 exporté à partir de la même clé. Cliquez ici pour en savoir plus sur la création d'une clé privée et d'un certificat X509."</string>
-    <string name="x509_certificate">"X509Certificat"</string>
-    <string name="x509_certificate_summary">"Sélectionnez le certificat X509 personnalisé"</string>
     <string name="clearing_cache_message">"Effacement du cache…"</string>
     <string name="root">"Racine"</string>
     <string name="xml_corrupted">"La chaîne XML est corrompue. Abandon…"</string>
