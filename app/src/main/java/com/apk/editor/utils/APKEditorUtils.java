@@ -51,9 +51,10 @@ public class APKEditorUtils {
                 if (mFile.isDirectory()) {
                     zipFile.addFolder(mFile);
                 } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && mFile.getName().equalsIgnoreCase("resources.arsc")) {
+                    if (mFile.getName().startsWith("res/") && !mFile.getName().endsWith(".xml") || mFile.getName().equalsIgnoreCase("resources.arsc")) {
                         ZipParameters zipParameters = new ZipParameters();
                         zipParameters.setCompressionMethod(CompressionMethod.STORE);
+                        zipParameters.setEntrySize(mFile.length());
                         zipFile.addFile(mFile, zipParameters);
                     } else {
                         zipFile.addFile(mFile);
