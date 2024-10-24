@@ -20,14 +20,20 @@
             android:layout_marginEnd="10dp"
             android:background="@null" />
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
             android:id="@+id/search_word"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginEnd="120dp"
+            android:inputType="textAutoComplete"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="40dp"
+            android:imeOptions="actionDone"
+            android:layout_gravity="center"
             android:hint="@string/search"
+            android:cursorVisible="true"
             android:visibility="gone"
             android:gravity="center"
+            android:padding="10dp"
             android:maxLines="1" />
 
         <com.google.android.material.textview.MaterialTextView

@@ -13,9 +13,11 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
@@ -33,8 +35,10 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.CommonViews;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,17 +55,20 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class APKsFragment extends Fragment {
 
+    private AppCompatAutoCompleteTextView mSearchWord;
     private LinearLayoutCompat mProgress;
+    private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
     private APKsAdapter mRecycleViewAdapter;
+    private String mSearchText = null;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mRootView = inflater.inflate(R.layout.fragment_apks, container, false);
 
-        Common.initializeAPKsTitle(mRootView, R.id.app_title);
-        Common.initializeAPKsSearchWord(mRootView, R.id.search_word);
+        mTitle = mRootView.findViewById(R.id.app_title);
+        mSearchWord = mRootView.findViewById(R.id.search_word);
         mProgress = mRootView.findViewById(R.id.progress_layout);
         AppCompatImageButton mSearchButton = mRootView.findViewById(R.id.search_button);
         AppCompatImageButton mSortButton = mRootView.findViewById(R.id.sort_button);
@@ -72,7 +79,7 @@ public class APKsFragment extends Fragment {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        Common.getAPKsTitle().setText(getString(R.string.apps_exported));
+        mTitle.setText(getString(R.string.apps_exported));
         mTabLayout.setVisibility(View.VISIBLE);
 
         mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.apks)));
@@ -88,13 +95,13 @@ public class APKsFragment extends Fragment {
                     case 0:
                         if (!mStatus.equals("apks")) {
                             sCommonUtils.saveString("apkTypes", "apks", requireActivity());
-                            loadAPKs(requireActivity());
+                            loadAPKs(mSearchText, requireActivity());
                         }
                         break;
                     case 1:
                         if (!mStatus.equals("bundles")) {
                             sCommonUtils.saveString("apkTypes", "bundles", requireActivity());
-                            loadAPKs(requireActivity());
+                            loadAPKs(mSearchText, requireActivity());
                         }
                         break;
                 }
@@ -110,18 +117,18 @@ public class APKsFragment extends Fragment {
         });
 
         mSearchButton.setOnClickListener(v -> {
-            if (Common.getAPKsSearchWord().getVisibility() == View.VISIBLE) {
-                Common.getAPKsSearchWord().setVisibility(View.GONE);
-                Common.getAPKsTitle().setVisibility(View.VISIBLE);
-                if (Common.getAPKsSearchWord() != null) {
-                    Common.getAPKsSearchWord().setText(null);
+            if (mSearchWord.getVisibility() == View.VISIBLE) {
+                mSearchWord.setVisibility(View.GONE);
+                mTitle.setVisibility(View.VISIBLE);
+                if (mSearchWord != null) {
+                    mSearchWord.setText(null);
                 }
-                AppData.toggleKeyboard(0, Common.getAPKsSearchWord(), requireActivity());
+                AppData.toggleKeyboard(0, mSearchWord, requireActivity());
             } else {
-                Common.getAPKsSearchWord().setVisibility(View.VISIBLE);
-                Common.getAPKsSearchWord().requestFocus();
-                Common.getAPKsTitle().setVisibility(View.GONE);
-                AppData.toggleKeyboard(1, Common.getAPKsSearchWord(), requireActivity());
+                mSearchWord.setVisibility(View.VISIBLE);
+                mSearchWord.requestFocus();
+                mTitle.setVisibility(View.GONE);
+                AppData.toggleKeyboard(1, mSearchWord, requireActivity());
             }
         });
 
@@ -133,16 +140,16 @@ public class APKsFragment extends Fragment {
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
                     sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
-                    loadAPKs(requireActivity());
+                    loadAPKs(mSearchText, requireActivity());
                 }
                 return false;
             });
             popupMenu.show();
         });
 
-        loadAPKs(requireActivity());
+        loadAPKs(mSearchText, requireActivity());
 
-        Common.getAPKsSearchWord().addTextChangedListener(new TextWatcher() {
+        mSearchWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -153,13 +160,30 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Common.setSearchWord(s.toString().toLowerCase());
-                loadAPKs(requireActivity());
+                mSearchText = s.toString().toLowerCase();
+                loadAPKs(mSearchText, requireActivity());
             }
         });
 
         mAddButton.setOnClickListener(v -> launchInstallerFilePicker());
         mBottomLayout.setOnClickListener(v -> launchInstallerFilePicker());
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (Common.isBusy()) return;
+                if (mSearchText != null) {
+                    if (mSearchWord != null && mSearchWord.getVisibility() == View.VISIBLE) {
+                        mSearchWord.setVisibility(View.GONE);
+                        mTitle.setVisibility(View.VISIBLE);
+                        mSearchWord.setText(null);
+                    }
+                    mSearchText = null;
+                    return;
+                }
+                CommonViews.navigateToFragment(requireActivity(), R.id.nav_projects);
+            }
+        });
 
         return mRootView;
     }
@@ -219,7 +243,7 @@ public class APKsFragment extends Fragment {
         }
     }
 
-    private void loadAPKs(Activity activity) {
+    private void loadAPKs(String searchWord, Activity activity) {
         new sExecutor() {
 
             @Override
@@ -231,7 +255,7 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void doInBackground() {
-                mRecycleViewAdapter = new APKsAdapter(APKData.getData(activity));
+                mRecycleViewAdapter = new APKsAdapter(APKData.getData(searchWord, activity), searchWord);
             }
 
             @Override
@@ -323,7 +347,7 @@ public class APKsFragment extends Fragment {
 
         if (Common.isReloading()) {
             Common.isReloading(false);
-            loadAPKs(requireActivity());
+            loadAPKs(mSearchText, requireActivity());
         }
     }
     

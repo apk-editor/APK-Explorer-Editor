@@ -43,6 +43,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
 
     private LinearLayoutCompat mProgressLayout;
     private InstallerFilePickerAdapter mRecycleViewAdapter;
+    private MaterialCardView mSelect;
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
     public static final String TITLE_INTENT = "title";
@@ -56,7 +57,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
         AppCompatImageButton mBack = findViewById(R.id.back);
         mTitle = findViewById(R.id.title);
         AppCompatImageButton mSortButton = findViewById(R.id.sort);
-        Common.initializeView(findViewById(android.R.id.content), R.id.select);
+        mSelect = findViewById(R.id.select);
         mProgressLayout = findViewById(R.id.progress_layout);
         mRecyclerView = findViewById(R.id.recycler_view);
 
@@ -75,7 +76,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
         }
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, APKExplorer.getSpanCount(this)));
-        mRecycleViewAdapter = new InstallerFilePickerAdapter(APKExplorer.getData(getFilesList(), false, this));
+        mRecycleViewAdapter = new InstallerFilePickerAdapter(APKExplorer.getData(getFilesList(), false, this), this);
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
         if (getIntent().getStringExtra(TITLE_INTENT) != null) {
@@ -103,13 +104,13 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                     Common.getAPKList().add(APKExplorer.getData(getFilesList(), false, this).get(position));
                 }
                 mRecycleViewAdapter.notifyItemChanged(position);
-                Common.getSelectCard().setVisibility(Common.getAPKList().isEmpty() ? View.GONE : View.VISIBLE);
+                mSelect.setVisibility(Common.getAPKList().isEmpty() ? View.GONE : View.VISIBLE);
             } else {
                 sCommonUtils.snackBar(findViewById(android.R.id.content), getString(R.string.wrong_extension, ".apks/.apkm/.xapk")).show();
             }
         });
 
-        Common.getSelectCard().setOnClickListener(v -> {
+        mSelect.setOnClickListener(v -> {
             if (APKData.findPackageName(this) != null) {
                 if (Common.getAPKList().size() > 1) {
                     APKExplorer.handleAPKs(true, this);
@@ -159,7 +160,7 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
 
             @Override
             public void doInBackground() {
-                mRecycleViewAdapter = new InstallerFilePickerAdapter(APKExplorer.getData(getFilesList(), false, activity));
+                mRecycleViewAdapter = new InstallerFilePickerAdapter(APKExplorer.getData(getFilesList(), false, activity), activity);
             }
 
             @Override
@@ -172,9 +173,9 @@ public class InstallerFilePickerActivity extends AppCompatActivity {
                             : new File(Common.getPath()).getName());
                 }
                 if (Common.getAPKList().isEmpty()) {
-                    Common.getSelectCard().setVisibility(View.GONE);
+                    mSelect.setVisibility(View.GONE);
                 } else {
-                    Common.getSelectCard().setVisibility(View.VISIBLE);
+                    mSelect.setVisibility(View.VISIBLE);
                 }
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mProgressLayout.setVisibility(View.GONE);

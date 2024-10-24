@@ -25,13 +25,13 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class Projects {
 
-    public static List<String> getData(Context context) {
+    public static List<String> getData(String searchWord, Context context) {
         List<String> mData = new ArrayList<>();
         for (File mFile : Objects.requireNonNull(new File(context.getCacheDir().toString()).listFiles())) {
             if (mFile.exists() && mFile.isDirectory() && new File(mFile, ".aeeBackup/appData").exists()) {
-                if (Common.getSearchWord() == null) {
+                if (searchWord == null) {
                     mData.add(mFile.getAbsolutePath());
-                } else if (Common.isTextMatched(mFile.getName(), Common.getSearchWord())) {
+                } else if (Common.isTextMatched(mFile.getName(), searchWord)) {
                     mData.add(mFile.getAbsolutePath());
                 }
             }

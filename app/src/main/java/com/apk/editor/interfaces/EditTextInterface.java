@@ -12,7 +12,7 @@ import com.apk.editor.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 /*
- * Created by sunilpaulmathew <sunil.kde@gmail.com> on January 17, 2023
+ * Created by APK Explorer & Editor <apkeditor@protonmail.com> on Jan 17, 2023
  */
 public abstract class EditTextInterface {
 

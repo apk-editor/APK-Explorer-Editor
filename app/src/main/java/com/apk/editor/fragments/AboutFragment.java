@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -15,6 +16,7 @@ import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.adapters.AboutAdapter;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.CommonViews;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,13 @@ public class AboutFragment extends Fragment {
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), sCommonUtils.getOrientation(requireActivity()) == Configuration.ORIENTATION_LANDSCAPE ? 3 : 2));
         AboutAdapter mRecycleViewAdapter = new AboutAdapter(getData());
         mRecyclerView.setAdapter(mRecycleViewAdapter);
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                CommonViews.navigateToFragment(requireActivity(), R.id.nav_apks);
+            }
+        });
 
         return mRootView;
     }

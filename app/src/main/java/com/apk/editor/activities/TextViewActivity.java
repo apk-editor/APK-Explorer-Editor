@@ -7,7 +7,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +29,7 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class TextViewActivity extends AppCompatActivity {
 
-    private AppCompatEditText mSearchWord;
+    private AppCompatAutoCompleteTextView mSearchWord;
     private LinearLayoutCompat mProgressLayout;
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;

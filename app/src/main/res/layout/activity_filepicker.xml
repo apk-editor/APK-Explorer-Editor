@@ -1,62 +1,55 @@
-<RelativeLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:gravity="center_vertical"
+            android:padding="10dp" >
 
-            <FrameLayout
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/back"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:gravity="center_vertical"
+                android:src="@drawable/ic_back"
+                android:background="@null" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="40dp"
+                android:textStyle="bold"
                 android:gravity="center_vertical"
-                android:padding="10dp" >
+                android:textIsSelectable="true"
+                android:textSize="20sp" />
 
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/back"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|start"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/ic_back"
-                    android:background="@null" />
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/sort"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:gravity="center_vertical"
+                android:src="@drawable/ic_sort"
+                android:background="@null" />
+        </FrameLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="50dp"
-                    android:layout_marginEnd="40dp"
-                    android:textStyle="bold"
-                    android:gravity="center_vertical"
-                    android:textIsSelectable="true"
-                    android:textSize="20sp" />
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/sort"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|end"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/ic_sort"
-                    android:background="@null" />
-            </FrameLayout>
-
-            <include layout="@layout/progress_layout" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <include layout="@layout/progress_layout" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <include layout="@layout/progress_layout" />
-</RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</androidx.appcompat.widget.LinearLayoutCompat>

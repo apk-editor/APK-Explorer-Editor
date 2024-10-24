@@ -37,9 +37,11 @@ import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
 
     private static List<String> data;
+    private static String searchWord;
 
-    public ProjectsAdapter(List<String> data) {
+    public ProjectsAdapter(List<String> data, String searchWord) {
         ProjectsAdapter.data = data;
+        ProjectsAdapter.searchWord = searchWord;
     }
 
     @NonNull
@@ -54,9 +56,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
     public void onBindViewHolder(@NonNull ProjectsAdapter.ViewHolder holder, int position) {
         try {
             holder.mAppIcon.setImageBitmap(APKExplorer.getAppIcon(data.get(position) + "/.aeeBackup/appData"));
-            if (Common.getSearchWord() != null && Common.isTextMatched((Objects.requireNonNull(APKExplorer.getAppName(data.get(position) + "/.aeeBackup/appData"))), Common.getSearchWord())) {
-                holder.mAppName.setText(APKEditorUtils.fromHtml(Objects.requireNonNull(APKExplorer.getAppName(data.get(position) + "/.aeeBackup/appData")).replace(Common.getSearchWord(),
-                        "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
+            if (searchWord != null && Common.isTextMatched((Objects.requireNonNull(APKExplorer.getAppName(data.get(position) + "/.aeeBackup/appData"))), searchWord)) {
+                holder.mAppName.setText(APKEditorUtils.fromHtml(Objects.requireNonNull(APKExplorer.getAppName(data.get(position) + "/.aeeBackup/appData")).replace(searchWord,
+                        "<b><i><font color=\"" + Color.RED + "\">" + searchWord + "</font></i></b>")));
             } else {
                 holder.mAppName.setText(APKExplorer.getAppName(data.get(position) + "/.aeeBackup/appData"));
             }

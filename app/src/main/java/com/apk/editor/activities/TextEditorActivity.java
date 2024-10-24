@@ -7,7 +7,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
@@ -46,7 +46,7 @@ import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
  */
 public class TextEditorActivity extends AppCompatActivity {
 
-    private AppCompatEditText mText;
+    private AppCompatAutoCompleteTextView mText;
     private LinearLayoutCompat mProgressLayout;
     public static final String PATH_INTENT = "path";
     private String mTextContents = null;

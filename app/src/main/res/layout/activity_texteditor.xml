@@ -52,18 +52,18 @@
         app:cardCornerRadius="5dp"
         app:strokeWidth="0.1dp" >
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp" >
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/text"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:textColorHint="@null"
                 android:background="@null"
                 android:textSize="15sp" />
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
     </com.google.android.material.card.MaterialCardView>
 </androidx.appcompat.widget.LinearLayoutCompat>

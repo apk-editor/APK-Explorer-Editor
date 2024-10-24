@@ -8,29 +8,29 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical" >
+            android:layout_height="50dp"
+            android:layout_gravity="start"
+            android:gravity="start"
+            android:orientation="horizontal" >
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="center"
-                    android:layout_gravity="start|center_vertical"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:src="@drawable/ic_back"
-                    android:layout_marginEnd="10dp"
-                    android:background="@null" />
+                    android:background="@null"
+                    android:layout_gravity="start|center_vertical" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:layout_gravity="start"
-                    android:layout_marginStart="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:layout_marginStart="50dp"
                     android:text="@string/signing_title"
+                    android:gravity="start"
                     android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:padding="10dp" />
+                    android:textSize="20sp"
+                    android:padding="5dp" />
         </FrameLayout>
 
         <FrameLayout

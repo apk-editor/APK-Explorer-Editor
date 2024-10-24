@@ -1,6 +1,7 @@
 package com.apk.editor.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.CommonViews;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -27,12 +29,14 @@ import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
  */
 public class InstallerFilePickerAdapter extends RecyclerView.Adapter<InstallerFilePickerAdapter.ViewHolder> {
 
-    private static ClickListener clickListener;
+    private final Activity activity;
 
     private final List<String> data;
+    private static ClickListener clickListener;
 
-    public InstallerFilePickerAdapter(List<String> data) {
+    public InstallerFilePickerAdapter(List<String> data, Activity activity) {
         this.data = data;
+        this.activity = activity;
     }
 
     @NonNull
@@ -65,7 +69,7 @@ public class InstallerFilePickerAdapter extends RecyclerView.Adapter<InstallerFi
                     } else {
                         Common.getAPKList().add(this.data.get(position));
                     }
-                    Common.getSelectCard().setVisibility(Common.getAPKList().isEmpty() ? View.GONE : View.VISIBLE);
+                    CommonViews.getCardView(activity, R.id.select).setVisibility(Common.getAPKList().isEmpty() ? View.GONE : View.VISIBLE);
                 });
                 holder.mSize.setText(sAPKUtils.getAPKSize(new File(this.data.get(position)).length()));
                 holder.mSize.setVisibility(View.VISIBLE);

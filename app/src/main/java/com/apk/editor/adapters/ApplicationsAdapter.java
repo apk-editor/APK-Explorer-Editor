@@ -38,9 +38,11 @@ import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapter.ViewHolder> {
 
     private static List<PackageItems> data;
+    private static String searchWord;
 
-    public ApplicationsAdapter(List<PackageItems> data) {
+    public ApplicationsAdapter(List<PackageItems> data, String searchWord) {
         ApplicationsAdapter.data = data;
+        ApplicationsAdapter.searchWord = searchWord;
     }
 
     @NonNull
@@ -55,15 +57,15 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
     public void onBindViewHolder(@NonNull ApplicationsAdapter.ViewHolder holder, int position) {
         try {
             data.get(position).loadAppIcon(holder.mAppIcon);
-            if (Common.getSearchWord() != null && Common.isTextMatched(data.get(position).getPackageName(), Common.getSearchWord())) {
-                holder.mAppID.setText(APKEditorUtils.fromHtml(data.get(position).getPackageName().replace(Common.getSearchWord(), "<b><i><font color=\"" +
-                        Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
+            if (searchWord != null && Common.isTextMatched(data.get(position).getPackageName(), searchWord)) {
+                holder.mAppID.setText(APKEditorUtils.fromHtml(data.get(position).getPackageName().replace(searchWord, "<b><i><font color=\"" +
+                        Color.RED + "\">" + searchWord + "</font></i></b>")));
             } else {
                 holder.mAppID.setText(data.get(position).getPackageName());
             }
-            if (Common.getSearchWord() != null && Common.isTextMatched(data.get(position).getAppName(), Common.getSearchWord())) {
-                holder.mAppName.setText(APKEditorUtils.fromHtml(data.get(position).getAppName().replace(Common.getSearchWord(),
-                        "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
+            if (searchWord != null && Common.isTextMatched(data.get(position).getAppName(), searchWord)) {
+                holder.mAppName.setText(APKEditorUtils.fromHtml(data.get(position).getAppName().replace(searchWord,
+                        "<b><i><font color=\"" + Color.RED + "\">" + searchWord + "</font></i></b>")));
             } else {
                 holder.mAppName.setText(data.get(position).getAppName());
             }

@@ -41,9 +41,11 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
 
     private static List<String> data;
+    private static String searchWord;
 
-    public APKsAdapter(List<String> data) {
+    public APKsAdapter(List<String> data, String searchWord) {
         APKsAdapter.data = data;
+        APKsAdapter.searchWord = searchWord;
     }
 
     @NonNull
@@ -64,9 +66,9 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                     holder.mAppIcon.setImageDrawable(ContextCompat.getDrawable(holder.mAppIcon.getContext(), R.drawable.ic_android));
                     holder.mAppIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mAppIcon.getContext()));
                 }
-                if (Common.getSearchWord() != null && Common.isTextMatched(new File(data.get(position)).getName(), Common.getSearchWord())) {
-                    holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().replace(Common.getSearchWord(),
-                            "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
+                if (searchWord != null && Common.isTextMatched(new File(data.get(position)).getName(), searchWord)) {
+                    holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().replace(searchWord,
+                            "<b><i><font color=\"" + Color.RED + "\">" + searchWord + "</font></i></b>")));
                 } else {
                     holder.mAppName.setText(new File(data.get(position)).getName());
                 }
@@ -118,16 +120,16 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                     holder.mAppIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mAppIcon.getContext()));
                 }
                 if (sAPKUtils.getAPKName(data.get(position), holder.mAppName.getContext()) != null) {
-                    if (Common.getSearchWord() != null && Common.isTextMatched(Objects.requireNonNull(sAPKUtils.getAPKName(data.get(position), holder.mAppName.getContext())).toString(), Common.getSearchWord())) {
-                        holder.mAppName.setText(APKEditorUtils.fromHtml(Objects.requireNonNull(sAPKUtils.getAPKName(data.get(position), holder.mAppName.getContext())).toString().replace(Common.getSearchWord(),
-                                "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
+                    if (searchWord != null && Common.isTextMatched(Objects.requireNonNull(sAPKUtils.getAPKName(data.get(position), holder.mAppName.getContext())).toString(), searchWord)) {
+                        holder.mAppName.setText(APKEditorUtils.fromHtml(Objects.requireNonNull(sAPKUtils.getAPKName(data.get(position), holder.mAppName.getContext())).toString().replace(searchWord,
+                                "<b><i><font color=\"" + Color.RED + "\">" + searchWord + "</font></i></b>")));
                     } else {
                         holder.mAppName.setText(sAPKUtils.getAPKName(data.get(position), holder.mAppName.getContext()));
                     }
                 } else {
-                    if (Common.getSearchWord() != null && Common.isTextMatched(new File(data.get(position)).getName(), Common.getSearchWord())) {
-                        holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().replace(Common.getSearchWord(),
-                                "<b><i><font color=\"" + Color.RED + "\">" + Common.getSearchWord() + "</font></i></b>")));
+                    if (searchWord != null && Common.isTextMatched(new File(data.get(position)).getName(),searchWord)) {
+                        holder.mAppName.setText(APKEditorUtils.fromHtml(new File(data.get(position)).getName().replace(searchWord,
+                                "<b><i><font color=\"" + Color.RED + "\">" + searchWord + "</font></i></b>")));
                     } else {
                         holder.mAppName.setText(new File(data.get(position)).getName());
                     }

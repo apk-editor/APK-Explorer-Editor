@@ -6,9 +6,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
-
-import androidx.appcompat.widget.AppCompatEditText;
 
 import com.apk.editor.utils.recyclerViewItems.PackageItems;
 
@@ -43,7 +42,7 @@ public class AppData {
         return mData;
     }
 
-    public static List<PackageItems> getData(Context context) {
+    public static List<PackageItems> getData(String searchWord, Context context) {
         List<PackageItems> mData = new ArrayList<>();
         try {
             boolean mAppType;
@@ -56,10 +55,10 @@ public class AppData {
                     mAppType = true;
                 }
                 if (mAppType) {
-                    if (Common.getSearchWord() == null) {
+                    if (searchWord == null) {
                         mData.add(packageItem);
-                    } else if (Common.isTextMatched(packageItem.getAppName(), Common.getSearchWord())
-                            || Common.isTextMatched(packageItem.getPackageName(), Common.getSearchWord())) {
+                    } else if (Common.isTextMatched(packageItem.getAppName(), searchWord)
+                            || Common.isTextMatched(packageItem.getPackageName(), searchWord)) {
                         mData.add(packageItem);
                     }
                 }
@@ -94,7 +93,7 @@ public class AppData {
      * Based on the work of https://github.com/ZenerDeveloper
      * Ref: https://github.com/SmartPack/PackageManager/commit/1ac499d0ed8922c02875df029ead80a17f1c40e1
      */
-    public static void toggleKeyboard(int mode, AppCompatEditText textView, Context context) {
+    public static void toggleKeyboard(int mode, AutoCompleteTextView textView, Context context) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (mode == 1) {
             if (textView.requestFocus()) {

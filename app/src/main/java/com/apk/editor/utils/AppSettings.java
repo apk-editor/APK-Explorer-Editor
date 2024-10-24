@@ -391,8 +391,7 @@ public class AppSettings {
     }
 
     public static boolean isCustomKey(Context context) {
-        return sCommonUtils.getString("PrivateKey", null, context) != null &&
-                sCommonUtils.getString("X509Certificate", null, context) != null;
+        return APKSigner.getSigningCredentials(context).exists() && APKSigner.getPK8PrivateKey(context).exists();
     }
 
 }

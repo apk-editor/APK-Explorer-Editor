@@ -31,16 +31,27 @@
                 android:textSize="20sp"
                 android:gravity="start" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/search_word"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="50dp"
-                android:hint="@string/search"
-                android:visibility="gone"
-                android:gravity="center"
-                android:maxLines="1" />
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="75dp" >
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/search_word"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textAutoComplete"
+                    android:imeOptions="actionDone"
+                    android:layout_gravity="center"
+                    android:hint="@string/search"
+                    android:cursorVisible="true"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatImageButton

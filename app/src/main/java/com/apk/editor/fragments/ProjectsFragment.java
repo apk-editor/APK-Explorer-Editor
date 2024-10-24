@@ -9,7 +9,9 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
@@ -21,7 +23,9 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.ProjectsAdapter;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.CommonViews;
 import com.apk.editor.utils.Projects;
+import com.google.android.material.textview.MaterialTextView;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
@@ -31,38 +35,41 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
  */
 public class ProjectsFragment extends Fragment {
 
+    private AppCompatAutoCompleteTextView mSearchWord;
     private LinearLayoutCompat mProgress;
+    private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
     private ProjectsAdapter mRecycleViewAdapter;
+    private String mSearchText = null;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mRootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        Common.initializeProjectsTitle(mRootView, R.id.app_title);
-        Common.initializeProjectsSearchWord(mRootView, R.id.search_word);
+        mTitle = mRootView.findViewById(R.id.app_title);
+        mSearchWord = mRootView.findViewById(R.id.search_word);
         mProgress = mRootView.findViewById(R.id.progress_layout);
         AppCompatImageButton mSearchButton = mRootView.findViewById(R.id.search_button);
         AppCompatImageButton mSortButton = mRootView.findViewById(R.id.sort_button);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        Common.getProjectsTitle().setText(getString(R.string.projects));
+        mTitle.setText(getString(R.string.projects));
 
         mSearchButton.setOnClickListener(v -> {
-            if (Common.getProjectsSearchWord().getVisibility() == View.VISIBLE) {
-                Common.getProjectsSearchWord().setVisibility(View.GONE);
-                Common.getProjectsTitle().setVisibility(View.VISIBLE);
-                if (Common.getProjectsSearchWord() != null) {
-                    Common.getProjectsSearchWord().setText(null);
+            if (mSearchWord.getVisibility() == View.VISIBLE) {
+                mSearchWord.setVisibility(View.GONE);
+                mTitle.setVisibility(View.VISIBLE);
+                if (mSearchWord != null) {
+                    mSearchWord.setText(null);
                 }
-                AppData.toggleKeyboard(0, Common.getProjectsSearchWord(), requireActivity());
+                AppData.toggleKeyboard(0, mSearchWord, requireActivity());
             } else {
-                Common.getProjectsSearchWord().setVisibility(View.VISIBLE);
-                Common.getProjectsSearchWord().requestFocus();
-                Common.getProjectsTitle().setVisibility(View.GONE);
-                AppData.toggleKeyboard(1, Common.getProjectsSearchWord(), requireActivity());
+                mSearchWord.setVisibility(View.VISIBLE);
+                mSearchWord.requestFocus();
+                mTitle.setVisibility(View.GONE);
+                AppData.toggleKeyboard(1, mSearchWord, requireActivity());
             }
         });
 
@@ -74,16 +81,16 @@ public class ProjectsFragment extends Fragment {
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
                     sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
-                    loadProjects(requireActivity());
+                    loadProjects(mSearchText, requireActivity());
                 }
                 return false;
             });
             popupMenu.show();
         });
 
-        loadProjects(requireActivity());
+        loadProjects(mSearchText, requireActivity());
 
-        Common.getProjectsSearchWord().addTextChangedListener(new TextWatcher() {
+        mSearchWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -94,15 +101,32 @@ public class ProjectsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Common.setSearchWord(s.toString().toLowerCase());
-                loadProjects(requireActivity());
+                mSearchText = s.toString().toLowerCase();
+                loadProjects(mSearchText, requireActivity());
+            }
+        });
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (Common.isBusy()) return;
+                if (mSearchText != null) {
+                    if (mSearchWord != null && mSearchWord.getVisibility() == View.VISIBLE) {
+                        mSearchWord.setVisibility(View.GONE);
+                        mTitle.setVisibility(View.VISIBLE);
+                        mSearchWord.setText(null);
+                    }
+                    mSearchText = null;
+                    return;
+                }
+                CommonViews.navigateToFragment(requireActivity(), R.id.nav_apps);
             }
         });
 
         return mRootView;
     }
 
-    private void loadProjects(Activity activity) {
+    private void loadProjects(String searchWord, Activity activity) {
         new sExecutor() {
 
             @Override
@@ -114,7 +138,7 @@ public class ProjectsFragment extends Fragment {
 
             @Override
             public void doInBackground() {
-                mRecycleViewAdapter = new ProjectsAdapter(Projects.getData(activity));
+                mRecycleViewAdapter = new ProjectsAdapter(Projects.getData(searchWord, activity), searchWord);
             }
 
             @Override
@@ -132,7 +156,7 @@ public class ProjectsFragment extends Fragment {
 
         if (Common.isReloading()) {
             Common.isReloading(false);
-            loadProjects(requireActivity());
+            loadProjects(mSearchText, requireActivity());
         }
     }
     

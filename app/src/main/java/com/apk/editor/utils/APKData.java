@@ -33,25 +33,25 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class APKData {
 
-    public static List<String> getData(Context context) {
+    public static List<String> getData(String searchWord, Context context) {
         List<String> mData = new ArrayList<>();
         for (File mFile : getAPKList(context)) {
             if (sCommonUtils.getString("apkTypes", "apks", context).equals("bundles")) {
                 if (mFile.exists() && mFile.isDirectory() && sFileUtils.exist(new File(mFile.toString(), "base.apk"))) {
-                    if (Common.getSearchWord() == null) {
+                    if (searchWord == null) {
                         mData.add(mFile.getAbsolutePath());
-                    } else if (Common.isTextMatched(mFile.getAbsolutePath(), Common.getSearchWord())) {
+                    } else if (Common.isTextMatched(mFile.getAbsolutePath(), searchWord)) {
                         mData.add(mFile.getAbsolutePath());
                     }
                 }
             } else {
                 if (mFile.exists() && mFile.getName().endsWith(".apk")) {
-                    if (Common.getSearchWord() == null) {
+                    if (searchWord == null) {
                         mData.add(mFile.getAbsolutePath());
                     } else if (sAPKUtils.getAPKName(mFile.getAbsolutePath(), context) != null && Common.isTextMatched(Objects.requireNonNull(sAPKUtils.getAPKName(
-                            mFile.getAbsolutePath(), context)).toString(), Common.getSearchWord())) {
+                            mFile.getAbsolutePath(), context)).toString(), searchWord)) {
                         mData.add(mFile.getAbsolutePath());
-                    } else if (Common.isTextMatched(mFile.getName(), Common.getSearchWord())) {
+                    } else if (Common.isTextMatched(mFile.getName(), searchWord)) {
                         mData.add(mFile.getAbsolutePath());
                     }
                 }
