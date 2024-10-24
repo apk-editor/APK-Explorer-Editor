@@ -79,6 +79,7 @@
     <string name="keystore_alias_hint">Choose an Alias</string>
     <string name="keystore_alias_password_hint">Input Alias Password</string>
     <string name="keystore_alias_unavailable">No Keystore Alias found!</string>
+    <string name="keystore_loading_failed">Failed to load Keystore!</string>
     <string name="keystore_password_hint">Input Keystore Password</string>
     <string name="language">Language</string>
     <string name="last_modified">Last Modified: %s</string>
@@ -174,6 +175,7 @@
     <string name="user_interface">User Interface</string>
     <string name="warning">Warning</string>
     <string name="wrong_extension">Please select a file with %s extension.</string>
+    <string name="x509_certificate_invalid">Selected X509Certificate is invalid!</string>
     <string name="x509_certificate_requirement_message">In order to sign APK\'s with a custom key, AEE also requires the X509Certificate exported from the same pk8 private key. Please refer the Documentation page for more info.</string>
     <string name="xml_corrupted">XML string is corrupted. Aborting…</string>
     <string name="xml_decode_failed">Failed to decode %s</string>

@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 
+import com.android.apksig.internal.util.ByteStreams;
 import com.apk.axml.APKParser;
 import com.apk.editor.R;
 import com.apk.editor.interfaces.KeyStoreAliasChoiceDialog;
@@ -33,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -43,6 +45,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Enumeration;
 import java.util.Objects;
@@ -78,11 +81,6 @@ public class APKSignActivity extends AppCompatActivity {
         mKey.setOnClickListener(v -> {
             Intent keyPicker = new Intent(Intent.ACTION_GET_CONTENT);
             keyPicker.setType("*/*");
-            String[] mimeTypes = {
-                    "application/x-pkcs12",
-                    "application/octet-stream"
-            };
-            keyPicker.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
             keyPicker.addCategory(Intent.CATEGORY_OPENABLE);
             keyPickerResultLauncher.launch(keyPicker);
         });
@@ -117,6 +115,50 @@ public class APKSignActivity extends AppCompatActivity {
         }
     }
 
+    ActivityResultLauncher<Intent> certificatePickerResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
+                    Uri uriFile = data.getData();
+
+                    if (uriFile != null) {
+                        try {
+                            X509Certificate x509Certificate = APKSigner.encodeCertificate(getContentResolver().openInputStream(uriFile));
+                            if (x509Certificate != null) {
+                                PrivateKey privateKey = new PK8File(APKSigner.getPK8PrivateKey(this)).getPrivateKey();
+                                if (!isKeysMatches(privateKey, x509Certificate)) {
+                                    new MaterialAlertDialogBuilder(this)
+                                            .setMessage(R.string.keypair_mismatch_message)
+                                            .setNegativeButton(getString(R.string.cancel), (dialog, id) -> sFileUtils.delete(APKSigner.getPK8PrivateKey(this)))
+                                            .setPositiveButton(getString(R.string.choose_new), (dialog, id) -> chooseCertificate()
+                                            ).show();
+                                    return;
+                                }
+                                mJSONObject = new JSONObject();
+                                String decodedPrivateKey = Base64.encodeToString(privateKey.getEncoded(), 0);
+                                mJSONObject.put("privateKey", decodedPrivateKey);
+                                String decodedCertificate = sFileUtils.read(uriFile, this);
+                                mJSONObject.put("x509Certificate", decodedCertificate);
+                                String summaryText = APKParser.getCertificateDetails(x509Certificate);
+                                mJSONObject.put("certificate", summaryText);
+                                sFileUtils.create(mJSONObject.toString(), APKSigner.getSigningCredentials(this));
+                                mText.setVisibility(View.VISIBLE);
+                                mText.setText(summaryText);
+                            } else {
+                                sCommonUtils.toast(getString(R.string.x509_certificate_invalid), this).show();
+                            }
+                        } catch (FileNotFoundException | JSONException ignored) {
+                        }
+
+                        setStatus();
+                    } else {
+                        sCommonUtils.toast(getString(R.string.file_path_error), this).show();
+                    }
+                }
+            }
+    );
+
     ActivityResultLauncher<Intent> keyPickerResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -125,59 +167,28 @@ public class APKSignActivity extends AppCompatActivity {
                     Uri uriFile = data.getData();
 
                     if (uriFile != null) {
-                        if (Objects.requireNonNull(uriFile.getPath()).endsWith(".pk8")) {
-                            sFileUtils.copy(uriFile, APKSigner.getPK8PrivateKey(this), this);
-                            PrivateKey privateKey = new PK8File(APKSigner.getPK8PrivateKey(this)).getPrivateKey();
-                            if (privateKey == null) {
-                                sFileUtils.delete(APKSigner.getPK8PrivateKey(this));
-                                sCommonUtils.toast(getString(R.string.private_key_invalid), this).show();
-                            } else {
-                                new MaterialAlertDialogBuilder(this)
-                                        .setIcon(R.mipmap.ic_launcher)
-                                        .setTitle(R.string.app_name)
-                                        .setMessage(R.string.x509_certificate_requirement_message)
-                                        .setNegativeButton(getString(R.string.cancel), (dialog, id) -> sFileUtils.delete(APKSigner.getPK8PrivateKey(this)))
-                                        .setPositiveButton(getString(R.string.select), (dialog, id) -> chooseCertificate()
-                                        ).show();
-                                mKeySummary.setText(Base64.encodeToString(privateKey.getEncoded(), 0));
-                                mClearKey.setVisibility(View.VISIBLE);
-                            }
-                        } else if (Objects.requireNonNull(uriFile.getPath()).endsWith(".pem")) {
-                            try {
-                                X509Certificate x509Certificate = APKSigner.encodeCertificate(getContentResolver().openInputStream(uriFile));
-                                if (x509Certificate != null) {
-                                    PrivateKey privateKey = new PK8File(APKSigner.getPK8PrivateKey(this)).getPrivateKey();
-                                    if (!isKeysMatches(privateKey, x509Certificate)) {
-                                        new MaterialAlertDialogBuilder(this)
-                                                .setMessage(R.string.keypair_mismatch_message)
-                                                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> sFileUtils.delete(APKSigner.getPK8PrivateKey(this)))
-                                                .setPositiveButton(getString(R.string.choose_new), (dialog, id) -> chooseCertificate()
-                                                ).show();
-                                        return;
-                                    }
-                                    mJSONObject = new JSONObject();
-                                    String decodedPrivateKey = Base64.encodeToString(privateKey.getEncoded(), 0);
-                                    mJSONObject.put("privateKey", decodedPrivateKey);
-                                    String decodedCertificate = sFileUtils.read(uriFile, this);
-                                    mJSONObject.put("x509Certificate", decodedCertificate);
-                                    String summaryText = APKParser.getCertificateDetails(x509Certificate);
-                                    mJSONObject.put("certificate", summaryText);
-                                    sFileUtils.create(mJSONObject.toString(), APKSigner.getSigningCredentials(this));
-                                    mText.setVisibility(View.VISIBLE);
-                                    mText.setText(summaryText);
-                                }
-                            } catch (FileNotFoundException | JSONException ignored) {
-                            }
-
-                            setStatus();
-                        } else if (Objects.requireNonNull(uriFile.getPath()).endsWith(".p12")) {
+                        // Check if the selected file is a PK8 private key
+                        PrivateKey privateKey = getPrivateKeyFromUri(uriFile);
+                        if (privateKey != null) {
+                            privateKeyToFile(privateKey, APKSigner.getPK8PrivateKey(this));
+                            new MaterialAlertDialogBuilder(this)
+                                    .setIcon(R.mipmap.ic_launcher)
+                                    .setTitle(R.string.app_name)
+                                    .setMessage(R.string.x509_certificate_requirement_message)
+                                    .setNegativeButton(getString(R.string.cancel), (dialog, id) -> sFileUtils.delete(APKSigner.getPK8PrivateKey(this)))
+                                    .setPositiveButton(getString(R.string.select), (dialog, id) -> chooseCertificate()
+                                    ).show();
+                            mKeySummary.setText(Base64.encodeToString(privateKey.getEncoded(), 0));
+                            mClearKey.setVisibility(View.VISIBLE);
+                        } else {
+                            // Check if the selected file is a PK12 Keystore
                             new KeyStoreVerifierInterface(getString(R.string.keystore_password_hint), this) {
                                 @Override
                                 public void positiveButtonLister(Editable s) {
                                     mJSONObject = new JSONObject();
                                     KeyStore keyStore = loadKeyStore(uriFile, s.toString().trim());
                                     if (keyStore ==  null) {
-                                        sCommonUtils.toast(getString(R.string.password_invalid), APKSignActivity.this).show();
+                                        sCommonUtils.toast(getString(R.string.keystore_loading_failed), APKSignActivity.this).show();
                                     } else {
                                         if (getAliases(keyStore) == null) {
                                             sCommonUtils.toast(getString(R.string.keystore_alias_unavailable), APKSignActivity.this).show();
@@ -226,6 +237,8 @@ public class APKSignActivity extends AppCompatActivity {
                                 }
                             }.show();
                         }
+                    } else {
+                        sCommonUtils.toast(getString(R.string.file_path_error), this).show();
                     }
                 }
             }
@@ -279,6 +292,18 @@ public class APKSignActivity extends AppCompatActivity {
         }
     }
 
+    private PrivateKey getPrivateKeyFromUri(Uri uri) {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            byte[] keyBytes = ByteStreams.toByteArray(Objects.requireNonNull(inputStream));
+            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            return kf.generatePrivate(spec);
+        } catch (IOException | InvalidKeySpecException | NoSuchAlgorithmException ignored) {
+            return null;
+        }
+    }
+
     private static String[] getAliases(KeyStore keyStore) {
         try {
             Enumeration<String> aliases = keyStore.aliases();
@@ -290,9 +315,9 @@ public class APKSignActivity extends AppCompatActivity {
 
     private void chooseCertificate() {
         Intent keyPicker = new Intent(Intent.ACTION_GET_CONTENT);
-        keyPicker.setType("application/x-pem-file");
+        keyPicker.setType("*/*");
         keyPicker.addCategory(Intent.CATEGORY_OPENABLE);
-        keyPickerResultLauncher.launch(keyPicker);
+        certificatePickerResultLauncher.launch(keyPicker);
     }
 
     @Override
