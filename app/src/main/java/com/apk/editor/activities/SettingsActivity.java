@@ -15,11 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apk.editor.R;
 import com.apk.editor.adapters.SettingsAdapter;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.APKSigner;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.dialogs.ClearAppSettingsDialog;
 import com.apk.editor.utils.tasks.TransferApps;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
@@ -247,10 +247,12 @@ public class SettingsActivity extends AppCompatActivity {
                         public void onItemSelected(int itemPosition) {
                             if (itemPosition == 0) {
                                 if (AppSettings.isCustomKey(SettingsActivity.this)) {
-                                    sCommonUtils.saveString("PrivateKey", null, SettingsActivity.this);
-                                    sFileUtils.delete(new File(getFilesDir(), "signing/APKEditor.pk8"));
-                                    sCommonUtils.saveString("X509Certificate", null, SettingsActivity.this);
-                                    sFileUtils.delete(new File(getFilesDir(), "signing/APKEditorCert"));
+                                    if (sFileUtils.exist(APKSigner.getPK8PrivateKey(SettingsActivity.this))) {
+                                        sFileUtils.delete(APKSigner.getPK8PrivateKey(SettingsActivity.this));
+                                    }
+                                    if (sFileUtils.exist(APKSigner.getSigningCredentials(SettingsActivity.this))) {
+                                        sFileUtils.delete(APKSigner.getSigningCredentials(SettingsActivity.this));
+                                    }
                                     mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(
                                             R.drawable.ic_key, SettingsActivity.this), getString(R.string.sign_apk_with), AppSettings
                                             .getAPKSign(SettingsActivity.this), null));

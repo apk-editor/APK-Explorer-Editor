@@ -18,6 +18,7 @@
     <string name="cancel">Cancel</string>
     <string name="cancelling">Cancelling…</string>
     <string name="certificate">Certificate</string>
+    <string name="choose_new">Choose New</string>
     <string name="clear_cache">Clear Cache</string>
     <string name="clear_cache_summary">Delete internal settings of AEE</string>
     <string name="clear_cache_message">Everything, except the exported applications, will be removed.</string>
@@ -74,6 +75,11 @@
     <string name="installing">Installing %s…</string>
     <string name="invite_friends">Invite Friends</string>
     <string name="invite_friends_Summary">Invite your friends to try AEE</string>
+    <string name="keypair_mismatch_message">Mismatching keypair!</string>
+    <string name="keystore_alias_hint">Choose an Alias</string>
+    <string name="keystore_alias_password_hint">Input Alias Password</string>
+    <string name="keystore_alias_unavailable">No Keystore Alias found!</string>
+    <string name="keystore_password_hint">Input Keystore Password</string>
     <string name="language">Language</string>
     <string name="last_modified">Last Modified: %s</string>
     <string name="loading">Loading…</string>
@@ -82,6 +88,7 @@
     <string name="ok">OK</string>
     <string name="open">Open</string>
     <string name="open_as_text">Open as text</string>
+    <string name="password_invalid">Password doesn\'t match!</string>
     <string name="permission_denied_message">Permission denied for accessing device storage</string>
     <string name="permissions">Permissions</string>
     <string name="preparing_apk">Preparing %s APK…</string>
@@ -92,6 +99,7 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_policy_summary">Read Privacy Policy</string>
     <string name="private_key">Private Key</string>
+    <string name="private_key_invalid">Selected Private key is invalid!</string>
     <string name="private_key_summary">Select custom Private key</string>
     <string name="project_exist_action">On Exiting a Project</string>
     <string name="projects">Projects</string>
@@ -136,7 +144,6 @@
     <string name="signing_default">Sign with default Key</string>
     <string name="signing_question">Use \'%s\' as the new</string>
     <string name="signing_select_question">Use selected file as the new %s?</string>
-    <string name="signing_summary">In order to sign APK\'s with a custom key, AEE requires a private key in pk8 format and an X509Certificate exported from the same key. Click here to read more about creating a private key and  X509Certificate.</string>
     <string name="signing_title">APK Signing</string>
     <string name="size">Size: %s</string>
     <string name="sort_by">Sort Apps</string>
@@ -167,8 +174,7 @@
     <string name="user_interface">User Interface</string>
     <string name="warning">Warning</string>
     <string name="wrong_extension">Please select a file with %s extension.</string>
-    <string name="x509_certificate">X509Certificate</string>
-    <string name="x509_certificate_summary">Select custom X509Certificate</string>
+    <string name="x509_certificate_requirement_message">In order to sign APK\'s with a custom key, AEE also requires the X509Certificate exported from the same pk8 private key. Please refer the Documentation page for more info.</string>
     <string name="xml_corrupted">XML string is corrupted. Aborting…</string>
     <string name="xml_decode_failed">Failed to decode %s</string>
     <string name="yes">Yes</string>

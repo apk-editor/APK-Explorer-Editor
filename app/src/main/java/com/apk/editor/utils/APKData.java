@@ -89,19 +89,12 @@ public class APKData {
     }
 
     private static void checkAndPrepareSigningEnvironment(Context context) {
-        File privateKey = new File(getSigningEnvironmentDir(context), "APKEditor.pk8");
-
-        if (privateKey.exists()) {
+        if (APKSigner.getPK8PrivateKey(context).exists()) {
             return;
         }
 
-        sFileUtils.mkdir(getSigningEnvironmentDir(context));
-
-        sFileUtils.copyAssetFile("APKEditor.pk8", privateKey, context);
-    }
-
-    private static File getSigningEnvironmentDir(Context context) {
-        return new File(context.getFilesDir(), "signing");
+        sFileUtils.mkdir(new File(context.getFilesDir(), "signing"));
+        sFileUtils.copyAssetFile("APKEditor.pk8", APKSigner.getPK8PrivateKey(context), context);
     }
 
     private static String getParentFile(String path) {

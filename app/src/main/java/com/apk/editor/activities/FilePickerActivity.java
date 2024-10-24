@@ -88,10 +88,8 @@ public class FilePickerActivity extends AppCompatActivity {
                 new MaterialAlertDialogBuilder(this)
                         .setIcon(R.mipmap.ic_launcher)
                         .setTitle(R.string.app_name)
-                        .setMessage(Common.getFileToReplace() != null ? getString(R.string.replace_question, new File(Common.getFileToReplace()).getName()) + " " +
-                                new File(APKExplorer.getData(getFilesList(), true, this).get(position)).getName() + "?" : getString(R.string.signing_question,
-                                new File(APKExplorer.getData(getFilesList(), true, this).get(position)).getName()) + " " + getString(Common.hasPrivateKey() ?
-                                R.string.private_key : R.string.x509_certificate))
+                        .setMessage(getString(R.string.replace_question, new File(Common.getFileToReplace()).getName()) + " " +
+                                new File(APKExplorer.getData(getFilesList(), true, this).get(position)).getName() + "?")
                         .setNegativeButton(R.string.cancel, (dialog, id) -> {
                         })
                         .setPositiveButton(Common.getFileToReplace() != null ? R.string.replace : R.string.select, (dialog, id) -> {
@@ -106,17 +104,6 @@ public class FilePickerActivity extends AppCompatActivity {
                                     }
                                 }
                                 Common.setFileToReplace(null);
-                            }  else {
-                                sFileUtils.mkdir(new File(getFilesDir(), "signing"));
-                                if (Common.hasPrivateKey()) {
-                                    sCommonUtils.saveString("PrivateKey", APKExplorer.getData(getFilesList(), true, this).get(position), this);
-                                    sFileUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(getFilesDir(), "signing/APKEditor.pk8"));
-                                    Common.setPrivateKeyStatus(false);
-                                } else {
-                                    sCommonUtils.saveString("X509Certificate", APKExplorer.getData(getFilesList(), true, this).get(position), this);
-                                    sFileUtils.copy(new File(APKExplorer.getData(getFilesList(), true, this).get(position)), new File(getFilesDir(), "signing/APKEditor"));
-                                    Common.setRSATemplateStatus(false);
-                                }
                             }
                             finish();
                         }).show();
