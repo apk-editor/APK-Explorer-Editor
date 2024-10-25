@@ -54,7 +54,7 @@ android {
 
 dependencies {
     implementation 'com.android.tools.build:apksig:8.7.1'
-    implementation 'com.github.apk-editor:aXML:20e62a1c11'
+    implementation 'com.github.apk-editor:aXML:cfeacd2304'
     implementation 'com.github.sunilpaulmathew:CrashReporter:6b6c74abaa'
 
     def sCommon_Version = 'efc9dce669'

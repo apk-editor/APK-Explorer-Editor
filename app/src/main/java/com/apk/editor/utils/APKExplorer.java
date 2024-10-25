@@ -19,6 +19,7 @@ import android.util.Base64;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 
+import com.apk.axml.APKParser;
 import com.apk.axml.aXMLDecoder;
 import com.apk.editor.R;
 import com.apk.editor.utils.dialogs.SigningOptionsDialog;
@@ -174,6 +175,8 @@ public class APKExplorer {
             } catch (Exception e) {
                 sCommonUtils.toast(context.getString(R.string.xml_decode_failed, new File(path).getName()), context).show();
             }
+        } else if (path.endsWith(".RSA")) {
+            text = APKParser.getCertificateDetails(path);
         } else if (parsedManifest) {
             text = path;
         } else {

@@ -199,6 +199,10 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                 Intent imageView = new Intent(requireActivity(), ImageViewActivity.class);
                 imageView.putExtra(ImageViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
                 startActivity(imageView);
+            } else if (APKExplorer.getData(getFilesList(), true, requireActivity()).get(position).endsWith(".RSA")) {
+                Intent rsaCertificate = new Intent(requireActivity(), TextViewActivity.class);
+                rsaCertificate.putExtra(TextViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
+                startActivity(rsaCertificate);
             } else if (APKExplorer.getData(getFilesList(), true, requireActivity()).get(position).endsWith(".dex")) {
                 decompileDexToSmali(new File(APKExplorer.getData(getFilesList(), true, requireActivity()).get(position))).execute();
             } else if (APKExplorer.getData(getFilesList(), true, requireActivity()).get(position).equalsIgnoreCase("resources.arsc")) {
