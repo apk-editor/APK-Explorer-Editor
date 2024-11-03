@@ -3,9 +3,7 @@ package com.apk.editor.utils.tasks;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Base64;
 
 import androidx.documentfile.provider.DocumentFile;
 
@@ -13,18 +11,13 @@ import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.activities.APKTasksActivity;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.DexToSmali;
+import com.apk.editor.utils.ExternalAPKData;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Objects;
 
-import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
@@ -82,32 +75,9 @@ public class ExploreAPK extends sExecutor {
         if (!mExplorePath.exists()) {
             sFileUtils.mkdir(mExplorePath);
             sFileUtils.mkdir(mBackUpPath);
-            // Store basic information about the app
-            try {
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                if (mPackageName != null) {
-                    Bitmap.createScaledBitmap(APKExplorer.drawableToBitmap(sPackageUtils.getAppIcon(mPackageName, mContext)),
-                            150, 150, true).compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-                    JSONObject mJSONObject = new JSONObject();
-                    mJSONObject.put("app_icon", Base64.encodeToString(byteArray, Base64.DEFAULT));
-                    mJSONObject.put("app_name", sPackageUtils.getAppName(mPackageName, mContext));
-                    mJSONObject.put("package_name", mPackageName);
-                    mJSONObject.put("smali_edited", false);
-                    sFileUtils.create(mJSONObject.toString(), new File(mBackUpPath, "appData"));
-                } else {
-                    Bitmap.createScaledBitmap(APKExplorer.drawableToBitmap(sAPKUtils.getAPKIcon(mAPKFile.getAbsolutePath(), mContext)),
-                            150, 150, true).compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-                    JSONObject mJSONObject = new JSONObject();
-                    mJSONObject.put("app_icon", Base64.encodeToString(byteArray, Base64.DEFAULT));
-                    mJSONObject.put("app_name", mAPKFile.getName());
-                    mJSONObject.put("package_name", sAPKUtils.getPackageName(mAPKFile.getAbsolutePath(), mContext));
-                    mJSONObject.put("smali_edited", false);
-                    sFileUtils.create(mJSONObject.toString(), new File(mBackUpPath, "appData"));
-                }
-            } catch (JSONException ignored) {
-            }
+
+            ExternalAPKData.generateAppDetails(mPackageName, mAPKFile, mBackUpPath, mContext);
+
             APKEditorUtils.unzip(mPackageName != null ? sPackageUtils.getSourceDir(mPackageName, mContext) : mAPKFile.getAbsolutePath(), mExplorePath.getAbsolutePath());
             // Decompile dex file(s)
             if (sCommonUtils.getString("decompileSetting", null, mContext) != null && sCommonUtils.getString("decompileSetting",
