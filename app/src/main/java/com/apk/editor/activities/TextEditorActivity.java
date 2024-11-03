@@ -22,19 +22,13 @@ import com.google.android.material.textview.MaterialTextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.Objects;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
@@ -127,7 +121,7 @@ public class TextEditorActivity extends AppCompatActivity {
                                 @Override
                                 public void doInBackground() {
                                     if (APKExplorer.isBinaryXML(mPath)) {
-                                        if (isXMLValid(text)) {
+                                        if (APKExplorer.isXMLValid(text)) {
                                             try (FileOutputStream fos = new FileOutputStream(mPath)) {
                                                 aXMLEncoder aXMLEncoder = new aXMLEncoder();
                                                 byte[] bs = aXMLEncoder.encodeString(TextEditorActivity.this, text);
@@ -163,15 +157,6 @@ public class TextEditorActivity extends AppCompatActivity {
         });
 
         mBack.setOnClickListener(v -> onBackPressed());
-    }
-
-    private static boolean isXMLValid(String xmlString) {
-        try {
-            SAXParserFactory.newInstance().newSAXParser().getXMLReader().parse(new InputSource(new StringReader(xmlString)));
-            return true;
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            return false;
-        }
     }
 
     @Override

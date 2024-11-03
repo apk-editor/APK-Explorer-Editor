@@ -6,6 +6,7 @@
     <string name="apk_corrupted">APK file(s) is corrupted. Aborting…</string>
     <string name="apk_installer">AEE APK Installer</string>
     <string name="apks">APK\'s</string>
+    <string name="apply">Apply</string>
     <string name="app_name_short" translatable="false">AEE</string>
     <string name="apps">Apps</string>
     <string name="apps_exported">Exported APK\'s</string>
@@ -112,6 +113,7 @@
     <string name="replace_question">Replace %s with</string>
     <string name="report_issue">Report Issue</string>
     <string name="report_issue_summary">Raise an issue at GitHub</string>
+    <string name="reset">Reset</string>
     <string name="resign_only">Re-sign Only</string>
     <string name="resigned_apks_error">Building is aborted due to errors in assembling \'smali\' files. Please check the \'Details\' to find out more.</string>
     <string name="resigned_apks_path">Re-signed APK file(s) are generated.\n\nPath: \'%s\'</string>

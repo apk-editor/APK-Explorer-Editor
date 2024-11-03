@@ -28,15 +28,23 @@ import com.apk.editor.utils.tasks.ResignAPKs;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
@@ -84,10 +92,28 @@ public class APKExplorer {
         return mData;
     }
 
+    public static ArrayList<String> getXMLData(String path) {
+        try (FileInputStream inputStream = new FileInputStream(path)) {
+            String xmlText;
+            if (isBinaryXML(path)) {
+                xmlText = new aXMLDecoder().decode(inputStream).trim();
+            } else {
+                xmlText = sFileUtils.read(new File(path));
+            }
+            ArrayList<String> mData = new ArrayList<>();
+            for (String line : xmlText.split(">\\n" + " {4}")) {
+                mData.add(line.endsWith(">") ? "\t" + line : "\t" + line + ">");
+            }
+            return mData;
+        } catch (IOException | XmlPullParserException ignored) {
+            return null;
+        }
+    }
+
     public static boolean isTextFile(String path) {
-        return path.endsWith(".txt") || path.endsWith(".xml") || path.endsWith(".json") || path.endsWith(".properties")
-                || path.endsWith(".version") || path.endsWith(".sh") || path.endsWith(".MF") || path.endsWith(".SF")
-                || path.endsWith(".html") || path.endsWith(".ini") || path.endsWith(".smali");
+        return path.endsWith(".txt") || path.endsWith(".json") || path.endsWith(".properties") || path.endsWith(".version")
+                || path.endsWith(".sh") || path.endsWith(".MF") || path.endsWith(".SF") || path.endsWith(".html")
+                || path.endsWith(".ini") || path.endsWith(".smali");
     }
 
     public static boolean isImageFile(String path) {
@@ -126,6 +152,15 @@ public class APKExplorer {
 
     private static boolean isSupportedFile(String path) {
         return path.endsWith(".apk") || path.endsWith(".apks") || path.endsWith(".apkm") || path.endsWith(".xapk");
+    }
+
+    public static boolean isXMLValid(String xmlString) {
+        try {
+            SAXParserFactory.newInstance().newSAXParser().getXMLReader().parse(new InputSource(new StringReader(xmlString)));
+            return true;
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            return false;
+        }
     }
 
     public static JSONObject getAppData(String path) {

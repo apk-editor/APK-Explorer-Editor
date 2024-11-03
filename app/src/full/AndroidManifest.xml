@@ -35,6 +35,9 @@
         <activity android:name=".activities.TextEditorActivity"
             android:exported="false" />
 
+        <activity android:name=".activities.XMLValuesEditorActivity"
+            android:exported="false" />
+
         <service android:name=".services.InstallerService"
             android:exported="false" />
 

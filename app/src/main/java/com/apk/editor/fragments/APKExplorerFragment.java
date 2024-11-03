@@ -27,6 +27,7 @@ import com.apk.editor.activities.APKSignActivity;
 import com.apk.editor.activities.ImageViewActivity;
 import com.apk.editor.activities.TextEditorActivity;
 import com.apk.editor.activities.TextViewActivity;
+import com.apk.editor.activities.XMLEditorActivity;
 import com.apk.editor.adapters.APKExplorerAdapter;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
@@ -199,6 +200,10 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                 Intent imageView = new Intent(requireActivity(), ImageViewActivity.class);
                 imageView.putExtra(ImageViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
                 startActivity(imageView);
+            } else if (APKExplorer.getData(getFilesList(), true, requireActivity()).get(position).endsWith(".xml")) {
+                Intent xmlEditor = new Intent(requireActivity(), XMLEditorActivity.class);
+                xmlEditor.putExtra(XMLEditorActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));
+                startActivity(xmlEditor);
             } else if (APKExplorer.getData(getFilesList(), true, requireActivity()).get(position).endsWith(".RSA")) {
                 Intent rsaCertificate = new Intent(requireActivity(), TextViewActivity.class);
                 rsaCertificate.putExtra(TextViewActivity.PATH_INTENT, APKExplorer.getData(getFilesList(), true, requireActivity()).get(position));

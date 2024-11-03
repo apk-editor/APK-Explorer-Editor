@@ -1,0 +1,42 @@
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" >
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:textStyle="bold"
+        android:gravity="start"
+        android:textSize="23sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp" >
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textAutoComplete"
+            android:imeOptions="actionDone"
+            android:layout_gravity="center"
+            android:hint="@string/search"
+            android:cursorVisible="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <include layout="@layout/progress_layout" />
+
+    <include layout="@layout/recyclerview_layout" />
+</androidx.appcompat.widget.LinearLayoutCompat>
