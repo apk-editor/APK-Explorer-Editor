@@ -104,6 +104,13 @@ public class XMLValuesEditorActivity extends AppCompatActivity {
         loadUI().execute();
     }
 
+    private static boolean isSupportedString(String text) {
+        return text.contains("app:") || text.contains("android:") || text.contains("class=")
+                || text.contains(":duration") || text.contains(":fromAlpha") || text.contains(":interpolator")
+                || text.contains("layout") || text.contains("name") || text.contains("package") || text.contains("path")
+                || text.contains("platformBuild") || text.contains("style") || text.contains(":toAlpha");
+    }
+
     private sExecutor loadUI() {
         return new sExecutor() {
 
@@ -121,7 +128,7 @@ public class XMLValuesEditorActivity extends AppCompatActivity {
                             mTitleText = line.replace("<", "");
                             mTitleTextParsed = true;
                         }
-                    } else if (line.contains("app=") || line.contains("android:") || line.contains("package") || line.contains("platformBuild")) {
+                    } else if (isSupportedString(line)) {
                         String[] splits = line.trim().split("=");
                         mData.add(new XMLItems(splits[0], splits[1].replace("\"", "")
                                 .replace(">","").replace("/", ""), (splits[1].startsWith("\"true") || splits[1].startsWith("\"false")), false));
