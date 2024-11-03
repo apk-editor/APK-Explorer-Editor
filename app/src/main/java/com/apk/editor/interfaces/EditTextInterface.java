@@ -6,10 +6,9 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import androidx.appcompat.widget.AppCompatEditText;
-
 import com.apk.editor.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on Jan 17, 2023
@@ -30,7 +29,7 @@ public abstract class EditTextInterface {
     private void startDialog() {
         LinearLayout layout = new LinearLayout(mContext);
         layout.setPadding(75, 75, 75, 75);
-        final AppCompatEditText editText = new AppCompatEditText(mContext);
+        final MaterialAutoCompleteTextView editText = new MaterialAutoCompleteTextView(mContext);
         editText.setGravity(Gravity.CENTER);
         editText.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
