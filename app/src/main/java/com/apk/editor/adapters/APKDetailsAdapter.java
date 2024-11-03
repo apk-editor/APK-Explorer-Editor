@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
@@ -42,12 +41,10 @@ public class APKDetailsAdapter extends RecyclerView.Adapter<APKDetailsAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final MaterialCardView mCard;
         private final MaterialTextView mText;
 
         public ViewHolder(View view) {
             super(view);
-            this.mCard = view.findViewById(R.id.card);
             this.mText = view.findViewById(R.id.text);
         }
     }
