@@ -6,12 +6,12 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.LinearLayoutCompat;
 
 import com.apk.editor.R;
 import com.apk.editor.fragments.APKExplorerFragment;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -33,7 +33,7 @@ public class APKExploreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_apkexplorer);
 
         AppCompatImageView mApplicationIcon = findViewById(R.id.app_image);
-        LinearLayoutCompat mTitleLayout = findViewById(R.id.title_layout);
+        MaterialButton mInfoButton = findViewById(R.id.info_button);
         MaterialTextView mApplicationName = findViewById(R.id.app_title);
         MaterialTextView mPackageName = findViewById(R.id.package_id);
 
@@ -42,7 +42,7 @@ public class APKExploreActivity extends AppCompatActivity {
         mPackageName.setText(APKExplorer.getPackageName(Common.getPath() + "/.aeeBackup/appData"));
         mPackageName.setVisibility(View.VISIBLE);
 
-        mTitleLayout.setOnClickListener(v ->
+        mInfoButton.setOnClickListener(v ->
                 new sExecutor() {
                     private boolean mFailed = false;
                     private String mDescription = null;
