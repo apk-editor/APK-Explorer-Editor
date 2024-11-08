@@ -150,10 +150,18 @@ public class ExternalAPKData {
             mJSONObject.put("package_name", packageName);
             mJSONObject.put("version_info", context.getString(R.string.version, mAPKParser.getVersionName() + " (" + mAPKParser.getVersionCode() + ")"));
             if (mAPKParser.getMinSDKVersion() != null) {
-                mJSONObject.put("sdk_minimum", context.getString(R.string.sdk_minimum, ExternalAPKData.sdkToAndroidVersion(mAPKParser.getMinSDKVersion(), context)));
+                try {
+                    mJSONObject.put("sdk_minimum", context.getString(R.string.sdk_minimum, ExternalAPKData.sdkToAndroidVersion(mAPKParser.getMinSDKVersion(), context)));
+                } catch (NumberFormatException ignored) {
+                    mJSONObject.put("sdk_minimum", context.getString(R.string.sdk_minimum, mAPKParser.getMinSDKVersion()));
+                }
             }
             if (mAPKParser.getCompiledSDKVersion() != null) {
-                mJSONObject.put("sdk_compiled", context.getString(R.string.sdk_compile, ExternalAPKData.sdkToAndroidVersion(mAPKParser.getCompiledSDKVersion(), context)));
+                try {
+                    mJSONObject.put("sdk_compiled", context.getString(R.string.sdk_compile, ExternalAPKData.sdkToAndroidVersion(mAPKParser.getCompiledSDKVersion(), context)));
+                } catch (NumberFormatException ignored) {
+                    mJSONObject.put("sdk_minimum", context.getString(R.string.sdk_compile, mAPKParser.getCompiledSDKVersion()));
+                }
             }
             mJSONObject.put("certificate_info", mAPKParser.getCertificate().trim());
             mJSONObject.put("smali_edited", false);
