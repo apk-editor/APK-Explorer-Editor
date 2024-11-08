@@ -14,7 +14,7 @@ import com.apk.editor.utils.recyclerViewItems.XMLItems;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
-import com.google.android.material.textview.MaterialTextView;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
@@ -39,33 +39,28 @@ public class XMLValueEditorAdapter extends RecyclerView.Adapter<XMLValueEditorAd
     @Override
     public void onBindViewHolder(@NonNull XMLValueEditorAdapter.ViewHolder holder, int position) {
         if (data.get(position).getValue() != null) {
-            holder.mID.setText(data.get(position).getID());
             if (data.get(position).isBoolean()) {
+                holder.mSwitch.setText(data.get(position).getID());
                 holder.mSwitch.setChecked(data.get(position).getValue().equals("true"));
                 holder.mSwitch.setVisibility(View.VISIBLE);
                 holder.mValue.setVisibility(View.GONE);
             } else {
+                holder.mID.setHint(data.get(position).getID());
                 holder.mValue.setText(data.get(position).getValue());
                 holder.mValue.setVisibility(View.VISIBLE);
                 holder.mSwitch.setVisibility(View.GONE);
             }
             holder.mID.setVisibility(View.VISIBLE);
             holder.mDelete.setVisibility(View.VISIBLE);
-            if (data.get(position).isRemoved()) {
-                holder.mValue.setEnabled(false);
-            }
         } else {
             holder.mID.setVisibility(View.GONE);
-            holder.mValue.setVisibility(View.GONE);
             holder.mDelete.setVisibility(View.GONE);
-            holder.mSwitch.setVisibility(View.GONE);
         }
 
         holder.mValue.addTextChangedListener(gettTextWatcher(position));
 
         holder.mDelete.setOnClickListener(v -> {
             data.get(position).setToRemove(!data.get(position).isRemoved());
-            holder.mID.setEnabled(!data.get(position).isRemoved());
             holder.mValue.setEnabled(!data.get(position).isRemoved());
             holder.mSwitch.setEnabled(!data.get(position).isRemoved());
         });
@@ -101,7 +96,7 @@ public class XMLValueEditorAdapter extends RecyclerView.Adapter<XMLValueEditorAd
 
         private final MaterialAutoCompleteTextView mValue;
         private final MaterialButton mDelete;
-        private final MaterialTextView mID;
+        private final TextInputLayout mID;
         private final SwitchMaterial mSwitch;
 
         public ViewHolder(View view) {
