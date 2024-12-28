@@ -27,6 +27,8 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
  */
 public class APKExploreActivity extends AppCompatActivity {
 
+    public static final String APK_DETAILS_INTENT = "apk_details";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,10 @@ public class APKExploreActivity extends AppCompatActivity {
         mApplicationName.setText(APKExplorer.getAppName(Common.getPath() + "/.aeeBackup/appData"));
         mPackageName.setText(APKExplorer.getPackageName(Common.getPath() + "/.aeeBackup/appData"));
         mPackageName.setVisibility(View.VISIBLE);
+
+        if (getIntent().getBooleanExtra(APK_DETAILS_INTENT, false)) {
+            mInfoButton.setVisibility(View.VISIBLE);
+        }
 
         mInfoButton.setOnClickListener(v ->
                 new sExecutor() {

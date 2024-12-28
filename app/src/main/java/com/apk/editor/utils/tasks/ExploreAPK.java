@@ -28,6 +28,7 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
  */
 public class ExploreAPK extends sExecutor {
 
+    private boolean mAPKDetailsParsed = false;
     private final Context mContext;
     private File mBackUpPath, mExplorePath;
     private File mAPKFile;
@@ -76,7 +77,7 @@ public class ExploreAPK extends sExecutor {
             sFileUtils.mkdir(mExplorePath);
             sFileUtils.mkdir(mBackUpPath);
 
-            ExternalAPKData.generateAppDetails(mPackageName, mAPKFile, mBackUpPath, mContext);
+            mAPKDetailsParsed = ExternalAPKData.generateAppDetails(mPackageName, mAPKFile, mBackUpPath, mContext);
 
             APKEditorUtils.unzip(mPackageName != null ? sPackageUtils.getSourceDir(mPackageName, mContext) : mAPKFile.getAbsolutePath(), mExplorePath.getAbsolutePath());
             // Decompile dex file(s)
@@ -95,6 +96,8 @@ public class ExploreAPK extends sExecutor {
                     }
                 }
             }
+        } else if (sFileUtils.exist(new File(mBackUpPath, "appData"))) {
+            mAPKDetailsParsed = true;
         }
         if (Common.isCancelled()) {
             sFileUtils.delete(mExplorePath);
@@ -108,6 +111,7 @@ public class ExploreAPK extends sExecutor {
         if (!Common.isFinished()) {
             Common.setFinishStatus(true);
             Intent explorer = new Intent(mContext, APKExploreActivity.class);
+            explorer.putExtra(APKExploreActivity.APK_DETAILS_INTENT, mAPKDetailsParsed);
             mContext.startActivity(explorer);
         }
     }

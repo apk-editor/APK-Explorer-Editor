@@ -51,6 +51,7 @@
         android:layout_gravity="end|center_vertical"
         app:icon="@drawable/ic_info"
         android:layout_margin="10dp"
+        android:visibility="gone"
         android:padding="10dp"
         android:scaleX="-1" />
 </FrameLayout>

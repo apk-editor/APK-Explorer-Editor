@@ -134,7 +134,7 @@ public class ExternalAPKData {
         }
     }
 
-    public static void generateAppDetails(String packageName, File apkFile, File backupPath, Context context) {
+    public static boolean generateAppDetails(String packageName, File apkFile, File backupPath, Context context) {
         JSONObject mJSONObject = new JSONObject();
         APKParser mAPKParser = new APKParser();
         mAPKParser.parse(packageName != null ? sPackageUtils.getSourceDir(packageName, context) : apkFile.getAbsolutePath(), context);
@@ -166,7 +166,9 @@ public class ExternalAPKData {
             mJSONObject.put("certificate_info", mAPKParser.getCertificate().trim());
             mJSONObject.put("smali_edited", false);
             sFileUtils.create(mJSONObject.toString(), new File(backupPath, "appData"));
+            return true;
         } catch (JSONException ignored) {
+            return false;
         }
     }
 
