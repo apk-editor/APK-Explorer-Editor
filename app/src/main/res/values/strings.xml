@@ -12,6 +12,7 @@
     <string name="apps_exported">Exported APK\'s</string>
     <string name="apps_installed">Installed Apps</string>
     <string name="assembling">Assembling\n\'%s\'</string>
+    <string name="batch_options">Batch Options</string>
     <string name="build">Build</string>
     <string name="building">Building\'%s\'…</string>
     <string name="bundle_install_question">Are you sure to install app bundle \'%s\'?</string>
@@ -41,9 +42,10 @@
     <string name="discard">Discard</string>
     <string name="discard_message">Discard the changes made on this file?</string>
     <string name="export">Export</string>
-    <string name="export_app_question">Export \'%s\' to device storage?</string>
+    <string name="export_app_batch_question">Export the following apps?</string>
     <string name="export_complete_message">The selected resource is successfully exported into \'%s\'</string>
     <string name="export_options">On Exporting (APK\'s)</string>
+    <string name="export_options_title">Export Options</string>
     <string name="export_project_question">Make a copy of this project folder into device storage?</string>
     <string name="export_project_replace">\'%s\' already exists. Do you want to replace it?</string>
     <string name="export_path_apks">Export Path (APK\'s)</string>
@@ -55,7 +57,9 @@
     <string name="export_resign">Export &amp; Re-sign</string>
     <string name="export_selected_files">Export selected files</string>
     <string name="export_storage">Export to storage</string>
+    <string name="exported_apks_path">Selected apps are exported to:\n\n\'%s\'</string>
     <string name="exporting">Exporting %s…</string>
+    <string name="exporting_batch">Exporting selected apps…</string>
     <string name="exploring">Exploring %s…</string>
     <string name="explore_error_status">Failed to explore %s</string>
     <string name="explore_options">On Exploring an App</string>
@@ -133,6 +137,7 @@
     <string name="search">Search…</string>
     <string name="search_files">Search files</string>
     <string name="select">Select</string>
+    <string name="select_all">Select all</string>
     <string name="select_apk">Select Split APK\'s</string>
     <string name="select_storage">Select from Storage</string>
     <string name="settings">Settings</string>

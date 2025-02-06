@@ -317,7 +317,7 @@ public class APKExplorer {
                             if (!sCommonUtils.getBoolean("firstSigning", false, activity)) {
                                 new SigningOptionsDialog(null, exit, activity).show();
                             } else {
-                                new ResignAPKs(null, true, exit, activity).execute();
+                                new ResignAPKs(null, false, exit, activity).execute();
                             }
                         } else {
                             if (!sCommonUtils.getBoolean("firstSigning", false, activity)) {
@@ -334,7 +334,7 @@ public class APKExplorer {
                 if (!sCommonUtils.getBoolean("firstSigning", false, activity)) {
                     new SigningOptionsDialog(null, exit, activity).show();
                 } else {
-                    new ResignAPKs(null,true, exit, activity).execute();
+                    new ResignAPKs(null,false, exit, activity).execute();
                 }
             }
         } else {

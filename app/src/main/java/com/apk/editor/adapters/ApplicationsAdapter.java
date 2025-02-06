@@ -4,9 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -18,33 +21,33 @@ import com.apk.editor.activities.ImageViewActivity;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.dialogs.ExportOptionsDialog;
-import com.apk.editor.utils.dialogs.SigningOptionsDialog;
 import com.apk.editor.utils.SerializableItems.PackageItems;
-import com.apk.editor.utils.tasks.ExportApp;
-import com.apk.editor.utils.tasks.ResignAPKs;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
 
 import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
-import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
-import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
 public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapter.ViewHolder> {
 
-    private static List<PackageItems> data;
-    private static String searchWord;
+    private final Activity activity;
+    private final List<PackageItems> data;
+    private final List<String> packageNames;
+    private final String searchWord;
+    private static boolean mlongClicked;
 
-    public ApplicationsAdapter(List<PackageItems> data, String searchWord) {
-        ApplicationsAdapter.data = data;
-        ApplicationsAdapter.searchWord = searchWord;
+    public ApplicationsAdapter(List<PackageItems> data, List<String> packageNames, String searchWord, boolean longClicked, Activity activity) {
+        mlongClicked = longClicked;
+        this.data = data;
+        this.packageNames = packageNames;
+        this.searchWord = searchWord;
+        this.activity = activity;
     }
 
     @NonNull
@@ -71,7 +74,18 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
             } else {
                 holder.mAppName.setText(data.get(position).getAppName());
             }
-            holder.mOpenIcon.setVisibility(data.get(position).launchIntent(holder.mOpenIcon.getContext()) != null ? View.VISIBLE : View.GONE);
+            holder.mCheckBox.setVisibility(mlongClicked ? View.VISIBLE : View.GONE);
+            holder.mCheckBox.setChecked(packageNames.contains(data.get(position).getPackageName()));
+            holder.mCheckBox.setOnClickListener(v -> {
+                if (packageNames.contains(data.get(position).getPackageName())) {
+                    packageNames.remove(data.get(position).getPackageName());
+                } else {
+                    packageNames.add(data.get(position).getPackageName());
+                }
+                notifyItemChanged(position);
+                activity.findViewById(R.id.batch_options).setVisibility(packageNames.isEmpty() ? View.GONE : View.VISIBLE);
+            });
+            holder.mOpenIcon.setVisibility(!mlongClicked && data.get(position).launchIntent(holder.mOpenIcon.getContext()) != null ? View.VISIBLE : View.GONE);
             holder.mOpenIcon.setOnClickListener(v -> {
                 if (data.get(position).getPackageName().equals(BuildConfig.APPLICATION_ID)) {
                     return;
@@ -88,40 +102,27 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
             holder.mSize.setVisibility(View.VISIBLE);
             holder.mVersion.setVisibility(View.VISIBLE);
             holder.mCard.setOnLongClickListener(v -> {
-                if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext()) && sCommonUtils.getString("exportAPKsPath", "externalFiles",
-                        v.getContext()).equals("internalStorage")) {
-                    sPermissionUtils.requestPermission(
-                            new String[] {
-                                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                            },(Activity) v.getContext());
-                    return true;
-                }
-                if (APKEditorUtils.isFullVersion(v.getContext())) {
-                    if (sCommonUtils.getString("exportAPKs", null, v.getContext()) == null) {
-                        new ExportOptionsDialog(data.get(position).getPackageName(), false, (Activity) v.getContext()).show();
-                    } else if (sCommonUtils.getString("exportAPKs", null, v.getContext()).equals(v.getContext().getString(R.string.export_storage))) {
-                        new ExportApp(data.get(position).getPackageName(), v.getContext()).execute();
-                    } else {
-                        if (!sCommonUtils.getBoolean("firstSigning", false, v.getContext())) {
-                            new SigningOptionsDialog(data.get(position).getPackageName(), false, v.getContext()).show();
-                        } else {
-                            new ResignAPKs(data.get(position).getPackageName(), false, false, (Activity) v.getContext()).execute();
-                        }
-                    }
-                } else {
-                    new MaterialAlertDialogBuilder(v.getContext())
-                            .setIcon(holder.mAppIcon.getDrawable())
-                            .setTitle(data.get(position).getAppName())
-                            .setMessage(v.getContext().getString(R.string.export_app_question, data.get(position).getAppName()))
-                            .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                            })
-                            .setPositiveButton(R.string.export, (dialog, id) ->
-                                    new ExportApp(data.get(position).getPackageName(), v.getContext()).execute()
-                            ).show();
-                }
-                return false;
+                animate(v, data.get(position).getPackageName());
+                return true;
             });
         } catch (NullPointerException | IndexOutOfBoundsException ignored) {}
+    }
+
+    private void animate(View viewToAnimate, String packageName) {
+        Handler handler = new Handler();
+        mlongClicked = !mlongClicked;
+        if (packageNames.contains(packageName)) {
+            packageNames.remove(packageName);
+        } else {
+            packageNames.add(packageName);
+        }
+        handler.postDelayed(() -> {
+            Animation animation = AnimationUtils.loadAnimation(viewToAnimate.getContext(), android.R.anim.fade_in);
+            viewToAnimate.startAnimation(animation);
+            viewToAnimate.setVisibility(View.VISIBLE);
+            activity.findViewById(R.id.batch_options).setVisibility(packageNames.isEmpty() ? View.GONE : View.VISIBLE);
+            notifyItemRangeChanged(0, getItemCount());
+        }, 300);
     }
 
     @Override
@@ -129,16 +130,18 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
         return data.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final AppCompatImageButton mAppIcon;
         private final MaterialButton mOpenIcon;
         private final MaterialCardView mCard;
+        private final MaterialCheckBox mCheckBox;
         private final MaterialTextView mAppID, mAppName, mSize, mVersion;
 
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
             this.mCard = view.findViewById(R.id.card);
+            this.mCheckBox = view.findViewById(R.id.checkbox);
             this.mOpenIcon = view.findViewById(R.id.open);
             this.mAppIcon = view.findViewById(R.id.icon);
             this.mAppName = view.findViewById(R.id.title);
@@ -149,7 +152,17 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
 
         @Override
         public void onClick(View view) {
-            APKExplorer.exploreApps(data.get(getAdapterPosition()).getPackageName(), null, null, false, (Activity) view.getContext());
+            if (mlongClicked) {
+                if (packageNames.contains(data.get(getAdapterPosition()).getPackageName())) {
+                    packageNames.remove(data.get(getAdapterPosition()).getPackageName());
+                } else {
+                    packageNames.add(data.get(getAdapterPosition()).getPackageName());
+                }
+                notifyItemChanged(getAdapterPosition());
+                activity.findViewById(R.id.batch_options).setVisibility(packageNames.isEmpty() ? View.GONE : View.VISIBLE);
+                return;
+            }
+            APKExplorer.exploreApps(data.get(getAdapterPosition()).getPackageName(), null, null, false, activity);
         }
     }
 

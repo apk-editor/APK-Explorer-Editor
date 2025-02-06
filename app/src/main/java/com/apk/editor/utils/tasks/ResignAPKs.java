@@ -127,7 +127,6 @@ public class ResignAPKs extends sExecutor {
                             .setMessage(mActivity.getString(R.string.resigned_apks_path, mParent.getAbsolutePath()))
                             .setCancelable(false)
                             .setPositiveButton(R.string.cancel, (dialog, id) -> {
-                                        Common.isReloading(true);
                                         if (mExit) {
                                             mActivity.finish();
                                         }

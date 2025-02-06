@@ -21,16 +21,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.adapters.ApplicationsAdapter;
+import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.SerializableItems.PackageItems;
+import com.apk.editor.utils.dialogs.BatchSigningOptionsDialog;
+import com.apk.editor.utils.dialogs.ExportOptionsDialog;
+import com.apk.editor.utils.tasks.ExportApp;
+import com.apk.editor.utils.tasks.ResignBatchAPKs;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -38,10 +47,11 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 public class ApplicationsFragment extends Fragment {
 
     private ApplicationsAdapter mRecycleViewAdapter;
-    private boolean mExit;
+    private boolean mExit = false, mLongClicked = false, mSelectAll = false;
     private final Handler mHandler = new Handler();
+    private final List<String> mPackageNames = new ArrayList<>();
     private ContentLoadingProgressBar mProgress;
-    private MaterialButton mMenuButton;
+    private MaterialButton mBatchButton, mMenuButton;
     private RecyclerView mRecyclerView;
     private String mSearchText = null;
 
@@ -51,6 +61,7 @@ public class ApplicationsFragment extends Fragment {
         View mRootView = inflater.inflate(R.layout.fragment_applications, container, false);
 
         MaterialAutoCompleteTextView mSearchWord = mRootView.findViewById(R.id.search_word);
+        mBatchButton = mRootView.findViewById(R.id.batch_options);
         mProgress = mRootView.findViewById(R.id.progress);
         MaterialButton mSearchButton = mRootView.findViewById(R.id.search_button);
         mMenuButton = mRootView.findViewById(R.id.menu_button);
@@ -102,6 +113,50 @@ public class ApplicationsFragment extends Fragment {
             }
         });
 
+        mBatchButton.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(requireActivity(), v);
+            Menu menu = popupMenu.getMenu();
+            menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.select_all)).setIcon(R.drawable.ic_select_all)
+                    .setCheckable(true).setChecked(mSelectAll);
+            menu.add(Menu.NONE, 1, Menu.NONE, getExportOptionsTitle()).setIcon(R.drawable.ic_export_file);
+            popupMenu.setForceShowIcon(true);
+            popupMenu.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case 0:
+                        mSelectAll = !mSelectAll;
+                        loadApps(mSearchText);
+                        break;
+                    case 1:
+                        if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, requireActivity()) && sCommonUtils.getString("exportAPKsPath", "externalFiles",
+                                requireActivity()).equals("internalStorage")) {
+                            sPermissionUtils.requestPermission(
+                                    new String[] {
+                                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                    }, requireActivity());
+                        } else {
+                            if (APKEditorUtils.isFullVersion(requireActivity())) {
+                                if (sCommonUtils.getString("exportAPKs", null, requireActivity()) == null) {
+                                    new ExportOptionsDialog(mPackageNames, requireActivity());
+                                } else if (sCommonUtils.getString("exportAPKs", null, requireActivity()).equals(getString(R.string.export_storage))) {
+                                    new ExportApp(mPackageNames, requireActivity()).execute();
+                                } else {
+                                    if (!sCommonUtils.getBoolean("firstSigning", false, requireActivity())) {
+                                        new BatchSigningOptionsDialog(mPackageNames, requireActivity()).show();
+                                    } else {
+                                        new ResignBatchAPKs(mPackageNames, requireActivity()).execute();
+                                    }
+                                }
+                            } else {
+                                new ExportApp(mPackageNames, requireActivity()).execute();
+                            }
+                        }
+                        break;
+                }
+                return false;
+            });
+            popupMenu.show();
+        });
+
         mSearchButton.setOnClickListener(v -> {
             if (mSearchWord.getVisibility() == View.VISIBLE) {
                 mSearchWord.setVisibility(View.GONE);
@@ -139,13 +194,20 @@ public class ApplicationsFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (Common.isBusy()) return;
+                if (mProgress.getVisibility() == View.VISIBLE) {
+                    return;
+                }
                 if (mSearchWord.getVisibility() == View.VISIBLE) {
                     if (mSearchText != null) {
                         mSearchText = null;
                         mSearchWord.setText(null);
                     }
                     mSearchWord.setVisibility(View.GONE);
+                    return;
+                }
+                if (mBatchButton.getVisibility() == View.VISIBLE) {
+                    mPackageNames.clear();
+                    loadApps(mSearchText);
                     return;
                 }
                 if (mExit) {
@@ -181,11 +243,19 @@ public class ApplicationsFragment extends Fragment {
                 mRecyclerView.setVisibility(View.GONE);
                 Common.setProgress(true, mProgress);
                 mRecyclerView.removeAllViews();
+                mLongClicked = !mPackageNames.isEmpty();
             }
 
             @Override
             public void doInBackground() {
-                mRecycleViewAdapter = new ApplicationsAdapter(AppData.getData(searchWord, requireActivity()), searchWord);
+                List<PackageItems> mData = AppData.getData(searchWord, requireActivity());
+                mRecycleViewAdapter = new ApplicationsAdapter(mData, mPackageNames, searchWord, mLongClicked, requireActivity());
+                if (mSelectAll) {
+                    mPackageNames.clear();
+                    for (PackageItems items : mData) {
+                        mPackageNames.add(items.getPackageName());
+                    }
+                }
             }
 
             @Override
@@ -193,6 +263,7 @@ public class ApplicationsFragment extends Fragment {
                 mSearchText = searchWord;
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mRecyclerView.setVisibility(View.VISIBLE);
+                mBatchButton.setVisibility(!mPackageNames.isEmpty() ? View.VISIBLE : View.GONE);
                 Common.setProgress(false, mProgress);
             }
         }.execute();
@@ -270,6 +341,20 @@ public class ApplicationsFragment extends Fragment {
             return R.drawable.ic_sort_time;
         } else {
             return R.drawable.ic_sort_az;
+        }
+    }
+
+    private String getExportOptionsTitle() {
+        if (APKEditorUtils.isFullVersion(requireActivity())) {
+            if (sCommonUtils.getString("exportAPKs", null, requireActivity()) == null) {
+                return getString(R.string.export_options_title);
+            } else if (sCommonUtils.getString("exportAPKs", null, requireActivity()).equals(getString(R.string.export_storage))) {
+                return getString(R.string.export_storage);
+            } else {
+                return getString(R.string.export_resign);
+            }
+        } else {
+            return getString(R.string.export_storage);
         }
     }
 
