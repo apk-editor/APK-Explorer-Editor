@@ -27,6 +27,7 @@
     <string name="copying">Copying \'%s\'…</string>
     <string name="decompiling">Decompiling \'%s\'…</string>
     <string name="delete">Delete</string>
+    <string name="delete_all">Delete All</string>
     <string name="delete_question">Delete %s?</string>
     <string name="delete_folder">Delete folder</string>
     <string name="delete_selected_files">Delete selected files</string>

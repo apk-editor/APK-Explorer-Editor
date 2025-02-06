@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             app:icon="@drawable/ic_delete"
-            android:text="@string/delete"
+            android:text="@string/delete_all"
             android:layout_weight="0.34"
             android:layout_margin="5dp"
             app:iconGravity="textEnd"/>
