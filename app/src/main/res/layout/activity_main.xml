@@ -33,12 +33,14 @@
             app:menu="@menu/navigation_main"
             android:layout_gravity="bottom" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/settings_menu"
-            android:layout_width="54dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="?attr/materialIconButtonFilledTonalStyle"
             android:layout_gravity="end|center_vertical"
-            android:src="@drawable/ic_settings"
-            android:background="@null" />
+            app:iconTint="?attr/colorPrimary"
+            app:icon="@drawable/ic_settings"
+            android:gravity="center" />
     </FrameLayout>
 </RelativeLayout>

@@ -2,62 +2,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical" >
+        android:gravity="center_vertical"
+        android:padding="10dp" >
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="center"
             android:layout_gravity="start|center_vertical"
+            android:tint="?attr/colorPrimary"
             android:src="@drawable/ic_back"
-            android:layout_marginEnd="10dp"
+            android:scaleType="center"
             android:background="@null" />
-
-        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-            android:id="@+id/search_word"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:inputType="textAutoComplete"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="40dp"
-            android:imeOptions="actionDone"
-            android:layout_gravity="center"
-            android:hint="@string/search"
-            android:cursorVisible="true"
-            android:visibility="gone"
-            android:gravity="center"
-            android:padding="10dp"
-            android:maxLines="1" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center_vertical"
-            android:layout_gravity="start"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="40dp"
-            android:textSize="18sp"
-            android:padding="10dp" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="center"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            style="@style/AppTheme.Title"
+            android:singleLine="true" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/search"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            style="?attr/materialIconButtonFilledTonalStyle"
             android:layout_gravity="end|center_vertical"
-            android:src="@drawable/ic_search"
-            android:background="@null" />
+            app:iconTint="?attr/colorPrimary"
+            app:icon="@drawable/ic_search" />
     </FrameLayout>
 
-    <include layout="@layout/progress_layout" />
+    <com.google.android.material.card.MaterialCardView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:strokeColor="?attr/colorPrimary"
+        app:cardCornerRadius="45dp"
+        android:layout_margin="5dp" >
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/search_word"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:drawableStart="@drawable/ic_search"
+            android:layout_gravity="center"
+            android:gravity="start|center"
+            android:layout_margin="5dp"
+            android:background="@null"
+            android:visibility="gone" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <include layout="@layout/progress_view" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

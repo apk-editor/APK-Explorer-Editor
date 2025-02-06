@@ -1,11 +1,11 @@
 package com.apk.editor.utils.tasks;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Context;
+import android.app.Activity;
 
 import com.apk.editor.R;
-import com.apk.editor.utils.Common;
+import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.dialogs.ProgressDialog;
 
 import java.io.File;
 
@@ -17,25 +17,24 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class DeleteProject extends sExecutor {
 
-    private final Context mContext;
+    private final Activity mActivity;
+    private final boolean mSetSuccess;
     private final File mFile;
     private ProgressDialog mProgressDialog;
 
-    public DeleteProject(File file, Context context) {
+    public DeleteProject(File file, Activity activity, boolean setSuccess) {
         mFile = file;
-        mContext = context;
+        mActivity = activity;
+        mSetSuccess = setSuccess;
     }
 
     @SuppressLint("StringFormatInvalid")
     @Override
     public void onPreExecute() {
-        mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setMessage(mContext.getString(R.string.deleting, mFile.getName()));
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog = new ProgressDialog(mActivity);
+        mProgressDialog.setTitle(mActivity.getString(R.string.deleting, mFile.getName()));
         mProgressDialog.setIcon(R.mipmap.ic_launcher);
-        mProgressDialog.setTitle(R.string.app_name);
         mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setCancelable(false);
         mProgressDialog.show();
     }
 
@@ -50,7 +49,9 @@ public class DeleteProject extends sExecutor {
             mProgressDialog.dismiss();
         } catch (IllegalArgumentException ignored) {
         }
-        Common.isReloading(true);
+        if (mSetSuccess) {
+            APKExplorer.setSuccessIntent(true, mActivity);
+        }
     }
 
 }

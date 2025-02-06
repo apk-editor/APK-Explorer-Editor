@@ -1,14 +1,17 @@
 package com.apk.editor.activities;
 
+import static com.apk.editor.utils.APKExplorer.handleAPKs;
+
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.documentfile.provider.DocumentFile;
@@ -23,8 +26,9 @@ import com.apk.editor.fragments.PermissionsFragment;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.dialogs.InvalidFileDialog;
+import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.apk.editor.utils.dialogs.SelectBundleDialog;
-import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
@@ -40,15 +44,13 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 27, 2021
  */
-public class APKInstallerActivity extends AppCompatActivity {
-
-    private AppCompatImageButton mExploreIcon;
-    private AppCompatImageView mAppIcon;
+public class APKInstallerActivity extends AppCompatActivity {    private AppCompatImageView mAppIcon;
     private APKParser mAPKParser;
     private File mFile = null;
     private LinearLayoutCompat mMainLayout, mIconsLayout;
-    private MaterialCardView mCancel, mInstall;
-    private MaterialTextView mAppName, mInstallText, mPackageID;
+    private MaterialButton mExploreIcon;
+    private MaterialButton mCancel, mInstall;
+    private MaterialTextView mAppName, mPackageID;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
 
@@ -64,7 +66,6 @@ public class APKInstallerActivity extends AppCompatActivity {
         mMainLayout = findViewById(R.id.main_layout);
         mIconsLayout = findViewById(R.id.icons_layout);
         mInstall = findViewById(R.id.install);
-        mInstallText = findViewById(R.id.install_text);
         mCancel = findViewById(R.id.cancel);
         mTabLayout = findViewById(R.id.tab_Layout);
         mViewPager = findViewById(R.id.view_pager);
@@ -86,12 +87,9 @@ public class APKInstallerActivity extends AppCompatActivity {
             @Override
             public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(activity);
-                mProgressDialog.setMessage(activity.getString(R.string.loading));
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mProgressDialog.setTitle(activity.getString(R.string.loading));
                 mProgressDialog.setIcon(R.mipmap.ic_launcher);
-                mProgressDialog.setTitle(R.string.app_name);
                 mProgressDialog.setIndeterminate(true);
-                mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
 
                 sFileUtils.delete(Objects.requireNonNull(getExternalFilesDir("APK")));
@@ -126,10 +124,10 @@ public class APKInstallerActivity extends AppCompatActivity {
                     if (mAPKParser.isParsed()) {
                         loadAPKDetails(activity);
                         if (sPackageUtils.isPackageInstalled(mAPKParser.getPackageName(), activity)) {
-                            mInstallText.setText(getString(R.string.update));
+                            mInstall.setText(getString(R.string.update));
                         }
                     } else if (mFile.getName().endsWith("apkm") || mFile.getName().endsWith("apks") || mFile.getName().endsWith("xapk")) {
-                        new SelectBundleDialog(mFile.getAbsolutePath(), true, activity).show();
+                        new SelectBundleDialog(mFile.getAbsolutePath(), activityResultLauncher, true, activity).show();
                     } else {
                         new InvalidFileDialog(true, activity).show();
                     }
@@ -154,8 +152,10 @@ public class APKInstallerActivity extends AppCompatActivity {
                 mAppIcon.setImageDrawable(sPackageUtils.getAppIcon(mAPKParser.getPackageName(), activity));
                 mPackageID.setVisibility(View.VISIBLE);
             } else {
-                mAppName.setText(mAPKParser.getPackageName());
+                mAppName.setText(mFile.getName().replace(".apk", ""));
+                mPackageID.setText(mAPKParser.getPackageName());
                 mAppIcon.setImageDrawable(mAPKParser.getAppIcon());
+                mPackageID.setVisibility(View.VISIBLE);
             }
 
             adapter.AddFragment(new APKDetailsFragment(), getString(R.string.details));
@@ -175,18 +175,24 @@ public class APKInstallerActivity extends AppCompatActivity {
         mMainLayout.setVisibility(View.VISIBLE);
         mIconsLayout.setVisibility(View.VISIBLE);
 
-        mCancel.setOnClickListener(v -> finish());
+        mCancel.setOnClickListener(v -> APKExplorer.setCancelIntent(this));
         mInstall.setOnClickListener(v -> {
             Common.getAPKList().add(mFile.getAbsolutePath());
-            APKExplorer.handleAPKs(true, activity);
+            handleAPKs(true, activity);
         });
 
-        mExploreIcon.setOnClickListener(v -> APKExplorer.exploreApps(null, mFile, null, true, activity));
+        mExploreIcon.setOnClickListener(v -> APKExplorer.exploreApps(mPackageID.getText().toString().trim(), mFile, null, true, activity));
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    APKExplorer.setSuccessIntent(true, this);
+                } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                    finish();
+                }
+            }
+    );
 
 }

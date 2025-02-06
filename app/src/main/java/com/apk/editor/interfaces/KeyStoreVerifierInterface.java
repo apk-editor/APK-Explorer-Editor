@@ -5,10 +5,9 @@ import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
-
 import com.apk.editor.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on Oct 10, 2024
@@ -28,7 +27,7 @@ public abstract class KeyStoreVerifierInterface {
     private void startDialog() {
         LayoutInflater mLayoutInflator = LayoutInflater.from(mActivity);
         View layout = mLayoutInflator.inflate(R.layout.layout_keystoreverifier, null);
-        AppCompatAutoCompleteTextView editText = layout.findViewById(R.id.text);
+        MaterialAutoCompleteTextView editText = layout.findViewById(R.id.text);
 
         editText.setSingleLine(true);
         editText.requestFocus();

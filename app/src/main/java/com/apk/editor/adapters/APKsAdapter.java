@@ -23,6 +23,7 @@ import com.apk.editor.utils.dialogs.ShareBundleDialog;
 import com.apk.editor.utils.dialogs.SignatureMismatchDialog;
 import com.apk.editor.utils.menus.APKOptionsMenu;
 import com.apk.editor.utils.menus.BundleOptionsMenu;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -60,8 +61,8 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull APKsAdapter.ViewHolder holder, int position) {
         try {
             if (new File(data.get(position)).isDirectory()) {
-                if (sAPKUtils.getAPKIcon(data.get(position) + "/base.apk", holder.mAppName.getContext()) != null) {
-                    holder.mAppIcon.setImageDrawable(sAPKUtils.getAPKIcon(data.get(position) + "/base.apk", holder.mAppName.getContext()));
+                if (sAPKUtils.getAPKIcon(data.get(position) + "/" + APKData.getBaseAPKName(new File(data.get(position)), holder.mAppIcon.getContext()), holder.mAppName.getContext()) != null) {
+                    holder.mAppIcon.setImageDrawable(sAPKUtils.getAPKIcon(data.get(position) + "/" + APKData.getBaseAPKName(new File(data.get(position)), holder.mAppIcon.getContext()), holder.mAppName.getContext()));
                 } else {
                     holder.mAppIcon.setImageDrawable(ContextCompat.getDrawable(holder.mAppIcon.getContext(), R.drawable.ic_android));
                     holder.mAppIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mAppIcon.getContext()));
@@ -72,12 +73,12 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 } else {
                     holder.mAppName.setText(new File(data.get(position)).getName());
                 }
-                if (sAPKUtils.getPackageName(data.get(position) + "/base.apk", holder.mAppName.getContext()) == null) {
+                if (sAPKUtils.getPackageName(data.get(position) + "/" + APKData.getBaseAPKName(new File(data.get(position)), holder.mAppName.getContext()), holder.mAppName.getContext()) == null) {
                     holder.mAppName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.mCard.setOnClickListener(v -> sCommonUtils.snackBar(v, v.getContext().getString(R.string.apk_corrupted)).show());
                 }
-                if (sAPKUtils.getVersionName(data.get(position) + "/base.apk", holder.mAppName.getContext()) != null) {
-                    holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.version, sAPKUtils.getVersionName(data.get(position) + "/base.apk", holder.mAppName.getContext())));
+                if (sAPKUtils.getVersionName(data.get(position) + "/" + APKData.getBaseAPKName(new File(data.get(position)), holder.mAppName.getContext()), holder.mAppName.getContext()) != null) {
+                    holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.version, sAPKUtils.getVersionName(data.get(position) + "/" + APKData.getBaseAPKName(new File(data.get(position)), holder.mVersion.getContext()), holder.mVersion.getContext())));
                 }
                 holder.mCard.setOnClickListener(v -> {
                     if (APKEditorUtils.isFullVersion(v.getContext())) {
@@ -91,7 +92,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                                     .setNegativeButton(R.string.cancel, (dialog, id) -> {
                                     })
                                     .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installSplitAPKs(false, null,
-                                            data.get(position) + "/base.apk", (Activity) v.getContext())
+                                            data.get(position) + "/" + APKData.getBaseAPKName(new File(data.get(position)), v.getContext()), (Activity) v.getContext())
                                     ).show();
                         }
                     } else {
@@ -196,7 +197,8 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final AppCompatImageButton mAppIcon, mDelete;
+        private final AppCompatImageButton mAppIcon;
+        private final MaterialButton mDelete;
         private final MaterialCardView mCard;
         private final MaterialTextView mAppName, mSize, mVersion;
 

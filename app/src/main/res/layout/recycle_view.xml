@@ -14,8 +14,9 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start|center_vertical"
             android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="start|center"
             android:padding="5dp" >
 
                 <androidx.appcompat.widget.AppCompatImageButton
@@ -24,35 +25,50 @@
                     android:layout_height="40dp"
                     android:background="@null"
                     android:layout_gravity="center_vertical"
-                    android:scaleType="fitCenter"
-                    android:layout_marginEnd="10dp" />
+                    android:layout_marginEnd="10dp"
+                    android:scaleType="fitCenter" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
 
-                        <androidx.appcompat.widget.LinearLayoutCompat
+                        <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:layout_gravity="center_vertical"
-                            android:orientation="vertical"
-                            android:baselineAligned="false">
+                            android:layout_gravity="center" >
 
-                                <com.google.android.material.textview.MaterialTextView
-                                    android:id="@+id/title"
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="40sp"
+                                    android:orientation="vertical">
+
+                                        <com.google.android.material.textview.MaterialTextView
+                                            android:id="@+id/title"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:focusable="false"
+                                            android:textSize="17sp" />
+
+                                        <com.google.android.material.textview.MaterialTextView
+                                            android:id="@+id/description"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:focusable="false" />
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/open"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:focusable="false"
-                                    android:textSize="17sp" />
-
-                                <com.google.android.material.textview.MaterialTextView
-                                    android:id="@+id/description"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:focusable="false" />
-                        </androidx.appcompat.widget.LinearLayoutCompat>
+                                    style="?attr/materialIconButtonFilledTonalStyle"
+                                    android:layout_gravity="center|end"
+                                    app:iconTint="?attr/colorPrimary"
+                                    app:icon="@drawable/ic_open"
+                                    android:visibility="gone"
+                                    android:gravity="center" />
+                        </FrameLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/constraint_layout"

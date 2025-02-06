@@ -2,22 +2,12 @@ package com.apk.editor.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.Base64;
 
 import com.apk.axml.APKParser;
 import com.apk.editor.R;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
-import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on November 07, 2021
@@ -56,7 +46,7 @@ public class ExternalAPKData {
     }
 
     @SuppressLint("StringFormatInvalid")
-    private static String sdkToAndroidVersion(String sdkVersion, Context context) {
+    public static String sdkToAndroidVersion(String sdkVersion, Context context) {
         int sdk = Integer.parseInt(sdkVersion);
         switch (sdk) {
             case 35:
@@ -131,44 +121,6 @@ public class ExternalAPKData {
                 return context.getString(R.string.android_version, "1.0 (BASE, " + sdkVersion + ")");
             default:
                 return sdkVersion;
-        }
-    }
-
-    public static boolean generateAppDetails(String packageName, File apkFile, File backupPath, Context context) {
-        JSONObject mJSONObject = new JSONObject();
-        APKParser mAPKParser = new APKParser();
-        mAPKParser.parse(packageName != null ? sPackageUtils.getSourceDir(packageName, context) : apkFile.getAbsolutePath(), context);
-
-        // Store basic information about the app
-        try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            Bitmap.createScaledBitmap(APKExplorer.drawableToBitmap(mAPKParser.getAppIcon()), 150, 150,
-                    true).compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream.toByteArray();
-            mJSONObject.put("app_icon", Base64.encodeToString(byteArray, Base64.DEFAULT));
-            mJSONObject.put("app_name", packageName != null ? sPackageUtils.getAppName(packageName, context) : apkFile.getName());
-            mJSONObject.put("package_name", packageName);
-            mJSONObject.put("version_info", context.getString(R.string.version, mAPKParser.getVersionName() + " (" + mAPKParser.getVersionCode() + ")"));
-            if (mAPKParser.getMinSDKVersion() != null) {
-                try {
-                    mJSONObject.put("sdk_minimum", context.getString(R.string.sdk_minimum, ExternalAPKData.sdkToAndroidVersion(mAPKParser.getMinSDKVersion(), context)));
-                } catch (NumberFormatException ignored) {
-                    mJSONObject.put("sdk_minimum", context.getString(R.string.sdk_minimum, mAPKParser.getMinSDKVersion()));
-                }
-            }
-            if (mAPKParser.getCompiledSDKVersion() != null) {
-                try {
-                    mJSONObject.put("sdk_compiled", context.getString(R.string.sdk_compile, ExternalAPKData.sdkToAndroidVersion(mAPKParser.getCompiledSDKVersion(), context)));
-                } catch (NumberFormatException ignored) {
-                    mJSONObject.put("sdk_minimum", context.getString(R.string.sdk_compile, mAPKParser.getCompiledSDKVersion()));
-                }
-            }
-            mJSONObject.put("certificate_info", mAPKParser.getCertificate().trim());
-            mJSONObject.put("smali_edited", false);
-            sFileUtils.create(mJSONObject.toString(), new File(backupPath, "appData"));
-            return true;
-        } catch (JSONException ignored) {
-            return false;
         }
     }
 

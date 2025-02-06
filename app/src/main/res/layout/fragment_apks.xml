@@ -19,63 +19,58 @@
             android:paddingEnd="10dp"
             android:paddingTop="5dp" >
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:layout_margin="5dp" >
+                android:text="@string/apps_exported"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="80dp"
+                style="@style/AppTheme.Title" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/app_title"
-                    android:layout_width="match_parent"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginStart="85dp"
+                android:orientation="horizontal"
+                android:layout_marginEnd="5dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/search_button"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="80dp"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:gravity="start" />
+                    android:layout_width="wrap_content"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    app:iconTint="?attr/colorPrimary"
+                    app:icon="@drawable/ic_search" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sort_button"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="75dp" >
-
-                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                        android:id="@+id/search_word"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textAutoComplete"
-                        android:imeOptions="actionDone"
-                        android:layout_gravity="center"
-                        android:hint="@string/search"
-                        android:cursorVisible="true"
-                        android:visibility="gone"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_width="wrap_content"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    app:iconTint="?attr/colorPrimary"
+                    app:icon="@drawable/ic_sort" />
             </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/search_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="40dp"
-                android:layout_gravity="end|center_vertical"
-                android:src="@drawable/ic_search"
-                android:background="@null" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/sort_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="end|center_vertical"
-                android:src="@drawable/ic_sort"
-                android:background="@null" />
         </FrameLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:strokeColor="?attr/colorPrimary"
+            app:cardCornerRadius="45dp"
+            android:layout_margin="5dp" >
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/search_word"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:drawableStart="@drawable/ic_search"
+                android:layout_gravity="center"
+                android:gravity="start|center"
+                android:layout_margin="5dp"
+                android:background="@null"
+                android:visibility="gone" />
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
@@ -85,52 +80,29 @@
             app:tabGravity="fill"
             app:tabMode="fixed" />
 
-        <include layout="@layout/progress_layout" />
+        <include layout="@layout/progress_view" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="50dp" />
+            android:layout_height="wrap_content" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/layout_bottom"
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/add_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:gravity="center" >
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/add_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:translationZ="50dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_add"
-            android:background="@null"
-            android:clickable="false" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="-16dp"
-            android:layout_gravity="bottom"
-            app:cardCornerRadius="25dp" >
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="center_vertical"
-                android:text="@string/select_storage"
-                android:layout_margin="5dp"
-                android:textStyle="bold"
-                android:textSize="17sp"
-                android:gravity="center" />
-        </com.google.android.material.card.MaterialCardView>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        style="?attr/materialIconButtonFilledTonalStyle"
+        android:text="@string/select_storage"
+        android:layout_marginStart="15sp"
+        android:layout_marginEnd="15sp"
+        app:iconGravity="textStart"
+        app:icon="@drawable/ic_add"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:padding="15sp"
+        app:iconPadding="5sp" />
 </RelativeLayout>

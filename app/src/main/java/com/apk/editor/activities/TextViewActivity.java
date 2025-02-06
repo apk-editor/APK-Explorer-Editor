@@ -5,11 +5,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +17,8 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.TextViewAdapter;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
@@ -29,9 +31,7 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class TextViewActivity extends AppCompatActivity {
 
-    private AppCompatAutoCompleteTextView mSearchWord;
-    private LinearLayoutCompat mProgressLayout;
-    private MaterialTextView mTitle;
+    private ContentLoadingProgressBar mProgressLayout;
     private RecyclerView mRecyclerView;
     public static final String PATH_INTENT = "path";
     private String mPath;
@@ -41,11 +41,11 @@ public class TextViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_textview);
 
-        mSearchWord = findViewById(R.id.search_word);
         AppCompatImageButton mBack = findViewById(R.id.back);
-        AppCompatImageButton mSearch = findViewById(R.id.search);
-        mProgressLayout = findViewById(R.id.progress_layout);
-        mTitle = findViewById(R.id.title);
+        MaterialButton mSearch = findViewById(R.id.search);
+        mProgressLayout = findViewById(R.id.progress);
+        MaterialAutoCompleteTextView mSearchWord = findViewById(R.id.search_word);
+        MaterialTextView mTitle = findViewById(R.id.title);
         mRecyclerView = findViewById(R.id.recycler_view);
 
         mPath = getIntent().getStringExtra(PATH_INTENT);
@@ -57,11 +57,9 @@ public class TextViewActivity extends AppCompatActivity {
         mSearch.setOnClickListener(v -> {
             if (mSearchWord.getVisibility() == View.VISIBLE) {
                 mSearchWord.setVisibility(View.GONE);
-                mTitle.setVisibility(View.VISIBLE);
                 AppData.toggleKeyboard(0, mSearchWord, this);
             } else {
                 mSearchWord.setVisibility(View.VISIBLE);
-                mTitle.setVisibility(View.GONE);
                 AppData.toggleKeyboard(1, mSearchWord, this);
             }
         });
@@ -85,6 +83,18 @@ public class TextViewActivity extends AppCompatActivity {
         reload(null).execute();
 
         mBack.setOnClickListener(v -> finish());
+
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (mSearchWord.getVisibility() == View.VISIBLE) {
+                    mSearchWord.setVisibility(View.GONE);
+                    mSearchWord.setText(null);
+                    return;
+                }
+                finish();
+            }
+        });
     }
 
     private sExecutor reload(String searchWord) {
@@ -107,17 +117,6 @@ public class TextViewActivity extends AppCompatActivity {
                 mProgressLayout.setVisibility(View.GONE);
             }
         };
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mSearchWord.getVisibility() == View.VISIBLE) {
-            mSearchWord.setVisibility(View.GONE);
-            mTitle.setVisibility(View.VISIBLE);
-            mSearchWord.setText(null);
-            return;
-        }
-        super.onBackPressed();
     }
 
 }

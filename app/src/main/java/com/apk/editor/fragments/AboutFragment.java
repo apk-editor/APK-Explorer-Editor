@@ -16,7 +16,7 @@ import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.adapters.AboutAdapter;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.CommonViews;
+import com.apk.editor.utils.AppSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class AboutFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                CommonViews.navigateToFragment(requireActivity(), R.id.nav_apks);
+                AppSettings.navigateToFragment(requireActivity(), R.id.nav_apks);
             }
         });
 
@@ -56,7 +56,7 @@ public class AboutFragment extends Fragment {
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_support, requireActivity()), getString(R.string.support_group), getString(R.string.support_group_summary), "https://t.me/apkexplorer"));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_issue, requireActivity()), getString(R.string.report_issue), getString(R.string.report_issue_summary), "https://github.com/apk-editor/APK-Explorer-Editor/issues/new"));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_share, requireActivity()), getString(R.string.invite_friends), getString(R.string.invite_friends_Summary), null));
-        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_book, requireActivity()),getString(R.string.documentation), getString(R.string.documentation_summary), null));
+        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_book, requireActivity()),getString(R.string.documentation), getString(R.string.documentation_summary), "https://apk-editor.github.io/general/"));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_translate, requireActivity()), getString(R.string.translations), getString(R.string.translations_summary),null));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_credits, requireActivity()), getString(R.string.credits), getString(R.string.credits_summary), null));
         if (APKEditorUtils.isFullVersion(requireActivity())) {

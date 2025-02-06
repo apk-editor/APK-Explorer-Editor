@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" >
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -12,58 +13,81 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:layout_gravity="center"
             android:padding="10dp" >
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/back"
-                android:layout_width="30dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
-                android:gravity="center_vertical"
+                android:tint="?attr/colorPrimary"
                 android:src="@drawable/ic_back"
-                android:background="@null" />
+                android:background="@null"
+                android:gravity="center" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="40dp"
                 android:layout_marginEnd="80dp"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
-                android:textIsSelectable="true"
-                android:textSize="20sp" />
+                style="@style/AppTheme.Title"
+                android:singleLine="true" />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/save"
-                android:layout_width="30dp"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:layout_gravity="center|end"
-                android:gravity="center_vertical"
-                android:src="@drawable/ic_build"
-                android:layout_marginEnd="40dp"
-                android:background="@null"
-                android:visibility="gone"
-                android:scaleX="-1"/>
+                android:layout_marginStart="85dp"
+                android:orientation="horizontal"
+                android:layout_marginEnd="5dp">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/sort"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:gravity="center_vertical"
-                android:src="@drawable/ic_sort"
-                android:background="@null" />
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/build"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|end"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/ic_build"
+                    android:layout_marginEnd="10dp"
+                    android:background="@null"
+                    android:visibility="gone"
+                    android:scaleX="-1"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/menu"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    app:iconTint="?attr/colorPrimary"
+                    app:icon="@drawable/ic_dots" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
         </FrameLayout>
 
-        <include layout="@layout/progress_layout" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:strokeColor="?attr/colorPrimary"
+            app:cardCornerRadius="45dp"
+            android:layout_margin="5dp" >
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/search_word"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:drawableStart="@drawable/ic_search"
+                android:layout_gravity="center"
+                android:gravity="start|center"
+                android:layout_margin="5dp"
+                android:background="@null"
+                android:visibility="gone" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <include layout="@layout/progress_view" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <include layout="@layout/layout_recyclerview" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/error_status"

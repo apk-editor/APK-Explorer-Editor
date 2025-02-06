@@ -25,14 +25,15 @@
                 android:layout_gravity="center"
                 android:gravity="center" >
 
-                <androidx.appcompat.widget.AppCompatImageButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/explore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    app:iconTint="?attr/colorPrimary"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_explore"
-                    android:layout_marginStart="10dp"
-                    android:background="@null" />
+                    app:icon="@drawable/ic_explore"
+                    android:layout_marginStart="10dp" />
 
                 <com.google.android.material.tabs.TabLayout
                     android:layout_width="match_parent"
@@ -60,75 +61,38 @@
         android:visibility="gone"
         android:gravity="center" >
 
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            app:cardCornerRadius="25dp">
+            android:layout_width="wrap_content"
+            style="?attr/materialIconButtonFilledTonalStyle"
+            android:textColor="?attr/colorPrimary"
+            app:iconTint="?attr/colorPrimary"
+            android:textStyle="bold|italic"
+            app:icon="@drawable/ic_cancel"
+            android:text="@string/cancel"
+            android:layout_margin="25dp"
+            android:paddingStart="10sp"
+            android:paddingEnd="10sp"
+            app:iconGravity="start"
+            android:textSize="17sp"
+            app:iconPadding="10sp" />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_margin="15dp"
-                android:gravity="center">
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_clear"
-                    android:background="@null"
-                    android:clickable="false" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_gravity="center"
-                    android:text="@string/cancel"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:textSize="17sp" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/install"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            app:cardCornerRadius="25dp">
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_margin="15dp"
-                android:gravity="center">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/install_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:layout_gravity="center"
-                    android:text="@string/install"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:textSize="17sp" />
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_installer"
-                    android:background="@null"
-                    android:clickable="false" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-        </com.google.android.material.card.MaterialCardView>
+            android:layout_width="wrap_content"
+            style="?attr/materialIconButtonFilledTonalStyle"
+            android:textColor="?attr/colorPrimary"
+            app:iconTint="?attr/colorPrimary"
+            app:icon="@drawable/ic_installer"
+            android:textStyle="bold|italic"
+            android:text="@string/install"
+            android:layout_margin="25dp"
+            android:paddingStart="10sp"
+            android:paddingEnd="10sp"
+            android:textSize="17sp"
+            app:iconPadding="10sp"
+            app:iconGravity="end" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </RelativeLayout>

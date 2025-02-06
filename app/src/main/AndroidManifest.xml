@@ -38,9 +38,6 @@
         <activity android:name=".activities.APKTasksActivity"
             android:exported="false" />
 
-        <activity android:name=".activities.DocumentationActivity"
-            android:exported="false" />
-
         <activity android:name=".activities.ImageViewActivity"
             android:exported="false" />
 

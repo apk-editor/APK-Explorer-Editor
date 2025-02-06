@@ -12,12 +12,13 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
+import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
@@ -28,7 +29,7 @@ import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
  */
 public class ImageViewActivity extends AppCompatActivity {
 
-    public static final String PATH_INTENT = "path";
+    public static final String PACKAGE_NAME_INTENT = "package_name", PATH_INTENT = "path";
 
     @SuppressLint("StringFormatInvalid")
     @Override
@@ -37,17 +38,18 @@ public class ImageViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_imageview);
 
         AppCompatImageButton mBack = findViewById(R.id.back);
-        AppCompatImageButton mMenu = findViewById(R.id.export);
+        MaterialButton mMenu = findViewById(R.id.export);
         AppCompatImageView mImage = findViewById(R.id.image);
         MaterialTextView mTitle = findViewById(R.id.title);
         String path = getIntent().getStringExtra(PATH_INTENT);
+        String packageName = getIntent().getStringExtra(PACKAGE_NAME_INTENT);
 
         if (path != null) {
             mTitle.setText(new File(path).getName());
             mImage.setImageURI(APKExplorer.getIconFromPath(path));
         } else {
-            mTitle.setText(sPackageUtils.getAppName(Common.getAppID(), this));
-            mImage.setImageDrawable(sPackageUtils.getAppIcon(Common.getAppID(), this));
+            mTitle.setText(sPackageUtils.getAppName(packageName, this));
+            mImage.setImageDrawable(sPackageUtils.getAppIcon(packageName, this));
         }
 
         mMenu.setOnClickListener(v -> new MaterialAlertDialogBuilder(this)
@@ -55,7 +57,7 @@ public class ImageViewActivity extends AppCompatActivity {
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                 })
                 .setPositiveButton(getString(R.string.export), (dialog, id) -> {
-                            if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,this)) {
+                            if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,this)) {
                                 sPermissionUtils.requestPermission(
                                         new String[] {
                                                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -63,8 +65,9 @@ public class ImageViewActivity extends AppCompatActivity {
                             } else {
                                 String mExportPath;
                                 if (Build.VERSION.SDK_INT < 29) {
-                                    sFileUtils.mkdir(new File(Projects.getExportPath(this), Common.getAppID()));
-                                    mExportPath = Projects.getExportPath(this) + "/" + Common.getAppID();
+                                    File file = new File(Projects.getExportPath(this), Objects.requireNonNull(packageName));
+                                    sFileUtils.mkdir(file);
+                                    mExportPath = file.getAbsolutePath();
                                 } else {
                                     mExportPath = Projects.getExportPath(this);
                                 }

@@ -2,18 +2,19 @@ package com.apk.editor.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.activity.result.ActivityResultLauncher;
+
 import com.apk.editor.R;
+import com.apk.editor.activities.FilePickerActivity;
 import com.apk.editor.activities.InstallerActivity;
-import com.apk.editor.activities.InstallerFilePickerActivity;
 import com.apk.editor.services.InstallerService;
+import com.apk.editor.utils.dialogs.ProgressDialog;
 
 import java.io.File;
 import java.util.List;
-import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
@@ -26,10 +27,6 @@ import in.sunilpaulmathew.sCommon.InstallerUtils.sInstallerUtils;
  */
 public class SplitAPKInstaller {
 
-    private static File[] getFilesList(File dir) {
-        return Objects.requireNonNull(dir).listFiles();
-    }
-
     private static Intent getCallbackIntent(Context context) {
         return new Intent(context, InstallerService.class);
     }
@@ -40,7 +37,7 @@ public class SplitAPKInstaller {
             for (String mSplits : APKData.splitApks(path)) {
                 File mFile = new File(mSplits);
                 if (mFile.exists() && mSplits.endsWith(".apk")) {
-                    totalSize += mFile.length();
+                    totalSize += (int) mFile.length();
                 }
             }
         } else if (!Common.getAPKList().isEmpty()) {
@@ -48,7 +45,7 @@ public class SplitAPKInstaller {
                 if (sFileUtils.exist(new File(string))) {
                     File mFile = new File(string);
                     if (mFile.exists() && mFile.getName().endsWith(".apk")) {
-                        totalSize += mFile.length();
+                        totalSize += (int) mFile.length();
                     }
                 }
             }
@@ -56,7 +53,7 @@ public class SplitAPKInstaller {
         return totalSize;
     }
 
-    public static void handleAppBundle(boolean exit, String path, Activity activity) {
+    public static void handleAppBundle(ActivityResultLauncher<Intent> activityResultLauncher, String path, Activity activity) {
         new sExecutor() {
             private final File mFile = new File(activity.getExternalCacheDir(), "splits");
             private ProgressDialog mProgressDialog;
@@ -65,12 +62,9 @@ public class SplitAPKInstaller {
             @Override
             public void onPreExecute() {
                 mProgressDialog = new ProgressDialog(activity);
-                mProgressDialog.setMessage(activity.getString(R.string.preparing_bundle_install, new File(path).getName()));
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mProgressDialog.setTitle(activity.getString(R.string.preparing_bundle_install, new File(path).getName()));
                 mProgressDialog.setIcon(R.mipmap.ic_launcher);
-                mProgressDialog.setTitle(R.string.app_name);
                 mProgressDialog.setIndeterminate(true);
-                mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
 
                 if (sFileUtils.exist(mFile)) {
@@ -81,17 +75,6 @@ public class SplitAPKInstaller {
             @Override
             public void doInBackground() {
                 APKEditorUtils.unzip(path, mFile.getAbsolutePath());
-                for (File files : getFilesList(mFile)) {
-                    if (files.isFile() && files.getName().endsWith(".apk")) {
-                        Common.setPath(mFile.getAbsolutePath());
-                    } else if (files.isDirectory()) {
-                        for (File dirs : getFilesList(new File(mFile, files.getName()))) {
-                            if (dirs.isFile() && dirs.getName().endsWith(".apk")) {
-                                Common.setPath(new File(mFile, dirs.getName()).getAbsolutePath());
-                            }
-                        }
-                    }
-                }
             }
 
             @Override
@@ -101,13 +84,10 @@ public class SplitAPKInstaller {
                 } catch (IllegalArgumentException ignored) {
                 }
                 Common.getAPKList().clear();
-                Intent installer = new Intent(activity, InstallerFilePickerActivity.class);
-                installer.putExtra(InstallerFilePickerActivity.TITLE_INTENT, activity.getString(R.string.select_apk));
-                activity.startActivity(installer);
-
-                if (exit) {
-                    activity.finish();
-                }
+                Intent installer = new Intent(activity, FilePickerActivity.class);
+                installer.putExtra(FilePickerActivity.TITLE_INTENT, activity.getString(R.string.select_apk));
+                installer.putExtra(FilePickerActivity.PATH_INTENT, mFile.getAbsolutePath());
+                activityResultLauncher.launch(installer);
             }
         }.execute();
     }

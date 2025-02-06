@@ -9,7 +9,7 @@ import android.view.View;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +32,7 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class XMLEditorActivity extends AppCompatActivity {
 
-    private LinearLayoutCompat mProgress;
+    private ContentLoadingProgressBar mProgress;
     private RecyclerView mRecyclerView;
     private String mPath = null, mSearchText = null;
     public static final String PATH_INTENT = "path";
@@ -43,7 +43,7 @@ public class XMLEditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xmleditor);
 
-        mProgress = findViewById(R.id.progress_layout);
+        mProgress = findViewById(R.id.progress);
         MaterialAutoCompleteTextView mSearch = findViewById(R.id.search);
         MaterialTextView mTitle = findViewById(R.id.title);
         mRecyclerView = findViewById(R.id.recycler_view);
@@ -79,6 +79,9 @@ public class XMLEditorActivity extends AppCompatActivity {
             @Override
             public void handleOnBackPressed() {
                 if (Common.isBusy()) return;
+                if (mSearchText != null) {
+                    mSearch.setText(null);
+                }
                 finish();
             }
         });
@@ -90,7 +93,7 @@ public class XMLEditorActivity extends AppCompatActivity {
             @Override
             public void onPreExecute() {
                 mRecyclerView.setVisibility(View.GONE);
-                Common.setProgress(true, mProgress);
+                mProgress.setVisibility(View.VISIBLE);
                 mRecyclerView.removeAllViews();
             }
 
@@ -114,7 +117,7 @@ public class XMLEditorActivity extends AppCompatActivity {
                     mRecyclerView.setVisibility(View.VISIBLE);
                 }
                 mSearchText = string;
-                Common.setProgress(false, mProgress);
+                mProgress.setVisibility(View.GONE);
             }
         };
     }

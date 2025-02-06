@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
-import com.apk.editor.utils.recyclerViewItems.XMLItems;
+import com.apk.editor.utils.SerializableItems.XMLItems;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;

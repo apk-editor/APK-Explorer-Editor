@@ -22,6 +22,7 @@ import com.apk.editor.interfaces.KeyStoreAliasChoiceDialog;
 import com.apk.editor.interfaces.KeyStoreVerifierInterface;
 import com.apk.editor.utils.APKSigner;
 import com.apk.editor.utils.PK8File;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -58,7 +59,7 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class APKSignActivity extends AppCompatActivity {
 
-    private AppCompatImageButton mClearKey;
+    private MaterialButton mClearKey;
     private MaterialTextView mKeySummary, mText;
     private JSONObject mJSONObject = null;
     private String mKeySummaryText = null;

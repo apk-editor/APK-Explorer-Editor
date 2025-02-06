@@ -1,18 +1,18 @@
 package com.apk.editor.utils.tasks;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
 import com.apk.editor.R;
-import com.apk.editor.utils.Common;
+import com.apk.editor.utils.dialogs.ProgressDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,33 +26,52 @@ public abstract class DeleteFile {
     private final Context mContext;
     private final ExecutorService executors;
     private final File mFile;
+    private final List<File> mFiles;
+    private final String mBackupFilePath;
     private ProgressDialog mProgressDialog;
 
-    public DeleteFile(File file, Context context) {
+    public DeleteFile(File file, List<File> files, String backupFilePath, Context context) {
         mFile = file;
+        mFiles = files;
+        mBackupFilePath = backupFilePath;
         mContext = context;
         this.executors = Executors.newSingleThreadExecutor();
     }
 
+    private boolean isSmaliEdited() {
+        if (mFiles != null && !mFiles.isEmpty()) {
+            for (File file : mFiles) {
+                return file.getName().endsWith(".smali");
+            }
+        } else if (mFile.exists()) {
+            return mFile.getName().endsWith(".smali");
+        }
+        return false;
+    }
+
     @SuppressLint("StringFormatInvalid")
-    private void startBackground() {
+    public void execute() {
         mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setMessage(mContext.getString(R.string.deleting, mFile.getName()));
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setTitle(mContext.getString(R.string.deleting, mFiles != null && !mFiles.isEmpty() ?
+                mContext.getString(R.string.delete_selected_files) : mFile.getName()));
         mProgressDialog.setIcon(R.mipmap.ic_launcher);
-        mProgressDialog.setTitle(R.string.app_name);
         mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setCancelable(false);
         mProgressDialog.show();
 
         executors.execute(() -> {
+            if (mFiles != null && !mFiles.isEmpty()) {
+                for (File file : mFiles) {
+                    sFileUtils.delete(file);
+                }
+            } else if (mFile.exists()) {
+                sFileUtils.delete(mFile);
+            }
 
-            sFileUtils.delete(mFile);
-            if (mFile.getAbsolutePath().contains("classes") && mFile.getAbsolutePath().contains(".dex")) {
+            if (isSmaliEdited()) {
                 try {
-                    JSONObject jsonObject = new JSONObject(sFileUtils.read(new File(mContext.getCacheDir(), Common.getAppID() + "/.aeeBackup/appData")));
+                    JSONObject jsonObject = new JSONObject(sFileUtils.read(new File(mBackupFilePath)));
                     jsonObject.put("smali_edited", true);
-                    sFileUtils.create(jsonObject.toString(), new File(mContext.getCacheDir(), Common.getAppID() + "/.aeeBackup/appData"));
+                    sFileUtils.create(jsonObject.toString(), new File(mBackupFilePath));
                 } catch (JSONException ignored) {
                 }
             }
@@ -68,10 +87,6 @@ public abstract class DeleteFile {
                 if (!executors.isShutdown()) executors.shutdown();
             });
         });
-    }
-
-    public void execute() {
-        startBackground();
     }
 
     public abstract void onPostExecute();

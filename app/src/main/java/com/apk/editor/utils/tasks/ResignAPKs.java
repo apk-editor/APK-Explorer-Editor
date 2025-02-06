@@ -2,13 +2,14 @@ package com.apk.editor.utils.tasks;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.view.WindowManager;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
+import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SplitAPKInstaller;
+import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
@@ -44,13 +45,10 @@ public class ResignAPKs extends sExecutor {
     @Override
     public void onPreExecute() {
         mProgressDialog = new ProgressDialog(mActivity);
-        mProgressDialog.setMessage(mPackageName != null ? mActivity.getString(R.string.signing, sPackageUtils.getAppName(
+        mProgressDialog.setTitle(mPackageName != null ? mActivity.getString(R.string.signing, sPackageUtils.getAppName(
                 mPackageName, mActivity)) : mActivity.getString(R.string.resigning_apks));
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mProgressDialog.setIcon(R.mipmap.ic_launcher);
-        mProgressDialog.setTitle(R.string.app_name);
         mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setCancelable(false);
         mProgressDialog.show();
 
         mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -63,7 +61,7 @@ public class ResignAPKs extends sExecutor {
             mDetectedPackageName = APKData.findPackageName(mActivity);
         }
 
-        if (mPackageName != null) {
+        if (mPackageName != null && sPackageUtils.isPackageInstalled(mPackageName, mActivity)) {
             Common.getAPKList().clear();
             if (APKData.isAppBundle(sPackageUtils.getSourceDir(mPackageName, mActivity))) {
                 Common.getAPKList().addAll(APKData.splitApks(sPackageUtils.getSourceDir(mPackageName, mActivity)));
@@ -71,38 +69,33 @@ public class ResignAPKs extends sExecutor {
                 Common.getAPKList().add(sPackageUtils.getSourceDir(mPackageName, mActivity));
             }
         }
-        if (mDetectedPackageName != null || mPackageName != null) {
-            String apkNameString;
-            if (mPackageName != null) {
-                apkNameString = mPackageName;
+
+        if (Common.getAPKList().size() > 1) {
+            if (mInstall) {
+                mParent = new File(mActivity.getExternalCacheDir(), "aee-signed");
             } else {
-                apkNameString = mDetectedPackageName;
+                mParent = new File(APKData.getExportAPKsPath(mActivity), mPackageName != null ? mPackageName : mDetectedPackageName + "_aee-signed");
             }
-            if (Common.getAPKList().size() > 1) {
-                if (mInstall) {
-                    mParent = new File(mActivity.getExternalCacheDir(), "aee-signed");
-                } else {
-                    mParent = new File(APKData.getExportAPKsPath(mActivity), apkNameString + "_aee-signed");
-                }
-                if (mParent.exists()) {
-                    sFileUtils.delete(mParent);
-                }
-                sFileUtils.mkdir(mParent);
-                for (String mSplits : Common.getAPKList()) {
-                    APKData.signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), mActivity);
-                }
+            if (mParent.exists()) {
+                sFileUtils.delete(mParent);
+            }
+            sFileUtils.mkdir(mParent);
+            for (String mSplits : Common.getAPKList()) {
+                APKData.signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), mActivity);
+            }
+        } else {
+            if (mInstall) {
+                mParent = new File(mActivity.getCacheDir(), "aee-signed.apk");
             } else {
-                if (mInstall) {
-                    mParent = new File(mActivity.getCacheDir(), "aee-signed.apk");
-                } else {
-                    mParent = new File(APKData.getExportAPKsPath(mActivity), apkNameString + "_aee-signed.apk");
-                }
-                if (mParent.exists()) {
-                    sFileUtils.delete(mParent);
-                }
-                APKData.signApks(new File(Common.getAPKList().get(0)), mParent, mActivity);
+                mParent = new File(APKData.getExportAPKsPath(mActivity), mPackageName != null ? mPackageName : mDetectedPackageName + "_aee-signed.apk");
             }
+            if (mParent.exists()) {
+                sFileUtils.delete(mParent);
+            }
+            APKData.signApks(new File(Common.getAPKList().get(0)), mParent, mActivity);
         }
+
+        APKExplorer.setSuccessIntent(false, mActivity);
     }
 
     @SuppressLint("StringFormatInvalid")

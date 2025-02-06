@@ -31,9 +31,10 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:textColor="?attr/colorPrimary"
                     android:text="@string/grant"
                     android:clickable="false"
+                    android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     android:padding="10dp" />

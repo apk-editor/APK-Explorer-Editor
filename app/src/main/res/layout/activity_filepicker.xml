@@ -1,55 +1,85 @@
-<androidx.appcompat.widget.LinearLayoutCompat
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <FrameLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="10dp" >
+            android:orientation="vertical" >
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/back"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:gravity="center_vertical"
-                android:src="@drawable/ic_back"
-                android:background="@null" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/title"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginEnd="40dp"
-                android:textStyle="bold"
                 android:gravity="center_vertical"
-                android:textIsSelectable="true"
-                android:textSize="20sp" />
+                android:padding="10dp" >
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/sort"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:gravity="center_vertical"
-                android:src="@drawable/ic_sort"
-                android:background="@null" />
-        </FrameLayout>
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:tint="?attr/colorPrimary"
+                    android:src="@drawable/ic_back"
+                    android:scaleType="center"
+                    android:background="@null" />
 
-        <include layout="@layout/progress_layout" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="40dp"
+                    android:text="@string/app_name"
+                    style="@style/AppTheme.Title"
+                    android:singleLine="true" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sort"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    android:layout_gravity="end|center_vertical"
+                    app:iconTint="?attr/colorPrimary"
+                    app:icon="@drawable/ic_sort" />
+            </FrameLayout>
+
+            <include layout="@layout/progress_view" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</androidx.appcompat.widget.LinearLayoutCompat>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/select"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        style="?attr/materialIconButtonFilledTonalStyle"
+        android:textColor="?attr/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="50dp"
+        app:iconTint="?attr/colorPrimary"
+        android:textStyle="bold|italic"
+        android:layout_marginEnd="75dp"
+        app:icon="@drawable/ic_select"
+        android:text="@string/select"
+        android:paddingStart="10sp"
+        android:visibility="gone"
+        android:paddingEnd="10sp"
+        app:iconGravity="start"
+        android:textSize="20sp"
+        app:iconPadding="10sp" />
+
+    <include layout="@layout/permission_layout" />
+</RelativeLayout>

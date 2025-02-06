@@ -12,23 +12,22 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:scaleType="fitCenter"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
             android:background="@null" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
+            android:gravity="center|start"
             android:orientation="vertical"
-            android:layout_marginStart="10dp"
-            android:padding="5dp"
-            android:baselineAligned="false">
+            android:padding="5dp" >
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="?attr/colorPrimary"
                     android:focusable="false"
                     android:textStyle="bold"
                     android:textSize="17sp" />

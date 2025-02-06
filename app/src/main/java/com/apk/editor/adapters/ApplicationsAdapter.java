@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.activities.ImageViewActivity;
 import com.apk.editor.utils.APKEditorUtils;
@@ -19,9 +20,10 @@ import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.dialogs.ExportOptionsDialog;
 import com.apk.editor.utils.dialogs.SigningOptionsDialog;
-import com.apk.editor.utils.recyclerViewItems.PackageItems;
+import com.apk.editor.utils.SerializableItems.PackageItems;
 import com.apk.editor.utils.tasks.ExportApp;
 import com.apk.editor.utils.tasks.ResignAPKs;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -69,11 +71,18 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
             } else {
                 holder.mAppName.setText(data.get(position).getAppName());
             }
+            holder.mOpenIcon.setVisibility(data.get(position).launchIntent(holder.mOpenIcon.getContext()) != null ? View.VISIBLE : View.GONE);
+            holder.mOpenIcon.setOnClickListener(v -> {
+                if (data.get(position).getPackageName().equals(BuildConfig.APPLICATION_ID)) {
+                    return;
+                }
+                v.getContext().startActivity(data.get(position).launchIntent(holder.mOpenIcon.getContext()));
+            });
             holder.mVersion.setText(holder.mAppName.getContext().getString(R.string.version, data.get(position).getAppVersion()));
             holder.mSize.setText(holder.mAppName.getContext().getString(R.string.size, sAPKUtils.getAPKSize(data.get(position).getAPKSize())));
             holder.mAppIcon.setOnClickListener(v -> {
-                Common.setAppID(data.get(position).getPackageName());
                 Intent imageView = new Intent(v.getContext(), ImageViewActivity.class);
+                imageView.putExtra(ImageViewActivity.PACKAGE_NAME_INTENT, data.get(position).getPackageName());
                 v.getContext().startActivity(imageView);
             });
             holder.mSize.setVisibility(View.VISIBLE);
@@ -122,6 +131,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final AppCompatImageButton mAppIcon;
+        private final MaterialButton mOpenIcon;
         private final MaterialCardView mCard;
         private final MaterialTextView mAppID, mAppName, mSize, mVersion;
 
@@ -129,6 +139,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
             super(view);
             view.setOnClickListener(this);
             this.mCard = view.findViewById(R.id.card);
+            this.mOpenIcon = view.findViewById(R.id.open);
             this.mAppIcon = view.findViewById(R.id.icon);
             this.mAppName = view.findViewById(R.id.title);
             this.mAppID = view.findViewById(R.id.description);

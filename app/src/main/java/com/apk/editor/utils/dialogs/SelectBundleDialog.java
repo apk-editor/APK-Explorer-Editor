@@ -1,6 +1,9 @@
 package com.apk.editor.utils.dialogs;
 
 import android.app.Activity;
+import android.content.Intent;
+
+import androidx.activity.result.ActivityResultLauncher;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.SplitAPKInstaller;
@@ -13,7 +16,7 @@ public class SelectBundleDialog {
 
     private final MaterialAlertDialogBuilder mDialogBuilder;
 
-    public SelectBundleDialog(String path, boolean exit, Activity activity) {
+    public SelectBundleDialog(String path, ActivityResultLauncher<Intent> activityResultLauncher, boolean exit, Activity activity) {
         mDialogBuilder = new MaterialAlertDialogBuilder(activity)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.split_apk_installer)
@@ -25,7 +28,7 @@ public class SelectBundleDialog {
                     }
                 })
                 .setPositiveButton(R.string.yes, (dialogInterface, i) ->
-                        SplitAPKInstaller.handleAppBundle(exit, path, activity)
+                        SplitAPKInstaller.handleAppBundle(activityResultLauncher, path, activity)
                 );
     }
 

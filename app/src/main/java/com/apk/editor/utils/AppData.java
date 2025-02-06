@@ -6,15 +6,15 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 
-import com.apk.editor.utils.recyclerViewItems.PackageItems;
+import com.apk.editor.utils.SerializableItems.PackageItems;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
@@ -25,7 +25,7 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 public class AppData {
 
     public static List<PackageItems> getRawData(ProgressBar progressBar, Context context) {
-        List<PackageItems> mData = new ArrayList<>();
+        List<PackageItems> mData = new CopyOnWriteArrayList<>();
         List<ApplicationInfo> packages = context.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
         for (ApplicationInfo packageInfo: packages) {
             progressBar.setMax(packages.size());
@@ -43,7 +43,7 @@ public class AppData {
     }
 
     public static List<PackageItems> getData(String searchWord, Context context) {
-        List<PackageItems> mData = new ArrayList<>();
+        List<PackageItems> mData = new CopyOnWriteArrayList<>();
         try {
             boolean mAppType;
             for (PackageItems packageItem : Common.getPackageData()) {
@@ -93,7 +93,7 @@ public class AppData {
      * Based on the work of https://github.com/ZenerDeveloper
      * Ref: https://github.com/SmartPack/PackageManager/commit/1ac499d0ed8922c02875df029ead80a17f1c40e1
      */
-    public static void toggleKeyboard(int mode, AutoCompleteTextView textView, Context context) {
+    public static void toggleKeyboard(int mode, MaterialAutoCompleteTextView textView, Context context) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (mode == 1) {
             if (textView.requestFocus()) {

@@ -19,10 +19,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
@@ -34,10 +34,10 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 public class APKData {
 
     public static List<String> getData(String searchWord, Context context) {
-        List<String> mData = new ArrayList<>();
+        List<String> mData = new CopyOnWriteArrayList<>();
         for (File mFile : getAPKList(context)) {
             if (sCommonUtils.getString("apkTypes", "apks", context).equals("bundles")) {
-                if (mFile.exists() && mFile.isDirectory() && sFileUtils.exist(new File(mFile.toString(), "base.apk"))) {
+                if (mFile.isDirectory() && getBaseAPKName(mFile, context) != null) {
                     if (searchWord == null) {
                         mData.add(mFile.getAbsolutePath());
                     } else if (Common.isTextMatched(mFile.getAbsolutePath(), searchWord)) {
@@ -97,6 +97,15 @@ public class APKData {
         sFileUtils.copyAssetFile("APKEditor.pk8", APKSigner.getPK8PrivateKey(context), context);
     }
 
+    public static String getBaseAPKName(File dir, Context context) {
+        for (File apkFile : Objects.requireNonNull(dir.listFiles()))  {
+            if (sAPKUtils.getPackageName(apkFile.getAbsolutePath(), context) != null) {
+                return apkFile.getName();
+            }
+        }
+        return null;
+    }
+
     private static String getParentFile(String path) {
         return Objects.requireNonNull(new File(path).getParentFile()).toString();
     }
@@ -106,13 +115,14 @@ public class APKData {
         for (String mAPKs : Common.getAPKList()) {
             if (sAPKUtils.getPackageName(mAPKs, context) != null) {
                 name = Objects.requireNonNull(sAPKUtils.getPackageName(mAPKs, context));
+                break;
             }
         }
         return name;
     }
 
     public static List<String> splitApks(String path) {
-        List<String> list = new ArrayList<>();
+        List<String> list = new CopyOnWriteArrayList<>();
         if (new File(path).getName().equals("base.apk") && new File(path).exists()) {
             for (File mFile : Objects.requireNonNull(new File(getParentFile(path)).listFiles())) {
                 if (mFile.getName().endsWith(".apk")) {
@@ -150,7 +160,7 @@ public class APKData {
             for (File file : Objects.requireNonNull(exportPath.listFiles())) {
                 if (file.isDirectory() && file.getName().startsWith("classes") && file.getName().endsWith(".dex")) {
                     // Build new dex file if the smali files are modified
-                    if (APKExplorer.isSmaliEdited(new File(context.getCacheDir(), Common.getAppID() + "/.aeeBackup/appData").getAbsolutePath())) {
+                    if (APKExplorer.isSmaliEdited(new File(backupPath, "appData").getAbsolutePath())) {
                         Common.setStatus(context.getString(R.string.building, file.getName()));
                         new SmaliToDex(file, new File(buildDir, file.getName()), 0, context).execute();
                     } else {

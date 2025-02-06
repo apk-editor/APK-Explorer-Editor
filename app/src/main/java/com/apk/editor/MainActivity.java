@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
 
 import com.apk.editor.activities.SettingsActivity;
@@ -14,6 +13,7 @@ import com.apk.editor.fragments.AboutFragment;
 import com.apk.editor.fragments.ApplicationsFragment;
 import com.apk.editor.fragments.ProjectsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         new CrashReporter("E-Mail: apkeditor@protonmail.com", this).initialize();
 
         BottomNavigationView mBottomNav = findViewById(R.id.bottom_navigation);
-        AppCompatImageButton mSettings = findViewById(R.id.settings_menu);
+        MaterialButton mSettings = findViewById(R.id.settings_menu);
 
         sPagerAdapter adapter = new sPagerAdapter(getSupportFragmentManager());
 

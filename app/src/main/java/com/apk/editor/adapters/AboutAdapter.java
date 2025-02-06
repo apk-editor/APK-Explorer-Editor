@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
-import com.apk.editor.activities.DocumentationActivity;
 import com.apk.editor.utils.AppSettings;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -24,7 +23,6 @@ import java.util.List;
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sSerializableItems;
 import in.sunilpaulmathew.sCommon.Credits.sCreditsUtils;
-import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 import in.sunilpaulmathew.sCommon.TranslatorUtils.sTranslatorUtils;
 
 /*
@@ -59,9 +57,6 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
                 Uri uri = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null);
                 settings.setData(uri);
                 v.getContext().startActivity(settings);
-            } else if (position == 5) {
-                Intent documentation = new Intent(v.getContext(), DocumentationActivity.class);
-                v.getContext().startActivity(documentation);
             } else if (position == 6) {
                 new sTranslatorUtils(v.getContext().getString(R.string.app_name_short), "https://poeditor.com/join/project?hash=QztabxONOp",
                         (Activity) v.getContext()).show();
@@ -69,10 +64,10 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
                 new sCreditsUtils(AppSettings.getCredits(v.getContext()),
                         sCommonUtils.getDrawable(R.mipmap.ic_launcher, v.getContext()),
                         sCommonUtils.getDrawable(R.drawable.ic_back, v.getContext()),
-                        sCommonUtils.getColor(sThemeUtils.isDarkTheme(v.getContext()) ?
-                                R.color.colorWhite : R.color.colorDark, v.getContext()),
-                        20, v.getContext().getString(R.string.app_name), "2024-2025, APK Explorer & Editor",
-                        BuildConfig.VERSION_NAME).launchCredits(v.getContext());
+                        holder.Title.getCurrentTextColor(), 25, v.getContext()
+                        .getString(R.string.app_name), v.getContext().getString(
+                                R.string.copyright_text), BuildConfig.VERSION_NAME)
+                        .launchCredits(v.getContext());
             } else {
                 Intent share_app = new Intent();
                 share_app.setAction(Intent.ACTION_SEND);

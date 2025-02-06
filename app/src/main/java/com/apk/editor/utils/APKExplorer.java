@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -56,8 +57,10 @@ import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
  */
 public class APKExplorer {
 
-    public static List<String> getData(File[] files, boolean supported, Activity activity) {
-        List<String> mData = new ArrayList<>(), mDir = new ArrayList<>(), mFiles = new ArrayList<>();
+    public static List<String> getData(File file, boolean supported, Activity activity) {
+        File[] files = file.listFiles();
+        if (files == null) return null;
+        List<String> mData = new CopyOnWriteArrayList<>(), mDir = new CopyOnWriteArrayList<>(), mFiles = new CopyOnWriteArrayList<>();
         try {
             // Add directories
             for (File mFile : files) {
@@ -121,7 +124,7 @@ public class APKExplorer {
     }
 
     public static boolean isBinaryXML(String path) {
-        return path.endsWith(".xml") && (new File(path).getName().equals("AndroidManifest.xml") || path.contains(Common.getAppID() + "/res/"));
+        return path.endsWith(".xml") && (new File(path).getName().equals("AndroidManifest.xml") || path.contains("/res/"));
     }
 
     public static boolean isSmaliEdited(String path) {
@@ -202,7 +205,7 @@ public class APKExplorer {
 
     @SuppressLint("StringFormatInvalid")
     public static List<String> getTextViewData(String path, String searchWord, boolean parsedManifest, Context context) {
-        List<String> mData = new ArrayList<>();
+        List<String> mData = new CopyOnWriteArrayList<>();
         String text = null;
         if (isBinaryXML(path)) {
             try (FileInputStream inputStream = new FileInputStream(path)) {
@@ -360,6 +363,18 @@ public class APKExplorer {
             new ExploreAPK(packageName, apkFile, uri, 1, activity).execute();
         } else {
             new ExploreAPK(packageName, apkFile, uri, 0, activity).execute();
+        }
+    }
+
+    public static void setCancelIntent(Activity activity) {
+        activity.setResult(Activity.RESULT_CANCELED, activity.getIntent());
+        activity.finish();
+    }
+
+    public static void setSuccessIntent(boolean exit, Activity activity) {
+        activity.setResult(Activity.RESULT_OK, activity.getIntent());
+        if (exit) {
+            activity.finish();
         }
     }
 

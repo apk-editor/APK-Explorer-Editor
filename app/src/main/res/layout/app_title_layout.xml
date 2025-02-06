@@ -27,10 +27,7 @@
                 android:id="@+id/app_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:textStyle="bold"
-                android:gravity="start"
-                android:textSize="23sp" />
+                style="@style/AppTheme.Title" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/package_id"

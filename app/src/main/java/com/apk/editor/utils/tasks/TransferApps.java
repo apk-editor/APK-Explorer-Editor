@@ -1,12 +1,13 @@
 package com.apk.editor.utils.tasks;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Environment;
 
 import com.apk.editor.R;
+import com.apk.editor.utils.dialogs.ProgressDialog;
 
 import java.io.File;
+import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
@@ -28,12 +29,9 @@ public class TransferApps extends sExecutor {
     @Override
     public void onPreExecute() {
         mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setMessage(mContext.getString(R.string.transfer_exported_apk));
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setTitle(mContext.getString(R.string.transfer_exported_apk));
         mProgressDialog.setIcon(R.mipmap.ic_launcher);
-        mProgressDialog.setTitle(R.string.app_name);
         mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setCancelable(false);
         mProgressDialog.show();
     }
 
@@ -47,7 +45,7 @@ public class TransferApps extends sExecutor {
             destDir = mContext.getExternalFilesDir("");
             mSourceFile = new File(Environment.getExternalStorageDirectory(), "/AEE/exportedAPKs");
         }
-        sFileUtils.copyDir(mSourceFile, destDir);
+        sFileUtils.copyDir(mSourceFile, Objects.requireNonNull(destDir));
     }
 
     @Override

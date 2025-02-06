@@ -1,12 +1,13 @@
 package com.apk.editor.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -14,12 +15,11 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.recyclerViewItems.PackageItems;
-import com.google.android.material.card.MaterialCardView;
+import com.apk.editor.utils.SerializableItems.PackageItems;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
-import java.lang.ref.WeakReference;
 import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
@@ -32,36 +32,34 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
  */
 public class InstallerActivity extends AppCompatActivity {
 
-    private AppCompatImageButton mIcon;
-    private MaterialCardView mCancel, mOpen;
-    private MaterialTextView mStatus, mTitle;
-    private ProgressBar mProgress;
-    private Thread mRefreshThread = null;
-
+    private final Handler mHandler = new Handler();
+    private Runnable mRunnable;
     public static final String HEADING_INTENT = "heading", PATH_INTENT = "path";
+    private static String mPackageName = null;
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_installer);
 
-        mIcon = findViewById(R.id.icon);
-        mProgress = findViewById(R.id.progress);
-        mOpen = findViewById(R.id.open);
-        mCancel = findViewById(R.id.cancel);
+        AppCompatImageButton mIcon = findViewById(R.id.icon);
+        ProgressBar mProgress = findViewById(R.id.progress);
+        MaterialButton mOpen = findViewById(R.id.open);
+        MaterialButton mCancel = findViewById(R.id.cancel);
         MaterialTextView mHeading = findViewById(R.id.heading);
-        mTitle = findViewById(R.id.title);
-        mStatus = findViewById(R.id.status);
+        MaterialTextView mTitle = findViewById(R.id.title);
+        MaterialTextView mStatus = findViewById(R.id.status);
 
         String path = getIntent().getStringExtra(PATH_INTENT);
         if (path != null) {
             try {
-                Common.setPackageName(Objects.requireNonNull(sAPKUtils.getPackageName(path, this)));
+                mPackageName = Objects.requireNonNull(sAPKUtils.getPackageName(path, this));
                 mTitle.setText(sAPKUtils.getAPKName(path, this));
                 mIcon.setImageDrawable(sAPKUtils.getAPKIcon(path, this));
             } catch (NullPointerException ignored) {}
         } else {
-            Common.setPackageName(APKData.findPackageName(this));
+            mPackageName = APKData.findPackageName(this);
             mTitle.setText(getName());
             mIcon.setImageDrawable(getIcon());
         }
@@ -69,21 +67,46 @@ public class InstallerActivity extends AppCompatActivity {
         mHeading.setText(getIntent().getStringExtra(HEADING_INTENT));
 
         mOpen.setOnClickListener(v -> {
-            Intent launchIntent = getPackageManager().getLaunchIntentForPackage(Common.getPackageName());
-            if (launchIntent != null) {
-                startActivity(launchIntent);
-                finish();
-            }
+            startActivity(getPackageManager().getLaunchIntentForPackage(mPackageName));
+            finish();
         });
 
-        mCancel.setOnClickListener(v -> onBackPressed());
+        mCancel.setOnClickListener(v -> exit());
 
-        refreshStatus(this);
-    }
+        mRunnable = () -> {
+            String installationStatus = sCommonUtils.getString("installationStatus", "waiting", this);
+            if (installationStatus.equals("waiting")) {
+                try {
+                    if (getIntent().getStringExtra(PATH_INTENT) != null) {
+                        mStatus.setText(getString(R.string.installing, sAPKUtils.getAPKName(getIntent().getStringExtra(PATH_INTENT), this)));
+                    } else {
+                        mStatus.setText(getString(R.string.installing, getName()));
+                    }
+                } catch (NullPointerException ignored) {}
+            } else {
+                mStatus.setText(installationStatus);
+                mProgress.setVisibility(View.GONE);
+                mCancel.setVisibility(View.VISIBLE);
+                if (installationStatus.equals(getString(R.string.installation_status_success))) {
+                    try {
+                        mTitle.setText(sPackageUtils.getAppName(mPackageName, this));
+                        mIcon.setImageDrawable(sPackageUtils.getAppIcon(mPackageName, this));
+                        if (getPackageManager().getLaunchIntentForPackage(mPackageName) != null) {
+                            mOpen.setVisibility(View.VISIBLE);
+                        }
+                    } catch (NullPointerException ignored) {}
+                }
+            }
+            mHandler.postDelayed(mRunnable, 500);
+        };
+        mHandler.postDelayed(mRunnable, 500);
 
-    public void refreshStatus(InstallerActivity activity) {
-        mRefreshThread = new RefreshThread(activity);
-        mRefreshThread.start();
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                exit();
+            }
+        });
     }
 
     private CharSequence getName() {
@@ -106,71 +129,17 @@ public class InstallerActivity extends AppCompatActivity {
         return icon;
     }
 
-    @Override
-    public void onBackPressed() {
+    private void exit() {
         if (sCommonUtils.getString("installationStatus", "waiting", this).equals("waiting")) {
             return;
         }
         if (sCommonUtils.getString("installationStatus", "waiting", this).equals(getString(R.string.installation_status_success))) {
-            Common.getPackageData().add(new PackageItems(Common.getPackageName(), this));
+            Common.getPackageData().add(new PackageItems(mPackageName, this));
         }
         if (sFileUtils.exist(new File(getCacheDir(),"splits"))) {
             sFileUtils.delete(new File(getCacheDir(),"splits"));
         }
-        super.onBackPressed();
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (mRefreshThread != null) {
-            try {
-                mRefreshThread.interrupt();
-            } catch(Exception ignored) {}
-        }
-        super.onDestroy();
-    }
-
-    private static class RefreshThread extends Thread {
-        WeakReference<InstallerActivity> mInstallerActivityRef;
-        RefreshThread(InstallerActivity activity) {
-            mInstallerActivityRef = new WeakReference<>(activity);
-        }
-        @SuppressLint("StringFormatInvalid")
-        @Override
-        public void run() {
-            try {
-                while (!isInterrupted()) {
-                    Thread.sleep(500);
-                    final InstallerActivity activity = mInstallerActivityRef.get();
-                    if(activity == null){
-                        break;
-                    }
-                    activity.runOnUiThread(() -> {
-                        String installationStatus = sCommonUtils.getString("installationStatus", "waiting", activity);
-                        if (installationStatus.equals("waiting")) {
-                            try {
-                                if (activity.getIntent().getStringExtra(PATH_INTENT) != null) {
-                                    activity.mStatus.setText(activity.getString(R.string.installing, sAPKUtils.getAPKName(activity.getIntent().getStringExtra(PATH_INTENT), activity)));
-                                } else {
-                                    activity.mStatus.setText(activity.getString(R.string.installing, getName()));
-                                }
-                            } catch (NullPointerException ignored) {}
-                        } else {
-                            activity.mStatus.setText(installationStatus);
-                            activity.mProgress.setVisibility(View.GONE);
-                            activity.mCancel.setVisibility(View.VISIBLE);
-                            if (installationStatus.equals(activity.getString(R.string.installation_status_success))) {
-                                try {
-                                    activity.mTitle.setText(sPackageUtils.getAppName(Common.getPackageName(), activity));
-                                    activity.mIcon.setImageDrawable(sPackageUtils.getAppIcon(Common.getPackageName(), activity));
-                                    activity.mOpen.setVisibility(View.VISIBLE);
-                                } catch (NullPointerException ignored) {}
-                            }
-                        }
-                    });
-                }
-            } catch (InterruptedException ignored) {}
-        }
+        finish();
     }
 
 }

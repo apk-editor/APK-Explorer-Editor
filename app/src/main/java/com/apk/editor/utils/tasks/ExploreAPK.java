@@ -3,18 +3,26 @@ package com.apk.editor.utils.tasks;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Base64;
 
 import androidx.documentfile.provider.DocumentFile;
 
+import com.apk.axml.APKParser;
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.activities.APKTasksActivity;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.DexToSmali;
 import com.apk.editor.utils.ExternalAPKData;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Objects;
 
@@ -28,10 +36,9 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
  */
 public class ExploreAPK extends sExecutor {
 
-    private boolean mAPKDetailsParsed = false;
     private final Context mContext;
     private File mBackUpPath, mExplorePath;
-    private File mAPKFile;
+    private File mAPKFile, mAPKDetailsFile;
     private final int mOptions;
     private final String mPackageName;
     private final Uri mUri;
@@ -55,18 +62,21 @@ public class ExploreAPK extends sExecutor {
             mAPKFile = new File(mContext.getExternalFilesDir("APK"), Objects.requireNonNull(fileName));
             sFileUtils.copy(mUri, mAPKFile, mContext);
         }
-        Common.setAppID(mPackageName != null ? mPackageName : mAPKFile.getName());
-        mExplorePath = new File(mContext.getCacheDir().getPath(), mPackageName != null ? mPackageName : mAPKFile.getName());
+        mExplorePath = new File(mContext.getCacheDir().getPath(), mAPKFile != null ? mPackageName + "_" +
+                mAPKFile.getName().replace(".apk", "") : mPackageName);
+
         mBackUpPath = new File(mExplorePath, ".aeeBackup");
-        Common.setPath(mExplorePath.getAbsolutePath());
+        mAPKDetailsFile = new File(mBackUpPath, "appData");
         if (!mExplorePath.exists()) {
             Common.setFinishStatus(false);
             Common.setStatus(null);
             Intent apkTasks = new Intent(mContext, APKTasksActivity.class);
             mContext.startActivity(apkTasks);
-            Common.setStatus(mContext.getString(R.string.exploring, mPackageName != null ? sPackageUtils.getAppName(mPackageName, mContext) : mAPKFile.getName()));
-        } else if (!sFileUtils.exist(new File(mBackUpPath, "appData"))) {
-            sFileUtils.delete(mExplorePath);
+            Common.setStatus(mContext.getString(R.string.exploring, mAPKFile != null ? mAPKFile.getName() : sPackageUtils.getAppName(mPackageName, mContext)));
+        } else {
+            if (!sFileUtils.exist(mAPKDetailsFile)) {
+                sFileUtils.delete(mExplorePath);
+            }
         }
     }
 
@@ -77,9 +87,9 @@ public class ExploreAPK extends sExecutor {
             sFileUtils.mkdir(mExplorePath);
             sFileUtils.mkdir(mBackUpPath);
 
-            mAPKDetailsParsed = ExternalAPKData.generateAppDetails(mPackageName, mAPKFile, mBackUpPath, mContext);
+            generateAppDetails();
 
-            APKEditorUtils.unzip(mPackageName != null ? sPackageUtils.getSourceDir(mPackageName, mContext) : mAPKFile.getAbsolutePath(), mExplorePath.getAbsolutePath());
+            APKEditorUtils.unzip(mAPKFile != null ? mAPKFile.getAbsolutePath() : sPackageUtils.getSourceDir(mPackageName, mContext), mExplorePath.getAbsolutePath());
             // Decompile dex file(s)
             if (sCommonUtils.getString("decompileSetting", null, mContext) != null && sCommonUtils.getString("decompileSetting",
                     null, mContext).equals(mContext.getString(R.string.explore_options_full)) || mOptions == 1) {
@@ -91,13 +101,10 @@ public class ExploreAPK extends sExecutor {
                         File mDexExtractPath = new File(mExplorePath, files.getName());
                         sFileUtils.mkdir(mDexExtractPath);
                         Common.setStatus(mContext.getString(R.string.decompiling, files.getName()));
-                        new DexToSmali(false, mPackageName != null ? new File(sPackageUtils.getSourceDir(mPackageName, mContext))
-                                : mAPKFile, mDexExtractPath, 0, files.getName()).execute();
+                        new DexToSmali(false, mAPKFile != null ? mAPKFile : new File(sPackageUtils.getSourceDir(mPackageName, mContext)), mDexExtractPath, 0, files.getName()).execute();
                     }
                 }
             }
-        } else if (sFileUtils.exist(new File(mBackUpPath, "appData"))) {
-            mAPKDetailsParsed = true;
         }
         if (Common.isCancelled()) {
             sFileUtils.delete(mExplorePath);
@@ -106,12 +113,49 @@ public class ExploreAPK extends sExecutor {
         }
     }
 
+    @SuppressLint("StringFormatInvalid")
+    private void generateAppDetails() {
+        JSONObject mJSONObject = new JSONObject();
+        APKParser mAPKParser = new APKParser();
+        mAPKParser.parse(mAPKFile != null ? mAPKFile.getAbsolutePath() : sPackageUtils.getSourceDir(mPackageName, mContext), mContext);
+
+        // Store basic information about the app
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            Bitmap.createScaledBitmap(APKExplorer.drawableToBitmap(mAPKParser.getAppIcon()), 150, 150,
+                    true).compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            mJSONObject.put("app_icon", Base64.encodeToString(byteArray, Base64.DEFAULT));
+            mJSONObject.put("app_name", mAPKFile != null ? mAPKFile.getName().replace(".apk", "") : sPackageUtils.getAppName(mPackageName, mContext));
+            mJSONObject.put("package_name", mPackageName);
+            mJSONObject.put("version_info", mContext.getString(R.string.version, mAPKParser.getVersionName() + " (" + mAPKParser.getVersionCode() + ")"));
+            if (mAPKParser.getMinSDKVersion() != null) {
+                try {
+                    mJSONObject.put("sdk_minimum", mContext.getString(R.string.sdk_minimum, ExternalAPKData.sdkToAndroidVersion(mAPKParser.getMinSDKVersion(), mContext)));
+                } catch (NumberFormatException ignored) {
+                    mJSONObject.put("sdk_minimum", mContext.getString(R.string.sdk_minimum, mAPKParser.getMinSDKVersion()));
+                }
+            }
+            if (mAPKParser.getCompiledSDKVersion() != null) {
+                try {
+                    mJSONObject.put("sdk_compiled", mContext.getString(R.string.sdk_compile, ExternalAPKData.sdkToAndroidVersion(mAPKParser.getCompiledSDKVersion(), mContext)));
+                } catch (NumberFormatException ignored) {
+                    mJSONObject.put("sdk_minimum", mContext.getString(R.string.sdk_compile, mAPKParser.getCompiledSDKVersion()));
+                }
+            }
+            mJSONObject.put("certificate_info", mAPKParser.getCertificate().trim());
+            mJSONObject.put("smali_edited", false);
+            sFileUtils.create(mJSONObject.toString(), mAPKDetailsFile);
+        } catch (JSONException ignored) {
+        }
+    }
+
     @Override
     public void onPostExecute() {
         if (!Common.isFinished()) {
             Common.setFinishStatus(true);
             Intent explorer = new Intent(mContext, APKExploreActivity.class);
-            explorer.putExtra(APKExploreActivity.APK_DETAILS_INTENT, mAPKDetailsParsed);
+            explorer.putExtra(APKExploreActivity.BACKUP_PATH_INTENT, mAPKDetailsFile.getAbsolutePath());
             mContext.startActivity(explorer);
         }
     }

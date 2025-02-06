@@ -23,7 +23,7 @@
             android:layout_height="20dp"
             android:id="@+id/progress_bar"
             style="?android:attr/progressBarStyleHorizontal"
-            android:progressBackgroundTint="?attr/colorAccent"
+            android:progressBackgroundTint="?attr/colorPrimary"
             android:layout_gravity="center"
             android:indeterminate="false"
             android:paddingStart="15dp"
@@ -34,45 +34,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/warning_message"
+            android:textColor="?attr/colorPrimary"
             android:textStyle="bold|italic"
             android:layout_margin="25dp"
             android:visibility="gone"
             android:textSize="16sp"
             android:padding="10dp" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/start_card"
-            android:layout_width="wrap_content"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/start"
             android:layout_height="wrap_content"
-            android:layout_marginTop="75dp"
-            app:cardCornerRadius="15dp"
-            android:visibility="gone" >
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center" >
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold|italic"
-                    android:text="@string/start"
-                    android:textAllCaps="true"
-                    android:clickable="false"
-                    android:textSize="16sp"
-                    android:padding="10dp" />
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_back"
-                    android:layout_marginEnd="5dp"
-                    android:background="@null"
-                    android:clickable="false"
-                    android:rotation="180" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-        </com.google.android.material.card.MaterialCardView>
+            android:layout_width="wrap_content"
+            style="?attr/materialIconButtonFilledTonalStyle"
+            android:textColor="?attr/colorPrimary"
+            app:iconTint="?attr/colorPrimary"
+            android:layout_gravity="center"
+            app:icon="@drawable/ic_start"
+            android:text="@string/start"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            app:iconPadding="10dp"
+            app:iconGravity="end" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.core.widget.NestedScrollView>

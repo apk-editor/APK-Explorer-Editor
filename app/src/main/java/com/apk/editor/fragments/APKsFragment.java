@@ -3,9 +3,7 @@ package com.apk.editor.fragments;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -16,11 +14,10 @@ import android.view.ViewGroup;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,17 +25,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKInstallerActivity;
-import com.apk.editor.activities.InstallerFilePickerActivity;
 import com.apk.editor.adapters.APKsAdapter;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.CommonViews;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.textview.MaterialTextView;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,11 +52,9 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class APKsFragment extends Fragment {
 
-    private AppCompatAutoCompleteTextView mSearchWord;
-    private LinearLayoutCompat mProgress;
-    private MaterialTextView mTitle;
-    private RecyclerView mRecyclerView;
     private APKsAdapter mRecycleViewAdapter;
+    private ContentLoadingProgressBar mProgress;
+    private RecyclerView mRecyclerView;
     private String mSearchText = null;
 
     @Nullable
@@ -67,19 +62,16 @@ public class APKsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mRootView = inflater.inflate(R.layout.fragment_apks, container, false);
 
-        mTitle = mRootView.findViewById(R.id.app_title);
-        mSearchWord = mRootView.findViewById(R.id.search_word);
-        mProgress = mRootView.findViewById(R.id.progress_layout);
-        AppCompatImageButton mSearchButton = mRootView.findViewById(R.id.search_button);
-        AppCompatImageButton mSortButton = mRootView.findViewById(R.id.sort_button);
-        AppCompatImageButton mAddButton = mRootView.findViewById(R.id.add_button);
-        LinearLayoutCompat mBottomLayout = mRootView.findViewById(R.id.layout_bottom);
+        MaterialAutoCompleteTextView mSearchWord = mRootView.findViewById(R.id.search_word);
+        MaterialButton mSearchButton = mRootView.findViewById(R.id.search_button);
+        MaterialButton mSortButton = mRootView.findViewById(R.id.sort_button);
+        MaterialButton mAddButton = mRootView.findViewById(R.id.add_button);
+        mProgress = mRootView.findViewById(R.id.progress);
         TabLayout mTabLayout = mRootView.findViewById(R.id.tab_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        mTitle.setText(getString(R.string.apps_exported));
         mTabLayout.setVisibility(View.VISIBLE);
 
         mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.apks)));
@@ -119,15 +111,14 @@ public class APKsFragment extends Fragment {
         mSearchButton.setOnClickListener(v -> {
             if (mSearchWord.getVisibility() == View.VISIBLE) {
                 mSearchWord.setVisibility(View.GONE);
-                mTitle.setVisibility(View.VISIBLE);
-                if (mSearchWord != null) {
+                if (mSearchText != null) {
+                    mSearchText = null;
                     mSearchWord.setText(null);
                 }
                 AppData.toggleKeyboard(0, mSearchWord, requireActivity());
             } else {
                 mSearchWord.setVisibility(View.VISIBLE);
                 mSearchWord.requestFocus();
-                mTitle.setVisibility(View.GONE);
                 AppData.toggleKeyboard(1, mSearchWord, requireActivity());
             }
         });
@@ -135,8 +126,9 @@ public class APKsFragment extends Fragment {
         mSortButton.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(requireActivity(), mSortButton);
             Menu menu = popupMenu.getMenu();
-            menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setCheckable(true)
+            menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setIcon(R.drawable.ic_sort_az).setCheckable(true)
                     .setChecked(sCommonUtils.getBoolean("az_order", true, requireActivity()));
+            popupMenu.setForceShowIcon(true);
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
                     sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
@@ -160,28 +152,25 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                mSearchText = s.toString().toLowerCase();
-                loadAPKs(mSearchText, requireActivity());
+                loadAPKs(s.toString().trim().toLowerCase(), requireActivity());
             }
         });
 
         mAddButton.setOnClickListener(v -> launchInstallerFilePicker());
-        mBottomLayout.setOnClickListener(v -> launchInstallerFilePicker());
 
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (Common.isBusy()) return;
-                if (mSearchText != null) {
-                    if (mSearchWord != null && mSearchWord.getVisibility() == View.VISIBLE) {
-                        mSearchWord.setVisibility(View.GONE);
-                        mTitle.setVisibility(View.VISIBLE);
+                if (mSearchWord.getVisibility() == View.VISIBLE) {
+                    if (mSearchText != null) {
+                        mSearchText = null;
                         mSearchWord.setText(null);
                     }
-                    mSearchText = null;
+                    mSearchWord.setVisibility(View.GONE);
                     return;
                 }
-                CommonViews.navigateToFragment(requireActivity(), R.id.nav_projects);
+                AppSettings.navigateToFragment(requireActivity(), R.id.nav_projects);
             }
         });
 
@@ -222,25 +211,24 @@ public class APKsFragment extends Fragment {
     }
 
     private void launchAEEInstaller() {
-        if (Build.VERSION.SDK_INT >= 29) {
-            Intent installer = new Intent(Intent.ACTION_GET_CONTENT);
-            installer.setType("*/*");
-            String[] mimeTypes = {
-                    "application/vnd.android.package-archive",
-                    "application/xapk-package-archive",
-                    "application/octet-stream",
-                    "application/vnd.apkm"
-            };
-            installer.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-            installer.addCategory(Intent.CATEGORY_OPENABLE);
-            installer.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            installerFilePicker.launch(installer);
-        } else {
-            Common.getAPKList().clear();
-            Common.setPath(Environment.getExternalStorageDirectory().toString());
-            Intent installer = new Intent(requireActivity(), InstallerFilePickerActivity.class);
-            startActivity(installer);
-        }
+        Intent installer = filePickerIntent();
+        installerFilePicker.launch(installer);
+    }
+
+    @NonNull
+    private static Intent filePickerIntent() {
+        Intent installer = new Intent(Intent.ACTION_GET_CONTENT);
+        installer.setType("*/*");
+        String[] mimeTypes = {
+                "application/vnd.android.package-archive",
+                "application/xapk-package-archive",
+                "application/octet-stream",
+                "application/vnd.apkm"
+        };
+        installer.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        installer.addCategory(Intent.CATEGORY_OPENABLE);
+        installer.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        return installer;
     }
 
     private void loadAPKs(String searchWord, Activity activity) {
@@ -260,6 +248,7 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void onPostExecute() {
+                mSearchText = searchWord;
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mRecyclerView.setVisibility(View.VISIBLE);
                 Common.setProgress(false, mProgress);
@@ -311,19 +300,12 @@ public class APKsFragment extends Fragment {
         };
     }
 
-    ActivityResultLauncher<Intent> installerFilePicker = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    Intent data = result.getData();
-
-                    if (data.getClipData() != null) {
-                        handleMultipleAPKs(data.getClipData(), requireActivity()).execute();
-                    } else if (data.getData() != null) {
-                        Intent intent = new Intent(requireActivity(), APKInstallerActivity.class);
-                        intent.putExtra("apkFileUri", data.getData().toString());
-                        startActivity(intent);
-                    }
+                    APKExplorer.setSuccessIntent(false, requireActivity());
+                    loadAPKs(mSearchText, requireActivity());
                 }
             }
     );
@@ -341,14 +323,21 @@ public class APKsFragment extends Fragment {
             }
     );
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    ActivityResultLauncher<Intent> installerFilePicker = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
 
-        if (Common.isReloading()) {
-            Common.isReloading(false);
-            loadAPKs(mSearchText, requireActivity());
-        }
-    }
+                    if (data.getClipData() != null) {
+                        handleMultipleAPKs(data.getClipData(), requireActivity()).execute();
+                    } else if (data.getData() != null) {
+                        Intent intent = new Intent(requireActivity(), APKInstallerActivity.class);
+                        intent.putExtra("apkFileUri", data.getData().toString());
+                        activityResultLauncher.launch(intent);
+                    }
+                }
+            }
+    );
     
 }

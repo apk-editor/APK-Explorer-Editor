@@ -1,6 +1,5 @@
 package com.apk.editor.utils.tasks;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 
@@ -9,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.dialogs.ProgressDialog;
 
 import java.io.File;
 
@@ -35,12 +35,9 @@ public class SaveBundletoDownloads extends sExecutor {
     @Override
     public void onPreExecute() {
         mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setMessage(mContext.getString(mExportOnly ? R.string.saving : R.string.preparing_bundle));
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setTitle(mContext.getString(mExportOnly ? R.string.saving : R.string.preparing_bundle));
         mProgressDialog.setIcon(R.mipmap.ic_launcher);
-        mProgressDialog.setTitle(R.string.app_name);
         mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setCancelable(false);
         mProgressDialog.show();
         mFile = new File(mContext.getExternalFilesDir("APK"), new File(mPath).getName() + ".xapk");
     }

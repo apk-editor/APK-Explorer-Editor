@@ -12,7 +12,7 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.XMLValueEditorAdapter;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.recyclerViewItems.XMLItems;
+import com.apk.editor.utils.SerializableItems.XMLItems;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 

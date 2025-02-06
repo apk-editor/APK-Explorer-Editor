@@ -5,19 +5,20 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.widget.ContentLoadingProgressBar;
 
 import com.apk.axml.aXMLDecoder;
 import com.apk.axml.aXMLEncoder;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
-import com.apk.editor.utils.Common;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
 
 import org.json.JSONException;
@@ -40,9 +41,9 @@ import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
  */
 public class TextEditorActivity extends AppCompatActivity {
 
-    private AppCompatAutoCompleteTextView mText;
-    private LinearLayoutCompat mProgressLayout;
-    public static final String PATH_INTENT = "path";
+    private ContentLoadingProgressBar mProgressLayout;
+    private MaterialAutoCompleteTextView mText;
+    public static final String PACKAGE_NAME_INTENT = "package_name", PATH_INTENT = "path";
     private String mTextContents = null;
 
     @Override
@@ -51,14 +52,15 @@ public class TextEditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_texteditor);
 
         AppCompatImageButton mBack = findViewById(R.id.back);
-        AppCompatImageButton mSave = findViewById(R.id.save);
-        mProgressLayout = findViewById(R.id.progress_layout);
+        MaterialButton mSave = findViewById(R.id.save);
+        mProgressLayout = findViewById(R.id.progress);
         MaterialTextView mTitle = findViewById(R.id.title);
         mText = findViewById(R.id.text);
 
         AppData.toggleKeyboard(1, mText, this);
 
         String mPath = getIntent().getStringExtra(PATH_INTENT);
+        String packageName = getIntent().getStringExtra(PACKAGE_NAME_INTENT);
 
         mText.setTextColor(sThemeUtils.isDarkTheme(this) ? Color.WHITE : Color.BLACK);
 
@@ -133,11 +135,12 @@ public class TextEditorActivity extends AppCompatActivity {
                                         }
                                     } else {
                                         sFileUtils.create(text, new File(mPath));
-                                        if (mPath.contains("classes") && mPath.contains(".dex")) {
+                                        if (mPath.contains("classes") && mPath.endsWith(".smali")) {
                                             try {
-                                                JSONObject jsonObject = new JSONObject(sFileUtils.read(new File(getCacheDir(), Common.getAppID() + "/.aeeBackup/appData")));
+                                                File backupFile = new File(getCacheDir(), packageName + "/.aeeBackup/appData");
+                                                JSONObject jsonObject = new JSONObject(sFileUtils.read(backupFile));
                                                 jsonObject.put("smali_edited", true);
-                                                sFileUtils.create(jsonObject.toString(), new File(getCacheDir(), Common.getAppID() + "/.aeeBackup/appData"));
+                                                sFileUtils.create(jsonObject.toString(), backupFile);
                                             } catch (JSONException ignored) {
                                             }
                                         }
@@ -156,13 +159,19 @@ public class TextEditorActivity extends AppCompatActivity {
                     ).show();
         });
 
-        mBack.setOnClickListener(v -> onBackPressed());
+        mBack.setOnClickListener(v -> exit());
+
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                exit();
+            }
+        });
     }
 
-    @Override
-    public void onBackPressed() {
+    private void exit() {
         if (mTextContents != null && mText.getText() != null && !mTextContents.equals(mText.getText().toString())) {
-            new MaterialAlertDialogBuilder(this)
+            new MaterialAlertDialogBuilder(TextEditorActivity.this)
                     .setIcon(R.mipmap.ic_launcher)
                     .setTitle(R.string.text_editor)
                     .setMessage(getString(R.string.discard_message))
@@ -172,7 +181,7 @@ public class TextEditorActivity extends AppCompatActivity {
                     .setPositiveButton(R.string.discard, (dialogInterface, i) -> finish()).show();
             return;
         }
-        super.onBackPressed();
+        finish();
     }
 
 }

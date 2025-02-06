@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.apk.editor.utils.tasks.DeleteProject;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -29,6 +31,7 @@ import java.text.DateFormat;
 import java.util.List;
 import java.util.Objects;
 
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
 /*
@@ -36,12 +39,16 @@ import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
  */
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
 
-    private static List<String> data;
-    private static String searchWord;
+    private final Activity activity;
+    private final ActivityResultLauncher<Intent> activityResultLauncher;
+    private final List<String> data;
+    private final String searchWord;
 
-    public ProjectsAdapter(List<String> data, String searchWord) {
-        ProjectsAdapter.data = data;
-        ProjectsAdapter.searchWord = searchWord;
+    public ProjectsAdapter(List<String> data, String searchWord, ActivityResultLauncher<Intent> activityResultLauncher, Activity activity) {
+        this.data = data;
+        this.searchWord = searchWord;
+        this.activityResultLauncher = activityResultLauncher;
+        this.activity = activity;
     }
 
     @NonNull
@@ -65,9 +72,11 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
             holder.mTotalSize.setText(holder.mAppName.getContext().getString(R.string.last_modified, DateFormat.getDateTimeInstance()
                     .format(new File(data.get(position)).lastModified())));
             holder.mCard.setOnClickListener(v -> {
-                Common.setPath(data.get(position));
                 Intent explorer = new Intent(v.getContext(), APKExploreActivity.class);
-                v.getContext().startActivity(explorer);
+                if (sFileUtils.exist(new File(data.get(position), ".aeeBackup/appData"))) {
+                    explorer.putExtra(APKExploreActivity.BACKUP_PATH_INTENT, new File(data.get(position), ".aeeBackup/appData").getAbsolutePath());
+                }
+                activityResultLauncher.launch(explorer);
             });
             holder.mCard.setOnLongClickListener(v -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) return false;
@@ -96,7 +105,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                     .setNegativeButton(R.string.cancel, (dialog, id) -> {
                     })
                     .setPositiveButton(R.string.delete, (dialog, id) -> {
-                        new DeleteProject(new File(data.get(position)), v.getContext()).execute();
+                        new DeleteProject(new File(data.get(position)), activity, false).execute();
                         data.remove(position);
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, data.size());
@@ -111,7 +120,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final AppCompatImageButton mAppIcon, mDelete;
+        private final AppCompatImageButton mAppIcon;
+        private final MaterialButton mDelete;
         private final MaterialCardView mCard;
         private final MaterialTextView mAppName, mTotalSize;
 

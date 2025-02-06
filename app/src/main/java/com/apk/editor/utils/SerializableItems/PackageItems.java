@@ -1,6 +1,7 @@
-package com.apk.editor.utils.recyclerViewItems;
+package com.apk.editor.utils.SerializableItems;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -29,6 +30,10 @@ public class PackageItems implements Serializable {
     public PackageItems(String packageName, Context context) {
         this.mPackageName = packageName;
         this.mContext = context;
+    }
+
+    public Intent launchIntent(Context context) {
+        return context.getPackageManager().getLaunchIntentForPackage(mPackageName);
     }
 
     public long getInstalledTime() {

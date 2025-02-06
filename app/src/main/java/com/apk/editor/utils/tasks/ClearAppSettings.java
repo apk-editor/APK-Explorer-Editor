@@ -1,11 +1,11 @@
 package com.apk.editor.utils.tasks;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppSettings;
+import com.apk.editor.utils.dialogs.ProgressDialog;
 
 import java.io.File;
 
@@ -28,12 +28,9 @@ public class ClearAppSettings extends sExecutor {
     @Override
     public void onPreExecute() {
         mProgressDialog = new ProgressDialog(mActivity);
-        mProgressDialog.setMessage(mActivity.getString(R.string.clearing_cache_message));
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setTitle(mActivity.getString(R.string.clearing_cache_message));
         mProgressDialog.setIcon(R.mipmap.ic_launcher);
-        mProgressDialog.setTitle(R.string.app_name);
         mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setCancelable(false);
         mProgressDialog.show();
     }
 

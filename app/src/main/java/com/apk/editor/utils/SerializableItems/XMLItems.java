@@ -1,4 +1,4 @@
-package com.apk.editor.utils.recyclerViewItems;
+package com.apk.editor.utils.SerializableItems;
 
 import androidx.annotation.NonNull;
 

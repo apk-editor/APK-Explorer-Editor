@@ -12,10 +12,10 @@ import com.apk.editor.utils.tasks.ExportProject;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
@@ -26,7 +26,7 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 public class Projects {
 
     public static List<String> getData(String searchWord, Context context) {
-        List<String> mData = new ArrayList<>();
+        List<String> mData = new CopyOnWriteArrayList<>();
         for (File mFile : Objects.requireNonNull(new File(context.getCacheDir().toString()).listFiles())) {
             if (mFile.exists() && mFile.isDirectory() && new File(mFile, ".aeeBackup/appData").exists()) {
                 if (searchWord == null) {

@@ -2,41 +2,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:gravity="top" >
+    android:gravity="top">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="start"
-            android:gravity="start"
-            android:orientation="horizontal" >
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:padding="10dp" >
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/back"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:tint="?attr/colorPrimary"
                     android:src="@drawable/ic_back"
                     android:background="@null"
-                    android:layout_gravity="start|center_vertical" />
+                    android:gravity="center" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start|center_vertical"
-                    android:layout_marginStart="50dp"
                     android:text="@string/signing_title"
-                    android:gravity="start"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:padding="5dp" />
+                    android:layout_marginStart="40sp"
+                    style="@style/AppTheme.Title"/>
         </FrameLayout>
 
         <FrameLayout
             android:id="@+id/private_key"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_margin="10dp" >
 
                 <androidx.appcompat.widget.AppCompatImageButton
@@ -44,6 +44,7 @@
                     android:layout_height="25dp"
                     android:scaleType="fitCenter"
                     android:layout_gravity="center_vertical"
+                    android:tint="?attr/colorPrimary"
                     android:src="@drawable/ic_key"
                     android:background="@null"
                     android:clickable="false" />
@@ -62,6 +63,7 @@
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/colorPrimary"
                             android:text="@string/private_key"
                             android:textStyle="bold"
                             android:textSize="17sp" />
@@ -74,15 +76,15 @@
                             android:maxLines="2" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <androidx.appcompat.widget.AppCompatImageButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/clear_key"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="end|center_vertical"
-                    android:src="@drawable/ic_delete"
-                    android:background="@null"
-                    android:visibility="gone" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    android:layout_gravity="center|end"
+                    app:iconTint="?attr/colorPrimary"
+                    app:icon="@drawable/ic_delete"
+                    android:gravity="center" />
         </FrameLayout>
 
         <ScrollView

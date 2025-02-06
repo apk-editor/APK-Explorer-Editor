@@ -29,9 +29,6 @@
         <activity android:name=".activities.InstallerActivity"
             android:exported="false" />
 
-        <activity android:name=".activities.InstallerFilePickerActivity"
-            android:exported="false" />
-
         <activity android:name=".activities.TextEditorActivity"
             android:exported="false" />
 

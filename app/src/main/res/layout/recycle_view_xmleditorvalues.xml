@@ -47,6 +47,5 @@
         style="?attr/materialIconButtonFilledTonalStyle"
         app:icon="@drawable/ic_delete"
         android:layout_weight="0.1"
-        android:layout_margin="5dp"
-        app:iconGravity="textEnd"/>
+        android:layout_margin="5dp" />
 </androidx.appcompat.widget.LinearLayoutCompat>

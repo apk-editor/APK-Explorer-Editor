@@ -1,5 +1,6 @@
 package com.apk.editor.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -7,6 +8,7 @@ import android.os.Environment;
 
 import com.apk.editor.MainActivity;
 import com.apk.editor.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -316,6 +318,11 @@ public class AppSettings {
                 context.getString(R.string.install_resign),
                 context.getString(R.string.prompt)
         };
+    }
+
+    public static void navigateToFragment(Activity activity, int position) {
+        BottomNavigationView bottomNavigationView = activity.findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(position);
     }
 
     public static void setLanguage(Context context) {
