@@ -28,7 +28,6 @@ import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
-import com.google.android.material.textview.MaterialTextView;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
@@ -46,17 +45,14 @@ public class ProjectsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mRootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View mRootView = inflater.inflate(R.layout.fragment_projects, container, false);
 
         MaterialAutoCompleteTextView mSearchWord = mRootView.findViewById(R.id.search_word);
-        MaterialTextView mTitle = mRootView.findViewById(R.id.app_title);
         mProgress = mRootView.findViewById(R.id.progress);
         MaterialButton mSearchButton = mRootView.findViewById(R.id.search_button);
         MaterialButton mSortButton = mRootView.findViewById(R.id.sort_button);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-
-        mTitle.setText(getString(R.string.projects));
 
         mSearchButton.setOnClickListener(v -> {
             if (mSearchWord.getVisibility() == View.VISIBLE) {

@@ -26,7 +26,6 @@ import com.apk.editor.utils.Common;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Objects;
 
@@ -42,27 +41,24 @@ public class ApplicationsFragment extends Fragment {
     private boolean mExit;
     private final Handler mHandler = new Handler();
     private ContentLoadingProgressBar mProgress;
-    private MaterialButton mSortButton;
+    private MaterialButton mMenuButton;
     private RecyclerView mRecyclerView;
     private String mSearchText = null;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mRootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View mRootView = inflater.inflate(R.layout.fragment_applications, container, false);
 
         MaterialAutoCompleteTextView mSearchWord = mRootView.findViewById(R.id.search_word);
-        MaterialTextView mTitle = mRootView.findViewById(R.id.app_title);
         mProgress = mRootView.findViewById(R.id.progress);
         MaterialButton mSearchButton = mRootView.findViewById(R.id.search_button);
-        mSortButton = mRootView.findViewById(R.id.sort_button);
+        mMenuButton = mRootView.findViewById(R.id.menu_button);
         TabLayout mTabLayout = mRootView.findViewById(R.id.tab_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        mTitle.setText(getString(R.string.apps_installed));
-        mSortButton.setIcon(sCommonUtils.getDrawable(R.drawable.ic_dots, requireActivity()));
         mTabLayout.setVisibility(View.VISIBLE);
 
         mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.all)));
@@ -121,7 +117,7 @@ public class ApplicationsFragment extends Fragment {
             }
         });
 
-        mSortButton.setOnClickListener(v -> sortMenu());
+        mMenuButton.setOnClickListener(v -> sortMenu());
 
         mSearchWord.addTextChangedListener(new TextWatcher() {
             @Override
@@ -203,7 +199,7 @@ public class ApplicationsFragment extends Fragment {
     }
 
     private void sortMenu() {
-        PopupMenu popupMenu = new PopupMenu(requireActivity(), mSortButton);
+        PopupMenu popupMenu = new PopupMenu(requireActivity(), mMenuButton);
         Menu menu = popupMenu.getMenu();
         SubMenu sort = menu.addSubMenu(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_by)).setIcon(R.drawable.ic_sort);
 

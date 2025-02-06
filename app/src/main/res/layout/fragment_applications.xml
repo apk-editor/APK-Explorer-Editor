@@ -1,0 +1,110 @@
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|center_vertical"
+            android:paddingBottom="5dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp" >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/apps_installed"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="80dp"
+                style="@style/AppTheme.Title" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginStart="85dp"
+                android:orientation="horizontal"
+                android:layout_marginEnd="5dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/search_button"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    app:iconTint="?attr/colorPrimary"
+                    app:icon="@drawable/ic_search" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/menu_button"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    app:iconTint="?attr/colorPrimary"
+                    app:icon="@drawable/ic_dots" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </FrameLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:strokeColor="?attr/colorPrimary"
+            app:cardCornerRadius="45dp"
+            android:layout_margin="5dp" >
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/search_word"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:drawableStart="@drawable/ic_search"
+                android:layout_gravity="center"
+                android:gravity="start|center"
+                android:layout_margin="5dp"
+                android:background="@null"
+                android:visibility="gone" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:tabGravity="fill"
+            app:tabMode="fixed" />
+
+        <include layout="@layout/progress_view" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/batch_options"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        style="?attr/materialIconButtonFilledTonalStyle"
+        android:textColor="?attr/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:text="@string/batch_options"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="50dp"
+        app:iconTint="?attr/colorPrimary"
+        android:textStyle="bold|italic"
+        android:layout_marginEnd="75dp"
+        app:icon="@drawable/ic_batch"
+        android:paddingStart="10sp"
+        android:visibility="gone"
+        android:paddingEnd="10sp"
+        app:iconGravity="start"
+        android:textSize="20sp"
+        app:iconPadding="10sp" />
+</RelativeLayout>
