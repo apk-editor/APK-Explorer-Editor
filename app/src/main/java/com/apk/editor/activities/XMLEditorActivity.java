@@ -78,7 +78,9 @@ public class XMLEditorActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (Common.isBusy()) return;
+                if (mProgress.getVisibility() == View.VISIBLE) {
+                    return;
+                }
                 if (mSearchText != null) {
                     mSearch.setText(null);
                 }

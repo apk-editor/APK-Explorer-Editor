@@ -22,7 +22,7 @@ public class BundleOptionsMenu extends PopupMenu {
         setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case 0:
-                    new ShareBundleDialog(bundlePath, view.getContext()).show();
+                    new ShareBundleDialog(bundlePath, view.getContext());
                     break;
                 case 1:
                     new SaveBundletoDownloads(bundlePath, true, view.getContext()).execute();

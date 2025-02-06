@@ -34,7 +34,8 @@ public class APKTasksActivity extends AppCompatActivity {
 
     private final Handler mHandler = new Handler();
     private Runnable mRunnable;
-    public static final String PACKAGE_NAME_INTENT = "packageName";
+    private static boolean mBuilding = false;
+    public static final String BUILDING_INTENT = "building", PACKAGE_NAME_INTENT = "packageName";
 
     @SuppressLint({"StringFormatInvalid", "SetTextI18n"})
     @Override
@@ -58,8 +59,9 @@ public class APKTasksActivity extends AppCompatActivity {
         mSuccess.setTextColor(Color.GREEN);
 
         String mPackageName = getIntent().getStringExtra(PACKAGE_NAME_INTENT);
+        mBuilding = getIntent().getBooleanExtra(BUILDING_INTENT, false);
 
-        if (Common.isBuilding()) {
+        if (mBuilding) {
             mIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_build));
         } else {
             mIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_explore));
@@ -112,7 +114,7 @@ public class APKTasksActivity extends AppCompatActivity {
         mRunnable = () -> {
             if (Common.isCancelled()) {
                 mTaskSummary.setText(getString(R.string.cancelling));
-                if (Common.isBuilding() && Common.isFinished()) {
+                if (mBuilding && Common.isFinished()) {
                     finish();
                 }
             } else if (!Common.isFinished()) {
@@ -136,7 +138,7 @@ public class APKTasksActivity extends AppCompatActivity {
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 Common.setStatus(null);
                 mProgress.setVisibility(View.GONE);
-                if (Common.isBuilding() || Common.getError() > 0 || Common.getSuccess() > 0) {
+                if (mBuilding || Common.getError() > 0 || Common.getSuccess() > 0) {
                     mCancel.setVisibility(View.VISIBLE);
                     mOutputPath.setVisibility(View.VISIBLE);
                     if (Common.getError() > 0) {
@@ -189,8 +191,8 @@ public class APKTasksActivity extends AppCompatActivity {
             if (Common.getSuccess() > 0) {
                 Common.setSuccess(0);
             }
-            if (Common.isBuilding()) {
-                Common.isBuilding(false);
+            if (mBuilding) {
+                mBuilding = false;
             }
             finish();
         }

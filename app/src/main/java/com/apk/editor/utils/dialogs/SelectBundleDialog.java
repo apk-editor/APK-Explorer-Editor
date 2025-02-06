@@ -14,10 +14,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
  */
 public class SelectBundleDialog {
 
-    private final MaterialAlertDialogBuilder mDialogBuilder;
-
     public SelectBundleDialog(String path, ActivityResultLauncher<Intent> activityResultLauncher, boolean exit, Activity activity) {
-        mDialogBuilder = new MaterialAlertDialogBuilder(activity)
+        new MaterialAlertDialogBuilder(activity)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.split_apk_installer)
                 .setMessage(activity.getString(R.string.install_bundle_question))
@@ -29,11 +27,7 @@ public class SelectBundleDialog {
                 })
                 .setPositiveButton(R.string.yes, (dialogInterface, i) ->
                         SplitAPKInstaller.handleAppBundle(activityResultLauncher, path, activity)
-                );
-    }
-
-    public void show() {
-        mDialogBuilder.show();
+                ).show();
     }
 
 }

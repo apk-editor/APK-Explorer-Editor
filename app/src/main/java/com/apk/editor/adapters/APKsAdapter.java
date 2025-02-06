@@ -83,7 +83,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 holder.mCard.setOnClickListener(v -> {
                     if (APKEditorUtils.isFullVersion(v.getContext())) {
                         if (data.get(position).contains("_aee-signed") && !sCommonUtils.getBoolean("signature_warning", false, v.getContext())) {
-                            new SignatureMismatchDialog(v.getContext()).show();
+                            new SignatureMismatchDialog(v.getContext());
                         } else {
                             new MaterialAlertDialogBuilder(v.getContext())
                                     .setIcon(R.mipmap.ic_launcher)
@@ -99,7 +99,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                             new BundleOptionsMenu(data.get(position), v);
                         } else {
-                            new ShareBundleDialog(data.get(position), holder.mCard.getContext()).show();
+                            new ShareBundleDialog(data.get(position), holder.mCard.getContext());
                         }
                     }
                 });
@@ -108,7 +108,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                             new BundleOptionsMenu(data.get(position), v);
                         } else {
-                            new ShareBundleDialog(data.get(position), holder.mCard.getContext()).show();
+                            new ShareBundleDialog(data.get(position), holder.mCard.getContext());
                         }
                     }
                     return false;
@@ -145,7 +145,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 holder.mCard.setOnClickListener(v -> {
                     if (APKEditorUtils.isFullVersion(v.getContext())) {
                         if (data.get(position).contains("_aee-signed.apk") && !sCommonUtils.getBoolean("signature_warning", false, v.getContext())) {
-                            new SignatureMismatchDialog(v.getContext()).show();
+                            new SignatureMismatchDialog(v.getContext());
                         } else {
                             new MaterialAlertDialogBuilder(v.getContext())
                                     .setIcon(R.mipmap.ic_launcher)

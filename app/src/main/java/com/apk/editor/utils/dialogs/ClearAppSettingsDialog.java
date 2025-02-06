@@ -11,10 +11,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
  */
 public class ClearAppSettingsDialog {
 
-    private final MaterialAlertDialogBuilder mDialogBuilder;
-
     public ClearAppSettingsDialog(Activity activity) {
-        mDialogBuilder = new MaterialAlertDialogBuilder(activity)
+        new MaterialAlertDialogBuilder(activity)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.warning)
                 .setMessage(activity.getString(R.string.clear_cache_message))
@@ -22,11 +20,7 @@ public class ClearAppSettingsDialog {
                 })
                 .setPositiveButton(R.string.delete, (dialog, id) ->
                         new ClearAppSettings(activity).execute()
-                );
-    }
-
-    public void show() {
-        mDialogBuilder.show();
+                ).show();
     }
 
 }

@@ -54,7 +54,6 @@ public class ExploreAPK extends sExecutor {
     @SuppressLint("StringFormatInvalid")
     @Override
     public void onPreExecute() {
-        Common.isBuilding(false);
         Common.isCancelled(false);
         Common.setFinishStatus(false);
         if (mUri != null) {

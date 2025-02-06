@@ -87,9 +87,6 @@ public class ResignBatchAPKs extends sExecutor {
                 .setCancelable(false)
                 .setPositiveButton(R.string.cancel, (dialog, id) -> {}
                 ).show();
-        if (!Common.isFinished()) {
-            Common.setFinishStatus(true);
-        }
     }
 
 }

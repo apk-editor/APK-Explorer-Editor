@@ -269,7 +269,7 @@ public class SettingsActivity extends AppCompatActivity {
                         }
                     }.show();
                 } else {
-                    new ClearAppSettingsDialog(this).show();
+                    new ClearAppSettingsDialog(this);
                 }
             }
         });

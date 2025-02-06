@@ -14,22 +14,17 @@ import java.io.File;
  */
 public class ShareBundleDialog {
 
-    private final MaterialAlertDialogBuilder mDialogBuilder;
-
     @SuppressLint("StringFormatInvalid")
     public ShareBundleDialog(String path, Context context) {
-        mDialogBuilder = new MaterialAlertDialogBuilder(context)
+        new MaterialAlertDialogBuilder(context)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.app_name)
                 .setMessage(context.getString(R.string.share_message, new File(path).getName()))
                 .setNegativeButton(context.getString(R.string.cancel), (dialog, id) -> {
                 })
                 .setPositiveButton(context.getString(R.string.share), (dialog, id) ->
-                        new SaveBundletoDownloads(path, false, context).execute());
-    }
-
-    public void show() {
-        mDialogBuilder.show();
+                        new SaveBundletoDownloads(path, false, context).execute()
+                ).show();
     }
 
 }

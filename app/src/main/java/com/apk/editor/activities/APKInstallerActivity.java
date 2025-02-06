@@ -127,9 +127,9 @@ public class APKInstallerActivity extends AppCompatActivity {    private AppComp
                             mInstall.setText(getString(R.string.update));
                         }
                     } else if (mFile.getName().endsWith("apkm") || mFile.getName().endsWith("apks") || mFile.getName().endsWith("xapk")) {
-                        new SelectBundleDialog(mFile.getAbsolutePath(), activityResultLauncher, true, activity).show();
+                        new SelectBundleDialog(mFile.getAbsolutePath(), activityResultLauncher, true, activity);
                     } else {
-                        new InvalidFileDialog(true, activity).show();
+                        new InvalidFileDialog(true, activity);
                     }
                 } else {
                     new MaterialAlertDialogBuilder(activity)

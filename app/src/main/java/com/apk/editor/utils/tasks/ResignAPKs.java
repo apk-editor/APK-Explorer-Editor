@@ -135,9 +135,6 @@ public class ResignAPKs extends sExecutor {
                 }
             }
         }
-        if (!Common.isFinished()) {
-            Common.setFinishStatus(true);
-        }
     }
 
 }

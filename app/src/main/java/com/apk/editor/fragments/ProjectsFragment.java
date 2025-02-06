@@ -105,7 +105,9 @@ public class ProjectsFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (Common.isBusy()) return;
+                if (mProgress.getVisibility() == View.VISIBLE) {
+                    return;
+                }
                 if (mSearchWord.getVisibility() == View.VISIBLE) {
                     if (mSearchText != null) {
                         mSearchText = null;

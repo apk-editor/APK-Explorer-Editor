@@ -11,11 +11,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
  */
 public class InvalidFileDialog {
 
-    private final MaterialAlertDialogBuilder mDialogBuilder;
-
     @SuppressLint("StringFormatInvalid")
     public InvalidFileDialog(boolean exit, Activity activity) {
-        mDialogBuilder = new MaterialAlertDialogBuilder(activity)
+        new MaterialAlertDialogBuilder(activity)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.split_apk_installer)
                 .setMessage(activity.getString(R.string.wrong_extension, ".apks/.apkm/.xapk"))
@@ -24,11 +22,7 @@ public class InvalidFileDialog {
                     if (exit) {
                         activity.finish();
                     }
-                });
-    }
-
-    public void show() {
-        mDialogBuilder.show();
+                }).show();
     }
 
 }

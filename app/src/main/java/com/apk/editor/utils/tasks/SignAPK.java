@@ -41,12 +41,11 @@ public class SignAPK extends sExecutor {
     public void onPreExecute() {
         mRootPath = new File(mActivity.getCacheDir(), mPackageName);
         mTMPZip = new File(mActivity.getCacheDir(), "tmp.apk");
-        Common.setFinishStatus(false);
         Common.isCancelled(false);
-        Common.isBuilding(true);
         Common.setStatus(null);
         Intent apkTasks = new Intent(mActivity, APKTasksActivity.class);
         apkTasks.putExtra(APKTasksActivity.PACKAGE_NAME_INTENT, mPackageName);
+        apkTasks.putExtra(APKTasksActivity.BUILDING_INTENT, true);
         mActivity.startActivity(apkTasks);
         Common.setStatus(mActivity.getString(R.string.preparing_apk, mPackageName));
 
@@ -120,9 +119,6 @@ public class SignAPK extends sExecutor {
     public void onPostExecute() {
         sFileUtils.delete(mTMPZip);
         sFileUtils.delete(mBuildDir);
-        if (!Common.isFinished()) {
-            Common.setFinishStatus(true);
-        }
         APKExplorer.setSuccessIntent(true, mActivity);
     }
 

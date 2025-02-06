@@ -12,19 +12,13 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
  */
 public class SignatureMismatchDialog {
 
-    private final MaterialAlertDialogBuilder mDialogBuilder;
-
     public SignatureMismatchDialog(Context context) {
-        mDialogBuilder = new MaterialAlertDialogBuilder(context)
+        new MaterialAlertDialogBuilder(context)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.app_name)
                 .setMessage(context.getString(R.string.signature_warning))
                 .setPositiveButton(R.string.got_it, (dialog, id) ->
-                        sCommonUtils.saveBoolean("signature_warning", true, context));
-    }
-
-    public void show() {
-        mDialogBuilder.show();
+                        sCommonUtils.saveBoolean("signature_warning", true, context)).show();
     }
 
 }

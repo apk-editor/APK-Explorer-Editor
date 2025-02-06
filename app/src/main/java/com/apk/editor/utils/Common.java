@@ -12,20 +12,11 @@ import java.util.List;
  */
 public class Common {
 
-    private static boolean mBuilding = false, mBusy = false, mCancel = false, mFinish = false,
-            mReloading = false;
+    private static boolean mCancel = false, mFinish = false, mReloading = false;
     private static List<PackageItems> mPackageData = null;
     private static final List<String> mAPKList = new ArrayList<>(), mErrorList = new ArrayList<>();
     private static int mError = 0, mSuccess = 0;
     private static String mFileToReplace = null, mStatus = null;
-
-    public static boolean isBuilding() {
-        return mBuilding;
-    }
-
-    public static boolean isBusy() {
-        return mBusy;
-    }
 
     public static boolean isCancelled() {
         return mCancel;
@@ -76,10 +67,6 @@ public class Common {
         return mStatus;
     }
 
-    public static void isBuilding(boolean b) {
-        mBuilding = b;
-    }
-
     public static void isCancelled(boolean b) {
         mCancel = b;
     }
@@ -105,7 +92,6 @@ public class Common {
     }
 
     public static void setProgress(boolean b, View view) {
-        mBusy = b;
         view.setVisibility(b ? View.VISIBLE : View.GONE);
     }
 

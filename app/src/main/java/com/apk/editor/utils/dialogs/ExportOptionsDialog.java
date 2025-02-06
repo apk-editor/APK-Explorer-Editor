@@ -22,7 +22,6 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 30, 2023
  */
 public class ExportOptionsDialog {
-    private final MaterialAlertDialogBuilder mDialogBuilder;
 
     public ExportOptionsDialog(List<String> packageNames, Activity activity) {
         boolean full = APKEditorUtils.isFullVersion(activity);
@@ -34,7 +33,7 @@ public class ExportOptionsDialog {
         BatchOptionsAdapter adapter = new BatchOptionsAdapter(packageNames);
         recyclerView.setAdapter(adapter);
 
-        mDialogBuilder = new MaterialAlertDialogBuilder(activity)
+        new MaterialAlertDialogBuilder(activity)
                 .setIcon(R.drawable.ic_export_file)
                 .setTitle(R.string.export_app_batch_question)
                 .setView(rootView)
@@ -47,11 +46,8 @@ public class ExportOptionsDialog {
                         }
                     }
                 })
-                .setPositiveButton(R.string.export_storage, (dialog, id) -> new ExportApp(packageNames, activity).execute());
-    }
-
-    public void show() {
-        mDialogBuilder.show();
+                .setPositiveButton(R.string.export_storage, (dialog, id) -> new ExportApp(packageNames, activity).execute()
+                ).show();
     }
 
 }

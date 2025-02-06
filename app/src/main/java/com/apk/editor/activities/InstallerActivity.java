@@ -34,6 +34,7 @@ public class InstallerActivity extends AppCompatActivity {
 
     private final Handler mHandler = new Handler();
     private Runnable mRunnable;
+    private static boolean mUpdating = false;
     public static final String HEADING_INTENT = "heading", PATH_INTENT = "path";
     private static String mPackageName = null;
 
@@ -63,6 +64,8 @@ public class InstallerActivity extends AppCompatActivity {
             mTitle.setText(getName());
             mIcon.setImageDrawable(getIcon());
         }
+
+        mUpdating = sPackageUtils.isPackageInstalled(mPackageName, this);
 
         mHeading.setText(getIntent().getStringExtra(HEADING_INTENT));
 
@@ -133,7 +136,7 @@ public class InstallerActivity extends AppCompatActivity {
         if (sCommonUtils.getString("installationStatus", "waiting", this).equals("waiting")) {
             return;
         }
-        if (sCommonUtils.getString("installationStatus", "waiting", this).equals(getString(R.string.installation_status_success))) {
+        if (!mUpdating && sCommonUtils.getString("installationStatus", "waiting", this).equals(getString(R.string.installation_status_success))) {
             Common.getPackageData().add(new PackageItems(mPackageName, this));
         }
         if (sFileUtils.exist(new File(getCacheDir(),"splits"))) {
