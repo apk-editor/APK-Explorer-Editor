@@ -86,18 +86,21 @@ public class ApplicationsFragment extends Fragment {
                     case 0:
                         if (!mStatus.equals("all")) {
                             sCommonUtils.saveString("appTypes", "all", requireActivity());
+                            mSelectAll = false;
                             loadApps(mSearchText);
                         }
                         break;
                     case 1:
                         if (!mStatus.equals("system")) {
                             sCommonUtils.saveString("appTypes", "system", requireActivity());
+                            mSelectAll = false;
                             loadApps(mSearchText);
                         }
                         break;
                     case 2:
                         if (!mStatus.equals("user")) {
                             sCommonUtils.saveString("appTypes", "user", requireActivity());
+                            mSelectAll = false;
                             loadApps(mSearchText);
                         }
                         break;
@@ -206,6 +209,7 @@ public class ApplicationsFragment extends Fragment {
                     return;
                 }
                 if (mBatchButton.getVisibility() == View.VISIBLE) {
+                    mSelectAll = false;
                     mPackageNames.clear();
                     loadApps(mSearchText);
                     return;
