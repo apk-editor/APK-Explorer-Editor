@@ -45,7 +45,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         style="?attr/materialIconButtonFilledTonalStyle"
+        app:iconGravity="textStart"
         app:icon="@drawable/ic_delete"
         android:layout_weight="0.1"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:padding="1dp"
+        app:iconPadding="1dp" />
 </androidx.appcompat.widget.LinearLayoutCompat>
