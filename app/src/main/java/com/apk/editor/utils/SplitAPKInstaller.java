@@ -87,7 +87,9 @@ public class SplitAPKInstaller {
                 sCommonUtils.saveString("installationStatus", "waiting", activity);
                 Intent installIntent = new Intent(activity, InstallerActivity.class);
                 installIntent.putExtra(InstallerActivity.HEADING_INTENT, activity.getString(R.string.split_apk_installer));
-                installIntent.putExtra(InstallerActivity.PATH_INTENT, apkFile.getAbsolutePath());
+                if (apkFile != null) {
+                    installIntent.putExtra(InstallerActivity.PATH_INTENT, apkFile.getAbsolutePath());
+                }
                 activity.startActivity(installIntent);
             }
 
