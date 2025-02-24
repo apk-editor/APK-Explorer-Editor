@@ -38,7 +38,7 @@ public class APKData {
         List<APKItems> mData = new CopyOnWriteArrayList<>();
         for (File mFile : getAPKList(context)) {
             if (sCommonUtils.getString("apkTypes", "apks", context).equals("bundles")) {
-                if (mFile.isDirectory() && getBaseAPK(mFile, context) != null) {
+                if (mFile.isDirectory() && !mFile.getName().equals("APK") && getBaseAPK(mFile, context) != null) {
                     if (searchWord == null) {
                         mData.add(new APKItems(mFile, getBaseAPK(mFile, context)));
                     } else if (Common.isTextMatched(mFile.getAbsolutePath(), searchWord)) {
