@@ -1,5 +1,7 @@
 package com.apk.editor.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -11,7 +13,6 @@ import com.apk.axml.aXMLEncoder;
 import com.apk.editor.R;
 import com.apk.editor.adapters.XMLValueEditorAdapter;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SerializableItems.XMLItems;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
@@ -64,8 +65,10 @@ public class XMLValuesEditorActivity extends AppCompatActivity {
 
         mDelete.setOnClickListener(v -> new sExecutor() {
                     private boolean invalid = false;
+                    private Intent intent;
                     @Override
                     public void onPreExecute() {
+                        intent = getIntent();
                     }
 
                     @Override
@@ -84,6 +87,10 @@ public class XMLValuesEditorActivity extends AppCompatActivity {
                             } catch (IOException | XmlPullParserException ignored) {
                             }
                             mXMLData.remove(mPosition);
+
+                            intent.putExtra("position", mPosition);
+                            intent.putExtra("removed", true);
+                            setResult(Activity.RESULT_OK, intent);
                         } else {
                             invalid = true;
                         }
@@ -94,7 +101,6 @@ public class XMLValuesEditorActivity extends AppCompatActivity {
                         if (invalid) {
                             sCommonUtils.toast(getString(R.string.xml_corrupted), XMLValuesEditorActivity.this).show();
                         } else {
-                            Common.isReloading(true);
                             finish();
                         }
                     }
@@ -159,8 +165,10 @@ public class XMLValuesEditorActivity extends AppCompatActivity {
     private sExecutor updateString() {
         return new sExecutor() {
             private boolean invalid = false;
+            private Intent intent;
             @Override
             public void onPreExecute() {
+                intent = getIntent();
             }
 
             @Override
@@ -190,6 +198,10 @@ public class XMLValuesEditorActivity extends AppCompatActivity {
                     } catch (IOException | XmlPullParserException ignored) {
                     }
                     mXMLData.set(mPosition, sb.toString().trim());
+
+                    intent.putExtra("position", mPosition);
+                    intent.putExtra("newString", sb.toString().trim());
+                    setResult(Activity.RESULT_OK, intent);
                 } else {
                     invalid = true;
                 }
@@ -201,7 +213,6 @@ public class XMLValuesEditorActivity extends AppCompatActivity {
                     sCommonUtils.toast(getString(R.string.xml_corrupted), XMLValuesEditorActivity.this).show();
                     loadUI().execute();
                 } else {
-                    Common.isReloading(true);
                     finish();
                 }
             }

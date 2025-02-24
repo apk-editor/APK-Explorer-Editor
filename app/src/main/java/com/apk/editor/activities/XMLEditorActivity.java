@@ -1,12 +1,16 @@
 package com.apk.editor.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ContentLoadingProgressBar;
@@ -16,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apk.editor.R;
 import com.apk.editor.adapters.XMLEditorAdapter;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.Common;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -32,6 +35,7 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class XMLEditorActivity extends AppCompatActivity {
 
+    private ArrayList<String> mData;
     private ContentLoadingProgressBar mProgress;
     private RecyclerView mRecyclerView;
     private String mPath = null, mSearchText = null;
@@ -58,7 +62,7 @@ public class XMLEditorActivity extends AppCompatActivity {
             mTitle.setVisibility(View.GONE);
         }
 
-        loadUI(mSearchText).execute();
+        loadUI(mSearchText);
 
         mSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -71,7 +75,7 @@ public class XMLEditorActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loadUI(s.toString().toLowerCase()).execute();
+                loadUI(s.toString().toLowerCase());
             }
         });
 
@@ -89,49 +93,73 @@ public class XMLEditorActivity extends AppCompatActivity {
         });
     }
 
-    private sExecutor loadUI(String string) {
+    private void loadUI(String string) {
+        loadUI(null, string).execute();
+    }
+
+    private sExecutor loadUI(Intent intent, String string) {
         return new sExecutor() {
-            private boolean mInvalid = false;
+            private boolean mRemoved = false, mInvalid = false;
+            private int mPosition = RecyclerView.NO_POSITION;
             @Override
             public void onPreExecute() {
                 mRecyclerView.setVisibility(View.GONE);
                 mProgress.setVisibility(View.VISIBLE);
-                mRecyclerView.removeAllViews();
+                if (intent == null) {
+                    mRecyclerView.removeAllViews();
+                }
             }
 
             @Override
             public void doInBackground() {
-                ArrayList<String> mData = APKExplorer.getXMLData(mPath);
-                if (mData != null && !mData.isEmpty()) {
-                    mAdapter = new XMLEditorAdapter(mData, mPath, string);
+                if (intent == null) {
+                    mData = APKExplorer.getXMLData(mPath);
+                    if (mData != null && !mData.isEmpty()) {
+                        mAdapter = new XMLEditorAdapter(mData, mPath, string, resultLauncher);
+                    } else {
+                        mInvalid = true;
+                    }
                 } else {
-                    mInvalid = true;
+                    mRemoved = intent.getBooleanExtra("removed", false);
+                    mPosition = intent.getIntExtra("position", RecyclerView.NO_POSITION);
+                    if (mRemoved) {
+                        mData.remove(mPosition);
+                    } else {
+                        mData.set(mPosition, intent.getStringExtra("newString"));
+                    }
                 }
             }
 
             @SuppressLint("StringFormatInvalid")
             @Override
             public void onPostExecute() {
-                if (mInvalid) {
-                    sCommonUtils.toast(getString(R.string.xml_decode_failed, new File(mPath).getName()), XMLEditorActivity.this).show();
+                if (intent != null) {
+                    if (mRemoved) {
+                        mAdapter.notifyItemRemoved(mPosition);
+                    } else {
+                        mAdapter.notifyItemChanged(mPosition);
+                    }
                 } else {
-                    mRecyclerView.setAdapter(mAdapter);
-                    mRecyclerView.setVisibility(View.VISIBLE);
+                    if (mInvalid) {
+                        sCommonUtils.toast(getString(R.string.xml_decode_failed, new File(mPath).getName()), XMLEditorActivity.this).show();
+                    } else {
+                        mRecyclerView.setAdapter(mAdapter);
+                    }
+                    mSearchText = string;
                 }
-                mSearchText = string;
                 mProgress.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
             }
         };
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (Common.isReloading()) {
-            Common.isReloading(false);
-            loadUI(mSearchText).execute();
-        }
-    }
+    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    loadUI(result.getData(), mSearchText).execute();
+                }
+            }
+    );
 
 }

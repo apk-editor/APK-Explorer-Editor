@@ -23,10 +23,10 @@ import java.util.List;
  */
 public class XMLValueEditorAdapter extends RecyclerView.Adapter<XMLValueEditorAdapter.ViewHolder> {
 
-    private static List<XMLItems> data;
+    private final List<XMLItems> data;
 
     public XMLValueEditorAdapter(List<XMLItems> data) {
-        XMLValueEditorAdapter.data = data;
+        this.data = data;
     }
 
     @NonNull
@@ -57,7 +57,7 @@ public class XMLValueEditorAdapter extends RecyclerView.Adapter<XMLValueEditorAd
             holder.mDelete.setVisibility(View.GONE);
         }
 
-        holder.mValue.addTextChangedListener(gettTextWatcher(position));
+        holder.mValue.addTextChangedListener(getTextWatcher(position));
 
         holder.mDelete.setOnClickListener(v -> {
             data.get(position).setToRemove(!data.get(position).isRemoved());
@@ -68,7 +68,7 @@ public class XMLValueEditorAdapter extends RecyclerView.Adapter<XMLValueEditorAd
         holder.mSwitch.setOnClickListener(v -> data.get(position).setValue(data.get(position).getValue().equals("true") ? "false" : "true"));
     }
 
-    private TextWatcher gettTextWatcher(int position) {
+    private TextWatcher getTextWatcher(int position) {
         return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

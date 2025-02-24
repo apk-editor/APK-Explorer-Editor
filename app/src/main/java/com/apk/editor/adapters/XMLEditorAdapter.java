@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,13 +21,15 @@ import java.util.ArrayList;
  */
 public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.ViewHolder> {
 
-    private static ArrayList<String> data;
-    private static String searchWord, path;
+    private final ActivityResultLauncher<Intent> resultLauncher;
+    private final ArrayList<String> data;
+    private final String searchWord, path;
 
-    public XMLEditorAdapter(ArrayList<String> data, String path, String searchWord) {
-        XMLEditorAdapter.data = data;
-        XMLEditorAdapter.path = path;
-        XMLEditorAdapter.searchWord = searchWord;
+    public XMLEditorAdapter(ArrayList<String> data, String path, String searchWord, ActivityResultLauncher<Intent> resultLauncher) {
+        this.data = data;
+        this.path = path;
+        this.searchWord = searchWord;
+        this.resultLauncher = resultLauncher;
     }
 
     @NonNull
@@ -51,7 +54,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
         return data.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final MaterialTextView mText;
 
@@ -68,7 +71,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                 xmlValuesEditor.putExtra(XMLValuesEditorActivity.POSITION_INTENT, getAdapterPosition());
                 xmlValuesEditor.putStringArrayListExtra(XMLValuesEditorActivity.XML_INTENT, data);
                 xmlValuesEditor.putExtra(XMLValuesEditorActivity.PATH_INTENT, path);
-                view.getContext().startActivity(xmlValuesEditor);
+                resultLauncher.launch(xmlValuesEditor);
             }
         }
     }
