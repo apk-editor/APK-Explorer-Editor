@@ -49,13 +49,17 @@ public class APKEditorUtils {
         try (ZipFile zipFile = new ZipFile(zip)) {
             for (File mFile : Objects.requireNonNull(path.listFiles())) {
                 if (mFile.isDirectory()) {
-                    zipFile.addFolder(mFile);
+                    if (mFile.getName().equals("assets") || mFile.getName().equals("lib")
+                            || mFile.getName().equals("res") || mFile.getName().equals("r")
+                            || mFile.getName().equals("R")) {
+                        zipFile.addFolder(mFile, getZipParametersAsStore(mFile));
+                    } else {
+                        zipFile.addFolder(mFile);
+                    }
                 } else {
-                    if (mFile.getName().startsWith("res/") && !mFile.getName().endsWith(".xml") || mFile.getName().equalsIgnoreCase("resources.arsc")) {
-                        ZipParameters zipParameters = new ZipParameters();
-                        zipParameters.setCompressionMethod(CompressionMethod.STORE);
-                        zipParameters.setEntrySize(mFile.length());
-                        zipFile.addFile(mFile, zipParameters);
+                    if (mFile.getName().equalsIgnoreCase("resources.arsc")
+                            || mFile.getName().startsWith("classes") && mFile.getName().endsWith(".dex")) {
+                        zipFile.addFile(mFile, getZipParametersAsStore(mFile));
                     } else {
                         zipFile.addFile(mFile);
                     }
@@ -63,6 +67,13 @@ public class APKEditorUtils {
             }
         } catch (IOException ignored) {
         }
+    }
+
+    private static ZipParameters getZipParametersAsStore(File file) {
+        ZipParameters zipParameters = new ZipParameters();
+        zipParameters.setCompressionMethod(CompressionMethod.STORE);
+        zipParameters.setEntrySize(file.length());
+        return zipParameters;
     }
 
 }
