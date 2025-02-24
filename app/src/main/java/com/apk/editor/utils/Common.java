@@ -1,33 +1,33 @@
 package com.apk.editor.utils;
 
+import android.content.Context;
 import android.view.View;
 
+import com.apk.editor.R;
 import com.apk.editor.utils.SerializableItems.PackageItems;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on June 12, 2021
  */
 public class Common {
 
-    private static boolean mCancel = false, mFinish = false, mReloading = false;
     private static List<PackageItems> mPackageData = null;
     private static final List<String> mAPKList = new ArrayList<>(), mErrorList = new ArrayList<>();
     private static int mError = 0, mSuccess = 0;
-    private static String mFileToReplace = null, mStatus = null;
+    private static String mFileToReplace = null;
 
-    public static boolean isCancelled() {
-        return mCancel;
+    public static boolean isCancelled(Context context) {
+        return sCommonUtils.getBoolean("cancelled", false, context);
     }
 
-    public static boolean isFinished() {
-        return mFinish;
-    }
-
-    public static boolean isReloading() {
-        return mReloading;
+    public static boolean isFinished(Context context) {
+        return Objects.equals(sCommonUtils.getString("exploringStatus", null, context), "finished");
     }
 
     public static boolean isTextMatched(String searchText, String searchWord) {
@@ -63,20 +63,22 @@ public class Common {
         return mFileToReplace;
     }
 
-    public static String getStatus() {
-        return mStatus;
+    public static String getPackageName(Context context) {
+        return sCommonUtils.getString("packageName", null, context);
     }
 
-    public static void isCancelled(boolean b) {
-        mCancel = b;
+    public static String getStatus(Context context) {
+        return isCancelled(context) ? context.getString(R.string.cancelling) : sCommonUtils.getString("exploringStatus", null, context);
     }
 
-    public static void isReloading(boolean b) {
-        mReloading = b;
+    public static void isCancelled(boolean b, Context context) {
+        sCommonUtils.saveBoolean("cancelled", b, context);
     }
 
-    public static void setFinishStatus(boolean b) {
-        mFinish = b;
+    public static void setFinishStatus(Context context) {
+        if (!isFinished(context)) {
+            sCommonUtils.saveString("exploringStatus", "finished", context);
+        }
     }
 
     public static void setError(int i) {
@@ -95,8 +97,8 @@ public class Common {
         view.setVisibility(b ? View.VISIBLE : View.GONE);
     }
 
-    public static void setStatus(String status) {
-        mStatus = status;
+    public static void setStatus(String status, Context context) {
+        sCommonUtils.saveString("exploringStatus", status, context);
     }
 
     public static void setSuccess(int i) {

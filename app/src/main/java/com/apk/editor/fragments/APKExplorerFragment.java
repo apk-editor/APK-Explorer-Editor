@@ -141,7 +141,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                             public void onItemSelected(int itemPosition) {
                                 sCommonUtils.saveBoolean("firstSigning", true, requireActivity());
                                 if (itemPosition == 0) {
-                                    new SignAPK(mRootFile.getName(), requireActivity()).execute();
+                                    new SignAPK(mRootFile, requireActivity()).execute();
                                 } else {
                                     Intent signing = new Intent(requireActivity(), APKSignActivity.class);
                                     startActivity(signing);
@@ -149,7 +149,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                             }
                         }.show();
                     } else {
-                        new SignAPK(mRootFile.getName(), requireActivity()).execute();
+                        new SignAPK(mRootFile, requireActivity()).execute();
                     }
                 }).show());
 

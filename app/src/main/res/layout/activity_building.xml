@@ -13,6 +13,7 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_gravity="center"
+            android:src="@drawable/ic_build"
             android:layout_margin="15dp" />
 
         <ProgressBar

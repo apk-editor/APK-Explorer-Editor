@@ -6,18 +6,25 @@ import android.content.Intent;
 import android.os.Build;
 
 import com.apk.editor.R;
-import com.apk.editor.activities.APKTasksActivity;
+import com.apk.editor.activities.BuildingActivity;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.SerializableItems.APKItems;
 import com.apk.editor.utils.ZipAlign;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Objects;
 
+import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
@@ -28,29 +35,28 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 public class SignAPK extends sExecutor {
 
     private final Activity mActivity;
-    private File mBackUpPath = null, mBuildDir = null, mRootPath = null, mTMPZip = null;
-    private final String mPackageName;
+    private final File mRoot;
+    private File mBackUpPath = null, mBuildDir = null, mTMPZip = null;
 
-    public SignAPK(String packageName, Activity activity) {
-        mPackageName = packageName;
+    public SignAPK(File root, Activity activity) {
+        mRoot = root;
         mActivity = activity;
     }
 
     @SuppressLint("StringFormatInvalid")
     @Override
     public void onPreExecute() {
-        mRootPath = new File(mActivity.getCacheDir(), mPackageName);
         mTMPZip = new File(mActivity.getCacheDir(), "tmp.apk");
-        Common.isCancelled(false);
-        Common.setStatus(null);
-        Intent apkTasks = new Intent(mActivity, APKTasksActivity.class);
-        apkTasks.putExtra(APKTasksActivity.PACKAGE_NAME_INTENT, mPackageName);
-        apkTasks.putExtra(APKTasksActivity.BUILDING_INTENT, true);
-        mActivity.startActivity(apkTasks);
-        Common.setStatus(mActivity.getString(R.string.preparing_apk, mPackageName));
+        Common.isCancelled(false, mActivity);
+        sCommonUtils.saveString("exploringStatus", null, mActivity);
+        Intent building = new Intent(mActivity, BuildingActivity.class);
+        building.putExtra(BuildingActivity.PACKAGE_NAME_INTENT, mRoot.getName());
+        mActivity.startActivity(building);
+        Common.setStatus(mActivity.getString(R.string.preparing_apk, mRoot.getName()), mActivity);
+        sCommonUtils.saveString("packageName", null, mActivity);
 
-        mBuildDir = new File(mRootPath, ".aeeBuild");
-        mBackUpPath = new File(mRootPath, ".aeeBackup");
+        mBuildDir = new File(mRoot, ".aeeBuild");
+        mBackUpPath = new File(mRoot, ".aeeBackup");
     }
 
     @SuppressLint("StringFormatInvalid")
@@ -65,15 +71,15 @@ public class SignAPK extends sExecutor {
             sFileUtils.delete(mTMPZip);
         }
 
-        Common.setStatus(mActivity.getString(R.string.preparing_source));
+        Common.setStatus(mActivity.getString(R.string.preparing_source), mActivity);
 
-        APKData.prepareSource(mBuildDir, mRootPath, mBackUpPath, mActivity);
+        APKData.prepareSource(mBuildDir, mRoot, mBackUpPath, mActivity);
         if (Common.getError() > 0) {
             return;
         }
         APKEditorUtils.zip(mBuildDir, mTMPZip);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Common.setStatus(mActivity.getString(R.string.zip_aligning));
+            Common.setStatus(mActivity.getString(R.string.zip_aligning), mActivity);
             try {
                 RandomAccessFile apkUnaligned = new RandomAccessFile(mTMPZip, "r");
                 FileOutputStream apkAligned = new FileOutputStream(new File(mActivity.getCacheDir(), "tmp_zipAligned.apk"));
@@ -83,34 +89,44 @@ public class SignAPK extends sExecutor {
             } catch (IOException ignored) {
             }
         }
+        String packageName = null;
+        try {
+            JSONObject jsonObject = new JSONObject(sFileUtils.read(new File(mRoot, "/.aeeBackup/appData")));
+            packageName = jsonObject.getString("package_name");
+        } catch (JSONException ignored) {
+        }
         File mParent;
-        if (sPackageUtils.isPackageInstalled(mPackageName, mActivity) && APKData.isAppBundle(sPackageUtils
-                .getSourceDir(mPackageName, mActivity))) {
-
-            mParent = new File(APKData.getExportAPKsPath(mActivity), mPackageName.replace(".apk", "") + "_aee-signed");
+        String sourceDirPath = sPackageUtils.getSourceDir(packageName, mActivity);
+        if (sPackageUtils.isPackageInstalled(packageName, mActivity) && APKData.isAppBundle(sourceDirPath)) {
+            mParent = new File(APKData.getExportAPKsPath(mActivity), Objects.requireNonNull(packageName).replace(".apk", "") + "_aee-signed");
             if (mParent.exists()) {
                 sFileUtils.delete(mParent);
             }
             sFileUtils.mkdir(mParent);
-            for (String mSplits : APKData.splitApks(sPackageUtils.getSourceDir(mPackageName, mActivity))) {
-                if (!new File(mSplits).getName().equals("base.apk")) {
-                    Common.setStatus(mActivity.getString(R.string.signing, new File(mSplits).getName()));
+
+            APKItems apkItems = new APKItems(new File(sourceDirPath).getParentFile(), APKData.getBaseAPK(Objects.requireNonNull(new File(sourceDirPath).getParentFile()), mActivity));
+            for (String mSplits : APKData.splitApks(sourceDirPath)) {
+                if (!new File(mSplits).equals(apkItems.getBaseAPK())) {
+                    Common.setStatus(mActivity.getString(R.string.signing, new File(mSplits).getName()), mActivity);
                     APKData.signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), mActivity);
                 }
             }
-            Common.setStatus(mActivity.getString(R.string.signing, "base.apk"));
+            Common.setStatus(mActivity.getString(R.string.signing, apkItems.getBaseAPK().getName()), mActivity);
 
-            APKData.signApks(mTMPZip, new File(mParent, "base.apk"), mActivity);
+            sCommonUtils.saveString("packageName", sAPKUtils.getPackageName(apkItems.getBaseAPKPath(), mActivity), mActivity);
+
+            APKData.signApks(mTMPZip, new File(mParent, apkItems.getBaseAPK().getName()), mActivity);
         } else {
-            mParent = new File(APKData.getExportAPKsPath(mActivity), mPackageName.replace(".apk", "") + "_aee-signed.apk");
+            mParent = new File(APKData.getExportAPKsPath(mActivity), Objects.requireNonNull(packageName).replace(".apk", "") + "_aee-signed.apk");
             if (mParent.exists()) {
                 sFileUtils.delete(mParent);
             }
-            Common.setStatus(mActivity.getString(R.string.signing, mParent.getName()));
+            Common.setStatus(mActivity.getString(R.string.signing, mParent.getName()), mActivity);
 
             APKData.signApks(mTMPZip, mParent, mActivity);
+            sCommonUtils.saveString("packageName", sAPKUtils.getPackageName(mParent.getAbsolutePath(), mActivity), mActivity);
         }
-        if (Common.isCancelled()) {
+        if (Common.isCancelled(mActivity)) {
             sFileUtils.delete(mParent);
         }
     }
@@ -119,6 +135,7 @@ public class SignAPK extends sExecutor {
     public void onPostExecute() {
         sFileUtils.delete(mTMPZip);
         sFileUtils.delete(mBuildDir);
+        Common.setFinishStatus(mActivity);
         APKExplorer.setSuccessIntent(true, mActivity);
     }
 

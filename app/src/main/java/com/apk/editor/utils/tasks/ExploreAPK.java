@@ -12,7 +12,7 @@ import androidx.documentfile.provider.DocumentFile;
 import com.apk.axml.APKParser;
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
-import com.apk.editor.activities.APKTasksActivity;
+import com.apk.editor.activities.ExploringActivity;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
@@ -54,8 +54,6 @@ public class ExploreAPK extends sExecutor {
     @SuppressLint("StringFormatInvalid")
     @Override
     public void onPreExecute() {
-        Common.isCancelled(false);
-        Common.setFinishStatus(false);
         if (mUri != null) {
             String fileName = Objects.requireNonNull(DocumentFile.fromSingleUri(mContext, mUri)).getName();
             mAPKFile = new File(mContext.getExternalFilesDir("APK"), Objects.requireNonNull(fileName));
@@ -66,16 +64,16 @@ public class ExploreAPK extends sExecutor {
 
         mBackUpPath = new File(mExplorePath, ".aeeBackup");
         mAPKDetailsFile = new File(mBackUpPath, "appData");
-        if (!mExplorePath.exists()) {
-            Common.setFinishStatus(false);
-            Common.setStatus(null);
-            Intent apkTasks = new Intent(mContext, APKTasksActivity.class);
-            mContext.startActivity(apkTasks);
-            Common.setStatus(mContext.getString(R.string.exploring, mAPKFile != null ? mAPKFile.getName() : sPackageUtils.getAppName(mPackageName, mContext)));
-        } else {
+        if (mExplorePath.exists()) {
             if (!sFileUtils.exist(mAPKDetailsFile)) {
                 sFileUtils.delete(mExplorePath);
             }
+        } else {
+            Common.isCancelled(false, mContext);
+            sCommonUtils.saveString("exploringStatus", null, mContext);
+            Intent explore = new Intent(mContext, ExploringActivity.class);
+            mContext.startActivity(explore);
+            sCommonUtils.saveString("exploringStatus", mContext.getString(R.string.exploring, mAPKFile != null ? mAPKFile.getName() : sPackageUtils.getAppName(mPackageName, mContext)), mContext);
         }
     }
 
@@ -93,22 +91,22 @@ public class ExploreAPK extends sExecutor {
             if (sCommonUtils.getString("decompileSetting", null, mContext) != null && sCommonUtils.getString("decompileSetting",
                     null, mContext).equals(mContext.getString(R.string.explore_options_full)) || mOptions == 1) {
                 for (File files : Objects.requireNonNull(mExplorePath.listFiles())) {
-                    if (files.getName().startsWith("classes") && files.getName().endsWith(".dex") && !Common.isCancelled()) {
+                    if (files.getName().startsWith("classes") && files.getName().endsWith(".dex") && !Common.isCancelled(mContext)) {
                         sFileUtils.mkdir(mBackUpPath);
                         sFileUtils.copy(files, new File(mBackUpPath, files.getName()));
                         sFileUtils.delete(files);
                         File mDexExtractPath = new File(mExplorePath, files.getName());
                         sFileUtils.mkdir(mDexExtractPath);
-                        Common.setStatus(mContext.getString(R.string.decompiling, files.getName()));
+                        sCommonUtils.saveString("exploringStatus", mContext.getString(R.string.decompiling, files.getName()), mContext);
                         new DexToSmali(false, mAPKFile != null ? mAPKFile : new File(sPackageUtils.getSourceDir(mPackageName, mContext)), mDexExtractPath, 0, files.getName()).execute();
                     }
                 }
             }
         }
-        if (Common.isCancelled()) {
+        if (Common.isCancelled(mContext)) {
             sFileUtils.delete(mExplorePath);
-            Common.isCancelled(false);
-            Common.setFinishStatus(true);
+            Common.isCancelled(false, mContext);
+            Common.setFinishStatus(mContext);
         }
     }
 
@@ -151,8 +149,8 @@ public class ExploreAPK extends sExecutor {
 
     @Override
     public void onPostExecute() {
-        if (!Common.isFinished()) {
-            Common.setFinishStatus(true);
+        if (mExplorePath.exists()) {
+            Common.setFinishStatus(mContext);
             Intent explorer = new Intent(mContext, APKExploreActivity.class);
             explorer.putExtra(APKExploreActivity.BACKUP_PATH_INTENT, mAPKDetailsFile.getAbsolutePath());
             mContext.startActivity(explorer);

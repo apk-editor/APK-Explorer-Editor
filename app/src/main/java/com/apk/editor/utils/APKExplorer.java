@@ -296,7 +296,7 @@ public class APKExplorer {
     }
 
     private static void installAPKs(boolean exit, Activity activity) {
-        SplitAPKInstaller.installSplitAPKs(exit, Common.getAPKList(), null, activity);
+        SplitAPKInstaller.installSplitAPKs(exit, Common.getAPKList(), activity);
     }
 
     public static void handleAPKs(boolean exit, Activity activity) {

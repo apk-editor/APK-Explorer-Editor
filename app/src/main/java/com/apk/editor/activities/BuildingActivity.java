@@ -28,20 +28,19 @@ import java.util.Objects;
 import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 
 /*
- * Created by APK Explorer & Editor <apkeditor@protonmail.com> on August 13, 2021
+ * Created by APK Explorer & Editor <apkeditor@protonmail.com> on Feb. 21, 2025
  */
-public class APKTasksActivity extends AppCompatActivity {
+public class BuildingActivity extends AppCompatActivity {
 
     private final Handler mHandler = new Handler();
     private Runnable mRunnable;
-    private static boolean mBuilding = false;
-    public static final String BUILDING_INTENT = "building", PACKAGE_NAME_INTENT = "packageName";
+    public static final String PACKAGE_NAME_INTENT = "packageName";
 
     @SuppressLint({"StringFormatInvalid", "SetTextI18n"})
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_apktasks);
+        setContentView(R.layout.activity_building);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -58,31 +57,18 @@ public class APKTasksActivity extends AppCompatActivity {
         mError.setTextColor(Color.RED);
         mSuccess.setTextColor(Color.GREEN);
 
-        String mPackageName = getIntent().getStringExtra(PACKAGE_NAME_INTENT);
-        mBuilding = getIntent().getBooleanExtra(BUILDING_INTENT, false);
-
-        if (mBuilding) {
-            mIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_build));
-        } else {
-            mIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_explore));
-        }
+        String mPackageNameOriginal = getIntent().getStringExtra(PACKAGE_NAME_INTENT);
 
         mOutputPath.setText(getString(R.string.resigned_apks_path, APKData.getExportAPKsPath(this)));
 
-        if (sPackageUtils.isPackageInstalled(mPackageName, this)) {
-            mInstall.setText(getString(R.string.update));
-        }
-
         mInstall.setOnClickListener(v -> {
-            if (sPackageUtils.isPackageInstalled(mPackageName, this) && APKData.isAppBundle(sPackageUtils
-                    .getSourceDir(mPackageName, this))) {
-                SplitAPKInstaller.installSplitAPKs(false, null, new File(APKData.getExportAPKsPath(this),
-                        Objects.requireNonNull(mPackageName).replace(".apk", "") + "_aee-signed/base.apk")
-                        .getAbsolutePath(), this);
+            if (sPackageUtils.isPackageInstalled(Common.getPackageName(this), this) && APKData.isAppBundle(sPackageUtils
+                    .getSourceDir(Common.getPackageName(this), this))) {
+                SplitAPKInstaller.installSplitAPKs(new File(APKData.getExportAPKsPath(this), Objects.requireNonNull(
+                        mPackageNameOriginal).replace(".apk", "") + "_aee-signed").getAbsolutePath(), this);
             } else {
-                SplitAPKInstaller.installAPK(false, new File(APKData.getExportAPKsPath(this),
-                        Objects.requireNonNull(mPackageName).replace(".apk", "")
-                                + "_aee-signed.apk"), this);
+                SplitAPKInstaller.installAPK(false, new File(APKData.getExportAPKsPath(this), Objects.requireNonNull(
+                        mPackageNameOriginal).replace(".apk", "") + "_aee-signed.apk"), this);
             }
             finish();
         });
@@ -101,27 +87,43 @@ public class APKTasksActivity extends AppCompatActivity {
         });
 
         mCancel.setOnClickListener(v -> {
-            if (!Common.isFinished()) {
-                Common.isCancelled(true);
+            if (!Common.isFinished(this)) {
+                Common.isCancelled(true, this);
                 mTaskSummary.setText(getString(R.string.cancelling));
                 mTaskSummary.setTextColor(Color.RED);
                 mCancel.setVisibility(View.GONE);
                 return;
             }
-            exit();
+            finish();
         });
 
         mRunnable = () -> {
-            if (Common.isCancelled()) {
-                mTaskSummary.setText(getString(R.string.cancelling));
-                if (mBuilding && Common.isFinished()) {
+            if (Common.isFinished(this)) {
+                if (Common.isCancelled(this)) {
                     finish();
                 }
-            } else if (!Common.isFinished()) {
+                mProgress.setVisibility(View.GONE);
+                mCancel.setVisibility(View.VISIBLE);
+                mOutputPath.setVisibility(View.VISIBLE);
+                if (Common.getError() > 0) {
+                    mIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_clear));
+                    mIcon.setColorFilter(Color.RED);
+                    mDetails.setVisibility(View.VISIBLE);
+                    mInstall.setVisibility(View.GONE);
+                } else {
+                    mIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+                    mIcon.setColorFilter(Color.GREEN);
+                    if (sPackageUtils.isPackageInstalled(Common.getPackageName(this), this)) {
+                        mInstall.setText(getString(R.string.update));
+                    }
+                    mInstall.setVisibility(View.VISIBLE);
+                }
+                mTaskSummary.setVisibility(View.GONE);
+            } else {
                 try {
-                    if (Common.getStatus() != null) {
+                    if (Common.getStatus(this) != null && !Common.isFinished(this)) {
                         mTaskSummary.setVisibility(View.VISIBLE);
-                        mTaskSummary.setText(Common.getStatus());
+                        mTaskSummary.setText(Common.getStatus(this));
                     }
                     if (Common.getError() > 0 || Common.getSuccess() > 0) {
                         mError.setVisibility(View.VISIBLE);
@@ -134,27 +136,6 @@ public class APKTasksActivity extends AppCompatActivity {
                     }
                 } catch (NullPointerException ignored) {
                 }
-            } else {
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                Common.setStatus(null);
-                mProgress.setVisibility(View.GONE);
-                if (mBuilding || Common.getError() > 0 || Common.getSuccess() > 0) {
-                    mCancel.setVisibility(View.VISIBLE);
-                    mOutputPath.setVisibility(View.VISIBLE);
-                    if (Common.getError() > 0) {
-                        mIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_clear));
-                        mIcon.setColorFilter(Color.RED);
-                        mDetails.setVisibility(View.VISIBLE);
-                        mInstall.setVisibility(View.GONE);
-                    } else {
-                        mIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
-                        mIcon.setColorFilter(Color.GREEN);
-                        mInstall.setVisibility(View.VISIBLE);
-                    }
-                    mTaskSummary.setVisibility(View.GONE);
-                    return;
-                }
-                finish();
             }
             mHandler.postDelayed(mRunnable, 500);
         };
@@ -163,39 +144,12 @@ public class APKTasksActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                exit();
+                if (Common.isFinished(BuildingActivity.this)) {
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    finish();
+                }
             }
         });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (Common.getError() > 0) {
-            Common.setError(0);
-        }
-        if (Common.getSuccess() > 0) {
-            Common.setSuccess(0);
-        }
-        if (!Common.getErrorList().isEmpty()) {
-            Common.getErrorList().clear();
-        }
-    }
-
-    public void exit() {
-        if (Common.isFinished()) {
-            if (Common.getError() > 0) {
-                Common.setError(0);
-            }
-            if (Common.getSuccess() > 0) {
-                Common.setSuccess(0);
-            }
-            if (mBuilding) {
-                mBuilding = false;
-            }
-            finish();
-        }
     }
 
 }

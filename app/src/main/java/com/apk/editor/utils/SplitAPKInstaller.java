@@ -15,6 +15,7 @@ import com.apk.editor.utils.dialogs.ProgressDialog;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
@@ -29,28 +30,6 @@ public class SplitAPKInstaller {
 
     private static Intent getCallbackIntent(Context context) {
         return new Intent(context, InstallerService.class);
-    }
-
-    private static long getTotalSize(String path) {
-        int totalSize = 0;
-        if (path != null) {
-            for (String mSplits : APKData.splitApks(path)) {
-                File mFile = new File(mSplits);
-                if (mFile.exists() && mSplits.endsWith(".apk")) {
-                    totalSize += (int) mFile.length();
-                }
-            }
-        } else if (!Common.getAPKList().isEmpty()) {
-            for (String string : Common.getAPKList()) {
-                if (sFileUtils.exist(new File(string))) {
-                    File mFile = new File(string);
-                    if (mFile.exists() && mFile.getName().endsWith(".apk")) {
-                        totalSize += (int) mFile.length();
-                    }
-                }
-            }
-        }
-        return totalSize;
     }
 
     public static void handleAppBundle(ActivityResultLauncher<Intent> activityResultLauncher, String path, Activity activity) {
@@ -92,7 +71,15 @@ public class SplitAPKInstaller {
         }.execute();
     }
 
-    public static void installSplitAPKs(boolean exit, List<String> apks, String path, Activity activity) {
+    public static void installSplitAPKs(String path, Activity activity) {
+        installSplitAPKs(false, null, new File(path), activity);
+    }
+
+    public static void installSplitAPKs(boolean exit, List<String> apks, Activity activity) {
+        installSplitAPKs(exit, apks, null, activity);
+    }
+
+    public static void installSplitAPKs(boolean exit, List<String> apks, File apkFile, Activity activity) {
         new sExecutor() {
 
             @Override
@@ -100,35 +87,52 @@ public class SplitAPKInstaller {
                 sCommonUtils.saveString("installationStatus", "waiting", activity);
                 Intent installIntent = new Intent(activity, InstallerActivity.class);
                 installIntent.putExtra(InstallerActivity.HEADING_INTENT, activity.getString(R.string.split_apk_installer));
-                installIntent.putExtra(InstallerActivity.PATH_INTENT, path);
+                installIntent.putExtra(InstallerActivity.PATH_INTENT, apkFile.getAbsolutePath());
                 activity.startActivity(installIntent);
             }
 
             @Override
             public void doInBackground() {
-                int sessionId;
-                final sInstallerParams installParams = sInstallerUtils.makeInstallParams(getTotalSize(path));
-                sessionId = sInstallerUtils.runInstallCreate(installParams, activity);
-                try {
-                    if (path != null) {
-                        for (String mSplits : APKData.splitApks(path)) {
+                List<String> apkList;
+                int sessionId = 0;
+                if (apkFile != null && apkFile.exists()) {
+                    apkList = APKData.splitApks(apkFile);
+                    sessionId = sInstallerUtils.runInstallCreate(sInstallerUtils.makeInstallParams(getTotalSize(apkList)), activity);
+                    try {
+                        for (String mSplits : Objects.requireNonNull(apkList)) {
                             File mFile = new File(mSplits);
                             if (mFile.exists()) {
                                 sInstallerUtils.runInstallWrite(mFile.length(), sessionId, mFile.getName(), mFile.toString(), activity);
                             }
                         }
-                    } else {
-                        for (String string : apks) {
-                            if (sFileUtils.exist(new File(string))) {
-                                File mFile = new File(string);
-                                if (mFile.exists() && mFile.getName().endsWith(".apk")) {
-                                    sInstallerUtils.runInstallWrite(mFile.length(), sessionId, mFile.getName(), mFile.toString(), activity);
-                                }
+                    } catch (NullPointerException ignored) {}
+                } else if (apks != null && !apks.isEmpty()) {
+                    sessionId = sInstallerUtils.runInstallCreate(sInstallerUtils.makeInstallParams(getTotalSize(apks)), activity);
+                    for (String string : apks) {
+                        if (sFileUtils.exist(new File(string))) {
+                            File mFile = new File(string);
+                            if (mFile.exists() && mFile.getName().endsWith(".apk")) {
+                                sInstallerUtils.runInstallWrite(mFile.length(), sessionId, mFile.getName(), mFile.toString(), activity);
                             }
                         }
                     }
-                } catch (NullPointerException ignored) {}
+                }
+
+
                 sInstallerUtils.doCommitSession(sessionId, getCallbackIntent(activity), activity);
+            }
+
+            private long getTotalSize(List<String> apkList) {
+                int totalSize = 0;
+                if (apkList != null) {
+                    for (String mSplits : apkList) {
+                        File mFile = new File(mSplits);
+                        if (mFile.exists() && mSplits.endsWith(".apk")) {
+                            totalSize += (int) mFile.length();
+                        }
+                    }
+                }
+                return totalSize;
             }
 
             @Override
@@ -138,6 +142,10 @@ public class SplitAPKInstaller {
                 }
             }
         }.execute();
+    }
+
+    public static void installAPK(File APK, Activity activity) {
+        installAPK(false, APK, activity);
     }
 
     public static void installAPK(boolean exit, File APK, Activity activity) {

@@ -116,7 +116,7 @@ public class ResignAPKs extends sExecutor {
                         for (File apkFile : Objects.requireNonNull(mParent.listFiles())) {
                             signedAPKs.add(apkFile.getAbsolutePath());
                         }
-                        SplitAPKInstaller.installSplitAPKs(mExit, signedAPKs, null, mActivity);
+                        SplitAPKInstaller.installSplitAPKs(mExit, signedAPKs, mActivity);
                     } else {
                         SplitAPKInstaller.installAPK(mExit, mParent, mActivity);
                     }

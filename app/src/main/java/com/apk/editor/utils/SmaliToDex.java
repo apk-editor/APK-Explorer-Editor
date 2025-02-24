@@ -47,14 +47,14 @@ public class SmaliToDex {
     private static void buildFile(int api, File file, DexBuilder dexBuilder, Context context) {
         try {
             FileInputStream inStream = new FileInputStream(file);
-            if (!assembleSmaliFile(file, dexBuilder, api)) {
-                Common.setStatus(context.getString(R.string.assembling, file.getName()) + " : " + context.getString(R.string.failed));
+            if (!assembleSmaliFile(file, dexBuilder, api, context)) {
+                Common.setStatus(context.getString(R.string.assembling, file.getName()) + " : " + context.getString(R.string.failed), context);
                 Common.setError(Common.getError() + 1);
                 Common.getErrorList().add(file.getAbsolutePath());
                 throw new RuntimeException("Could not smali file: " + file.getName());
             }
             Common.setSuccess(Common.getSuccess() + 1);
-            Common.setStatus(context.getString(R.string.assembling, file.getName()) + " : " + context.getString(R.string.success));
+            Common.setStatus(context.getString(R.string.assembling, file.getName()) + " : " + context.getString(R.string.success), context);
             inStream.close();
         } catch (Exception ignored) {}
     }
@@ -70,8 +70,8 @@ public class SmaliToDex {
         return fileList;
     }
 
-    private static boolean assembleSmaliFile(File smaliFile, DexBuilder dexBuilder, int apiLevel) throws Exception {
-        if (Common.isCancelled()) {
+    private static boolean assembleSmaliFile(File smaliFile, DexBuilder dexBuilder, int apiLevel, Context context) throws Exception {
+        if (Common.isCancelled(context)) {
             return false;
         }
         try (FileInputStream fis = new FileInputStream(smaliFile)) {

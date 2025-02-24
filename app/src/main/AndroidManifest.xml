@@ -35,7 +35,7 @@
         <activity android:name=".activities.APKExploreActivity"
             android:exported="false" />
 
-        <activity android:name=".activities.APKTasksActivity"
+        <activity android:name=".activities.ExploringActivity"
             android:exported="false" />
 
         <activity android:name=".activities.ImageViewActivity"

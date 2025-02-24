@@ -23,6 +23,9 @@
         <activity android:name=".activities.APKSignActivity"
             android:exported="false" />
 
+        <activity android:name=".activities.BuildingActivity"
+            android:exported="false" />
+
         <activity android:name=".activities.FilePickerActivity"
             android:exported="false" />
 

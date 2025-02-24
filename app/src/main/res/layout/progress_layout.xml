@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"
         style="?android:attr/progressBarStyleHorizontal"
-        android:progressBackgroundTint="?attr/colorPrimary"
+        android:progressTint="?attr/colorPrimary"
         android:layout_gravity="center"
         android:layout_margin="10dp" />
 </androidx.appcompat.widget.LinearLayoutCompat>
