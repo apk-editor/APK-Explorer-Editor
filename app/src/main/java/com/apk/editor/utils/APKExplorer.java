@@ -343,7 +343,7 @@ public class APKExplorer {
     }
 
     public static void exploreApps(String packageName, File apkFile, Uri uri, boolean exit, Activity activity) {
-        if (sFileUtils.exist(new File(activity.getCacheDir().getPath(), packageName != null ? packageName : apkFile.getName()))) {
+        if (sFileUtils.exist(new File(activity.getCacheDir().getPath(), uri != null ? new File(Objects.requireNonNull(uri.getPath())).getName() : packageName != null ? packageName : apkFile.getName()))) {
             new ExploreAPK(packageName, apkFile, uri, -1, activity).execute();
         } else if (sCommonUtils.getString("decompileSetting", null, activity) == null) {
             new sSingleItemDialog(0, null, new String[] {
