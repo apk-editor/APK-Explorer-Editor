@@ -239,7 +239,7 @@ public class APKsFragment extends Fragment {
             @Override
             public void onPreExecute() {
                 mRecyclerView.setVisibility(View.GONE);
-                Common.setProgress(true, mProgress);
+                mProgress.setVisibility(View.VISIBLE);
                 mRecyclerView.removeAllViews();
             }
 
@@ -253,7 +253,7 @@ public class APKsFragment extends Fragment {
                 mSearchText = searchWord;
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mRecyclerView.setVisibility(View.VISIBLE);
-                Common.setProgress(false, mProgress);
+                mProgress.setVisibility(View.GONE);
             }
         }.execute();
     }
@@ -264,7 +264,7 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void onPreExecute() {
-                Common.setProgress(true, mProgress);
+                mProgress.setVisibility(View.VISIBLE);
                 if (mParentDir.exists()) {
                     sFileUtils.delete(mParentDir);
                 }
@@ -297,7 +297,7 @@ public class APKsFragment extends Fragment {
             @Override
             public void onPostExecute() {
                 APKExplorer.handleAPKs(false, activity);
-                Common.setProgress(false, mProgress);
+                mProgress.setVisibility(View.GONE);
             }
         };
     }

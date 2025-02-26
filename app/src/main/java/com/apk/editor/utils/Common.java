@@ -1,10 +1,8 @@
 package com.apk.editor.utils;
 
 import android.content.Context;
-import android.view.View;
 
 import com.apk.editor.R;
-import com.apk.editor.utils.SerializableItems.PackageItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +15,6 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
  */
 public class Common {
 
-    private static List<PackageItems> mPackageData = null;
     private static final List<String> mAPKList = new ArrayList<>(), mErrorList = new ArrayList<>();
     private static int mError = 0, mSuccess = 0;
     private static String mFileToReplace = null;
@@ -45,10 +42,6 @@ public class Common {
 
     public static int getSuccess() {
         return mSuccess;
-    }
-
-    public static List<PackageItems> getPackageData() {
-        return mPackageData;
     }
 
     public static List<String> getAPKList() {
@@ -87,14 +80,6 @@ public class Common {
 
     public static void setFileToReplace(String fileToReplace) {
         mFileToReplace = fileToReplace;
-    }
-
-    public static void setPackageData(List<PackageItems> data) {
-        mPackageData = data;
-    }
-
-    public static void setProgress(boolean b, View view) {
-        view.setVisibility(b ? View.VISIBLE : View.GONE);
     }
 
     public static void setStatus(String status, Context context) {

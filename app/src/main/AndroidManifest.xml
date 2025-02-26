@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme"
         android:supportsRtl="true" >
 
-        <activity android:name=".activities.StartActivity"
+        <activity android:name=".MainActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="true" >
             <intent-filter>
@@ -26,11 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
-            android:label="@string/app_name_short"
-            android:exported="false" />
 
         <activity android:name=".activities.APKExploreActivity"
             android:exported="false" />
@@ -42,6 +37,9 @@
             android:exported="false" />
 
         <activity android:name=".activities.SettingsActivity"
+            android:exported="false" />
+
+        <activity android:name=".activities.StartActivity"
             android:exported="false" />
 
         <activity android:name=".activities.TextViewActivity"

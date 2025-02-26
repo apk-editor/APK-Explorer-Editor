@@ -14,6 +14,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
+import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SerializableItems.PackageItems;
 import com.google.android.material.button.MaterialButton;
@@ -137,7 +138,7 @@ public class InstallerActivity extends AppCompatActivity {
             return;
         }
         if (!mUpdating && sCommonUtils.getString("installationStatus", "waiting", this).equals(getString(R.string.installation_status_success))) {
-            Common.getPackageData().add(new PackageItems(mPackageName, this));
+            AppData.getData(this).add(new PackageItems(mPackageName, this));
         }
         if (sFileUtils.exist(new File(getCacheDir(),"splits"))) {
             sFileUtils.delete(new File(getCacheDir(),"splits"));

@@ -16,28 +16,17 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:src="@mipmap/ic_launcher_foreground"
+            android:layout_marginBottom="-25sp"
+            android:layout_marginTop="-25sp"
             android:background="@null" />
 
-        <ProgressBar
-            android:layout_width="150dp"
-            android:layout_height="20dp"
-            android:id="@+id/progress_bar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:progressBackgroundTint="?attr/colorPrimary"
-            android:layout_gravity="center"
-            android:indeterminate="false"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp" />
-
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/warning_message"
             android:textColor="?attr/colorPrimary"
             android:textStyle="bold|italic"
             android:layout_margin="25dp"
-            android:visibility="gone"
             android:textSize="16sp"
             android:padding="10dp" />
 
@@ -51,7 +40,6 @@
             android:layout_gravity="center"
             app:icon="@drawable/ic_start"
             android:text="@string/start"
-            android:visibility="gone"
             android:gravity="center"
             android:textStyle="bold"
             android:textSize="20sp"

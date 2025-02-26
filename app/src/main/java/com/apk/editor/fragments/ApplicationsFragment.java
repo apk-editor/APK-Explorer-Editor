@@ -23,7 +23,6 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.ApplicationsAdapter;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppData;
-import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SerializableItems.PackageItems;
 import com.apk.editor.utils.dialogs.BatchSigningOptionsDialog;
 import com.apk.editor.utils.dialogs.ExportOptionsDialog;
@@ -245,7 +244,7 @@ public class ApplicationsFragment extends Fragment {
             @Override
             public void onPreExecute() {
                 mRecyclerView.setVisibility(View.GONE);
-                Common.setProgress(true, mProgress);
+                mProgress.setVisibility(View.VISIBLE);
                 mRecyclerView.removeAllViews();
                 mLongClicked = !mPackageNames.isEmpty();
             }
@@ -268,7 +267,7 @@ public class ApplicationsFragment extends Fragment {
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mBatchButton.setVisibility(!mPackageNames.isEmpty() ? View.VISIBLE : View.GONE);
-                Common.setProgress(false, mProgress);
+                mProgress.setVisibility(View.GONE);
             }
         }.execute();
     }

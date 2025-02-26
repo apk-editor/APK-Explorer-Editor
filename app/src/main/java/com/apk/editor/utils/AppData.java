@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ProgressBar;
 
 import com.apk.editor.utils.SerializableItems.PackageItems;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -24,60 +23,47 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
  */
 public class AppData {
 
-    public static List<PackageItems> getRawData(ProgressBar progressBar, Context context) {
-        List<PackageItems> mData = new CopyOnWriteArrayList<>();
-        List<ApplicationInfo> packages = context.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
-        for (ApplicationInfo packageInfo: packages) {
-            progressBar.setMax(packages.size());
-            try {
-                PackageItems pi = new PackageItems(packageInfo.packageName, context);
-                // If PackageItems construction survived, then add
-                mData.add(pi);
-            } catch (Exception ignored) {
-            }
-            if (progressBar.getProgress() < packages.size()) {
-                progressBar.setProgress(progressBar.getProgress() + 1);
-            }
-        }
-        return mData;
+    public static List<PackageItems> getData(Context context) {
+        return getData(null, context);
     }
 
     public static List<PackageItems> getData(String searchWord, Context context) {
         List<PackageItems> mData = new CopyOnWriteArrayList<>();
-        try {
-            boolean mAppType;
-            for (PackageItems packageItem : Common.getPackageData()) {
-                if (sCommonUtils.getString("appTypes", "all", context).equals("system")) {
-                    mAppType = sPackageUtils.isSystemApp(packageItem.getPackageName(), context);
-                } else if (sCommonUtils.getString("appTypes", "all", context).equals("user")) {
-                    mAppType = !sPackageUtils.isSystemApp(packageItem.getPackageName(), context);
-                } else {
-                    mAppType = true;
-                }
-                if (mAppType) {
-                    if (searchWord == null) {
-                        mData.add(packageItem);
-                    } else if (Common.isTextMatched(packageItem.getAppName(), searchWord)
-                            || Common.isTextMatched(packageItem.getPackageName(), searchWord)) {
-                        mData.add(packageItem);
-                    }
-                }
-            }
-            if (sCommonUtils.getInt("sort_apps", 1, context) == 0) {
-                Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getAppName(), rhs.getAppName()));
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getInt("sort_apps", 1, context) == 4) {
-                Collections.sort(mData, Comparator.comparingLong(PackageItems::getAPKSize));
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getInt("sort_apps", 1, context) == 2) {
-                Collections.sort(mData, Comparator.comparingLong(PackageItems::getInstalledTime));
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getInt("sort_apps", 1, context) == 3) {
-                Collections.sort(mData, Comparator.comparingLong(PackageItems::getUpdatedTime));
+        List<ApplicationInfo> packages = context.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+
+        boolean mAppType;
+        for (ApplicationInfo packageInfo: packages) {
+            PackageItems packageItem = new PackageItems(packageInfo.packageName, context);
+            if (sCommonUtils.getString("appTypes", "all", context).equals("system")) {
+                mAppType = sPackageUtils.isSystemApp(packageItem.getPackageName(), context);
+            } else if (sCommonUtils.getString("appTypes", "all", context).equals("user")) {
+                mAppType = !sPackageUtils.isSystemApp(packageItem.getPackageName(), context);
             } else {
-                Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getPackageName(), rhs.getPackageName()));
+                mAppType = true;
             }
-            if (!sCommonUtils.getBoolean("az_order", true, context)) {
-                Collections.reverse(mData);
+            if (mAppType) {
+                if (searchWord == null) {
+                    mData.add(packageItem);
+                } else if (Common.isTextMatched(packageItem.getAppName(), searchWord)
+                        || Common.isTextMatched(packageItem.getPackageName(), searchWord)) {
+                    mData.add(packageItem);
+                }
             }
-        } catch (NullPointerException ignored) {}
+        }
+        if (sCommonUtils.getInt("sort_apps", 1, context) == 0) {
+            Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getAppName(), rhs.getAppName()));
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getInt("sort_apps", 1, context) == 4) {
+            Collections.sort(mData, Comparator.comparingLong(PackageItems::getAPKSize));
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getInt("sort_apps", 1, context) == 2) {
+            Collections.sort(mData, Comparator.comparingLong(PackageItems::getInstalledTime));
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getInt("sort_apps", 1, context) == 3) {
+            Collections.sort(mData, Comparator.comparingLong(PackageItems::getUpdatedTime));
+        } else {
+            Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getPackageName(), rhs.getPackageName()));
+        }
+        if (!sCommonUtils.getBoolean("az_order", true, context)) {
+            Collections.reverse(mData);
+        }
         return mData;
     }
 

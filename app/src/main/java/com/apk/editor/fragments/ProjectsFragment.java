@@ -24,7 +24,6 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.ProjectsAdapter;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.AppSettings;
-import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -129,7 +128,7 @@ public class ProjectsFragment extends Fragment {
             @Override
             public void onPreExecute() {
                 mRecyclerView.setVisibility(View.GONE);
-                Common.setProgress(true, mProgress);
+                mProgress.setVisibility(View.VISIBLE);
                 mRecyclerView.removeAllViews();
             }
 
@@ -143,7 +142,7 @@ public class ProjectsFragment extends Fragment {
                 mSearchText = searchWord;
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mRecyclerView.setVisibility(View.VISIBLE);
-                Common.setProgress(false, mProgress);
+                mProgress.setVisibility(View.GONE);
             }
         }.execute();
     }

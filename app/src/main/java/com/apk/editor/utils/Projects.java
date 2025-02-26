@@ -27,7 +27,7 @@ public class Projects {
 
     public static List<String> getData(String searchWord, Context context) {
         List<String> mData = new CopyOnWriteArrayList<>();
-        for (File mFile : Objects.requireNonNull(new File(context.getCacheDir().toString()).listFiles())) {
+        for (File mFile : Objects.requireNonNull(context.getCacheDir().listFiles())) {
             if (mFile.exists() && mFile.isDirectory() && new File(mFile, ".aeeBackup/appData").exists()) {
                 if (searchWord == null) {
                     mData.add(mFile.getAbsolutePath());
