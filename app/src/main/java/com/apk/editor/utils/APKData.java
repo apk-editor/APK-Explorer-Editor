@@ -107,9 +107,9 @@ public class APKData {
         return null;
     }
 
-    public static String findPackageName(Context context) {
+    public static String findPackageName(List<String> apkList, Context context) {
         String name = null;
-        for (String mAPKs : Common.getAPKList()) {
+        for (String mAPKs : apkList) {
             if (sAPKUtils.getPackageName(mAPKs, context) != null) {
                 name = Objects.requireNonNull(sAPKUtils.getPackageName(mAPKs, context));
                 break;

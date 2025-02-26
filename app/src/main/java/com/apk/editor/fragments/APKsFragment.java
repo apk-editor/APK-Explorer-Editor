@@ -31,7 +31,6 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.AppSettings;
-import com.apk.editor.utils.Common;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
@@ -41,6 +40,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
@@ -261,6 +262,7 @@ public class APKsFragment extends Fragment {
     private sExecutor handleMultipleAPKs(ClipData uriFiles, Activity activity) {
         return new sExecutor() {
             private final File mParentDir = new File(activity.getExternalCacheDir(), "APKs");
+            private final List<String> mAPKList = new ArrayList<>();
 
             @Override
             public void onPreExecute() {
@@ -269,7 +271,6 @@ public class APKsFragment extends Fragment {
                     sFileUtils.delete(mParentDir);
                 }
                 sFileUtils.mkdir(mParentDir);
-                Common.getAPKList().clear();
             }
 
             @Override
@@ -286,7 +287,7 @@ public class APKsFragment extends Fragment {
                         }
                         // In this case, we don't really care about app bundles!
                         if (mFile.getName().endsWith(".apk")) {
-                            Common.getAPKList().add(mFile.getAbsolutePath());
+                            mAPKList.add(mFile.getAbsolutePath());
                         }
                         inputStream.close();
                     } catch (IOException ignored) {
@@ -296,7 +297,7 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void onPostExecute() {
-                APKExplorer.handleAPKs(false, activity);
+                APKExplorer.handleAPKs(false, mAPKList, activity);
                 mProgress.setVisibility(View.GONE);
             }
         };

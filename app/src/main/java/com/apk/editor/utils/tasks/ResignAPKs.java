@@ -7,7 +7,6 @@ import android.view.WindowManager;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SplitAPKInstaller;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -29,13 +28,15 @@ public class ResignAPKs extends sExecutor {
 
     private final Activity mActivity;
     private final boolean mExit, mInstall;
+    private final List<String> mAPKs;
     private final String mPackageName;
     private File mParent = null;
     private ProgressDialog mProgressDialog;
     private String mDetectedPackageName = null;
 
-    public ResignAPKs(String packageName, boolean install, boolean exit, Activity activity) {
+    public ResignAPKs(String packageName, List<String> apks, boolean install, boolean exit, Activity activity) {
         mPackageName = packageName;
+        mAPKs = apks;
         mInstall = install;
         mExit = exit;
         mActivity = activity;
@@ -58,19 +59,19 @@ public class ResignAPKs extends sExecutor {
     public void doInBackground() {
         if (mPackageName == null) {
             // Find package name from the selected APK's
-            mDetectedPackageName = APKData.findPackageName(mActivity);
+            mDetectedPackageName = APKData.findPackageName(mAPKs, mActivity);
         }
 
         if (mPackageName != null && sPackageUtils.isPackageInstalled(mPackageName, mActivity)) {
-            Common.getAPKList().clear();
+            mAPKs.clear();
             if (APKData.isAppBundle(sPackageUtils.getSourceDir(mPackageName, mActivity))) {
-                Common.getAPKList().addAll(APKData.splitApks(sPackageUtils.getSourceDir(mPackageName, mActivity)));
+                mAPKs.addAll(APKData.splitApks(sPackageUtils.getSourceDir(mPackageName, mActivity)));
             } else {
-                Common.getAPKList().add(sPackageUtils.getSourceDir(mPackageName, mActivity));
+                mAPKs.add(sPackageUtils.getSourceDir(mPackageName, mActivity));
             }
         }
 
-        if (Common.getAPKList().size() > 1) {
+        if (mAPKs.size() > 1) {
             if (mInstall) {
                 mParent = new File(mActivity.getExternalCacheDir(), "aee-signed");
             } else {
@@ -80,7 +81,7 @@ public class ResignAPKs extends sExecutor {
                 sFileUtils.delete(mParent);
             }
             sFileUtils.mkdir(mParent);
-            for (String mSplits : Common.getAPKList()) {
+            for (String mSplits : mAPKs) {
                 APKData.signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), mActivity);
             }
         } else {
@@ -92,7 +93,7 @@ public class ResignAPKs extends sExecutor {
             if (mParent.exists()) {
                 sFileUtils.delete(mParent);
             }
-            APKData.signApks(new File(Common.getAPKList().get(0)), mParent, mActivity);
+            APKData.signApks(new File(mAPKs.get(0)), mParent, mActivity);
         }
 
         APKExplorer.setSuccessIntent(false, mActivity);
@@ -111,7 +112,7 @@ public class ResignAPKs extends sExecutor {
             if (mPackageName == null) {
                 mActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 if (mInstall) {
-                    if (Common.getAPKList().size() > 1) {
+                    if (mAPKs.size() > 1) {
                         List<String> signedAPKs = new ArrayList<>();
                         for (File apkFile : Objects.requireNonNull(mParent.listFiles())) {
                             signedAPKs.add(apkFile.getAbsolutePath());

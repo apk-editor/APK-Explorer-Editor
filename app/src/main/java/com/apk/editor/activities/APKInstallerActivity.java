@@ -24,7 +24,6 @@ import com.apk.editor.fragments.CertificateFragment;
 import com.apk.editor.fragments.ManifestFragment;
 import com.apk.editor.fragments.PermissionsFragment;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.Common;
 import com.apk.editor.utils.dialogs.InvalidFileDialog;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.apk.editor.utils.dialogs.SelectBundleDialog;
@@ -34,6 +33,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.Adapters.sPagerAdapter;
@@ -97,7 +98,6 @@ public class APKInstallerActivity extends AppCompatActivity {    private AppComp
                     String fileName = Objects.requireNonNull(DocumentFile.fromSingleUri(activity, uri)).getName();
                     mFile = new File(getExternalFilesDir("APK"), Objects.requireNonNull(fileName));
                 }
-                Common.getAPKList().clear();
             }
 
             @Override
@@ -177,8 +177,9 @@ public class APKInstallerActivity extends AppCompatActivity {    private AppComp
 
         mCancel.setOnClickListener(v -> APKExplorer.setCancelIntent(this));
         mInstall.setOnClickListener(v -> {
-            Common.getAPKList().add(mFile.getAbsolutePath());
-            handleAPKs(true, activity);
+            List<String> appList = new ArrayList<>();
+            appList.add(mFile.getAbsolutePath());
+            handleAPKs(true, appList, activity);
         });
 
         mExploreIcon.setOnClickListener(v -> APKExplorer.exploreApps(mPackageID.getText().toString().trim(), mFile, null, true, activity));

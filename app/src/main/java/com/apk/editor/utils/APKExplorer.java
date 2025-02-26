@@ -295,11 +295,11 @@ public class APKExplorer {
         }
     }
 
-    private static void installAPKs(boolean exit, Activity activity) {
-        SplitAPKInstaller.installSplitAPKs(exit, Common.getAPKList(), activity);
+    private static void installAPKs(boolean exit, List<String> apkList, Activity activity) {
+        SplitAPKInstaller.installSplitAPKs(exit, apkList, activity);
     }
 
-    public static void handleAPKs(boolean exit, Activity activity) {
+    public static void handleAPKs(boolean exit, List<String> apkList, Activity activity) {
         if (APKEditorUtils.isFullVersion(activity)) {
             if (sCommonUtils.getString("installerAction", null, activity) == null) {
                 new sSingleItemDialog(0, null, new String[] {
@@ -312,33 +312,33 @@ public class APKExplorer {
                     public void onItemSelected(int itemPosition) {
                         sCommonUtils.saveBoolean("firstSigning", true, activity);
                         if (itemPosition == 0) {
-                            installAPKs(exit, activity);
+                            installAPKs(exit, apkList, activity);
                         } else if (itemPosition == 1) {
                             if (!sCommonUtils.getBoolean("firstSigning", false, activity)) {
-                                new SigningOptionsDialog(null, exit, activity).show();
+                                new SigningOptionsDialog(null, apkList, exit, activity).show();
                             } else {
-                                new ResignAPKs(null, true, exit, activity).execute();
+                                new ResignAPKs(null, apkList, true, exit, activity).execute();
                             }
                         } else {
                             if (!sCommonUtils.getBoolean("firstSigning", false, activity)) {
-                                new SigningOptionsDialog(null, exit, activity).show();
+                                new SigningOptionsDialog(null, apkList, exit, activity).show();
                             } else {
-                                new ResignAPKs(null, false, exit, activity).execute();
+                                new ResignAPKs(null, apkList, false, exit, activity).execute();
                             }
                         }
                     }
                 }.show();
             } else if (sCommonUtils.getString("installerAction", null, activity).equals(activity.getString(R.string.install))) {
-                installAPKs(exit, activity);
+                installAPKs(exit, apkList, activity);
             } else {
                 if (!sCommonUtils.getBoolean("firstSigning", false, activity)) {
-                    new SigningOptionsDialog(null, exit, activity).show();
+                    new SigningOptionsDialog(null, apkList, exit, activity).show();
                 } else {
-                    new ResignAPKs(null,false, exit, activity).execute();
+                    new ResignAPKs(null,apkList, false, exit, activity).execute();
                 }
             }
         } else {
-            installAPKs(exit, activity);
+            installAPKs(exit, apkList, activity);
         }
     }
 

@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.Common;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -30,11 +29,12 @@ public class FilePickerAdapter extends RecyclerView.Adapter<FilePickerAdapter.Vi
 
     private final Activity activity;
 
-    private final List<String> data;
+    private final List<String> data, apkList;
     private static ClickListener clickListener;
 
-    public FilePickerAdapter(List<String> data, Activity activity) {
+    public FilePickerAdapter(List<String> data, List<String> apklist, Activity activity) {
         this.data = data;
+        this.apkList = apklist;
         this.activity = activity;
     }
 
@@ -63,14 +63,14 @@ public class FilePickerAdapter extends RecyclerView.Adapter<FilePickerAdapter.Vi
                 } else {
                     holder.mDescription.setVisibility(View.GONE);
                 }
-                holder.mCheckBox.setChecked(Common.getAPKList().contains(this.data.get(position)));
+                holder.mCheckBox.setChecked(apkList.contains(this.data.get(position)));
                 holder.mCheckBox.setOnClickListener(v -> {
-                    if (Common.getAPKList().contains(this.data.get(position))) {
-                        Common.getAPKList().remove(this.data.get(position));
+                    if (apkList.contains(this.data.get(position))) {
+                        apkList.remove(this.data.get(position));
                     } else {
-                        Common.getAPKList().add(this.data.get(position));
+                        apkList.add(this.data.get(position));
                     }
-                    activity.findViewById(R.id.select).setVisibility(Common.getAPKList().isEmpty() ? View.GONE : View.VISIBLE);
+                    activity.findViewById(R.id.select).setVisibility(apkList.isEmpty() ? View.GONE : View.VISIBLE);
                 });
                 holder.mSize.setText(sAPKUtils.getAPKSize(new File(this.data.get(position)).length()));
                 holder.mSize.setVisibility(View.VISIBLE);

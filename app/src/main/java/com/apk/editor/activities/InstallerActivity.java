@@ -15,12 +15,12 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.AppData;
-import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SerializableItems.PackageItems;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
+import java.util.List;
 import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
@@ -36,7 +36,8 @@ public class InstallerActivity extends AppCompatActivity {
     private final Handler mHandler = new Handler();
     private Runnable mRunnable;
     private static boolean mUpdating = false;
-    public static final String HEADING_INTENT = "heading", PATH_INTENT = "path";
+    public static final String HEADING_INTENT = "heading", APK_LIST_INTENT = "apk_list", PATH_INTENT = "path";
+    private static List<String> mAPKList = null;
     private static String mPackageName = null;
 
     @SuppressLint("StringFormatInvalid")
@@ -54,14 +55,16 @@ public class InstallerActivity extends AppCompatActivity {
         MaterialTextView mStatus = findViewById(R.id.status);
 
         String path = getIntent().getStringExtra(PATH_INTENT);
+        mAPKList = getIntent().getStringArrayListExtra(APK_LIST_INTENT);
+
         if (path != null) {
             try {
                 mPackageName = Objects.requireNonNull(sAPKUtils.getPackageName(path, this));
                 mTitle.setText(sAPKUtils.getAPKName(path, this));
                 mIcon.setImageDrawable(sAPKUtils.getAPKIcon(path, this));
             } catch (NullPointerException ignored) {}
-        } else {
-            mPackageName = APKData.findPackageName(this);
+        } else if (mAPKList != null) {
+            mPackageName = APKData.findPackageName(mAPKList, this);
             mTitle.setText(getName());
             mIcon.setImageDrawable(getIcon());
         }
@@ -115,7 +118,7 @@ public class InstallerActivity extends AppCompatActivity {
 
     private CharSequence getName() {
         CharSequence name = null;
-        for (String mAPKs : Common.getAPKList()) {
+        for (String mAPKs : mAPKList) {
             if (sAPKUtils.getAPKName(mAPKs, this) != null) {
                 name = sAPKUtils.getAPKName(mAPKs, this);
             }
@@ -125,7 +128,7 @@ public class InstallerActivity extends AppCompatActivity {
 
     private Drawable getIcon() {
         Drawable icon = null;
-        for (String mAPKs : Common.getAPKList()) {
+        for (String mAPKs : mAPKList) {
             if (sAPKUtils.getAPKIcon(mAPKs, this) != null) {
                 icon = sAPKUtils.getAPKIcon(mAPKs, this);
             }

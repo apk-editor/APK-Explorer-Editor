@@ -15,7 +15,7 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
  */
 public class Common {
 
-    private static final List<String> mAPKList = new ArrayList<>(), mErrorList = new ArrayList<>();
+    private static final List<String> mErrorList = new ArrayList<>();
     private static int mError = 0, mSuccess = 0;
     private static String mFileToReplace = null;
 
@@ -42,10 +42,6 @@ public class Common {
 
     public static int getSuccess() {
         return mSuccess;
-    }
-
-    public static List<String> getAPKList() {
-        return mAPKList;
     }
 
     public static List<String> getErrorList() {

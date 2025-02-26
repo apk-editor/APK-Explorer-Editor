@@ -27,13 +27,14 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.FilePickerAdapter;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.Common;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
@@ -52,6 +53,7 @@ public class FilePickerActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     public static final String TITLE_INTENT = "title", PATH_INTENT = "path";
     private static File mFile;
+    private static List<String> mAPKList;
     private static String mTitleText = null;
 
     @SuppressLint("StringFormatInvalid")
@@ -66,6 +68,8 @@ public class FilePickerActivity extends AppCompatActivity {
         mSelect = findViewById(R.id.select);
         mProgressLayout = findViewById(R.id.progress);
         mRecyclerView = findViewById(R.id.recycler_view);
+
+        mAPKList = new ArrayList<>();
 
         String path = getIntent().getStringExtra(PATH_INTENT);
         mTitleText = getIntent().getStringExtra(TITLE_INTENT);
@@ -94,32 +98,32 @@ public class FilePickerActivity extends AppCompatActivity {
         }
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, APKExplorer.getSpanCount(this)));
-        mRecycleViewAdapter = new FilePickerAdapter(APKExplorer.getData(mFile, false, this), this);
+        mRecycleViewAdapter = new FilePickerAdapter(APKExplorer.getData(mFile, false, this), mAPKList, this);
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
         mRecycleViewAdapter.setOnItemClickListener((filePath, position) -> {
             if (new File(filePath).isDirectory()) {
                 reload(new File(filePath), this);
             } else if (filePath.endsWith(".apk")) {
-                if (Common.getAPKList().contains(filePath)) {
-                    Common.getAPKList().remove(filePath);
+                if (mAPKList.contains(filePath)) {
+                    mAPKList.remove(filePath);
                 } else {
-                    Common.getAPKList().add(filePath);
+                    mAPKList.add(filePath);
                 }
                 mRecycleViewAdapter.notifyItemChanged(position);
-                mSelect.setVisibility(Common.getAPKList().isEmpty() ? View.GONE : View.VISIBLE);
+                mSelect.setVisibility(mAPKList.isEmpty() ? View.GONE : View.VISIBLE);
             } else {
                 sCommonUtils.snackBar(findViewById(android.R.id.content), getString(R.string.wrong_extension, ".apk")).show();
             }
         });
 
         mSelect.setOnClickListener(v -> {
-            if (APKData.findPackageName(this) != null) {
-                if (Common.getAPKList().size() > 1) {
-                    APKExplorer.handleAPKs(true, this);
+            if (APKData.findPackageName(mAPKList,  this) != null) {
+                if (mAPKList.size() > 1) {
+                    APKExplorer.handleAPKs(true, mAPKList, this);
                 } else {
                     Intent intent = new Intent(this, APKInstallerActivity.class);
-                    intent.putExtra("apkFilePath", Common.getAPKList().get(0));
+                    intent.putExtra("apkFilePath", mAPKList.get(0));
                     activityResultLauncher.launch(intent);
                 }
             } else {
@@ -162,7 +166,7 @@ public class FilePickerActivity extends AppCompatActivity {
 
             @Override
             public void doInBackground() {
-                mRecycleViewAdapter = new FilePickerAdapter(APKExplorer.getData(file, false, activity), activity);
+                mRecycleViewAdapter = new FilePickerAdapter(APKExplorer.getData(file, false, activity), mAPKList, activity);
             }
 
             @Override
@@ -174,7 +178,7 @@ public class FilePickerActivity extends AppCompatActivity {
                 } else {
                     mTitle.setText(Objects.equals(mFile, Environment.getExternalStorageDirectory()) ? getString(R.string.sdcard) : file.getName());
                 }
-                if (Common.getAPKList().isEmpty()) {
+                if (mAPKList.isEmpty()) {
                     mSelect.setVisibility(View.GONE);
                 } else {
                     mSelect.setVisibility(View.VISIBLE);
@@ -218,7 +222,7 @@ public class FilePickerActivity extends AppCompatActivity {
         } else if (Objects.equals(mFile, Environment.getExternalStorageDirectory())) {
             finish();
         } else {
-            Common.getAPKList().clear();
+            mAPKList.clear();
             reload(mFile.getParentFile(), this);
         }
     }

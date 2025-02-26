@@ -14,6 +14,7 @@ import com.apk.editor.services.InstallerService;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -62,7 +63,6 @@ public class SplitAPKInstaller {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
                 }
-                Common.getAPKList().clear();
                 Intent installer = new Intent(activity, FilePickerActivity.class);
                 installer.putExtra(FilePickerActivity.TITLE_INTENT, activity.getString(R.string.select_apk));
                 installer.putExtra(FilePickerActivity.PATH_INTENT, mFile.getAbsolutePath());
@@ -87,10 +87,18 @@ public class SplitAPKInstaller {
                 sCommonUtils.saveString("installationStatus", "waiting", activity);
                 Intent installIntent = new Intent(activity, InstallerActivity.class);
                 installIntent.putExtra(InstallerActivity.HEADING_INTENT, activity.getString(R.string.split_apk_installer));
-                if (apkFile != null) {
+                if (apks != null) {
+                    installIntent.putStringArrayListExtra(InstallerActivity.APK_LIST_INTENT, getAPKList());
+                } else if (apkFile != null) {
                     installIntent.putExtra(InstallerActivity.PATH_INTENT, apkFile.getAbsolutePath());
                 }
                 activity.startActivity(installIntent);
+            }
+
+            private ArrayList<String> getAPKList() {
+                ArrayList<String> arrayList = new ArrayList<>(apks.size());
+                arrayList.addAll(apks);
+                return arrayList;
             }
 
             @Override
