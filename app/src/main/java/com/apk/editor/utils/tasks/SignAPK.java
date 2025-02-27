@@ -50,13 +50,22 @@ public class SignAPK extends sExecutor {
         Common.isCancelled(false, mActivity);
         sCommonUtils.saveString("exploringStatus", null, mActivity);
         Intent building = new Intent(mActivity, BuildingActivity.class);
-        building.putExtra(BuildingActivity.PACKAGE_NAME_INTENT, mRoot.getName());
+        building.putExtra(BuildingActivity.PACKAGE_NAME_INTENT, getPackageNameOriginal());
         mActivity.startActivity(building);
         Common.setStatus(mActivity.getString(R.string.preparing_apk, mRoot.getName()), mActivity);
         sCommonUtils.saveString("packageName", null, mActivity);
 
         mBuildDir = new File(mRoot, ".aeeBuild");
         mBackUpPath = new File(mRoot, ".aeeBackup");
+    }
+
+    private String getPackageNameOriginal() {
+        try {
+            JSONObject jsonObject = new JSONObject(sFileUtils.read(new File(mRoot, "/.aeeBackup/appData")));
+            return jsonObject.getString("package_name");
+        } catch (JSONException ignored) {
+        }
+        return null;
     }
 
     @SuppressLint("StringFormatInvalid")
@@ -89,12 +98,9 @@ public class SignAPK extends sExecutor {
             } catch (IOException ignored) {
             }
         }
-        String packageName = null;
-        try {
-            JSONObject jsonObject = new JSONObject(sFileUtils.read(new File(mRoot, "/.aeeBackup/appData")));
-            packageName = jsonObject.getString("package_name");
-        } catch (JSONException ignored) {
-        }
+
+        String packageName = getPackageNameOriginal();
+
         File mParent;
         if (sPackageUtils.isPackageInstalled(packageName, mActivity) && APKData.isAppBundle(sPackageUtils.getSourceDir(packageName, mActivity))) {
             String sourceDirPath = sPackageUtils.getSourceDir(packageName, mActivity);

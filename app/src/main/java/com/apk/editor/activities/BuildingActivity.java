@@ -23,7 +23,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
-import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 
@@ -64,11 +63,9 @@ public class BuildingActivity extends AppCompatActivity {
         mInstall.setOnClickListener(v -> {
             if (sPackageUtils.isPackageInstalled(Common.getPackageName(this), this) && APKData.isAppBundle(sPackageUtils
                     .getSourceDir(Common.getPackageName(this), this))) {
-                SplitAPKInstaller.installSplitAPKs(new File(APKData.getExportAPKsPath(this), Objects.requireNonNull(
-                        mPackageNameOriginal).replace(".apk", "") + "_aee-signed").getAbsolutePath(), this);
+                SplitAPKInstaller.installSplitAPKs(new File(APKData.getExportAPKsPath(this), mPackageNameOriginal + "_aee-signed").getAbsolutePath(), this);
             } else {
-                SplitAPKInstaller.installAPK(false, new File(APKData.getExportAPKsPath(this), Objects.requireNonNull(
-                        mPackageNameOriginal).replace(".apk", "") + "_aee-signed.apk"), this);
+                SplitAPKInstaller.installAPK(new File(APKData.getExportAPKsPath(this), mPackageNameOriginal + "_aee-signed.apk"), this);
             }
             finish();
         });
