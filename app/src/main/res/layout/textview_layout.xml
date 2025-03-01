@@ -1,17 +1,11 @@
-<androidx.appcompat.widget.LinearLayoutCompat
+<com.google.android.material.textview.MaterialTextView
+    android:id="@+id/text"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textAlignment="textStart"
+    android:textStyle="bold|italic"
+    android:textIsSelectable="true"
     android:layout_gravity="center"
-    android:layout_margin="15dp"
-    android:gravity="start" >
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold|italic"
-        android:textIsSelectable="true"
-        android:layout_margin="15dp"
-        android:gravity="start" />
-</androidx.appcompat.widget.LinearLayoutCompat>
+    android:gravity="start"
+    android:padding="15dp" />

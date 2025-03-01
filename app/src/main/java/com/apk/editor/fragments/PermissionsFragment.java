@@ -32,8 +32,8 @@ public class PermissionsFragment extends Fragment {
             try {
                 StringBuilder sb = new StringBuilder();
                 for (String permission : mAPKParser.getPermissions()) {
-                    sb.append(permission).append("\n").append(sPermissionUtils.getDescription(permission.replace(
-                            "android.permission.",""), requireActivity())).append("\n\n");
+                    sb.append(getNameAdjusted(permission)).append("\n").append(sPermissionUtils.getDescription(getNameAdjusted(
+                            permission.replace("android.permission.","")), requireActivity())).append("\n\n");
                 }
                 mText.setText(sb.toString());
             } catch (Exception ignored) {
@@ -41,6 +41,13 @@ public class PermissionsFragment extends Fragment {
         }
 
         return mRootView;
+    }
+
+    private String getNameAdjusted(String string) {
+        if (string.endsWith("/>")) {
+            return string.replace("/>", "");
+        }
+        return string;
     }
     
 }
