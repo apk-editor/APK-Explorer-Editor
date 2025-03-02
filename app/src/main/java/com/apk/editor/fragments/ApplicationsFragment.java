@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
@@ -21,24 +22,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.adapters.ApplicationsAdapter;
-import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.SerializableItems.PackageItems;
-import com.apk.editor.utils.dialogs.BatchSigningOptionsDialog;
 import com.apk.editor.utils.dialogs.ExportOptionsDialog;
-import com.apk.editor.utils.tasks.ExportApp;
-import com.apk.editor.utils.tasks.ResignBatchAPKs;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
-import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -48,7 +45,7 @@ public class ApplicationsFragment extends Fragment {
     private ApplicationsAdapter mRecycleViewAdapter;
     private boolean mExit = false, mLongClicked = false, mSelectAll = false;
     private final Handler mHandler = new Handler();
-    private final List<String> mPackageNames = new ArrayList<>();
+    private final List<String> mPackageNames = new CopyOnWriteArrayList<>();
     private ContentLoadingProgressBar mProgress;
     private MaterialButton mBatchButton, mMenuButton;
     private RecyclerView mRecyclerView;
@@ -115,48 +112,17 @@ public class ApplicationsFragment extends Fragment {
             }
         });
 
-        mBatchButton.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(requireActivity(), v);
-            Menu menu = popupMenu.getMenu();
-            menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.select_all)).setIcon(R.drawable.ic_select_all)
-                    .setCheckable(true).setChecked(mSelectAll);
-            menu.add(Menu.NONE, 1, Menu.NONE, getExportOptionsTitle()).setIcon(R.drawable.ic_export_file);
-            popupMenu.setForceShowIcon(true);
-            popupMenu.setOnMenuItemClickListener(item -> {
-                switch (item.getItemId()) {
-                    case 0:
-                        mSelectAll = !mSelectAll;
-                        loadApps(mSearchText);
-                        break;
-                    case 1:
-                        if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, requireActivity()) && sCommonUtils.getString("exportAPKsPath", "externalFiles",
-                                requireActivity()).equals("internalStorage")) {
-                            sPermissionUtils.requestPermission(
-                                    new String[] {
-                                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                    }, requireActivity());
-                        } else {
-                            if (APKEditorUtils.isFullVersion(requireActivity())) {
-                                if (sCommonUtils.getString("exportAPKs", null, requireActivity()) == null) {
-                                    new ExportOptionsDialog(mPackageNames, requireActivity());
-                                } else if (sCommonUtils.getString("exportAPKs", null, requireActivity()).equals(getString(R.string.export_storage))) {
-                                    new ExportApp(mPackageNames, requireActivity()).execute();
-                                } else {
-                                    if (!sCommonUtils.getBoolean("firstSigning", false, requireActivity())) {
-                                        new BatchSigningOptionsDialog(mPackageNames, requireActivity()).show();
-                                    } else {
-                                        new ResignBatchAPKs(mPackageNames, requireActivity()).execute();
-                                    }
-                                }
-                            } else {
-                                new ExportApp(mPackageNames, requireActivity()).execute();
-                            }
-                        }
-                        break;
+        mBatchButton.setOnClickListener(v -> new ExportOptionsDialog(mPackageNames, mSelectAll, requireActivity()) {
+            @Override
+            public void selectAllLister(boolean checked) {
+                if (checked) {
+                    mSelectAll = false;
+                    mPackageNames.clear();
+                } else {
+                    mSelectAll = true;
                 }
-                return false;
-            });
-            popupMenu.show();
+                loadApps(mSearchText);
+            }
         });
 
         mSearchButton.setOnClickListener(v -> {
@@ -344,20 +310,6 @@ public class ApplicationsFragment extends Fragment {
             return R.drawable.ic_sort_time;
         } else {
             return R.drawable.ic_sort_az;
-        }
-    }
-
-    private String getExportOptionsTitle() {
-        if (APKEditorUtils.isFullVersion(requireActivity())) {
-            if (sCommonUtils.getString("exportAPKs", null, requireActivity()) == null) {
-                return getString(R.string.export_options_title);
-            } else if (sCommonUtils.getString("exportAPKs", null, requireActivity()).equals(getString(R.string.export_storage))) {
-                return getString(R.string.export_storage);
-            } else {
-                return getString(R.string.export_resign);
-            }
-        } else {
-            return getString(R.string.export_storage);
         }
     }
 

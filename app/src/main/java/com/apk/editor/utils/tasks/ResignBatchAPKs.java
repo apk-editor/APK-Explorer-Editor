@@ -10,7 +10,6 @@ import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
@@ -24,7 +23,6 @@ public class ResignBatchAPKs extends sExecutor {
 
     private final Activity mActivity;
     private final List<String> mPackageNames;
-    private final List<String> mAPKs = new ArrayList<>();
     private ProgressDialog mProgressDialog;
 
     public ResignBatchAPKs(List<String> packageNames, Activity activity) {
@@ -48,27 +46,18 @@ public class ResignBatchAPKs extends sExecutor {
     public void doInBackground() {
         for (String packageName : mPackageNames) {
             if (APKData.isAppBundle(sPackageUtils.getSourceDir(packageName, mActivity))) {
-                mAPKs.addAll(APKData.splitApks(sPackageUtils.getSourceDir(packageName, mActivity)));
-            } else {
-                mAPKs.add(sPackageUtils.getSourceDir(packageName, mActivity));
-            }
-
-            File mParent;
-            if (mAPKs.size() > 1) {
-                mParent = new File(APKData.getExportAPKsPath(mActivity), packageName + "_aee-signed");
+                File mParent = new File(APKData.getExportAPKsPath(mActivity) , packageName + "_aee-signed");
                 if (mParent.exists()) {
                     sFileUtils.delete(mParent);
                 }
                 sFileUtils.mkdir(mParent);
-                for (String mSplits : mAPKs) {
-                    APKData.signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), mActivity);
+                for (String mSplits : APKData.splitApks(sPackageUtils.getSourceDir(packageName, mActivity))) {
+                    if (mSplits.endsWith(".apk")) {
+                        APKData.signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), mActivity);
+                    }
                 }
             } else {
-                mParent = new File(APKData.getExportAPKsPath(mActivity), packageName + "_aee-signed.apk");
-                if (mParent.exists()) {
-                    sFileUtils.delete(mParent);
-                }
-                APKData.signApks(new File(mAPKs.get(0)), mParent, mActivity);
+                APKData.signApks(new File(sPackageUtils.getSourceDir(packageName, mActivity)), new File(APKData.getExportAPKsPath(mActivity) , packageName + "_aee-signed.apk"), mActivity);
             }
         }
     }
