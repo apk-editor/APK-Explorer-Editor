@@ -55,6 +55,7 @@ public class BuildingActivity extends AppCompatActivity {
 
         mError.setTextColor(Color.RED);
         mSuccess.setTextColor(Color.GREEN);
+        mIcon.setScaleX(-1);
 
         String mPackageNameOriginal = getIntent().getStringExtra(PACKAGE_NAME_INTENT);
 
@@ -116,6 +117,7 @@ public class BuildingActivity extends AppCompatActivity {
                     mInstall.setVisibility(View.VISIBLE);
                 }
                 mTaskSummary.setVisibility(View.GONE);
+                mIcon.setScaleX(1);
             } else {
                 try {
                     if (Common.getStatus(this) != null && !Common.isFinished(this)) {
