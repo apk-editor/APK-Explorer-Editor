@@ -1,8 +1,10 @@
-<FrameLayout android:layout_width="match_parent"
+<FrameLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center">
+    android:gravity="center"
+    android:padding="10dp" >
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -27,7 +29,8 @@
                 android:id="@+id/app_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/AppTheme.Title" />
+                style="@style/AppTheme.Title"
+                android:maxLines="1" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/package_id"
@@ -36,7 +39,8 @@
                 android:layout_gravity="start"
                 android:visibility="gone"
                 android:gravity="start"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:maxLines="1" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -47,8 +51,7 @@
         style="?attr/materialIconButtonFilledTonalStyle"
         android:layout_gravity="end|center_vertical"
         app:icon="@drawable/ic_info"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:visibility="gone"
-        android:padding="10dp"
         android:scaleX="-1" />
 </FrameLayout>
