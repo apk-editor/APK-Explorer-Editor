@@ -50,6 +50,7 @@ public class QuickEditsActivity extends AppCompatActivity {
             VERSION_NAME_INTENT = "version_name", VERSION_CODE_INTENT = "version_code";
     private static String mAPKPath, mAppName, mManifestDecoded, mMinSDK, mPackageName, mVersionName, mVersionCode;
     private static List<QuickEditsItems> mData;
+    private QuickEditsAdapter mAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,116 +70,120 @@ public class QuickEditsActivity extends AppCompatActivity {
         mManifestDecoded = Objects.requireNonNull(getIntent().getStringExtra(MANIFEST_INTENT));
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new QuickEditsAdapter(getData()));
+        mAdapter = new QuickEditsAdapter(getData());
+        mRecyclerView.setAdapter(mAdapter);
 
         mBack.setOnClickListener(v -> finish());
 
-        mBuild.setOnClickListener(v -> new sExecutor() {
-            private boolean mSuccess = false;
-            private File mOutFile;
-            private ProgressDialog mProgressDialog;
-                    @Override
-                    public void onPreExecute() {
-                        mProgressDialog = new ProgressDialog(QuickEditsActivity.this);
-                        mProgressDialog.setTitle(getString(R.string.quick_edits_progress_message));
-                        mProgressDialog.setIcon(R.mipmap.ic_launcher);
-                        mProgressDialog.setIndeterminate(true);
-                        mProgressDialog.show();
-                    }
+        mBuild.setOnClickListener(v -> {
+            if (!mAdapter.isQuickEdited()) {
+                return;
+            }
+            new sExecutor() {
+                private boolean mSuccess = false;
+                private File mOutFile;
+                private ProgressDialog mProgressDialog;
+                @Override
+                public void onPreExecute() {
+                    mProgressDialog = new ProgressDialog(QuickEditsActivity.this);
+                    mProgressDialog.setTitle(getString(R.string.quick_edits_progress_message));
+                    mProgressDialog.setIcon(R.mipmap.ic_launcher);
+                    mProgressDialog.setIndeterminate(true);
+                    mProgressDialog.show();
+                }
 
-                    @Override
-                    public void doInBackground() {
-                        mOutFile = new File(APKData.getExportAPKsPath(QuickEditsActivity.this), (!Objects.equals(mPackageName,
-                        mData.get(1).getValue()) ? mData.get(1).getValue() : mPackageName) + "_aee-signed.apk");
+                @Override
+                public void doInBackground() {
+                    mOutFile = new File(APKData.getExportAPKsPath(QuickEditsActivity.this), (!Objects.equals(mPackageName,
+                            mData.get(1).getValue()) ? mData.get(1).getValue() : mPackageName) + "_aee-signed.apk");
+                    try {
+                        File tmpFile = File.createTempFile("tmpApp",".apk", getExternalCacheDir());
+                        FileInputStream fis = new FileInputStream(mAPKPath);
+                        FileOutputStream fos = new FileOutputStream(tmpFile);
+                        ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(fis));
+                        ZipOutputStream zipOutputStream = new ZipOutputStream(fos);
 
-                        try {
-                            File tmpFile = File.createTempFile("tmpApp",".apk", getExternalCacheDir());
-                            FileInputStream fis = new FileInputStream(mAPKPath);
-                            FileOutputStream fos = new FileOutputStream(tmpFile);
-                            ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(fis));
-                            ZipOutputStream zipOutputStream = new ZipOutputStream(fos);
-
-                            for (ZipEntry in; (in = zipInputStream.getNextEntry()) != null;) {
-                                ZipEntry out;
-                                InputStream source;
-                                if (in.getName().equals("AndroidManifest.xml")) {
-                                    out = new ZipEntry(in);
-                                    byte[] encodedData = new aXMLEncoder().encodeString(QuickEditsActivity.this, getStringBuilder().toString().trim());
-                                    out.setSize(encodedData.length);
-                                    source = new ByteArrayInputStream(encodedData);
-                                } else {
-                                    out = in;
-                                    source = zipInputStream;
-                                }
-                                zipOutputStream.putNextEntry(out);
-                                sFileUtils.copyStream(source, zipOutputStream);
-                            }
-                            zipInputStream.close();
-                            zipOutputStream.close();
-
-                            APKData.signApks(tmpFile, mOutFile, QuickEditsActivity.this);
-
-                            sFileUtils.delete(tmpFile);
-
-                            if (mOutFile.exists() && sAPKUtils.getPackageName(mOutFile.getAbsolutePath(), QuickEditsActivity.this) != null) {
-                                mSuccess = true;
+                        for (ZipEntry in; (in = zipInputStream.getNextEntry()) != null;) {
+                            ZipEntry out;
+                            InputStream source;
+                            if (in.getName().equals("AndroidManifest.xml")) {
+                                out = new ZipEntry(in);
+                                byte[] encodedData = new aXMLEncoder().encodeString(QuickEditsActivity.this, getStringBuilder().toString().trim());
+                                out.setSize(encodedData.length);
+                                source = new ByteArrayInputStream(encodedData);
                             } else {
-                                sFileUtils.delete(mOutFile);
+                                out = in;
+                                source = zipInputStream;
                             }
-                        } catch (IOException | XmlPullParserException ignored) {
+                            zipOutputStream.putNextEntry(out);
+                            sFileUtils.copyStream(source, zipOutputStream);
                         }
-                    }
+                        zipInputStream.close();
+                        zipOutputStream.close();
 
-                    @NonNull
-                    private StringBuilder getStringBuilder() {
-                        StringBuilder sb = new StringBuilder();
-                        for (String line : mManifestDecoded.split("\n")) {
-                            if (!Objects.equals(mAppName, mData.get(0).getValue()) && line.contains("android:label=\"" + mAppName)) {
-                                sb.append(line.replace(mAppName, mData.get(0).getValue())).append("\n");
-                            } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && line.contains("package=\"" + mPackageName)) {
-                                sb.append(line.replace(mPackageName, mData.get(1).getValue())).append("\n");
-                            } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && line.contains("android:name=\"") && line.contains("_PERMISSION\"") && line.contains(mPackageName)) {
-                                sb.append(line.replace(mPackageName, mData.get(1).getValue())).append("\n");
-                            } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && line.contains("android:name=\"") && line.contains("_PERMISSION\"") && !line.contains(mPackageName)) {
-                                sb.append(line.replace("_PERMISSION\"", "_PERMISSION_aee\"")).append("\n");
-                            } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && line.trim().startsWith("android:authorities") && line.contains(mPackageName)) {
-                                sb.append(line.replace(mPackageName, mData.get(1).getValue())).append("\n");
-                            } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && line.trim().startsWith("android:authorities") && !line.contains(mPackageName)) {
-                                sb.append(line.replace("android:authorities=\"", "android:authorities=\"aee_")).append("\n");
-                            } else if (!Objects.equals(mVersionName, mData.get(2).getValue()) && line.contains("android:versionName=\"" + mVersionName)) {
-                                sb.append(line.replace(mVersionName, mData.get(2).getValue())).append("\n");
-                            } else if (!Objects.equals(mVersionCode, mData.get(3).getValue()) && line.contains("android:versionCode=\"" + mVersionCode)) {
-                                sb.append(line.replace(mVersionCode, mData.get(3).getValue())).append("\n");
-                            } else if (!Objects.equals(mMinSDK, mData.get(4).getValue()) && line.contains("android:minSdkVersion=\"" + mMinSDK)) {
-                                sb.append(line.replace(mMinSDK, mData.get(4).getValue())).append("\n");
-                            } else {
-                                sb.append(line).append("\n");
-                            }
-                        }
-                        return sb;
-                    }
+                        APKData.signApks(tmpFile, mOutFile, QuickEditsActivity.this);
 
-                    @Override
-                    public void onPostExecute() {
-                        try {
-                            mProgressDialog.dismiss();
-                        } catch (IllegalArgumentException ignored) {}
-                        if (mSuccess) {
-                            new MaterialAlertDialogBuilder(QuickEditsActivity.this)
-                                    .setIcon(R.mipmap.ic_launcher)
-                                    .setTitle(R.string.app_name)
-                                    .setCancelable(false)
-                                    .setMessage(getString(R.string.quick_edits_toast_success, mOutFile.getAbsolutePath()))
-                                    .setNegativeButton(R.string.cancel, (dialog, id) -> finish())
-                                    .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installAPK(true, mOutFile, QuickEditsActivity.this)
-                                    ).show();
+                        sFileUtils.delete(tmpFile);
+
+                        if (mOutFile.exists() && sAPKUtils.getPackageName(mOutFile.getAbsolutePath(), QuickEditsActivity.this) != null) {
+                            mSuccess = true;
                         } else {
-                            sCommonUtils.toast(getString(R.string.quick_edits_toast_failed), QuickEditsActivity.this).show();
-                            finish();
+                            sFileUtils.delete(mOutFile);
+                        }
+                    } catch (IOException | XmlPullParserException ignored) {
+                    }
+                }
+
+                @NonNull
+                private StringBuilder getStringBuilder() {
+                    StringBuilder sb = new StringBuilder();
+                    for (String line : mManifestDecoded.split("\n")) {
+                        if (!Objects.equals(mAppName, mData.get(0).getValue()) && line.contains("android:label=\"" + mAppName)) {
+                            sb.append(line.replace(mAppName, mData.get(0).getValue())).append("\n");
+                        } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && line.contains("package=\"" + mPackageName)) {
+                            sb.append(line.replace(mPackageName, mData.get(1).getValue())).append("\n");
+                        } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && line.contains("android:name=\"") && line.contains("_PERMISSION\"") && line.contains(mPackageName)) {
+                            sb.append(line.replace(mPackageName, mData.get(1).getValue())).append("\n");
+                        } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && line.contains("android:name=\"") && line.contains("_PERMISSION\"") && !line.contains(mPackageName)) {
+                            sb.append(line.replace("_PERMISSION\"", "_PERMISSION_aee\"")).append("\n");
+                        } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && line.trim().startsWith("android:authorities") && line.contains(mPackageName)) {
+                            sb.append(line.replace(mPackageName, mData.get(1).getValue())).append("\n");
+                        } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && line.trim().startsWith("android:authorities") && !line.contains(mPackageName)) {
+                            sb.append(line.replace("android:authorities=\"", "android:authorities=\"aee_")).append("\n");
+                        } else if (!Objects.equals(mVersionName, mData.get(2).getValue()) && line.contains("android:versionName=\"" + mVersionName)) {
+                            sb.append(line.replace(mVersionName, mData.get(2).getValue())).append("\n");
+                        } else if (!Objects.equals(mVersionCode, mData.get(3).getValue()) && line.contains("android:versionCode=\"" + mVersionCode)) {
+                            sb.append(line.replace(mVersionCode, mData.get(3).getValue())).append("\n");
+                        } else if (!Objects.equals(mMinSDK, mData.get(4).getValue()) && line.contains("android:minSdkVersion=\"" + mMinSDK)) {
+                            sb.append(line.replace(mMinSDK, mData.get(4).getValue())).append("\n");
+                        } else {
+                            sb.append(line).append("\n");
                         }
                     }
-                }.execute()
-        );
+                    return sb;
+                }
+
+                @Override
+                public void onPostExecute() {
+                    try {
+                        mProgressDialog.dismiss();
+                    } catch (IllegalArgumentException ignored) {}
+                    if (mSuccess) {
+                        new MaterialAlertDialogBuilder(QuickEditsActivity.this)
+                                .setIcon(R.mipmap.ic_launcher)
+                                .setTitle(R.string.app_name)
+                                .setCancelable(false)
+                                .setMessage(getString(R.string.quick_edits_toast_success, mOutFile.getAbsolutePath()))
+                                .setNegativeButton(R.string.cancel, (dialog, id) -> finish())
+                                .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installAPK(true, mOutFile, QuickEditsActivity.this)
+                                ).show();
+                    } else {
+                        sCommonUtils.toast(getString(R.string.quick_edits_toast_failed), QuickEditsActivity.this).show();
+                        finish();
+                    }
+                }
+            }.execute();
+        });
 
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override

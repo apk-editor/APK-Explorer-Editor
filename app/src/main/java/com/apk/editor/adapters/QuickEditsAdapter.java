@@ -30,6 +30,7 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
  */
 public class QuickEditsAdapter extends RecyclerView.Adapter<QuickEditsAdapter.ViewHolder> {
 
+    private boolean mQuickEdited = false;
     private final List<QuickEditsItems> data;
 
     public QuickEditsAdapter(List<QuickEditsItems> data) {
@@ -98,9 +99,14 @@ public class QuickEditsAdapter extends RecyclerView.Adapter<QuickEditsAdapter.Vi
     private void apply(MaterialAutoCompleteTextView textView, int position) {
         if (textView.getText() != null && !textView.getText().toString().trim().equals(data.get(position).getValue())) {
             data.get(position).setValue(position == 1 && textView.getText().toString().trim().contains(" ") ? textView.getText().toString().trim().replace(" ", "") : textView.getText().toString().trim());
+            mQuickEdited = true;
             notifyItemChanged(position);
         }
         textView.clearFocus();
+    }
+
+    public boolean isQuickEdited() {
+        return mQuickEdited;
     }
 
     @Override
