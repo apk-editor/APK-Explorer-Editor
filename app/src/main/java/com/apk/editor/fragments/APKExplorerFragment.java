@@ -411,7 +411,6 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    APKExplorer.setSuccessIntent(true, requireActivity());
                     Intent data = result.getData();
                     Uri uriFile = data.getData();
 
@@ -434,6 +433,8 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                                     }
                                     loadUI(mFile);
                                 }).show();
+                    } else {
+                        APKExplorer.setSuccessIntent(true, requireActivity());
                     }
                 } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
                     requireActivity().finish();

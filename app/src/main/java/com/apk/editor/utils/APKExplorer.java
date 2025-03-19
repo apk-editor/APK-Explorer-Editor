@@ -23,7 +23,6 @@ import com.apk.axml.APKParser;
 import com.apk.axml.aXMLDecoder;
 import com.apk.editor.R;
 import com.apk.editor.utils.dialogs.SigningOptionsDialog;
-import com.apk.editor.utils.tasks.ExploreAPK;
 import com.apk.editor.utils.tasks.ResignAPKs;
 
 import org.json.JSONException;
@@ -339,30 +338,6 @@ public class APKExplorer {
             }
         } else {
             installAPKs(exit, apkList, activity);
-        }
-    }
-
-    public static void exploreApps(String packageName, File apkFile, Uri uri, boolean exit, Activity activity) {
-        if (sFileUtils.exist(new File(activity.getCacheDir().getPath(), uri != null ? new File(Objects.requireNonNull(uri.getPath())).getName() : packageName != null ? packageName : apkFile.getName()))) {
-            new ExploreAPK(packageName, apkFile, uri, -1, activity).execute();
-        } else if (sCommonUtils.getString("decompileSetting", null, activity) == null) {
-            new sSingleItemDialog(0, null, new String[] {
-                    activity.getString(R.string.explore_options_simple),
-                    activity.getString(R.string.explore_options_full)
-            }, activity) {
-
-                @Override
-                public void onItemSelected(int itemPosition) {
-                    new ExploreAPK(packageName, apkFile, uri, itemPosition, activity).execute();
-                    if (exit) {
-                        activity.finish();
-                    }
-                }
-            }.show();
-        } else if (sCommonUtils.getString("decompileSetting", null, activity).equals(activity.getString(R.string.explore_options_full))) {
-            new ExploreAPK(packageName, apkFile, uri, 1, activity).execute();
-        } else {
-            new ExploreAPK(packageName, apkFile, uri, 0, activity).execute();
         }
     }
 

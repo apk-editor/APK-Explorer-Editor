@@ -27,6 +27,7 @@ import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.dialogs.InvalidFileDialog;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.apk.editor.utils.dialogs.SelectBundleDialog;
+import com.apk.editor.utils.menu.ExploreOptionsMenu;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
@@ -182,7 +183,7 @@ public class APKInstallerActivity extends AppCompatActivity {    private AppComp
             handleAPKs(true, appList, activity);
         });
 
-        mExploreIcon.setOnClickListener(v -> APKExplorer.exploreApps(mPackageID.getText().toString().trim(), mFile, null, true, activity));
+        mExploreIcon.setOnClickListener(v -> ExploreOptionsMenu.getMenu(mPackageID.getText().toString().trim(), mFile, null, true, activity));
     }
 
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(

@@ -19,9 +19,9 @@ import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
 import com.apk.editor.activities.ImageViewActivity;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SerializableItems.PackageItems;
+import com.apk.editor.utils.menu.ExploreOptionsMenu;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -162,7 +162,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                 activity.findViewById(R.id.batch_options).setVisibility(packageNames.isEmpty() ? View.GONE : View.VISIBLE);
                 return;
             }
-            APKExplorer.exploreApps(data.get(getAdapterPosition()).getPackageName(), null, null, false, activity);
+            ExploreOptionsMenu.getMenu(data.get(getAdapterPosition()).getPackageName(), null, null, false, activity);
         }
     }
 

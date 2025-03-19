@@ -8,6 +8,7 @@ import android.os.Environment;
 
 import com.apk.editor.MainActivity;
 import com.apk.editor.R;
+import com.apk.editor.utils.menu.ExploreOptionsMenu;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -58,8 +59,8 @@ public class AppSettings {
     }
 
     public static int getExploreOptionsMenuPosition(Context context) {
-        for (int i = 0; i < getExploreOptionsMenu(context).length; i++) {
-            if (getExploreOptions(context).equals(getExploreOptionsMenu(context)[i])) {
+        for (int i = 0; i < ExploreOptionsMenu.getOption(context).length; i++) {
+            if (getExploreOptions(context).equals(ExploreOptionsMenu.getOption(context)[i])) {
                 return i;
             }
         }
@@ -279,14 +280,6 @@ public class AppSettings {
         return new String[] {
                 context.getString(R.string.export_path_files_dir),
                 context.getString(R.string.export_path_default)
-        };
-    }
-
-    public static String[] getExploreOptionsMenu(Context context) {
-        return new String[] {
-                context.getString(R.string.explore_options_simple),
-                context.getString(R.string.explore_options_full),
-                context.getString(R.string.prompt)
         };
     }
 

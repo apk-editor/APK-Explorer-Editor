@@ -18,6 +18,7 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKSigner;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.dialogs.ClearAppSettingsDialog;
+import com.apk.editor.utils.menu.ExploreOptionsMenu;
 import com.apk.editor.utils.tasks.TransferApps;
 
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class SettingsActivity extends AppCompatActivity {
                     AppSettings.setLanguage(this);
                 } else if (position == 4) {
                     new sSingleChoiceDialog(R.drawable.ic_explore, getString(R.string.explore_options),
-                            AppSettings.getExploreOptionsMenu(this), AppSettings.getExploreOptionsMenuPosition(this), this) {
+                            ExploreOptionsMenu.getOption(this), AppSettings.getExploreOptionsMenuPosition(this), this) {
 
                         @Override
                         public void onItemSelected(int itemPosition) {
@@ -84,6 +85,10 @@ public class SettingsActivity extends AppCompatActivity {
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             } else if (itemPosition == 1) {
                                 sCommonUtils.saveString("decompileSetting", getString(R.string.explore_options_full), SettingsActivity.this);
+                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, SettingsActivity.this), getString(R.string.explore_options), AppSettings.getExploreOptions(SettingsActivity.this), null));
+                                mRecycleViewAdapter.notifyItemChanged(position);
+                            } else if (APKEditorUtils.isFullVersion(SettingsActivity.this) && itemPosition == 2) {
+                                sCommonUtils.saveString("decompileSetting", getString(R.string.explore_options_quick), SettingsActivity.this);
                                 mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, SettingsActivity.this), getString(R.string.explore_options), AppSettings.getExploreOptions(SettingsActivity.this), null));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             } else {

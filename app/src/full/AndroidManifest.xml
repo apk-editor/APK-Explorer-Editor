@@ -32,6 +32,10 @@
         <activity android:name=".activities.InstallerActivity"
             android:exported="false" />
 
+        <activity android:name=".activities.QuickEditsActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false" />
+
         <activity android:name=".activities.TextEditorActivity"
             android:exported="false" />
 

@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
-import android.text.Editable;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.apk.editor.R;
-import com.apk.editor.interfaces.EditTextInterface;
 import com.apk.editor.utils.tasks.ExportProject;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 import java.io.File;
 import java.util.Collections;
@@ -51,33 +53,45 @@ public class Projects {
         }
     }
 
+    @SuppressLint("StringFormatInvalid")
     public static void exportProject(File file, Context context) {
-        new EditTextInterface(null, context.getString(R.string.app_name), context) {
+        LinearLayout layout = new LinearLayout(context);
+        layout.setPadding(75, 75, 75, 75);
+        final MaterialAutoCompleteTextView editText = new MaterialAutoCompleteTextView(context);
+        editText.setGravity(Gravity.CENTER);
+        editText.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        editText.setSingleLine(true);
+        editText.requestFocus();
+        layout.addView(editText);
 
-            @SuppressLint("StringFormatInvalid")
-            @Override
-            public void positiveButtonLister(Editable s) {
-                String text = s.toString().trim();
-                if (text.isEmpty()) {
-                    sCommonUtils.toast(context.getString(R.string.name_empty), context).show();
-                    return;
-                }
-                if (text.contains(" ")) {
-                    text = text.replace(" ", "_");
-                }
-                String name = text;
-                if (sFileUtils.exist(new File(Projects.getExportPath(context), text))) {
-                    new MaterialAlertDialogBuilder(context)
-                            .setMessage(context.getString(R.string.export_project_replace, text))
-                            .setNegativeButton(R.string.cancel, (dialog2, ii) -> {
-                            })
-                            .setPositiveButton(R.string.replace, (dialog2, iii) -> new ExportProject(file, name, context).execute())
-                            .show();
-                } else {
-                    new ExportProject(file, name, context).execute();
-                }
-            }
-        }.show();
+        new MaterialAlertDialogBuilder(context)
+                .setView(layout)
+                .setTitle(context.getString(R.string.app_name))
+                .setIcon(R.mipmap.ic_launcher)
+                .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                })
+                .setPositiveButton(R.string.ok, (dialog, id) -> {
+                    String text = editText.toString().trim();
+                    if (text.isEmpty()) {
+                        sCommonUtils.toast(context.getString(R.string.name_empty), context).show();
+                        return;
+                    }
+                    if (text.contains(" ")) {
+                        text = text.replace(" ", "_");
+                    }
+                    String name = text;
+                    if (sFileUtils.exist(new File(Projects.getExportPath(context), text))) {
+                        new MaterialAlertDialogBuilder(context)
+                                .setMessage(context.getString(R.string.export_project_replace, text))
+                                .setNegativeButton(R.string.cancel, (dialog2, ii) -> {
+                                })
+                                .setPositiveButton(R.string.replace, (dialog2, iii) -> new ExportProject(file, name, context).execute())
+                                .show();
+                    } else {
+                        new ExportProject(file, name, context).execute();
+                    }
+                }).show();
     }
 
 }

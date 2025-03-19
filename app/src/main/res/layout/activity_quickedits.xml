@@ -1,0 +1,46 @@
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="10dp" >
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|start"
+            android:tint="?attr/colorPrimary"
+            android:src="@drawable/ic_back"
+            android:background="@null"
+            android:gravity="center" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/quick_edits_title"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="80dp"
+            style="@style/AppTheme.Title"
+            android:singleLine="true" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/build"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:gravity="center_vertical"
+            android:src="@drawable/ic_build"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="10dp"
+            android:background="@null"
+            android:scaleX="-1"/>
+    </FrameLayout>
+
+    <include layout="@layout/layout_recyclerview" />
+</androidx.appcompat.widget.LinearLayoutCompat>

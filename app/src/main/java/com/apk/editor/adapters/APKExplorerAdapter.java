@@ -216,7 +216,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                     Intent rsaCertificate = new Intent(view.getContext(), TextViewActivity.class);
                     rsaCertificate.putExtra(TextViewActivity.PATH_INTENT, filePath);
                     view.getContext().startActivity(rsaCertificate);
-                } else if (filePath.equalsIgnoreCase("resources.arsc")) {
+                } else if (filePath.endsWith("resources.arsc")) {
                     new MaterialAlertDialogBuilder(view.getContext())
                             .setIcon(R.mipmap.ic_launcher)
                             .setTitle(R.string.unsupported_file)

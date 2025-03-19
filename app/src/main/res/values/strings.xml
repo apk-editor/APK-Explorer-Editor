@@ -65,6 +65,7 @@
     <string name="explore_options">On Exploring an App</string>
     <string name="explore_options_full">Full decompile (slower)</string>
     <string name="explore_options_simple">Simple decompile (faster)</string>
+    <string name="explore_options_quick">Quick editing (easier)</string>
     <string name="failed">Failed</string>
     <string name="failed_smali_message">The following \'smali\' files are failed to assemble.\n\n%s</string>
     <string name="file_path_error">Failed to get file path from external File Manager</string>
@@ -112,6 +113,15 @@
     <string name="project_exist_action">On Exiting a Project</string>
     <string name="projects">Projects</string>
     <string name="prompt">Prompt</string>
+    <string name="quick_edits_app_name">App name</string>
+    <string name="quick_edits_sdk_min">Min SDK</string>
+    <string name="quick_edits_package_name">Package name</string>
+    <string name="quick_edits_progress_message">Applying modifications…</string>
+    <string name="quick_edits_title">Quick Edits</string>
+    <string name="quick_edits_toast_failed">Unfortunately, generation of modified APK file is failed.</string>
+    <string name="quick_edits_toast_success">Modified APK file is generated.\n\nPath: \'%s\'</string>
+    <string name="quick_edits_version_code">Version code</string>
+    <string name="quick_edits_version_name">Version name</string>
     <string name="rate_us">Rate AEE</string>
     <string name="rate_us_Summary">Rate or/and Review AEE in Google Play</string>
     <string name="replace">Replace</string>
