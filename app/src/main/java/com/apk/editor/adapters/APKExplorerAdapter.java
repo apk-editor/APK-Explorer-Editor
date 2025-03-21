@@ -66,7 +66,6 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
         return new APKExplorerAdapter.ViewHolder(rowItem);
     }
 
-    @SuppressLint({"NotifyDataSetChanged", "StringFormatInvalid"})
     @Override
     public void onBindViewHolder(@NonNull APKExplorerAdapter.ViewHolder holder, int position) {
         if (new File(data.get(position)).isDirectory()) {
@@ -92,7 +91,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
             }
             if (APKEditorUtils.isFullVersion(holder.mLayout.getContext())) {
                 holder.mLayout.setOnLongClickListener(v -> {
-                    longClickDilog(position, v.getContext()).show();
+                    longClickDialog(position, v.getContext()).show();
                     return true;
                 });
             }
@@ -110,7 +109,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
         holder.mDescription.setVisibility(View.VISIBLE);
     }
 
-    private sSingleItemDialog longClickDilog(int position, Context context) {
+    private sSingleItemDialog longClickDialog(int position, Context context) {
         return new sSingleItemDialog(0, null, new String[]{
                 context.getString(R.string.delete),
                 context.getString(R.string.export),
@@ -128,12 +127,11 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                             .setNegativeButton(R.string.cancel, (dialog, id) -> {
                             })
                             .setPositiveButton(R.string.delete, (dialog, id) -> new DeleteFile(new File(data.get(position)), null, backupFilePath, context) {
-
-                                @SuppressLint("NotifyDataSetChanged")
                                 @Override
                                 public void onPostExecute() {
                                     data.remove(position);
-                                    notifyDataSetChanged();
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, data.size());
                                 }
                             }.execute()
                             ).show();
