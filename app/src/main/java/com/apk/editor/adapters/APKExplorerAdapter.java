@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.ImageViewActivity;
+import com.apk.editor.activities.ResViewerActivity;
 import com.apk.editor.activities.TextEditorActivity;
 import com.apk.editor.activities.TextViewActivity;
 import com.apk.editor.activities.XMLEditorActivity;
@@ -215,12 +216,9 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                     rsaCertificate.putExtra(TextViewActivity.PATH_INTENT, filePath);
                     view.getContext().startActivity(rsaCertificate);
                 } else if (filePath.endsWith("resources.arsc")) {
-                    new MaterialAlertDialogBuilder(view.getContext())
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(R.string.unsupported_file)
-                            .setMessage(R.string.unsupported_file_arsc)
-                            .setPositiveButton(R.string.cancel, (dialog, id) -> {
-                            }).show();
+                    Intent intent = new Intent(activity, ResViewerActivity.class);
+                    intent.putExtra(ResViewerActivity.PATH_INTENT, filePath);
+                    activity.startActivity(intent);
                 } else {
                     new MaterialAlertDialogBuilder(view.getContext())
                             .setIcon(R.mipmap.ic_launcher)

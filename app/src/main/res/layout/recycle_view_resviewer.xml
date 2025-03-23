@@ -1,0 +1,20 @@
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_margin="5sp"
+    android:clickable="false" >
+
+    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+        android:id="@+id/value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:imeOptions="actionDone"
+        android:textStyle="bold|italic"
+        android:enabled="false"
+        android:textSize="16sp"
+        android:padding="10dp" />
+</com.google.android.material.textfield.TextInputLayout>

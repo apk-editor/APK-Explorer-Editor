@@ -73,7 +73,7 @@ public class QuickEditsAPK extends sExecutor {
     private String getManifestDecoded() {
         try (ZipFile zipFile = new ZipFile(mAPKFile)) {
             FileHeader fileHeader = zipFile.getFileHeader("AndroidManifest.xml");
-            return new aXMLDecoder().decode(zipFile.getInputStream(fileHeader)).trim();
+            return new aXMLDecoder(zipFile.getInputStream(fileHeader)).decode().trim();
         } catch (IOException | XmlPullParserException ignored) {
             return null;
         }

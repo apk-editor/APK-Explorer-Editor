@@ -95,21 +95,19 @@ public class APKExplorer {
     }
 
     public static ArrayList<String> getXMLData(String path) {
-        try (FileInputStream inputStream = new FileInputStream(path)) {
-            String xmlText;
-            if (isBinaryXML(path)) {
-                xmlText = new aXMLDecoder().decode(inputStream).trim();
-            } else {
-                xmlText = sFileUtils.read(new File(path));
-            }
-            ArrayList<String> mData = new ArrayList<>();
-            for (String line : xmlText.split(">\\n" + " {4}")) {
-                mData.add(line.endsWith(">") ? "\t" + line : "\t" + line + ">");
-            }
-            return mData;
-        } catch (IOException | XmlPullParserException ignored) {
-            return null;
+        String xmlText = null;
+        if (isBinaryXML(path)) {
+            try (FileInputStream fis = new FileInputStream(path)) {
+                xmlText = new aXMLDecoder(fis).decode().trim();
+            } catch (IOException | XmlPullParserException ignored) {}
+        } else {
+            xmlText = sFileUtils.read(new File(path));
         }
+        ArrayList<String> mData = new ArrayList<>();
+        for (String line : Objects.requireNonNull(xmlText).split(">\\n" + " {4}")) {
+            mData.add(line.endsWith(">") ? "\t" + line : "\t" + line + ">");
+        }
+        return mData;
     }
 
     public static boolean isTextFile(String path) {
@@ -207,8 +205,8 @@ public class APKExplorer {
         List<String> mData = new CopyOnWriteArrayList<>();
         String text = null;
         if (isBinaryXML(path)) {
-            try (FileInputStream inputStream = new FileInputStream(path)) {
-                text = new aXMLDecoder().decode(inputStream).trim();
+            try (FileInputStream fis = new FileInputStream(path) ){
+                text = new aXMLDecoder(fis).decode().trim();
             } catch (Exception e) {
                 sCommonUtils.toast(context.getString(R.string.xml_decode_failed, new File(path).getName()), context).show();
             }

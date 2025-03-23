@@ -36,6 +36,7 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
  */
 public class ExploreAPK extends sExecutor {
 
+    private APKParser mAPKParser;
     private final Context mContext;
     private File mBackUpPath, mExplorePath;
     private File mAPKFile, mAPKDetailsFile;
@@ -99,6 +100,13 @@ public class ExploreAPK extends sExecutor {
                         sFileUtils.mkdir(mDexExtractPath);
                         sCommonUtils.saveString("exploringStatus", mContext.getString(R.string.decompiling, files.getName()), mContext);
                         new DexToSmali(false, mAPKFile != null ? mAPKFile : new File(sPackageUtils.getSourceDir(mPackageName, mContext)), mDexExtractPath, 0, files.getName()).execute();
+                    } else if (files.getName().equals("resources.arsc")) {
+                        sCommonUtils.saveString("exploringStatus", mContext.getString(R.string.decompiling, files.getName()), mContext);
+                        if (mAPKParser.getDecodedResources() != null) {
+                            sFileUtils.create(mAPKParser.getDecodedResources().trim(), new File(mBackUpPath, "resources.txt"));
+                        } else {
+                            sCommonUtils.saveString("exploringStatus", mContext.getString(R.string.xml_decode_failed, files.getName()), mContext);
+                        }
                     }
                 }
             }
@@ -113,7 +121,7 @@ public class ExploreAPK extends sExecutor {
     @SuppressLint("StringFormatInvalid")
     private void generateAppDetails() {
         JSONObject mJSONObject = new JSONObject();
-        APKParser mAPKParser = new APKParser();
+        mAPKParser = new APKParser();
         mAPKParser.parse(mAPKFile != null ? mAPKFile.getAbsolutePath() : sPackageUtils.getSourceDir(mPackageName, mContext), mContext);
 
         // Store basic information about the app
