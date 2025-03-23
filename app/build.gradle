@@ -1,4 +1,6 @@
-apply plugin: 'com.android.application'
+plugins {
+    alias(libs.plugins.androidApplication)
+}
 
 android {
     dependenciesInfo {
@@ -53,23 +55,22 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.tools.build:apksig:8.7.3'
-    implementation 'com.github.apk-editor:aXML:8702c32876'
-    implementation 'com.github.sunilpaulmathew:CrashReporter:6b6c74abaa'
+    implementation libs.apksig
+    implementation libs.axml
+    implementation libs.crashReporter
 
-    def sCommon_Version = 'efc9dce669'
-    implementation "com.github.sunilpaulmathew.sCommon:apkutils:${sCommon_Version}"
-    implementation "com.github.sunilpaulmathew.sCommon:adapters:${sCommon_Version}"
-    implementation "com.github.sunilpaulmathew.sCommon:credits:${sCommon_Version}"
-    implementation "com.github.sunilpaulmathew.sCommon:fileutils:${sCommon_Version}"
-    implementation "com.github.sunilpaulmathew.sCommon:installerutils:${sCommon_Version}"
-    implementation "com.github.sunilpaulmathew.sCommon:packageutils:${sCommon_Version}"
-    implementation "com.github.sunilpaulmathew.sCommon:permissionutils:${sCommon_Version}"
-    implementation "com.github.sunilpaulmathew.sCommon:themeutils:${sCommon_Version}"
-    implementation "com.github.sunilpaulmathew.sCommon:translatorutils:${sCommon_Version}"
+    implementation libs.apkutils
+    implementation libs.adapters
+    implementation libs.credits
+    implementation libs.fileutils
+    implementation libs.installerutils
+    implementation libs.packageutils
+    implementation libs.permissionutils
+    implementation libs.themeutils
+    implementation libs.translatorutils
 
-    implementation 'com.google.android.material:material:1.12.0'
-    implementation 'net.lingala.zip4j:zip4j:2.11.5'
-    implementation 'org.smali:baksmali:2.5.2'
-    implementation 'org.smali:smali:2.5.2'
+    implementation libs.material
+    implementation libs.zip4j
+    implementation libs.baksmali
+    implementation libs.smali
 }
