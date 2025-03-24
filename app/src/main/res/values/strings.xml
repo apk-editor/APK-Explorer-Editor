@@ -26,7 +26,7 @@
     <string name="clear_cache_message">Everything, except the exported applications, will be removed.</string>
     <string name="clearing_cache_message">Clearing Cache…</string>
     <string name="copying">Copying \'%s\'…</string>
-    <string name="copyright_text">2025–2026, APK Explorer &amp; Editor</string>
+    <string name="copyright_text">2021–2025, APK Explorer &amp; Editor</string>
     <string name="decompiling">Decompiling \'%s\'…</string>
     <string name="delete">Delete</string>
     <string name="delete_all">Delete All</string>

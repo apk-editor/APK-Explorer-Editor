@@ -10,9 +10,10 @@
 * Provides basic information about important resource files.
 * View graphics, texts, binary XML, and many more.
 * Save/Export individual resource files to device storage.
-* Edit text/binary XML files using an in-built text editor (still, a bit buggy especially when working with big APK's).
+* Edit text/binary XML files using an in-built text editor (still, a bit buggy when working with too huge APK's).
 * Delete or replaces resources.
 * Assemble modified smali files into new classes (.dex).
+* Decode and view the contents of "resources.arsc".
 * Create signed APK's/App Bundles after the above-mentioned processes.
 * Resign APK's/bundles with AEE custom key.
 * Elegantly designed user interface with an auto-dark/light theme.
