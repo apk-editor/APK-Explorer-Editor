@@ -37,6 +37,7 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 public class ResViewerActivity extends AppCompatActivity {
 
     private static List<String> mType = null;
+    private static String mTypeDefault = "string";
     public static final String PATH_INTENT = "path";
 
     @Override
@@ -52,7 +53,7 @@ public class ResViewerActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        loadUI(mRecyclerView, path, "string", this).execute();
+        loadUI(mRecyclerView, path, mTypeDefault, this).execute();
 
         mBack.setOnClickListener(v -> finish());
 
@@ -60,8 +61,9 @@ public class ResViewerActivity extends AppCompatActivity {
             PopupMenu popupMenu = new PopupMenu(this, v);
             Menu menu = popupMenu.getMenu();
             for (int i=0; i<mType.size(); i++) {
-                menu.add(Menu.NONE, i, Menu.NONE, mType.get(i));
+                menu.add(0, i, Menu.NONE, mType.get(i)).setChecked(true).setChecked(Objects.equals(mType.get(i), mTypeDefault));
             }
+            menu.setGroupCheckable(0, true, true);
             popupMenu.setOnMenuItemClickListener(item -> {
                 loadUI(mRecyclerView, path, mType.get(item.getItemId()), this).execute();
                 return false;
@@ -93,6 +95,7 @@ public class ResViewerActivity extends AppCompatActivity {
                 mProgressDialog.show();
                 mData = new ArrayList<>();
                 mType = new ArrayList<>();
+                mTypeDefault = typeDefault;
             }
 
             private List<ResItems> getRawData() {
