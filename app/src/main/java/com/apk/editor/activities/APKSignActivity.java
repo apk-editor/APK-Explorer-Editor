@@ -116,7 +116,7 @@ public class APKSignActivity extends AppCompatActivity {
         }
     }
 
-    ActivityResultLauncher<Intent> certificatePickerResultLauncher = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> certificatePickerResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
@@ -160,7 +160,7 @@ public class APKSignActivity extends AppCompatActivity {
             }
     );
 
-    ActivityResultLauncher<Intent> keyPickerResultLauncher = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> keyPickerResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
