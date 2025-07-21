@@ -149,7 +149,7 @@ public class APKSignActivity extends AppCompatActivity {
                             } else {
                                 sCommonUtils.toast(getString(R.string.x509_certificate_invalid), this).show();
                             }
-                        } catch (FileNotFoundException | JSONException ignored) {
+                        } catch (JSONException | IOException ignored) {
                         }
 
                         setStatus();
