@@ -1,0 +1,5 @@
+* Better support latest android 9SDK 35).
+* Improved app language switch (now supports dialects).
+* Update chinese, french, hungarian, polish, russian, and turkish translations.
+* Updated build tools and dependencies.
+* Miscellaneous changes.
