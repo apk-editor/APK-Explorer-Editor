@@ -54,8 +54,20 @@
     <string name="system">"系统应用"</string>
     <string name="unknown_file_message">"Aee无法处理'%s'。如果您知道如何打开此文件格式，则可以将此文件导出到设备存储中，并使用支持的第三方应用进行编辑，或者以文本格式打开"</string>
     <string name="unsupported_file">"不支持的文件"</string>
-    <string name="unsupported_file_arsc">"你选择了'Resources.arsc'，但AEE暂不支持此文件\n\n什么是resources.arsc？\nResources.arsc是包含应用配置特定值的二进制资源文件，例如整数，布尔值和字符串，以及对更复杂的资源的引用，如UI布局等\n\n如何打开resource.arsc？\n您可以使用APKTOOL或Android Asset Packaging Tool（AAPT）等工具反编译资源以便于查看和修改"</string>
-    <string name="unsupported_file_dex">"你选择了dex（.dex）文件，但AEE暂不支持打开此类型的文件\n\n什么是DEX文件？\nDEX文件包含应用运行时执行的代码。每个APK都应具有\“classes.dex\”文件，它引用应用中的任何类或方法。基本上，代码库中的任何活动，对象或片段都可以被转换为Dex中的代码\n\n如何反编译DEX文件？\nDEX文件应转换为\“jar\”格式，然后使用\“dex2jar\”和'jd-gui'等工具反编译查看修改"</string>
+    <string name="unsupported_file_arsc">"你选择了'Resources.arsc'，但AEE暂不支持此文件
+
+        什么是resources.arsc？
+        Resources.arsc是包含应用配置特定值的二进制资源文件，例如整数，布尔值和字符串，以及对更复杂的资源的引用，如UI布局等
+
+        如何打开resource.arsc？
+        您可以使用APKTOOL或Android Asset Packaging Tool（AAPT）等工具反编译资源以便于查看和修改"</string>
+    <string name="unsupported_file_dex">"你选择了dex（.dex）文件，但AEE暂不支持打开此类型的文件
+
+        什么是DEX文件？
+        DEX文件包含应用运行时执行的代码。每个APK都应具有\“classes.dex\”文件，它引用应用中的任何类或方法。基本上，代码库中的任何活动，对象或片段都可以被转换为Dex中的代码
+
+        如何反编译DEX文件？
+        DEX文件应转换为\“jar\”格式，然后使用\“dex2jar\”和'jd-gui'等工具反编译查看修改"</string>
     <string name="user">"用户应用"</string>
     <string name="bundles">"组件"</string>
     <string name="preparing_bundle">"准备分享可拆分应用…"</string>
@@ -70,7 +82,6 @@
     <string name="signing_title">"应用签名"</string>
     <string name="apk_installer">"AEE APK 安装器"</string>
     <string name="bundle_install_question">"是否安装拆分应用 '%s' ？"</string>
-    <string name="export_app_question">"是否导出  '%s' 到设备存储？"</string>
     <string name="export_project_question">"是否将此项目文件夹导出到设备存储？"</string>
     <string name="export_project_replace">"'%s' 已存在！是否替换？"</string>
     <string name="export_resign">"导出并重新签名"</string>
@@ -90,7 +101,9 @@
     <string name="apk_corrupted">"APK 文件损坏! 终止安装"</string>
     <string name="install_resign">"重新签名 &amp; 安装"</string>
     <string name="resign_only">"仅重新签名"</string>
-    <string name="resigned_apks_path">"已生成重新签名的 APK 文件！\n\n路径：'%s'"</string>
+    <string name="resigned_apks_path">"已生成重新签名的 APK 文件！
+
+        路径：'%s'"</string>
     <string name="resigning_apks">"正在对选中的 APK 进行重新签名…"</string>
     <string name="select_storage">"从内部存储中选择"</string>
     <string name="sort_by">"对应用进行排序"</string>
@@ -165,4 +178,49 @@
     <string name="xml_corrupted">"XML 字符串损坏。中断中…"</string>
     <string name="xml_decode_failed">"未能解码 %s"</string>
     <string name="zip_aligning">"正在对齐 Zip…"</string>
+    <string name="delete_folder">"删除文件夹"</string>
+    <string name="delete_selected_files">"删除选中的文件"</string>
+    <string name="export_selected_files">"导出选中的文件"</string>
+    <string name="explore_options">"探索应用时"</string>
+    <string name="explore_options_full">"完整反编译（较慢）"</string>
+    <string name="explore_options_simple">"简单反编译（较快）"</string>
+    <string name="apply">"应用"</string>
+    <string name="batch_options">"批量操作"</string>
+    <string name="choose_new">"选择新的"</string>
+    <string name="copyright_text">"2021–2025, APK Explorer &amp; Editor"</string>
+    <string name="delete_all">"全删"</string>
+    <string name="export_app_batch_question">"导出下列应用？"</string>
+    <string name="export_options_title">"导出选项"</string>
+    <string name="exported_apks_path">"所选应用被导出到：
+
+        '%s'"</string>
+    <string name="exporting_batch">"正在导出所选应用…"</string>
+    <string name="explore_options_quick">"快速编辑（较容易）"</string>
+    <string name="keypair_mismatch_message">"密钥对不匹配！"</string>
+    <string name="keystore_alias_hint">"选择别名"</string>
+    <string name="keystore_alias_password_hint">"输入别名密码"</string>
+    <string name="keystore_alias_unavailable">"未找到 Keystore 别名！"</string>
+    <string name="keystore_loading_failed">"加载 Keystore 失败！"</string>
+    <string name="keystore_password_hint">"输入 Keystore 密码"</string>
+    <string name="password_invalid">"密码不匹配！"</string>
+    <string name="private_key_invalid">"所选的私钥无效！"</string>
+    <string name="quick_edits_app_name">"应用名"</string>
+    <string name="quick_edits_sdk_min">"最低 SDK"</string>
+    <string name="quick_edits_package_name">"包名"</string>
+    <string name="quick_edits_progress_message">"正在应用修改…"</string>
+    <string name="quick_edits_title">"快速编辑"</string>
+    <string name="quick_edits_toast_failed">"生成修改后的 APK 文件失败了。"</string>
+    <string name="quick_edits_toast_success">"生成了修改过的 APK 文件。
+
+        路径：'%s'"</string>
+    <string name="quick_edits_version_code">"版本码"</string>
+    <string name="quick_edits_version_name">"版本名"</string>
+    <string name="reset">"重置"</string>
+    <string name="res_viewer">"资源查看器"</string>
+    <string name="search_files">"搜索文件"</string>
+    <string name="select_all">"全选"</string>
+    <string name="sort_files">"文件排序"</string>
+    <string name="sort_time">"旧到新"</string>
+    <string name="x509_certificate_invalid">"所选的 X509Certificate 无效！"</string>
+    <string name="x509_certificate_requirement_message">"为了用自定义密钥签名 APK 文件，本应用还需要从同一 pk8 密钥导出的 X509Certificate。更多信息请参考文档页。"</string>
 </resources>

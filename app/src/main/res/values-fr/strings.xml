@@ -82,7 +82,6 @@
     <string name="signing_title">"Signature de l'APK"</string>
     <string name="apk_installer">"Installeur d'APK AEE"</string>
     <string name="bundle_install_question">"Êtes-vous sûr•e de vouloir installer le lot d'applications '%s' ?"</string>
-    <string name="export_app_question">"Exporter '%s' vers le stockage de l'appareil ?"</string>
     <string name="export_project_question">"Faire une copie du projet sur le stockage de l'appareil ?"</string>
     <string name="export_project_replace">"'%s' existe déjà. Voulez-vous le remplacer ?"</string>
     <string name="export_resign">"Exporter et re-signer"</string>
@@ -181,4 +180,10 @@
     <string name="delete_folder">"Supprimer le dossier"</string>
     <string name="delete_selected_files">"Supprimer les fichiers sélectionnés"</string>
     <string name="export_selected_files">"Exporter les fichiers sélectionnés"</string>
+    <string name="apply">"Appliquer"</string>
+    <string name="choose_new">"Choisir Nouveau"</string>
+    <string name="delete_all">"Tout Supprimer"</string>
+    <string name="export_options_title">"Options d'exportation "</string>
+    <string name="exporting_batch">"Exporter les apps sélectionnées"</string>
+    <string name="explore_options_quick">"Edition Rapide"</string>
 </resources>

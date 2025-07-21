@@ -17,7 +17,7 @@
     <string name="export_question">"Cihaz depolamasına dışa aktarılsın mı?"</string>
     <string name="export_complete_message">"Seçilmiş kaynak başarıyla '%s' dizinine çıkarıldı"</string>
     <string name="exploring">"%s inceleniyor"</string>
-    <string name="explore_error_status">"%s ncelenemedi!"</string>
+    <string name="explore_error_status">"%s incelenemedi!"</string>
     <string name="install">"Kur"</string>
     <string name="install_question">"%s kurulsun mu?"</string>
     <string name="installing">"%s kuruluyor"</string>
@@ -82,7 +82,6 @@
     <string name="signing_title">"APK İmzalama"</string>
     <string name="apk_installer">"AEE APK Kurucusu"</string>
     <string name="bundle_install_question">"'%s' uygulama paketini yüklemek istediğinizden emin misiniz?"</string>
-    <string name="export_app_question">"'%s' cihaz hafızasına aktarilsin mi?"</string>
     <string name="export_project_question">"Bu proje dosyasını bellekte bir kopyasını almak istiyor musunuz?"</string>
     <string name="export_project_replace">"'%s' zaten var! Üstüne yazılsın mı?"</string>
     <string name="export_resign">"Dışa aktar &amp; yeniden imzala"</string>
