@@ -314,7 +314,7 @@ public class APKsFragment extends Fragment {
             }
     );
 
-    ActivityResultLauncher<Intent> explorerFilePicker = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> explorerFilePicker = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
@@ -327,7 +327,7 @@ public class APKsFragment extends Fragment {
             }
     );
 
-    ActivityResultLauncher<Intent> installerFilePicker = registerForActivityResult(
+    private final ActivityResultLauncher<Intent> installerFilePicker = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
