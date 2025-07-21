@@ -13,6 +13,7 @@ import com.apk.editor.fragments.APKsFragment;
 import com.apk.editor.fragments.AboutFragment;
 import com.apk.editor.fragments.ApplicationsFragment;
 import com.apk.editor.fragments.ProjectsFragment;
+import com.apk.editor.utils.AppSettings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Initialize App Theme & Language
         sThemeUtils.initializeAppTheme(this);
-        sThemeUtils.setLanguage(this);
+        AppSettings.initializeAppLanguage(this);
         setContentView(R.layout.activity_main);
 
         new CrashReporter("E-Mail: apkeditor@protonmail.com", this).initialize();

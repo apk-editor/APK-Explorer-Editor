@@ -3,8 +3,11 @@ package com.apk.editor.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 
 import com.apk.editor.MainActivity;
 import com.apk.editor.R;
@@ -13,11 +16,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sSerializableItems;
 import in.sunilpaulmathew.sCommon.Dialog.sSingleChoiceDialog;
-import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 25, 2021
@@ -33,12 +37,49 @@ public class AppSettings {
     }
 
     private static int getAppLanguagePosition(Context context) {
-        for (int i = 0; i < getAppLanguageMenu(context).length; i++) {
-            if (getLanguage(context).equals(getAppLanguageMenu(context)[i])) {
-                return i;
-            }
+        String country = getCountry(context);
+        switch (getLanguage(context)) {
+            case "pt":
+                return country.equalsIgnoreCase("BR") ? 22 : 21;
+            case "el":
+                return 20;
+            case "th":
+                return 19;
+            case "lt":
+                return 18;
+            case "hi":
+                return 17;
+            case "uk":
+                return 16;
+            case "hu":
+                return 15;
+            case "in":
+                return 14;
+            case "pl":
+                return 13;
+            case "vi":
+                return 12;
+            case "tr":
+                return 11;
+            case "ru":
+                return 10;
+            case "es":
+                return 9;
+            case "fr":
+                return 8;
+            case "en":
+                return country.equalsIgnoreCase("US") ? 7 : 0;
+            case "de":
+                return 6;
+            case "cs":
+                return 5;
+            case "zh":
+                return 4;
+            case "ar":
+                return country.equalsIgnoreCase("SA") ? 3 : country.equalsIgnoreCase("AE") ? 2 : 1;
+            default:
+                return 0;
         }
-        return 0;
     }
 
     public static int getProjectExitingMenuPosition(Context context) {
@@ -146,26 +187,46 @@ public class AppSettings {
         return mData;
     }
 
-    public static String getLanguage(Context context) {
-        switch (sThemeUtils.getLanguage(context)) {
-            case "en_US":
-                return context.getString(R.string.language_en);
+    private static Locale getLocale(Context context) {
+        if (getCountry(context) != null) {
+            return new Locale(getLanguage(context), getCountry(context));
+        } else {
+            return new Locale(getLanguage(context));
+        }
+    }
+
+    private static String getCountry(Context context) {
+        return sCommonUtils.getString("country", java.util.Locale.getDefault().getLanguage(), context);
+    }
+
+    private static String getLanguage(Context context) {
+        return sCommonUtils.getString("appLanguage", java.util.Locale.getDefault().getLanguage(), context);
+    }
+
+    public static String getLanguageDescription(Context context) {
+        String country = getCountry(context);
+        switch (getLanguage(context)) {
+            case "en":
+                return country.equalsIgnoreCase("US") ? context.getString(R.string.language_en, "US")
+                        : context.getString(R.string.app_theme_auto);
             case "ar":
-                return context.getString(R.string.language_ar);
+                return country.equalsIgnoreCase("SA") ? context.getString(R.string.language_ar, "SA")
+                        : country.equalsIgnoreCase("AE") ? context.getString(R.string.language_ar, "AE")
+                        : context.getString(R.string.language_ar, "AR");
             case "fr":
-                return context.getString(R.string.language_fr);
+                return context.getString(R.string.language_fr, "FR");
             case "de":
                 return context.getString(R.string.language_de);
             case "vi":
                 return context.getString(R.string.language_vi);
             case "zh":
-                return context.getString(R.string.language_zh);
+                return context.getString(R.string.language_zh, "Hans");
             case "cs":
                 return context.getString(R.string.language_cs);
             case "tr":
                 return context.getString(R.string.language_tr);
             case "es":
-                return context.getString(R.string.language_es);
+                return context.getString(R.string.language_es, "ES");
             case "ru":
                 return context.getString(R.string.language_ru);
             case "pl":
@@ -184,6 +245,8 @@ public class AppSettings {
                 return context.getString(R.string.language_th);
             case "el":
                 return context.getString(R.string.language_el);
+            case "pt":
+                return context.getString(R.string.language_pt, country.equalsIgnoreCase("BR") ? "BR" : "PT");
             default:
                 return context.getString(R.string.app_theme_auto);
         }
@@ -255,13 +318,15 @@ public class AppSettings {
     private static String[] getAppLanguageMenu(Context context) {
         return new String[] {
                 context.getString(R.string.app_theme_auto),
-                context.getString(R.string.language_ar),
-                context.getString(R.string.language_zh),
+                context.getString(R.string.language_ar, "AR"),
+                context.getString(R.string.language_ar, "AE"),
+                context.getString(R.string.language_ar, "SA"),
+                context.getString(R.string.language_zh, "Hans"),
                 context.getString(R.string.language_cs),
                 context.getString(R.string.language_de),
-                context.getString(R.string.language_en),
-                context.getString(R.string.language_fr),
-                context.getString(R.string.language_es),
+                context.getString(R.string.language_en, "US"),
+                context.getString(R.string.language_fr, "FR"),
+                context.getString(R.string.language_es, "ES"),
                 context.getString(R.string.language_ru),
                 context.getString(R.string.language_tr),
                 context.getString(R.string.language_vi),
@@ -271,7 +336,10 @@ public class AppSettings {
                 context.getString(R.string.language_uk),
                 context.getString(R.string.language_hi),
                 context.getString(R.string.language_lt),
-                context.getString(R.string.language_th)
+                context.getString(R.string.language_th),
+                context.getString(R.string.language_el),
+                context.getString(R.string.language_pt, "PT"),
+                context.getString(R.string.language_pt, "BR")
         };
     }
 
@@ -320,6 +388,14 @@ public class AppSettings {
         };
     }
 
+    public static void initializeAppLanguage(Context context) {
+        Resources res = context.getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.setLocale(getLocale(context));
+        res.updateConfiguration(conf, dm);
+    }
+
     public static void navigateToFragment(Activity activity, int position) {
         BottomNavigationView bottomNavigationView = activity.findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(position);
@@ -333,61 +409,166 @@ public class AppSettings {
             public void onItemSelected(int itemPosition) {
                 switch (itemPosition) {
                     case  0:
+                        if (Objects.equals(getLanguage(context), Locale.getDefault().getLanguage()) && Objects.equals(getCountry(context), Locale.getDefault().getCountry())) {
+                            return;
+                        }
                         sCommonUtils.saveString("appLanguage", java.util.Locale.getDefault().getLanguage(), context);
+                        sCommonUtils.saveString("country", java.util.Locale.getDefault().getCountry(), context);
                         break;
                     case 1:
+                        if (Objects.equals(getLanguage(context), "ar") && Objects.equals(getCountry(context), "AR")) {
+                            return;
+                        }
                         sCommonUtils.saveString("appLanguage", "ar", context);
+                        sCommonUtils.saveString("country", "AR", context);
                         break;
+
                     case 2:
-                        sCommonUtils.saveString("appLanguage", "zh", context);
+                        if (Objects.equals(getLanguage(context), "ar") && Objects.equals(getCountry(context), "AE")) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "ar", context);
+                        sCommonUtils.saveString("country", "AE", context);
                         break;
                     case 3:
-                        sCommonUtils.saveString("appLanguage", "cs", context);
+                        if (Objects.equals(getLanguage(context), "ar") && Objects.equals(getCountry(context), "SA")) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "ar", context);
+                        sCommonUtils.saveString("country", "SA", context);
                         break;
                     case 4:
-                        sCommonUtils.saveString("appLanguage", "de", context);
+                        if (Objects.equals(getLanguage(context), "zh") && Objects.equals(getCountry(context), "CN")) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "zh", context);
+                        sCommonUtils.saveString("country", "CN", context);
                         break;
                     case 5:
-                        sCommonUtils.saveString("appLanguage", "en_US", context);
+                        if (Objects.equals(getLanguage(context), "cs") && Objects.equals(getCountry(context), null)) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "cs", context);
+                        sCommonUtils.saveString("country", null, context);
                         break;
                     case 6:
-                        sCommonUtils.saveString("appLanguage", "fr", context);
+                        if (Objects.equals(getLanguage(context), "de") && Objects.equals(getCountry(context), null)) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "de", context);
+                        sCommonUtils.saveString("country", null, context);
                         break;
                     case 7:
-                        sCommonUtils.saveString("appLanguage", "es", context);
+                        if (Objects.equals(getLanguage(context), "en") && Objects.equals(getCountry(context), "US")) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "en", context);
+                        sCommonUtils.saveString("country", "US", context);
                         break;
                     case 8:
-                        sCommonUtils.saveString("appLanguage", "ru", context);
+                        if (Objects.equals(getLanguage(context), "fr") && Objects.equals(getCountry(context), "FR")) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "fr", context);
+                        sCommonUtils.saveString("country", "FR", context);
                         break;
                     case 9:
-                        sCommonUtils.saveString("appLanguage", "tr", context);
+                        if (Objects.equals(getLanguage(context), "es") && Objects.equals(getCountry(context), "ES")) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "es", context);
+                        sCommonUtils.saveString("country", "ES", context);
                         break;
                     case 10:
-                        sCommonUtils.saveString("appLanguage", "vi", context);
+                        if (Objects.equals(getLanguage(context), "ru") && Objects.equals(getCountry(context), null)) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "ru", context);
+                        sCommonUtils.saveString("country", null, context);
                         break;
                     case 11:
-                        sCommonUtils.saveString("appLanguage", "pl", context);
+                        if (Objects.equals(getLanguage(context), "tr") && Objects.equals(getCountry(context), null)) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "tr", context);
+                        sCommonUtils.saveString("country", null, context);
                         break;
                     case 12:
-                        sCommonUtils.saveString("appLanguage", "in", context);
+                        if (Objects.equals(getLanguage(context), "vi") && Objects.equals(getCountry(context), null)) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "vi", context);
+                        sCommonUtils.saveString("country", null, context);
                         break;
                     case 13:
-                        sCommonUtils.saveString("appLanguage", "hu", context);
+                        if (Objects.equals(getLanguage(context), "pl") && Objects.equals(getCountry(context), null)) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "pl", context);
+                        sCommonUtils.saveString("country", null, context);
                         break;
                     case 14:
-                        sCommonUtils.saveString("appLanguage", "uk", context);
+                        if (Objects.equals(getLanguage(context), "in") && Objects.equals(getCountry(context), null)) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "in", context);
+                        sCommonUtils.saveString("country", null, context);
                         break;
                     case 15:
-                        sCommonUtils.saveString("appLanguage", "hi", context);
+                        if (Objects.equals(getLanguage(context), "hu") && Objects.equals(getCountry(context), null)) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "hu", context);
+                        sCommonUtils.saveString("country", null, context);
                         break;
                     case 16:
-                        sCommonUtils.saveString("appLanguage", "lt", context);
+                        if (Objects.equals(getLanguage(context), "uk") && Objects.equals(getCountry(context), null)) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "uk", context);
+                        sCommonUtils.saveString("country", null, context);
                         break;
                     case 17:
-                        sCommonUtils.saveString("appLanguage", "th", context);
+                        if (Objects.equals(getLanguage(context), "hi") && Objects.equals(getCountry(context), null)) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "hi", context);
+                        sCommonUtils.saveString("country", null, context);
                         break;
                     case 18:
+                        if (Objects.equals(getLanguage(context), "lt") && Objects.equals(getCountry(context), null)) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "lt", context);
+                        sCommonUtils.saveString("country", null, context);
+                        break;
+                    case 19:
+                        if (Objects.equals(getLanguage(context), "th") && Objects.equals(getCountry(context), null)) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "th", context);
+                        sCommonUtils.saveString("country", null, context);
+                        break;
+                    case 20:
+                        if (Objects.equals(getLanguage(context), "el") && Objects.equals(getCountry(context), null)) {
+                            return;
+                        }
                         sCommonUtils.saveString("appLanguage", "el", context);
+                        sCommonUtils.saveString("country", null, context);
+                        break;
+                    case 21:
+                        if (Objects.equals(getLanguage(context), "pt") && Objects.equals(getCountry(context), "PT")) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "pt", context);
+                        sCommonUtils.saveString("country", "PT", context);
+                        break;
+                    case 22:
+                        if (Objects.equals(getLanguage(context), "pt") && Objects.equals(getCountry(context), "BR")) {
+                            return;
+                        }
+                        sCommonUtils.saveString("appLanguage", "pt", context);
+                        sCommonUtils.saveString("country", "BR", context);
                         break;
                 }
                 Intent intent = new Intent(context, MainActivity.class);

@@ -52,7 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         mData.add(new sSerializableItems(null, getString(R.string.user_interface), null, null));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_theme, this), getString(R.string.app_theme), sThemeUtils.getAppTheme(this), null));
-        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_translate, this), getString(R.string.language), AppSettings.getLanguage(this), null));
+        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_translate, this), getString(R.string.language), AppSettings.getLanguageDescription(this), null));
         mData.add(new sSerializableItems(null, getString(R.string.settings_general), null, null));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, this), getString(R.string.explore_options), AppSettings.getExploreOptions(this), null));
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_projects, this), getString(R.string.project_exist_action), AppSettings.getProjectExistAction(this), null));
