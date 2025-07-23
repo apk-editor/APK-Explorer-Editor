@@ -46,7 +46,7 @@ jobs:
 
       # Upload Artifact Build
       - name: Upload APK Release - ${{ env.repository_name }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.repository_name }} - ${{ env.date_today }} - APK release generated
           path: app/build/outputs/apk/full/release/
