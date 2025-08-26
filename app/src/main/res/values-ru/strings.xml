@@ -101,7 +101,7 @@
     <string name="apk_corrupted">"APK файл(ы) поврежден(ы). Завершение…"</string>
     <string name="install_resign">"Подпись &amp; Установка"</string>
     <string name="resign_only">"Только подпись"</string>
-    <string name="resigned_apks_path">"Генерируются переподписаннве APK файл(ы).
+    <string name="resigned_apks_path">"Генерируются переподписанные APK файл(ы).
 
         Путь: '%s'"</string>
     <string name="resigning_apks">"Подпись выбранных APK…"</string>
