@@ -21,3 +21,4 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class com.apk.axml.** { *; }
+-keep class com.android.apksig.** { *; }
