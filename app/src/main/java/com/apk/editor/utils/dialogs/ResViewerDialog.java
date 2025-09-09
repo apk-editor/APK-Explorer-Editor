@@ -33,7 +33,6 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 public class ResViewerDialog extends MaterialAlertDialogBuilder {
 
     private static AlertDialog mAlertDialog = null;
-    private static List<ResEntry> mResourceMap = null;
     private static List<String> mTypes = null;
     private static String mTypeDefault = null;
 
@@ -62,7 +61,8 @@ public class ResViewerDialog extends MaterialAlertDialogBuilder {
 
         setView(rootView);
         setCancelable(false);
-        setPositiveButton(R.string.cancel, (dialog, id) -> mResourceMap = null);
+        setPositiveButton(R.string.cancel, (dialog, id) -> {
+        });
         mAlertDialog = create();
         mAlertDialog.show();
     }
@@ -70,8 +70,10 @@ public class ResViewerDialog extends MaterialAlertDialogBuilder {
     private static sExecutor loadUI(RecyclerView recyclerView, String path, String typeDefault, Activity activity) {
         return new sExecutor() {
             private boolean mSuccess;
+            private List<ResEntry> mResourceMap = null;
             private ProgressDialog mProgressDialog;
             private ResViewerAdapter adapter;
+
             @SuppressLint("StringFormatInvalid")
             @Override
             public void onPreExecute() {
@@ -86,39 +88,43 @@ public class ResViewerDialog extends MaterialAlertDialogBuilder {
                 try (FileInputStream fis = new FileInputStream(path)) {
                     ResourceTableParser parser = new ResourceTableParser(fis);
                     return parser.parse();
-                } catch (IOException ignored) {
+                } catch (IOException ignore) {
                     return null;
                 }
             }
 
             private List<String> extractTypes(List<ResEntry> resMap) {
+                if (resMap == null || resMap.isEmpty()) {
+                    return new ArrayList<>();
+                }
                 List<String> types = new ArrayList<>();
-
                 for (ResEntry entry : resMap) {
                     if (entry.getName() == null) continue;
-
                     int slashIndex = entry.getName().indexOf('/');
                     if (slashIndex == -1) continue;
-
                     String type = entry.getName().substring(1, slashIndex);
                     if (!type.isEmpty() && !types.contains(type)) {
                         types.add(type);
                     }
                 }
-
                 return types;
             }
 
             private List<ResEntry> getData() {
                 List<ResEntry> resItems = new CopyOnWriteArrayList<>();
-                if (mResourceMap != null) {
-                    if (mTypes == null) {
-                        mTypes = extractTypes(mResourceMap);
-                    }
-                    for (ResEntry entry : mResourceMap) {
-                        if (entry.getName() != null && entry.getName().startsWith("@" + (typeDefault != null ? typeDefault : mTypes.get(0)))) {
-                            resItems.add(entry);
-                        }
+                if (mResourceMap == null || mResourceMap.isEmpty()) {
+                    return resItems;
+                }
+                if (mTypes == null) {
+                    mTypes = extractTypes(mResourceMap);
+                }
+                if (mTypes.isEmpty()) {
+                    return resItems;
+                }
+                String defaultType = typeDefault != null ? typeDefault : mTypes.get(0);
+                for (ResEntry entry : mResourceMap) {
+                    if (entry.getName() != null && entry.getName().startsWith("@" + defaultType)) {
+                        resItems.add(entry);
                     }
                 }
                 return resItems;
@@ -129,27 +135,27 @@ public class ResViewerDialog extends MaterialAlertDialogBuilder {
                 if (mResourceMap == null) {
                     mResourceMap = getResourceMap();
                 }
-                if (mResourceMap == null && mTypes.isEmpty()) {
+                if (mResourceMap == null || mResourceMap.isEmpty()) {
                     mSuccess = false;
-                } else {
-                    adapter = new ResViewerAdapter(getData(), path.replace("/resources.arsc", ""), false);
-                    mSuccess = true;
+                    return;
                 }
-                if (typeDefault != null) {
-                    mTypeDefault = typeDefault;
-                } else {
-                    mTypeDefault = mTypes.get(0);
+                mTypes = extractTypes(mResourceMap);
+                if (mTypes.isEmpty()) {
+                    mSuccess = false;
+                    return;
                 }
+                adapter = new ResViewerAdapter(getData(), path.replace("/resources.arsc", ""), false);
+                mSuccess = true;
+                mTypeDefault = typeDefault != null ? typeDefault : mTypes.get(0);
             }
 
             @SuppressLint("StringFormatInvalid")
             @Override
             public void onPostExecute() {
                 mProgressDialog.dismiss();
-
                 if (mSuccess) {
                     recyclerView.setAdapter(adapter);
-                }  else {
+                } else {
                     sCommonUtils.toast(activity.getString(R.string.xml_decode_failed, "resources.arsc"), activity).show();
                     mAlertDialog.dismiss();
                 }
