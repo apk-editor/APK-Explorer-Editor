@@ -60,7 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
         mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_export, this), getString(R.string.export_path_resources), AppSettings.getExportPath(this), null));
         if (APKEditorUtils.isFullVersion(this)) {
             mData.add(new sSerializableItems(null, getString(R.string.signing_title), null, null));
-            mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_android, this), getString(R.string.export_options), AppSettings.getAPKs(this), null));
+            mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_android_app, this), getString(R.string.export_options), AppSettings.getAPKs(this), null));
             mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_installer, this), getString(R.string.installer_action), AppSettings.getInstallerAction(this), null));
             mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_key, this), getString(R.string.sign_apk_with), AppSettings.getAPKSign(this), null));
         }
@@ -188,7 +188,7 @@ public class SettingsActivity extends AppCompatActivity {
                         }
                     }
                 } else if (APKEditorUtils.isFullVersion(this) && position == 9) {
-                    new sSingleChoiceDialog(R.drawable.ic_android, getString(R.string.export_options),
+                    new sSingleChoiceDialog(R.drawable.ic_android_app, getString(R.string.export_options),
                             AppSettings.getExportingAPKMenu(this), AppSettings.getExportingAPKsPosition(this), this) {
 
                         @Override
@@ -196,19 +196,19 @@ public class SettingsActivity extends AppCompatActivity {
                             if (itemPosition == 0) {
                                 sCommonUtils.saveString("exportAPKs", getString(R.string.export_storage), SettingsActivity.this);
                                 mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(
-                                        R.drawable.ic_android, SettingsActivity.this), getString(R.string.export_options), AppSettings
+                                        R.drawable.ic_android_app, SettingsActivity.this), getString(R.string.export_options), AppSettings
                                         .getAPKs(SettingsActivity.this), null));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             } else if (itemPosition == 1) {
                                 sCommonUtils.saveString("exportAPKs", getString(R.string.export_resign), SettingsActivity.this);
                                 mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(
-                                        R.drawable.ic_android, SettingsActivity.this), getString(R.string.export_options), AppSettings
+                                        R.drawable.ic_android_app, SettingsActivity.this), getString(R.string.export_options), AppSettings
                                         .getAPKs(SettingsActivity.this), null));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             } else {
                                 sCommonUtils.saveString("exportAPKs", null, SettingsActivity.this);
                                 mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(
-                                        R.drawable.ic_android, SettingsActivity.this), getString(R.string.export_options), AppSettings
+                                        R.drawable.ic_android_app, SettingsActivity.this), getString(R.string.export_options), AppSettings
                                         .getAPKs(SettingsActivity.this), null));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             }

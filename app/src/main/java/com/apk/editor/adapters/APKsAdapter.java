@@ -65,7 +65,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
             if (data.get(position).getImageDrawable(holder.mAppName.getContext()) != null) {
                 holder.mAppIcon.setImageDrawable(data.get(position).getImageDrawable(holder.mAppName.getContext()));
             } else {
-                holder.mAppIcon.setImageDrawable(ContextCompat.getDrawable(holder.mAppIcon.getContext(), R.drawable.ic_android));
+                holder.mAppIcon.setImageDrawable(ContextCompat.getDrawable(holder.mAppIcon.getContext(), R.drawable.ic_android_app));
                 holder.mAppIcon.setColorFilter(APKEditorUtils.getThemeAccentColor(holder.mAppIcon.getContext()));
             }
             if (data.get(position).getAppName(holder.mAppName.getContext()) != null) {
