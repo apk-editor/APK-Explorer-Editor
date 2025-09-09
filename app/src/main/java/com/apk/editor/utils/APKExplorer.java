@@ -99,7 +99,7 @@ public class APKExplorer {
     }
 
     public static boolean isImageFile(String path) {
-        return path.endsWith(".bmp") || path.endsWith(".png") || path.endsWith(".jpg");
+        return path.endsWith(".bmp") || path.endsWith(".png") || path.endsWith(".jpg") || path.endsWith(".webp");
     }
 
     public static boolean isBinaryXML(String path) {
