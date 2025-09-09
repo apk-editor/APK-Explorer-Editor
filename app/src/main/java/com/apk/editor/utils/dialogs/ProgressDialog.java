@@ -50,6 +50,14 @@ public class ProgressDialog {
         mDialogBuilder.setIcon(icon);
     }
 
+    public void setMessage(int resourceID) {
+        mDialogBuilder.setMessage(resourceID);
+    }
+
+    public void setMessage(CharSequence charSequence) {
+        mDialogBuilder.setMessage(charSequence);
+    }
+
     public void setTitle(int resourceID) {
         mDialogBuilder.setTitle(resourceID);
     }
@@ -62,14 +70,18 @@ public class ProgressDialog {
         mProgressBar.setIndeterminate(b);
     }
 
-    public void setProgress(int progress) {
-        setIndeterminate(false);
-        mProgressBar.setProgress(progress);
-    }
-
     public void setMax(int max) {
         setIndeterminate(false);
         mProgressBar.setMax(max);
+    }
+
+    public void updateProgress(int progress) {
+        if (mProgressBar.getProgress() < mProgressBar.getMax()) {
+            mProgressBar.setProgress(mProgressBar.getProgress() + progress);
+        } else {
+            mProgressBar.setProgress(0);
+            setIndeterminate(true);
+        }
     }
 
 }
