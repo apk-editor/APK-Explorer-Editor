@@ -62,7 +62,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ProjectsAdapter.ViewHolder holder, int position) {
         try {
-            holder.mAppIcon.setImageBitmap(APKExplorer.getAppIcon(data.get(position) + "/.aeeBackup/appData"));
+            if (APKExplorer.getAppIcon(data.get(position) + "/.aeeBackup/appData") != null) {
+                holder.mAppIcon.setImageBitmap(APKExplorer.getAppIcon(data.get(position) + "/.aeeBackup/appData"));
+            }
             if (searchWord != null && Common.isTextMatched((Objects.requireNonNull(APKExplorer.getAppName(data.get(position) + "/.aeeBackup/appData"))), searchWord)) {
                 holder.mAppName.setText(APKEditorUtils.fromHtml(Objects.requireNonNull(APKExplorer.getAppName(data.get(position) + "/.aeeBackup/appData")).replace(searchWord,
                         "<b><i><font color=\"" + Color.RED + "\">" + searchWord + "</font></i></b>")));

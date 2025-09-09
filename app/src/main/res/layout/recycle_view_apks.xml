@@ -23,6 +23,7 @@
                     android:layout_height="40dp"
                     android:background="@null"
                     android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_android_app"
                     android:scaleType="fitCenter"
                     android:clickable="false" />
 
