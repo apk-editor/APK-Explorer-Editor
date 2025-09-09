@@ -241,6 +241,7 @@ public class APKExplorer {
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable == null) return null;
         Bitmap bitmap;
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;

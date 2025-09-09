@@ -118,11 +118,13 @@ public class ExploreAPK extends sExecutor {
 
         // Store basic information about the app
         try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            Bitmap.createScaledBitmap(APKExplorer.drawableToBitmap(mAPKParser.getAppIcon()), 150, 150,
-                    true).compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream.toByteArray();
-            mJSONObject.put("app_icon", Base64.encodeToString(byteArray, Base64.DEFAULT));
+            if (APKExplorer.drawableToBitmap(mAPKParser.getAppIcon()) != null) {
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                Bitmap.createScaledBitmap(APKExplorer.drawableToBitmap(mAPKParser.getAppIcon()), 150, 150,
+                        true).compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                mJSONObject.put("app_icon", Base64.encodeToString(byteArray, Base64.DEFAULT));
+            }
             mJSONObject.put("app_name", mAPKFile != null ? mAPKFile.getName().replace(".apk", "") : sPackageUtils.getAppName(mPackageName, mContext));
             mJSONObject.put("package_name", mPackageName);
             mJSONObject.put("version_info", mContext.getString(R.string.version, mAPKParser.getVersionName() + " (" + mAPKParser.getVersionCode() + ")"));

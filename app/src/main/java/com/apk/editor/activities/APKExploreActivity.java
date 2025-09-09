@@ -42,7 +42,9 @@ public class APKExploreActivity extends AppCompatActivity {
         MaterialTextView mPackageName = findViewById(R.id.package_id);
 
         String mBackupFilePath = getIntent().getStringExtra(BACKUP_PATH_INTENT);
-        mApplicationIcon.setImageBitmap(APKExplorer.getAppIcon(mBackupFilePath));
+        if (APKExplorer.getAppIcon(mBackupFilePath) != null) {
+            mApplicationIcon.setImageBitmap(APKExplorer.getAppIcon(mBackupFilePath));
+        }
         mApplicationName.setText(APKExplorer.getAppName(mBackupFilePath));
         mPackageName.setText(APKExplorer.getPackageName(mBackupFilePath));
         mPackageName.setVisibility(View.VISIBLE);
