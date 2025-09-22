@@ -177,8 +177,9 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
             @Override
             public void removeLine() {
                 new sExecutor() {
-                    private boolean invalid = false;
+                    private boolean invalid = false, removable;
                     private ProgressDialog progressDialog;
+
                     @Override
                     public void onPreExecute() {
                         progressDialog = new ProgressDialog(context);
@@ -190,7 +191,13 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
 
                     @Override
                     public void doInBackground() {
-                        data.remove(position);
+                        if (data.get(position).getEndTag().endsWith("/>") || data.get(position).getEndTag().endsWith(">")) {
+                            data.set(position, new XMLEntry("", "", "", data.get(position).getEndTag().replace("\"", "")));
+                            removable = false;
+                        } else {
+                            data.remove(position);
+                            removable = true;
+                        }
 
                         mXMLString = XMLEditor.xmlEntriesToXML(data, resourceMap);
 
@@ -204,7 +211,11 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                             sCommonUtils.toast(context.getString(R.string.xml_corrupted), context).show();
                         } else {
                             mSave.setVisibility(mXMLString != null ? VISIBLE : GONE);
-                            notifyItemRemoved(position);
+                            if (removable) {
+                                notifyItemRemoved(position);
+                            } else {
+                                notifyItemChanged(position);
+                            }
                             notifyItemRangeChanged(position, getItemCount());
                         }
                     }
