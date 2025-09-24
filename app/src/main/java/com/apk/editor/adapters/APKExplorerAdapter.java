@@ -1,5 +1,6 @@
 package com.apk.editor.adapters;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -18,13 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.ImageViewActivity;
-import com.apk.editor.activities.ResViewerActivity;
 import com.apk.editor.activities.TextEditorActivity;
 import com.apk.editor.activities.TextViewActivity;
 import com.apk.editor.activities.XMLEditorActivity;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.Common;
+import com.apk.editor.utils.dialogs.ResViewerDialog;
 import com.apk.editor.utils.tasks.DeleteFile;
 import com.apk.editor.utils.tasks.ExportToStorage;
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -62,13 +63,13 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
 
     @NonNull
     @Override
-    public APKExplorerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_apkexplorer, parent, false);
-        return new APKExplorerAdapter.ViewHolder(rowItem);
+        return new ViewHolder(rowItem);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull APKExplorerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (new File(data.get(position)).isDirectory()) {
             holder.mIcon.setImageDrawable(ContextCompat.getDrawable(holder.mTitle.getContext(), R.drawable.ic_folder));
             holder.mCheckBox.setVisibility(View.GONE);
@@ -144,10 +145,10 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                             .setNegativeButton(context.getString(R.string.cancel), (dialog, id) -> {
                             })
                             .setPositiveButton(context.getString(R.string.export), (dialog, id) -> {
-                                if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
+                                if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
                                     sPermissionUtils.requestPermission(
                                             new String[]{
-                                                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
                                             }, activity);
                                 } else {
                                     new ExportToStorage(new File(data.get(position)), null, packageName, context).execute();
@@ -210,15 +211,14 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                 } else if (filePath.endsWith(".xml")) {
                     Intent xmlEditor = new Intent(view.getContext(), XMLEditorActivity.class);
                     xmlEditor.putExtra(XMLEditorActivity.PATH_INTENT, filePath);
+                    xmlEditor.putExtra(XMLEditorActivity.RESOURCE_PATH_INTENT, backupFilePath.replace("/.aeeBackup/appData", "/resources.arsc"));
                     view.getContext().startActivity(xmlEditor);
                 } else if (filePath.endsWith(".RSA")) {
                     Intent rsaCertificate = new Intent(view.getContext(), TextViewActivity.class);
                     rsaCertificate.putExtra(TextViewActivity.PATH_INTENT, filePath);
                     view.getContext().startActivity(rsaCertificate);
                 } else if (filePath.endsWith("resources.arsc")) {
-                    Intent intent = new Intent(activity, ResViewerActivity.class);
-                    intent.putExtra(ResViewerActivity.PATH_INTENT, filePath);
-                    activity.startActivity(intent);
+                    new ResViewerDialog(filePath, activity);
                 } else {
                     new MaterialAlertDialogBuilder(view.getContext())
                             .setIcon(R.mipmap.ic_launcher)
@@ -227,10 +227,10 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                             .setNeutralButton(R.string.cancel, (dialog, id) -> {
                             })
                             .setNegativeButton(view.getContext().getString(R.string.export), (dialog, id) -> {
-                                if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, view.getContext())) {
+                                if (sPermissionUtils.isPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, view.getContext())) {
                                     sPermissionUtils.requestPermission(
                                             new String[] {
-                                                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
                                             }, activity);
                                 } else {
                                     new ExportToStorage(new File(filePath), null, packageName, view.getContext()).execute();

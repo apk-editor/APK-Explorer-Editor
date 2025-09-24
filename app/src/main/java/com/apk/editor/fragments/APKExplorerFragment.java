@@ -347,12 +347,16 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
 
             @Override
             public void onPostExecute() {
+                if (!isAdded()) {
+                    return;
+                }
                 mFile = file;
+                String name = Objects.requireNonNull(file.getParentFile()).getName();
                 mTitle.setText(Objects.equals(mFile.getParentFile(), requireActivity().getCacheDir()) ? getString(R.string.root) : file.getName());
-                if (!Objects.requireNonNull(file.getParentFile()).getName().equals(requireActivity().getCacheDir().getName())) {
+                if (!name.equals(requireActivity().getCacheDir().getName())) {
                     mSearchWord.setVisibility(View.GONE);
                 }
-                requireActivity().findViewById((R.id.info_button)).setVisibility(Objects.requireNonNull(file.getParentFile()).getName().equals(requireActivity().getCacheDir().getName()) ? View.VISIBLE : View.GONE);
+                requireActivity().findViewById((R.id.info_button)).setVisibility(name.equals(requireActivity().getCacheDir().getName()) ? View.VISIBLE : View.GONE);
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mProgressLayout.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.VISIBLE);
@@ -395,6 +399,9 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
 
             @Override
             public void onPostExecute() {
+                if (!isAdded()) {
+                    return;
+                }
                 if (searchText == null) {
                     AppData.toggleKeyboard(1, mSearchWord, requireActivity());
                 } else {

@@ -22,7 +22,7 @@ public class PermissionsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mRootView = inflater.inflate(R.layout.textview_layout, container, false);
+        View mRootView = inflater.inflate(R.layout.layout_textview, container, false);
 
         MaterialTextView mText = mRootView.findViewById(R.id.text);
 

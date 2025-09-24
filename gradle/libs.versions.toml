@@ -1,11 +1,12 @@
 [versions]
-apksigVersion = "8.11.0"
-aXMLVersion = "36915c87a0"
+apksigVersion = "8.12.2"
+aXMLVersion = "8614b33b12"
 baksmaliVersion = "2.5.2"
 crashreporterVersion = "6b6c74abaa"
+documentfileVersion = "1.1.0"
 sCommonVersion = "0a9f4f410f"
-agpVersion = "8.11.1"
-materialVersion = "1.12.0"
+agpVersion = "8.12.2"
+materialVersion = "1.13.0"
 zip4jVersion = "2.11.5"
 
 [libraries]
@@ -16,6 +17,7 @@ apkutils = { module = "com.github.sunilpaulmathew.sCommon:apkutils", version.ref
 baksmali = { module = "org.smali:baksmali", version.ref = "baksmaliVersion" }
 crashReporter = { module = "com.github.sunilpaulmathew:CrashReporter", version.ref = "crashreporterVersion" }
 credits = { module = "com.github.sunilpaulmathew.sCommon:credits", version.ref = "sCommonVersion" }
+documentfile = { module = "androidx.documentfile:documentfile", version.ref = "documentfileVersion" }
 fileutils = { module = "com.github.sunilpaulmathew.sCommon:fileutils", version.ref = "sCommonVersion" }
 installerutils = { module = "com.github.sunilpaulmathew.sCommon:installerutils", version.ref = "sCommonVersion" }
 packageutils = { module = "com.github.sunilpaulmathew.sCommon:packageutils", version.ref = "sCommonVersion" }
@@ -28,4 +30,3 @@ zip4j = { module = "net.lingala.zip4j:zip4j", version.ref = "zip4jVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agpVersion" }
-

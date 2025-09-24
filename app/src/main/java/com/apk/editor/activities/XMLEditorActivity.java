@@ -1,32 +1,33 @@
 package com.apk.editor.activities;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.apk.axml.ResourceTableParser;
+import com.apk.axml.aXMLDecoder;
+import com.apk.axml.serializableItems.ResEntry;
+import com.apk.axml.serializableItems.XMLEntry;
 import com.apk.editor.R;
 import com.apk.editor.adapters.XMLEditorAdapter;
-import com.apk.editor.utils.APKExplorer;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.io.File;
-import java.util.ArrayList;
+import org.xmlpull.v1.XmlPullParserException;
 
-import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.List;
+
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
@@ -35,11 +36,12 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class XMLEditorActivity extends AppCompatActivity {
 
-    private ArrayList<String> mData;
+    private List<XMLEntry> mData;
+    private List<ResEntry> mResourceMap;
     private ContentLoadingProgressBar mProgress;
     private RecyclerView mRecyclerView;
-    private String mPath = null, mSearchText = null;
-    public static final String PATH_INTENT = "path";
+    private String mPath = null, mResPath = null, mSearchText = null;
+    public static final String PATH_INTENT = "path", RESOURCE_PATH_INTENT = "resource_path";
     private XMLEditorAdapter mAdapter;
 
     @Override
@@ -54,6 +56,7 @@ public class XMLEditorActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mPath = getIntent().getStringExtra(PATH_INTENT);
+        mResPath = getIntent().getStringExtra(RESOURCE_PATH_INTENT);
 
         if (mPath != null && sFileUtils.exist(new File(mPath))) {
             mTitle.setText(new File(mPath).getName());
@@ -62,7 +65,7 @@ public class XMLEditorActivity extends AppCompatActivity {
             mTitle.setVisibility(View.GONE);
         }
 
-        loadUI(mSearchText);
+        loadUI(mSearchText).execute();
 
         mSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -75,7 +78,7 @@ public class XMLEditorActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loadUI(s.toString().toLowerCase());
+                loadUI(s.toString().toLowerCase()).execute();
             }
         });
 
@@ -93,73 +96,45 @@ public class XMLEditorActivity extends AppCompatActivity {
         });
     }
 
-    private void loadUI(String string) {
-        loadUI(null, string).execute();
-    }
-
-    private sExecutor loadUI(Intent intent, String string) {
+    private sExecutor loadUI(String searchText) {
         return new sExecutor() {
-            private boolean mRemoved = false, mInvalid = false;
-            private int mPosition = RecyclerView.NO_POSITION;
             @Override
             public void onPreExecute() {
                 mRecyclerView.setVisibility(View.GONE);
                 mProgress.setVisibility(View.VISIBLE);
-                if (intent == null) {
-                    mRecyclerView.removeAllViews();
+            }
+
+            private List<ResEntry> getResourceMap() {
+                try (FileInputStream fis = new FileInputStream(mResPath)) {
+                    ResourceTableParser parser = new ResourceTableParser(fis);
+                    return parser.parse();
+                } catch (IOException ignored) {
+                    return null;
                 }
             }
 
             @Override
             public void doInBackground() {
-                if (intent == null) {
-                    mData = APKExplorer.getXMLData(mPath);
-                    if (mData != null && !mData.isEmpty()) {
-                        mAdapter = new XMLEditorAdapter(mData, mPath, string, resultLauncher);
+                mResourceMap = getResourceMap();
+                try (FileInputStream fis = new FileInputStream(mPath)) {
+                    if (mResourceMap != null) {
+                        mData = new aXMLDecoder(fis, mResourceMap).decode();
                     } else {
-                        mInvalid = true;
+                        mData = new aXMLDecoder(fis).decode();
                     }
-                } else {
-                    mRemoved = intent.getBooleanExtra("removed", false);
-                    mPosition = intent.getIntExtra("position", RecyclerView.NO_POSITION);
-                    if (mRemoved) {
-                        mData.remove(mPosition);
-                    } else {
-                        mData.set(mPosition, intent.getStringExtra("newString"));
-                    }
+                } catch (IOException | XmlPullParserException ignored) {
                 }
+                mAdapter = new XMLEditorAdapter(mData, mResourceMap, mPath, mResPath.replace("/resources.arsc", ""), searchText);
             }
 
-            @SuppressLint("StringFormatInvalid")
             @Override
             public void onPostExecute() {
-                if (intent != null) {
-                    if (mRemoved) {
-                        mAdapter.notifyItemRemoved(mPosition);
-                    } else {
-                        mAdapter.notifyItemChanged(mPosition);
-                    }
-                } else {
-                    if (mInvalid) {
-                        sCommonUtils.toast(getString(R.string.xml_decode_failed, new File(mPath).getName()), XMLEditorActivity.this).show();
-                    } else {
-                        mRecyclerView.setAdapter(mAdapter);
-                    }
-                    mSearchText = string;
-                }
+                mSearchText = searchText;
+                mRecyclerView.setAdapter(mAdapter);
                 mProgress.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.VISIBLE);
             }
         };
     }
-
-    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    loadUI(result.getData(), mSearchText).execute();
-                }
-            }
-    );
 
 }

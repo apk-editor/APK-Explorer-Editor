@@ -10,24 +10,18 @@
         android:layout_gravity="center"
         android:padding="10dp" >
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|start"
-            android:tint="?attr/colorPrimary"
-            android:src="@drawable/ic_back"
-            android:background="@null"
-            android:gravity="center" />
-
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="?attr/colorPrimary"
+            android:layout_gravity="start|center"
             android:text="@string/res_viewer"
-            android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
-            style="@style/AppTheme.Title"
-            android:singleLine="true" />
+            android:gravity="start|center"
+            android:singleLine="false"
+            android:textStyle="bold"
+            android:textSize="20sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/menu_button"

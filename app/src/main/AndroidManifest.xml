@@ -37,9 +37,6 @@
         <activity android:name=".activities.ImageViewActivity"
             android:exported="false" />
 
-        <activity android:name=".activities.ResViewerActivity"
-            android:exported="false" />
-
         <activity android:name=".activities.SettingsActivity"
             android:exported="false" />
 

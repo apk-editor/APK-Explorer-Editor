@@ -147,6 +147,8 @@
     <string name="resigned_apks_error">Building is aborted due to errors in assembling \'smali\' files. Please check the \'Details\' to find out more.</string>
     <string name="resigned_apks_path">Re-signed APK file(s) are generated.\n\nPath: \'%s\'</string>
     <string name="resigning_apks">Re-signing selected APK\'s…</string>
+    <string name="res_add_new">Add new value</string>
+    <string name="res_choose_new">Choose new value for \"%s\"</string>
     <string name="res_viewer">Resource Viewer</string>
     <string name="root">Root</string>
     <string name="save">Save</string>
@@ -214,6 +216,7 @@
     <string name="x509_certificate_requirement_message">In order to sign APK\'s with a custom key, AEE also requires the X509Certificate exported from the same pk8 private key. Please refer the Documentation page for more info.</string>
     <string name="xml_corrupted">XML string is corrupted. Aborting…</string>
     <string name="xml_decode_failed">Failed to decode %s</string>
+    <string name="xml_modify_title">Modify this value to</string>
     <string name="yes">Yes</string>
     <string name="zip_aligning">Zip aligning…</string>
 </resources>

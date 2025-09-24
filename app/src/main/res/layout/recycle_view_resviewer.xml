@@ -1,20 +1,56 @@
-<com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/title"
+<com.google.android.material.card.MaterialCardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-    android:layout_margin="5sp"
-    android:clickable="false" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:strokeColor="?attr/colorPrimary"
+    app:cardCornerRadius="15sp"
+    android:layout_margin="5sp" >
 
-    <com.google.android.material.textfield.MaterialAutoCompleteTextView
-        android:id="@+id/value"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_gravity="center"
-        android:imeOptions="actionDone"
-        android:textStyle="bold|italic"
-        android:enabled="false"
-        android:textSize="16sp"
-        android:padding="10dp" />
-</com.google.android.material.textfield.TextInputLayout>
+        android:gravity="center" >
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="5dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="5dp"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="10sp" >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:gravity="start|center"
+                android:textStyle="italic"
+                android:clickable="false"
+                android:singleLine="true" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:gravity="start|center"
+                android:clickable="false"
+                android:textStyle="bold"
+                android:textSize="17sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</com.google.android.material.card.MaterialCardView>

@@ -40,5 +40,10 @@
 
     <include layout="@layout/progress_view" />
 
-    <include layout="@layout/recyclerview_layout" />
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <include layout="@layout/layout_recyclerview" />
+    </HorizontalScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -78,7 +78,7 @@ public class TextEditorActivity extends AppCompatActivity {
             public void doInBackground() {
                 if (APKExplorer.isBinaryXML(mPath)) {
                     try (FileInputStream fis = new FileInputStream(mPath)) {
-                        text = new aXMLDecoder(fis).decode().trim();
+                        text = new aXMLDecoder(fis).decodeAsString();
                     } catch (Exception e) {
                         invalid = true;
                     }

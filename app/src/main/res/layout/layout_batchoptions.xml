@@ -40,5 +40,5 @@
             android:clickable="false" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <include layout="@layout/recyclerview_layout" />
+    <include layout="@layout/layout_recyclerview" />
 </androidx.appcompat.widget.LinearLayoutCompat>

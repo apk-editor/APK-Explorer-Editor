@@ -29,7 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,7 +36,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -90,22 +88,6 @@ public class APKExplorer {
             mData.addAll(mFiles);
         } catch (NullPointerException ignored) {
             activity.finish();
-        }
-        return mData;
-    }
-
-    public static ArrayList<String> getXMLData(String path) {
-        String xmlText = null;
-        if (isBinaryXML(path)) {
-            try (FileInputStream fis = new FileInputStream(path)) {
-                xmlText = new aXMLDecoder(fis).decode().trim();
-            } catch (IOException | XmlPullParserException ignored) {}
-        } else {
-            xmlText = sFileUtils.read(new File(path));
-        }
-        ArrayList<String> mData = new ArrayList<>();
-        for (String line : Objects.requireNonNull(xmlText).split(">\\n" + " {4}")) {
-            mData.add(line.endsWith(">") ? "\t" + line : "\t" + line + ">");
         }
         return mData;
     }
@@ -206,7 +188,7 @@ public class APKExplorer {
         String text = null;
         if (isBinaryXML(path)) {
             try (FileInputStream fis = new FileInputStream(path) ){
-                text = new aXMLDecoder(fis).decode().trim();
+                text = new aXMLDecoder(fis).decodeAsString();
             } catch (Exception e) {
                 sCommonUtils.toast(context.getString(R.string.xml_decode_failed, new File(path).getName()), context).show();
             }

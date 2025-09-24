@@ -27,7 +27,7 @@ public class APKEditorUtils {
     }
 
     public static boolean isFullVersion(Context context) {
-        return context.getPackageName().equals("com.apk.editor");
+        return context.getPackageName().equals("com.apk.editor") || context.getPackageName().equals("com.apk.editor.debug");
     }
 
     public static CharSequence fromHtml(String text) {
