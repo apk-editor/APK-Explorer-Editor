@@ -1,5 +1,10 @@
 package com.apk.editor.adapters;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,43 +13,44 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.apk.axml.aXMLEncoder;
 import com.apk.axml.serializableItems.ResEntry;
 import com.apk.axml.serializableItems.XMLEntry;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.XMLEditor;
+import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.apk.editor.utils.dialogs.ResEditorDialog;
 import com.apk.editor.utils.dialogs.XMLEditorDialog;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
-import in.sunilpaulmathew.sCommon.Dialog.sSingleChoiceDialog;
+import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on October 27, 2024
  */
 public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.ViewHolder> {
 
+    private final Activity activity;
     private final List<XMLEntry> data;
     private final List<ResEntry> resourceMap;
     private final String filePath, rootPath, searchWord;
     private final OnPickImageListener pickImageListener;
+    private String mXMLString = null;
+    private MaterialButton mSave;
 
-    public XMLEditorAdapter(List<XMLEntry> data, List<ResEntry> resourceMap, OnPickImageListener listener, String filePath, String rootPath, String searchWord) {
+    public XMLEditorAdapter(List<XMLEntry> data, List<ResEntry> resourceMap, OnPickImageListener listener, String filePath, String rootPath, String searchWord, Activity activity) {
         this.data = data;
         this.resourceMap = resourceMap;
         this.pickImageListener = listener;
         this.filePath = filePath;
         this.rootPath = rootPath;
         this.searchWord = searchWord;
+        this.activity = activity;
     }
 
     @NonNull
@@ -59,10 +65,14 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
         if (searchWord == null || data.get(position).getText().contains(searchWord)) {
             holder.mText.setAlpha(data.get(position).getValue().isEmpty() ? (float) 0.5 : 1);
             holder.mText.setText(data.get(position).getText());
-            holder.mText.setVisibility(View.VISIBLE);
+            holder.mText.setVisibility(VISIBLE);
         } else {
-            holder.mText.setVisibility(View.GONE);
+            holder.mText.setVisibility(GONE);
         }
+
+        mSave = activity.findViewById(R.id.save);
+
+        mSave.setOnClickListener(v -> XMLEditor.encodeToBinaryXML(mXMLString, filePath, activity).execute());
     }
 
     @Override
@@ -80,17 +90,42 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
             this.mText = view.findViewById(R.id.text);
         }
 
+        @SuppressLint("StringFormatInvalid")
         @Override
         public void onClick(View view) {
             int position = getBindingAdapterPosition();
             if (!APKEditorUtils.isFullVersion(view.getContext()) || data.get(position).getValue().isEmpty()) return;
             if (data.get(position).getTag().trim().equals("android:label") || data.get(position).getValue().startsWith("res/")) {
-                if (data.get(position).getTag().trim().equals("android:icon") || data.get(position).getTag().trim().equals("android:roundIcon")) {
-                    new sSingleChoiceDialog(R.drawable.ic_image, view.getContext().getString(R.string.xml_editor_icon_title),
-                            new String[] {
-                                    view.getContext().getString(R.string.xml_editor_icon_res),
-                                    view.getContext().getString(R.string.xml_editor_icon_storage)
-                            }, 0, view.getContext()) {
+                if (data.get(position).getTag().trim().equals("android:label")) {
+                    new sSingleItemDialog(R.drawable.ic_image, view.getContext().getString(R.string.xml_editor_res_title),
+                            new String[]{
+                                    view.getContext().getString(R.string.xml_editor_res),
+                                    view.getContext().getString(R.string.xml_editor_text)
+                            }, view.getContext()) {
+
+                        @Override
+                        public void onItemSelected(int itemPosition) {
+                            switch (itemPosition) {
+                                case 0:
+                                    chooseResDialog(position, view.getContext());
+                                    break;
+                                case 1:
+                                    launchEditorDialog(position, view.getContext());
+                                    break;
+                            }
+                        }
+                    }.show();
+                } else if (data.get(position).getTag().trim().equals("android:icon") || data.get(position).getTag().trim().equals("android:roundIcon")) {
+                    new sSingleItemDialog(R.drawable.ic_image, view.getContext().getString(R.string.xml_editor_res_title),
+                            !data.get(position).getValue().endsWith(".xml") ?
+                                    new String[] {
+                                            view.getContext().getString(R.string.xml_editor_res),
+                                            view.getContext().getString(R.string.xml_editor_storage),
+                                            view.getContext().getString(R.string.xml_editor_text)
+                                    } : new String[] {
+                                    view.getContext().getString(R.string.xml_editor_res),
+                                    view.getContext().getString(R.string.xml_editor_text)
+                            }, view.getContext()) {
 
                         @Override
                         public void onItemSelected(int itemPosition) {
@@ -99,9 +134,16 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                                     chooseResDialog(position, view.getContext());
                                     break;
                                 case 1:
-                                    if (pickImageListener != null) {
-                                        pickImageListener.onPickImageRequested(data.get(position));
+                                    if (!data.get(position).getValue().endsWith(".xml")) {
+                                        if (pickImageListener != null) {
+                                            pickImageListener.onPickImageRequested(data.get(position));
+                                        }
+                                    } else {
+                                        launchEditorDialog(position, view.getContext());
                                     }
+                                    break;
+                                case 2:
+                                    launchEditorDialog(position, view.getContext());
                                     break;
                             }
                         }
@@ -118,12 +160,8 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
     private void chooseResDialog(int position, Context context) {
         new ResEditorDialog(data.get(position), resourceMap, rootPath, context) {
             @Override
-            public void apply(boolean editor, String newValue) {
-                if (editor) {
-                    launchEditorDialog(position, context);
-                } else {
-                    modify(newValue, position, context).execute();
-                }
+            public void apply(String newValue) {
+                modify(newValue, position, context).execute();
             }
         };
     }
@@ -140,38 +178,32 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
             public void removeLine() {
                 new sExecutor() {
                     private boolean invalid = false;
+                    private ProgressDialog progressDialog;
                     @Override
                     public void onPreExecute() {
+                        progressDialog = new ProgressDialog(context);
+                        progressDialog.setTitle(context.getString(R.string.quick_edits_progress_message));
+                        progressDialog.setIcon(R.mipmap.ic_launcher);
+                        progressDialog.setIndeterminate(true);
+                        progressDialog.show();
                     }
 
                     @Override
                     public void doInBackground() {
                         data.remove(position);
 
-                        StringBuilder sb = new StringBuilder();
-                        for (XMLEntry items : data) {
-                            if (!items.getTag().trim().equals("android:debuggable") && !items.getTag().trim().equals("android:testOnly")) {
-                                sb.append(items.getText(resourceMap)).append("\n");
-                            }
-                        }
+                        mXMLString = XMLEditor.xmlEntriesToXML(data, resourceMap);
 
-                        if (APKExplorer.isXMLValid(sb.toString().trim())) {
-                            try (FileOutputStream fos = new FileOutputStream(filePath)) {
-                                aXMLEncoder aXMLEncoder = new aXMLEncoder();
-                                byte[] bs = aXMLEncoder.encodeString(context, sb.toString().trim());
-                                fos.write(bs);
-                            } catch (IOException | XmlPullParserException ignored) {
-                            }
-                        } else  {
-                            invalid = true;
-                        }
+                        invalid = !XMLEditor.isXMLValid(mXMLString);
                     }
 
                     @Override
                     public void onPostExecute() {
+                        progressDialog.dismiss();
                         if (invalid) {
                             sCommonUtils.toast(context.getString(R.string.xml_corrupted), context).show();
                         } else {
+                            mSave.setVisibility(mXMLString != null ? VISIBLE : GONE);
                             notifyItemRemoved(position);
                             notifyItemRangeChanged(position, getItemCount());
                         }
@@ -184,45 +216,32 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
     private sExecutor modify(String newValue, int position, Context context) {
         return new sExecutor() {
             private boolean invalid = false;
+            private ProgressDialog progressDialog;
             @Override
             public void onPreExecute() {
-            }
-
-            private StringBuilder getStringBuilder() {
-                StringBuilder sb = new StringBuilder();
-
-                for (XMLEntry xmlEntry : data) {
-                    if (!xmlEntry.getTag().trim().equals("android:debuggable") && !xmlEntry.getTag().trim().equals("android:testOnly")) {
-                        sb.append(xmlEntry.getText(resourceMap)).append("\n");
-                    }
-                }
-
-                return sb;
+                progressDialog = new ProgressDialog(context);
+                progressDialog.setTitle(context.getString(R.string.quick_edits_progress_message));
+                progressDialog.setIcon(R.mipmap.ic_launcher);
+                progressDialog.setIndeterminate(true);
+                progressDialog.show();
             }
 
             @Override
             public void doInBackground() {
                 data.get(position).setValue(newValue);
 
-                StringBuilder sb = getStringBuilder();
+                mXMLString = XMLEditor.xmlEntriesToXML(data, resourceMap);
 
-                if (APKExplorer.isXMLValid(sb.toString().trim())) {
-                    try (FileOutputStream fos = new FileOutputStream(filePath)) {
-                        aXMLEncoder aXMLEncoder = new aXMLEncoder();
-                        byte[] bs = aXMLEncoder.encodeString(context, sb.toString().trim());
-                        fos.write(bs);
-                    } catch (IOException | XmlPullParserException ignored) {
-                    }
-                } else  {
-                    invalid = true;
-                }
+                invalid = !XMLEditor.isXMLValid(mXMLString);
             }
 
             @Override
             public void onPostExecute() {
+                progressDialog.dismiss();
                 if (invalid) {
                     sCommonUtils.toast(context.getString(R.string.xml_corrupted), context).show();
                 } else {
+                    mSave.setVisibility(mXMLString != null ? VISIBLE : GONE);
                     notifyItemChanged(position);
                 }
             }

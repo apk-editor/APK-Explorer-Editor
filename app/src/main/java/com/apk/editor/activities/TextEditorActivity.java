@@ -16,6 +16,7 @@ import com.apk.axml.aXMLEncoder;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.XMLEditor;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -123,7 +124,7 @@ public class TextEditorActivity extends AppCompatActivity {
                                 @Override
                                 public void doInBackground() {
                                     if (APKExplorer.isBinaryXML(mPath)) {
-                                        if (APKExplorer.isXMLValid(text)) {
+                                        if (XMLEditor.isXMLValid(text)) {
                                             try (FileOutputStream fos = new FileOutputStream(mPath)) {
                                                 aXMLEncoder aXMLEncoder = new aXMLEncoder();
                                                 byte[] bs = aXMLEncoder.encodeString(TextEditorActivity.this, text);

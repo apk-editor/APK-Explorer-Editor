@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -23,6 +22,7 @@ import com.apk.editor.adapters.QuickEditsAdapter;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.SerializableItems.QuickEditsItems;
 import com.apk.editor.utils.SplitAPKInstaller;
+import com.apk.editor.utils.XMLEditor;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -56,7 +56,6 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
  */
 public class QuickEditsActivity extends AppCompatActivity {
 
-    public static final String APK_PATH_INTENT = "apk_path", PACKAGE_NAME_INTENT = "package_name", URI_INTENT = "apk_uri";
     private static List<QuickEditsItems> mData;
     private static List<XMLEntry> mXMLData;
     private List<ResEntry> mResourceMap;
@@ -64,6 +63,7 @@ public class QuickEditsActivity extends AppCompatActivity {
     private static Uri mUri;
     private RecyclerView mRecyclerView;
     private QuickEditsAdapter mAdapter;
+    public static final String APK_PATH_INTENT = "apk_path", PACKAGE_NAME_INTENT = "package_name", URI_INTENT = "apk_uri";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -144,7 +144,7 @@ public class QuickEditsActivity extends AppCompatActivity {
                             InputStream source;
                             if (in.getName().equals("AndroidManifest.xml")) {
                                 out = new ZipEntry(in);
-                                byte[] encodedData = new aXMLEncoder().encodeString(QuickEditsActivity.this, getStringBuilder(mXMLData).toString().trim());
+                                byte[] encodedData = new aXMLEncoder().encodeString(QuickEditsActivity.this, XMLEditor.xmlEntriesToXML(mXMLData, mResourceMap));
                                 out.setSize(encodedData.length);
                                 source = new ByteArrayInputStream(encodedData);
                             } else {
@@ -168,17 +168,6 @@ public class QuickEditsActivity extends AppCompatActivity {
                         }
                     } catch (IOException | XmlPullParserException ignored) {
                     }
-                }
-
-                @NonNull
-                private StringBuilder getStringBuilder(List<XMLEntry> xmlItems) {
-                    StringBuilder sb = new StringBuilder();
-                    for (XMLEntry items : xmlItems) {
-                        if (!items.getTag().trim().equals("android:debuggable") && !items.getTag().trim().equals("android:testOnly")) {
-                            sb.append(items.getText(mResourceMap)).append("\n");
-                        }
-                    }
-                    return sb;
                 }
 
                 @Override

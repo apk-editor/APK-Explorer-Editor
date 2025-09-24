@@ -216,9 +216,10 @@
     <string name="x509_certificate_requirement_message">In order to sign APK\'s with a custom key, AEE also requires the X509Certificate exported from the same pk8 private key. Please refer the Documentation page for more info.</string>
     <string name="xml_corrupted">XML string is corrupted. Aborting…</string>
     <string name="xml_decode_failed">Failed to decode %s</string>
-    <string name="xml_editor_icon_title">Modify this icon from:</string>
-    <string name="xml_editor_icon_res">Resource folder</string>
-    <string name="xml_editor_icon_storage">Device storage</string>
+    <string name="xml_editor_res_title">Modify this resource:</string>
+    <string name="xml_editor_res">from Resource folder</string>
+    <string name="xml_editor_storage">from Device storage</string>
+    <string name="xml_editor_text">by Hardcoding</string>
     <string name="xml_modify_title">Modify this value to</string>
     <string name="yes">Yes</string>
     <string name="zip_aligning">Zip aligning…</string>

@@ -3,11 +3,13 @@ package com.apk.editor.adapters;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -93,6 +95,7 @@ public class ResViewerAdapter extends RecyclerView.Adapter<ResViewerAdapter.View
             this.mValue = view.findViewById(R.id.value);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onClick(View view) {
             if (clickable) {

@@ -1,9 +1,8 @@
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:layout_width="match_parent" >
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -92,9 +91,8 @@
         android:id="@+id/add_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
         style="?attr/materialIconButtonFilledTonalStyle"
+        android:layout_gravity="bottom|center"
         android:text="@string/select_storage"
         android:layout_marginStart="15sp"
         android:layout_marginEnd="15sp"
@@ -105,4 +103,4 @@
         android:textSize="15sp"
         android:padding="15sp"
         app:iconPadding="5sp" />
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

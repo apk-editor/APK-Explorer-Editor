@@ -26,12 +26,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.axml.ResourceTableParser;
 import com.apk.axml.aXMLDecoder;
+import com.apk.axml.aXMLEncoder;
 import com.apk.axml.serializableItems.ResEntry;
 import com.apk.axml.serializableItems.XMLEntry;
 import com.apk.editor.R;
 import com.apk.editor.adapters.XMLEditorAdapter;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.XMLEditor;
 import com.apk.editor.utils.dialogs.ProgressDialog;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
@@ -46,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
@@ -70,6 +74,7 @@ public class XMLEditorActivity extends AppCompatActivity {
 
         mProgress = findViewById(R.id.progress);
         MaterialAutoCompleteTextView mSearch = findViewById(R.id.search);
+        MaterialButton mSave = findViewById(R.id.save);
         MaterialTextView mTitle = findViewById(R.id.title);
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -107,6 +112,16 @@ public class XMLEditorActivity extends AppCompatActivity {
                 if (mProgress.getVisibility() == View.VISIBLE) {
                     return;
                 }
+                if (mSave.getVisibility() == View.VISIBLE) {
+                    new MaterialAlertDialogBuilder(XMLEditorActivity.this)
+                            .setIcon(R.mipmap.ic_launcher)
+                            .setTitle(R.string.discard_message)
+                            .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                            })
+                            .setPositiveButton(R.string.discard, (dialogInterface, i) -> finish())
+                            .show();
+                    return;
+                }
                 if (mSearchText != null) {
                     mSearch.setText(null);
                 }
@@ -117,6 +132,8 @@ public class XMLEditorActivity extends AppCompatActivity {
 
     private sExecutor loadUI(String searchText) {
         return new sExecutor() {
+            private boolean failed;
+
             @Override
             public void onPreExecute() {
                 mRecyclerView.setVisibility(View.GONE);
@@ -144,23 +161,35 @@ public class XMLEditorActivity extends AppCompatActivity {
                 } catch (IOException | XmlPullParserException ignored) {
                 }
 
-                mAdapter = new XMLEditorAdapter(mData, mResourceMap,
-                        (xmlEntry) -> {
-                            mXMLEntry = xmlEntry;
+                if (mData != null && !mData.isEmpty()) {
+                    mAdapter = new XMLEditorAdapter(mData, mResourceMap,
+                            (xmlEntry) -> {
+                                mXMLEntry = xmlEntry;
 
-                            Intent pickImage = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            try {
-                                chooseImage.launch(pickImage);
-                            } catch (ActivityNotFoundException ignored) {}
-                        }, mPath, mResPath.replace("/resources.arsc", ""), searchText);
+                                Intent pickImage = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                try {
+                                    chooseImage.launch(pickImage);
+                                } catch (ActivityNotFoundException ignored) {
+                                }
+                            }, mPath, mResPath.replace("/resources.arsc", ""), searchText, XMLEditorActivity.this);
+                    failed = false;
+                } else {
+                    failed = true;
+                }
             }
 
+            @SuppressLint("StringFormatInvalid")
             @Override
             public void onPostExecute() {
-                mSearchText = searchText;
-                mRecyclerView.setAdapter(mAdapter);
                 mProgress.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.VISIBLE);
+                if (failed) {
+                    sCommonUtils.toast(getString(R.string.xml_decode_failed, new File(mPath).getName()), mRecyclerView.getContext()).show();
+                    finish();
+                } else {
+                    mSearchText = searchText;
+                    mRecyclerView.setAdapter(mAdapter);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
             }
         };
     }
@@ -237,6 +266,7 @@ public class XMLEditorActivity extends AppCompatActivity {
                             imageViewNew.setImageBitmap(bitmapNew);
                             mProgressDialog.dismiss();
                             new MaterialAlertDialogBuilder(activity)
+                                    .setIcon(R.drawable.ic_edit)
                                     .setTitle(getString(R.string.replace_question, tag))
                                     .setCancelable(false)
                                     .setView(rootView)
@@ -254,36 +284,65 @@ public class XMLEditorActivity extends AppCompatActivity {
                                                     mProgressDialog.show();
                                                 }
 
+                                                private String updatedXMLString(FileInputStream fis, String newTxt) throws XmlPullParserException, IOException {
+                                                    List<XMLEntry> xmlEntries = new aXMLDecoder(fis, mResourceMap).decode();
+                                                    StringBuilder sb = new StringBuilder();
+                                                    for (XMLEntry entry : xmlEntries) {
+                                                        if (entry.getTag().trim().equals("android:drawable") && entry.getValue().startsWith("res/")) {
+                                                            sb.append(entry.getTag()).append(entry.getMiddleTag()).append(newTxt).append(entry.getEndTag()).append("\n");
+                                                        } else {
+                                                            sb.append(entry.getText(mResourceMap)).append("\n");
+                                                        }
+                                                    }
+                                                    return sb.toString().trim();
+                                                }
+
+                                                private void encodeXML(String xml, String path) {
+                                                    try (FileOutputStream fos = new FileOutputStream(path)) {
+                                                        aXMLEncoder aXMLEncoder = new aXMLEncoder();
+                                                        byte[] bs = aXMLEncoder.encodeString(activity, xml);
+                                                        fos.write(bs);
+                                                    } catch (IOException | XmlPullParserException ignored) {
+                                                    }
+                                                }
+
                                                 @Override
                                                 public void doInBackground() {
                                                     mProgressDialog.setMax(getRefs().size());
                                                     for (String paths : getRefs()) {
                                                         String filePath = mResPath.replace("resources.arsc", paths);
-                                                        Uri fileUri = APKExplorer.getIconFromPath(filePath);
-                                                        String fileExt = APKExplorer.getExt(filePath);
+                                                        if (filePath.endsWith(".xml")) {
+                                                            try (FileInputStream fis = new FileInputStream(filePath)) {
+                                                                encodeXML(updatedXMLString(fis, getRefs().get(0)), filePath);
+                                                            } catch (IOException |
+                                                                     XmlPullParserException ignored) {}
+                                                        } else {
+                                                            Uri fileUri = APKExplorer.getIconFromPath(filePath);
+                                                            String fileExt = XMLEditor.getExt(filePath);
 
-                                                        try {
-                                                            Bitmap bitmap;
-                                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                                                                ImageDecoder.Source source = ImageDecoder.createSource(activity.getContentResolver(), Objects.requireNonNull(fileUri));
-                                                                bitmap = ImageDecoder.decodeBitmap(source);
-                                                            } else {
-                                                                bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), fileUri);
+                                                            try {
+                                                                Bitmap bitmap;
+                                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                                                    ImageDecoder.Source source = ImageDecoder.createSource(activity.getContentResolver(), Objects.requireNonNull(fileUri));
+                                                                    bitmap = ImageDecoder.decodeBitmap(source);
+                                                                } else {
+                                                                    bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), fileUri);
+                                                                }
+                                                                if (bitmap == null) return;
+
+                                                                int width = bitmap.getWidth() > 0 ? bitmap.getWidth() : 1;
+                                                                int height = bitmap.getHeight() > 0 ? bitmap.getHeight() : 1;
+
+                                                                Bitmap scaled = Bitmap.createScaledBitmap(bitmapNew, width, height, true);
+                                                                FileOutputStream out = new FileOutputStream(filePath);
+                                                                scaled.compress(fileExt.equalsIgnoreCase("webp") ? Bitmap.CompressFormat.WEBP : fileExt.equalsIgnoreCase("png") ? Bitmap.CompressFormat.PNG : Bitmap.CompressFormat.JPEG, 100, out);
+                                                                out.flush();
+                                                                out.close();
+                                                            } catch (IOException ignored) {
                                                             }
-                                                            if (bitmap == null) return;
-
-                                                            int width = bitmap.getWidth() > 0 ? bitmap.getWidth() : 1;
-                                                            int height = bitmap.getHeight() > 0 ? bitmap.getHeight() : 1;
-
-                                                            Bitmap scaled = Bitmap.createScaledBitmap(bitmapNew, width, height, true);
-                                                            FileOutputStream out = new FileOutputStream(filePath);
-                                                            scaled.compress(fileExt.equalsIgnoreCase("webp") ? Bitmap.CompressFormat.WEBP : fileExt.equalsIgnoreCase("png") ? Bitmap.CompressFormat.PNG : Bitmap.CompressFormat.JPEG, 100, out);
-                                                            out.flush();
-                                                            out.close();
-                                                        } catch (IOException ignored) {
                                                         }
+                                                        mProgressDialog.updateProgress(1);
                                                     }
-                                                    mProgressDialog.setProgress(mProgressDialog.getProgress() + 1);
                                                 }
 
                                                 @Override

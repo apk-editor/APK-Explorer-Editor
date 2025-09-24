@@ -27,22 +27,15 @@ import com.apk.editor.utils.tasks.ResignAPKs;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringReader;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
@@ -134,15 +127,6 @@ public class APKExplorer {
 
     private static boolean isSupportedFile(String path) {
         return path.endsWith(".apk") || path.endsWith(".apks") || path.endsWith(".apkm") || path.endsWith(".xapk");
-    }
-
-    public static boolean isXMLValid(String xmlString) {
-        try {
-            SAXParserFactory.newInstance().newSAXParser().getXMLReader().parse(new InputSource(new StringReader(xmlString)));
-            return true;
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            return false;
-        }
     }
 
     public static JSONObject getAppData(String path) {
@@ -258,22 +242,6 @@ public class APKExplorer {
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
         return bitmap;
-    }
-
-    public static String getExt(String filePath) {
-        if (filePath == null || filePath.isEmpty()) {
-            return null;
-        }
-        String normalized = filePath.replace("\\", "/");
-
-        int lastSlash = normalized.lastIndexOf("/");
-        String fileName = (lastSlash == -1) ? normalized : normalized.substring(lastSlash + 1);
-
-        int lastDot = fileName.lastIndexOf(".");
-        if (lastDot == -1 || lastDot == fileName.length() - 1) {
-            return null;
-        }
-        return fileName.substring(lastDot + 1);
     }
 
     public static String getFormattedFileSize(File file) {

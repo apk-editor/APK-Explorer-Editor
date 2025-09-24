@@ -1,6 +1,6 @@
 [versions]
 apksigVersion = "8.12.2"
-aXMLVersion = "8614b33b12"
+aXMLVersion = "51db0eecad"
 baksmaliVersion = "2.5.2"
 crashreporterVersion = "6b6c74abaa"
 documentfileVersion = "1.1.0"

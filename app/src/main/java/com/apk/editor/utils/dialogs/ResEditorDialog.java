@@ -11,15 +11,12 @@ import com.apk.axml.serializableItems.ResEntry;
 import com.apk.axml.serializableItems.XMLEntry;
 import com.apk.editor.R;
 import com.apk.editor.adapters.ResViewerAdapter;
-import com.apk.editor.utils.APKExplorer;
-import com.google.android.material.button.MaterialButton;
+import com.apk.editor.utils.XMLEditor;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 
 /*
@@ -31,21 +28,12 @@ public abstract class ResEditorDialog extends MaterialAlertDialogBuilder {
 
     public ResEditorDialog(XMLEntry xmlEntry, List<ResEntry> resourceMap, String rootPath, Context context) {
         super(context);
-        View rootView = View.inflate(context, R.layout.layout_resviewer, null);
-        MaterialTextView title = rootView.findViewById(R.id.title);
-        MaterialButton menu = rootView.findViewById(R.id.menu_button);
+        View rootView = View.inflate(context, R.layout.layout_recyclerview, null);
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        title.setText(context.getString(R.string.res_choose_new, xmlEntry.getTag().trim()));
-        menu.setIcon(sCommonUtils.getDrawable(R.drawable.ic_add, context));
-
-        menu.setOnClickListener(v -> {
-            apply(true, null);
-            alertDialog.dismiss();
-        });
-
-        setView(rootView);
+        setView(rootView);setIcon(R.drawable.ic_edit);
+        setTitle(context.getString(R.string.res_choose_new, xmlEntry.getTag().trim()));
         setPositiveButton(R.string.cancel, (dialog, id) -> {
         });
 
@@ -89,7 +77,7 @@ public abstract class ResEditorDialog extends MaterialAlertDialogBuilder {
                         if (xmlEntry.getTag().trim().equals("android:label") && entry.getName().startsWith("@string/")) {
                             resItems.add(entry);
                         }
-                        if (!xmlEntry.getTag().trim().equals("android:label") && entry.getValue().startsWith(getParentDir(xmlEntry.getValue())) && entry.getValue().endsWith(APKExplorer.getExt(xmlEntry.getValue()))) {
+                        if (!xmlEntry.getTag().trim().equals("android:label") && entry.getValue().startsWith(getParentDir(xmlEntry.getValue())) && entry.getValue().endsWith(XMLEditor.getExt(xmlEntry.getValue()))) {
                             resItems.add(entry);
                         }
                     }
@@ -104,13 +92,13 @@ public abstract class ResEditorDialog extends MaterialAlertDialogBuilder {
                 recyclerView.setAdapter(adapter);
 
                 adapter.setOnItemClickListener((newValue, v) -> {
-                    apply(false, newValue);
+                    apply(newValue);
                     alertDialog.dismiss();
                 });
             }
         };
     }
 
-    public abstract void apply(boolean editor, String newValue);
+    public abstract void apply(String newValue);
 
 }
