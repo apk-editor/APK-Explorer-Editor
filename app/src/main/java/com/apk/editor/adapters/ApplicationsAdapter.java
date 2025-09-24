@@ -4,12 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -102,27 +99,18 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
             holder.mSize.setVisibility(View.VISIBLE);
             holder.mVersion.setVisibility(View.VISIBLE);
             holder.mCard.setOnLongClickListener(v -> {
-                animate(v, data.get(position).getPackageName());
+                String packageName = data.get(position).getPackageName();
+                mlongClicked = !mlongClicked;
+                if (packageNames.contains(packageName)) {
+                    packageNames.remove(packageName);
+                } else {
+                    packageNames.add(packageName);
+                }
+                activity.findViewById(R.id.batch_options).setVisibility(packageNames.isEmpty() ? View.GONE : View.VISIBLE);
+                notifyItemRangeChanged(0, getItemCount());
                 return true;
             });
         } catch (NullPointerException | IndexOutOfBoundsException ignored) {}
-    }
-
-    private void animate(View viewToAnimate, String packageName) {
-        Handler handler = new Handler();
-        mlongClicked = !mlongClicked;
-        if (packageNames.contains(packageName)) {
-            packageNames.remove(packageName);
-        } else {
-            packageNames.add(packageName);
-        }
-        handler.postDelayed(() -> {
-            Animation animation = AnimationUtils.loadAnimation(viewToAnimate.getContext(), android.R.anim.fade_in);
-            viewToAnimate.startAnimation(animation);
-            viewToAnimate.setVisibility(View.VISIBLE);
-            activity.findViewById(R.id.batch_options).setVisibility(packageNames.isEmpty() ? View.GONE : View.VISIBLE);
-            notifyItemRangeChanged(0, getItemCount());
-        }, 300);
     }
 
     @Override
