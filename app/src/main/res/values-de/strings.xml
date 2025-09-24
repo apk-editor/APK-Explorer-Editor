@@ -42,7 +42,6 @@
     <string name="sdcard">"Lokaler Speicher"</string>
     <string name="search">"Suchen…"</string>
     <string name="share">"Teilen"</string>
-    <string name="share_message">"%s teilen?"</string>
     <string name="share_with">"Teilen mit"</string>
     <string name="signing">"Signiere %s…"</string>
     <string name="size">"Größe: %s"</string>
@@ -82,7 +81,6 @@
     <string name="signing_title">"APK Signierung"</string>
     <string name="apk_installer">"AEE APK Installer"</string>
     <string name="bundle_install_question">"Sind Sie sicher, dass Sie das App-Bundle '%s' installieren wollen?"</string>
-    <string name="export_app_question">"Exportiere '%s' in den Gerätespeicher?"</string>
     <string name="export_project_question">"Eine Kopie dieses Projektordners in den Gerätespeicher erstellen?"</string>
     <string name="export_project_replace">"'%s' existiert bereits! Möchten Sie es ersetzen?"</string>
     <string name="export_resign">"Exportieren und neu signieren"</string>
@@ -113,11 +111,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Cache leeren"</string>
     <string name="clear_cache_summary">"Interne Einstellungen von AEE löschen"</string>
-    <string name="clear_cache_message">"Alles, außer den exportierten Anwendungen, werden entfernt!"</string>
-    <string name="export_options">"Beim Exportieren (APK's)"</string>
-    <string name="export_path_default">"Lokaler Speicher/AEE"</string>
-    <string name="export_path_download">"Herunterladen"</string>
-    <string name="export_path_resources">"Exportpfad (Nicht-APK's)"</string>
+    <string name="export_options">"Beim Exportieren (APK's)"</string>g>
     <string name="installer_action">"Bei der Installation von APKs"</string>
     <string name="project_exist_action">"Beim Beenden eines Projekts"</string>
     <string name="prompt">"Aufforderung"</string>
@@ -132,8 +126,6 @@
     <string name="text_editor">"AEE Text Editor"</string>
     <string name="discard">"Verwerfen"</string>
     <string name="discard_message">"Änderungen an dieser Datei verwerfen?"</string>
-    <string name="export_path_apks">"Export Pfad (APKs)"</string>
-    <string name="export_path_files_dir">"Export Pfad für Dateien"</string>
     <string name="language">"Sprache"</string>
     <string name="transfer_exported_apk">"Zu neuem Ort exportieren"</string>
     <string name="user_interface">"User Interface"</string>
@@ -166,7 +158,6 @@
     <string name="loading">"Lade…"</string>
     <string name="manifest">"Manifest"</string>
     <string name="permissions">"Berechtigungen"</string>
-    <string name="save_to_downloads">"In Downloads speichern"</string>
     <string name="saving">"Speichern…"</string>
     <string name="sdk_compile">"Kompiliere SDK: %s"</string>
     <string name="sdk_minimum">"Niedrigste SDK: %s"</string>

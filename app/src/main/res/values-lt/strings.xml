@@ -42,7 +42,6 @@
     <string name="sdcard">"Внутреннее хранилище"</string>
     <string name="search">"Поиск…"</string>
     <string name="share">"Поделиться"</string>
-    <string name="share_message">"Поделиться %s?"</string>
     <string name="share_with">"Поделится с помощью"</string>
     <string name="signing">"Подпись% s…"</string>
     <string name="size">"Размер: %s"</string>
@@ -82,7 +81,6 @@
     <string name="signing_title">"Подпись APK"</string>
     <string name="apk_installer">"AEE Установщик APK"</string>
     <string name="bundle_install_question">"Вы действительно хотите установить пакет приложения '%s'?"</string>
-    <string name="export_app_question">"Экспортировать '%s' в память устройства?"</string>
     <string name="export_project_question">"Создать копию папки проекта в памяти устройства?"</string>
     <string name="export_project_replace">"'%s' уже существует! Хотите заменить его?"</string>
     <string name="export_resign">"Экспорт &amp; Подпись"</string>
@@ -113,11 +111,7 @@
     <string name="sort_order">"А-Я"</string>
     <string name="clear_cache">"Очистить кэш"</string>
     <string name="clear_cache_summary">"Удалить внутренние настройки AEE"</string>
-    <string name="clear_cache_message">"Все, кроме экспортированных приложений, будет удалено!"</string>
     <string name="export_options">"При экспорте (APK)"</string>
-    <string name="export_path_default">"Внутреннее хранилище/AEE"</string>
-    <string name="export_path_download">"Скачать"</string>
-    <string name="export_path_resources">"Путь для экспорта (ne APK)"</string>
     <string name="installer_action">"При установке APK-файлов"</string>
     <string name="project_exist_action">"При выходе из проекта"</string>
     <string name="prompt">"Подсказка"</string>
@@ -132,8 +126,6 @@
     <string name="text_editor">"Текстовый редактор AEE"</string>
     <string name="discard">"Отменить"</string>
     <string name="discard_message">"Отменить изменения, сделанные в файле?"</string>
-    <string name="export_path_apks">"Путь экспорта (APK)"</string>
-    <string name="export_path_files_dir">"Директория внешних файлов"</string>
     <string name="language">"Язык"</string>
     <string name="transfer_exported_apk">"Перенос экспортированных APK-файлов в новую директорию…"</string>
     <string name="user_interface">"Пользовательский интерфейс"</string>
@@ -166,7 +158,6 @@
     <string name="loading">"Загрузка"</string>
     <string name="manifest">"Манифест"</string>
     <string name="permissions">"Права доступа"</string>
-    <string name="save_to_downloads">"Сохранить в Загрузки"</string>
     <string name="saving">"Сохранение…"</string>
     <string name="sdk_compile">"Компиляция SDK: %s"</string>
     <string name="sdk_minimum">"Минимальная версия SDK: %s"</string>

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +19,7 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SerializableItems.APKItems;
 import com.apk.editor.utils.SplitAPKInstaller;
-import com.apk.editor.utils.dialogs.ShareBundleDialog;
 import com.apk.editor.utils.dialogs.SignatureMismatchDialog;
-import com.apk.editor.utils.menus.APKOptionsMenu;
 import com.apk.editor.utils.menus.BundleOptionsMenu;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -113,36 +110,20 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                                 }).show();
                     }
                 } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        if (data.get(position).isDirectory()) {
-                            new BundleOptionsMenu(data.get(position).getPath(), v);
-                        } else {
-                            new APKOptionsMenu(data.get(position).getAPKFile(), v);
-                        }
+                    if (data.get(position).isDirectory()) {
+                        new BundleOptionsMenu(data.get(position).getPath(), v);
                     } else {
-                        if (data.get(position).isDirectory()) {
-                            new ShareBundleDialog(data.get(position).getPath(), v.getContext());
-                        } else {
-                            APKData.shareFile(data.get(position).getAPKFile(), "application/java-archive", v.getContext());
-                        }
+                        APKData.shareFile(data.get(position).getAPKFile(), "application/java-archive", v.getContext());
                     }
                 }
             });
 
             holder.mCard.setOnLongClickListener(v -> {
                 if (APKEditorUtils.isFullVersion(v.getContext())) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        if (data.get(position).isDirectory()) {
-                            new BundleOptionsMenu(data.get(position).getPath(), v);
-                        } else {
-                            new APKOptionsMenu(data.get(position).getAPKFile(), v);
-                        }
+                    if (data.get(position).isDirectory()) {
+                        new BundleOptionsMenu(data.get(position).getPath(), v);
                     } else {
-                        if (data.get(position).isDirectory()) {
-                            new ShareBundleDialog(data.get(position).getPath(), v.getContext());
-                        } else {
-                            APKData.shareFile(data.get(position).getAPKFile(), "application/java-archive", v.getContext());
-                        }
+                        APKData.shareFile(data.get(position).getAPKFile(), "application/java-archive", v.getContext());
                     }
                 }
                 return false;

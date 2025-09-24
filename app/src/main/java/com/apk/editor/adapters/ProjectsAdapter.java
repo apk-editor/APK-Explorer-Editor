@@ -81,7 +81,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                 activityResultLauncher.launch(explorer);
             });
             holder.mCard.setOnLongClickListener(v -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) return false;
                 new MaterialAlertDialogBuilder(v.getContext())
                         .setIcon(R.mipmap.ic_launcher)
                         .setTitle(R.string.app_name)
@@ -89,11 +88,11 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                         .setNegativeButton(R.string.cancel, (dialog, id) -> {
                         })
                         .setPositiveButton(R.string.export, (dialog, id) -> {
-                            if (sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext())) {
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext())) {
                                 sPermissionUtils.requestPermission(
                                         new String[] {
                                                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        },(Activity) v.getContext());
+                                        }, activity);
                             } else {
                                 Projects.exportProject(new File(data.get(position)), v.getContext());
                             }

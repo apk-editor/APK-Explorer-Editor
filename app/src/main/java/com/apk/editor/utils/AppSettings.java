@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Build;
-import android.os.Environment;
 import android.util.DisplayMetrics;
 
 import com.apk.editor.MainActivity;
@@ -91,26 +89,9 @@ public class AppSettings {
         return 2;
     }
 
-    public static int getExportAPKsPathPosition(Context context) {
-        if (getExportAPKsPath(context).equals(context.getString(R.string.export_path_default))) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
     public static int getExploreOptionsMenuPosition(Context context) {
         for (int i = 0; i < ExploreOptionsMenu.getOption(context).length; i++) {
             if (getExploreOptions(context).equals(ExploreOptionsMenu.getOption(context)[i])) {
-                return i;
-            }
-        }
-        return 2;
-    }
-
-    public static int getExportPathPosition(Context context) {
-        for (int i = 0; i < getExportPathMenu(context).length; i++) {
-            if (getExportPath(context).equals(getExportPathMenu(context)[i])) {
                 return i;
             }
         }
@@ -252,29 +233,6 @@ public class AppSettings {
         }
     }
 
-    public static String getExportAPKsPath(Context context) {
-        String exportAPKPath = sCommonUtils.getString("exportAPKsPath", "externalFiles", context);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && exportAPKPath.equals("internalStorage")) {
-            return context.getString(R.string.export_path_default);
-        } else {
-            return context.getString(R.string.export_path_files_dir);
-        }
-    }
-
-    public static String getExportPath(Context context) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            if (sCommonUtils.getString("exportPath", null, context) != null && sCommonUtils.getString("exportPath", null, context).equals(Environment.getExternalStorageDirectory().toString())) {
-                return context.getString(R.string.sdcard);
-            } else if (sCommonUtils.getString("exportPath", null, context) != null && sCommonUtils.getString("exportPath", null, context).equals(Environment.getExternalStorageDirectory().toString() + "/AEE")) {
-                return context.getString(R.string.export_path_default);
-            } else {
-                return context.getString(R.string.export_path_download);
-            }
-        } else {
-            return context.getString(R.string.export_path_download);
-        }
-    }
-
     public static String getAPKs(Context context) {
         if (sCommonUtils.getString("exportAPKs", null, context) != null) {
             return sCommonUtils.getString("exportAPKs", null, context);
@@ -349,27 +307,6 @@ public class AppSettings {
                 context.getString(R.string.delete),
                 context.getString(R.string.prompt)
         };
-    }
-
-    public static String[] getAPKExportPathMenu(Context context) {
-        return new String[] {
-                context.getString(R.string.export_path_files_dir),
-                context.getString(R.string.export_path_default)
-        };
-    }
-
-    public static String[] getExportPathMenu(Context context) {
-        if (Build.VERSION.SDK_INT < 29) {
-            return new String[]{
-                    context.getString(R.string.sdcard),
-                    context.getString(R.string.export_path_default),
-                    context.getString(R.string.export_path_download)
-            };
-        } else {
-            return new String[]{
-                    context.getString(R.string.export_path_download)
-            };
-        }
     }
 
     public static String[] getExportingAPKMenu(Context context) {

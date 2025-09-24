@@ -42,7 +42,6 @@
     <string name="sdcard">"Pamięć wewnętrzna"</string>
     <string name="search">"Szukaj…"</string>
     <string name="share">"Udział"</string>
-    <string name="share_message">"Udostępnij %s?"</string>
     <string name="share_with">"Podziel się z"</string>
     <string name="signing">"Podpisywanie '%s'…"</string>
     <string name="size">"Rozmiar: %s"</string>
@@ -112,11 +111,7 @@
     <string name="sort_order">"Od A do Z"</string>
     <string name="clear_cache">"Wyczyść pamięć podręczną"</string>
     <string name="clear_cache_summary">"Usuń wewnętrzne ustawienia AEE"</string>
-    <string name="clear_cache_message">"Wszystko, oprócz wyeksportowanych aplikacji, zostanie usunięte."</string>
     <string name="export_options">"O eksporcie (APK)"</string>
-    <string name="export_path_default">"Pamięć wewnętrzna/AEE"</string>
-    <string name="export_path_download">"Pobierać"</string>
-    <string name="export_path_resources">"Ścieżka eksportu (nie-APK)"</string>
     <string name="installer_action">"O instalowaniu APK"</string>
     <string name="project_exist_action">"O wyjściu z projektu"</string>
     <string name="prompt">"Podpowiedź"</string>
@@ -131,8 +126,6 @@
     <string name="text_editor">"Edytor tekstu AEE"</string>
     <string name="discard">"Wyrzucać"</string>
     <string name="discard_message">"Czy odrzucić zmiany wprowadzone w tym pliku?"</string>
-    <string name="export_path_apks">"Ścieżka eksportu (APK)"</string>
-    <string name="export_path_files_dir">"Katalog plików zewnętrznych"</string>
     <string name="language">"Język"</string>
     <string name="transfer_exported_apk">"Przenoszenie wcześniej wyeksportowanych plików APK do nowej ścieżki…"</string>
     <string name="user_interface">"Interfejs użytkownika"</string>
@@ -165,7 +158,6 @@
     <string name="loading">"Załadunek…"</string>
     <string name="manifest">"Oczywisty"</string>
     <string name="permissions">"Uprawnienia"</string>
-    <string name="save_to_downloads">"Zapisz do pobrań"</string>
     <string name="saving">"Oszczędność…"</string>
     <string name="sdk_compile">"Kompilacja SDK: %s"</string>
     <string name="sdk_minimum">"Minimalny zestaw SDK: %s"</string>

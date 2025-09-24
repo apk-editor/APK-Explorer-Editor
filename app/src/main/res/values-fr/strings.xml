@@ -42,7 +42,6 @@
     <string name="sdcard">"Stockage interne"</string>
     <string name="search">"Chercher…"</string>
     <string name="share">"Partager"</string>
-    <string name="share_message">"Partager %s ?"</string>
     <string name="share_with">"Partager avec"</string>
     <string name="signing">"Signature de %s…"</string>
     <string name="size">"Taille : %s"</string>
@@ -112,11 +111,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Effacer le cache"</string>
     <string name="clear_cache_summary">"Effacer les réglages internes d'AEE"</string>
-    <string name="clear_cache_message">"Tout va être supprimé à l'exception des applications exportées !"</string>
     <string name="export_options">"A l'exportation (APK)"</string>
-    <string name="export_path_default">"Stockage interne/AEE"</string>
-    <string name="export_path_download">"Télécharger"</string>
-    <string name="export_path_resources">"Chemin d'exportation (pas pour les APK)"</string>
     <string name="installer_action">"A l'installation d'un APK"</string>
     <string name="project_exist_action">"A la fermeture d'un projet"</string>
     <string name="prompt">"Invite"</string>
@@ -131,8 +126,6 @@
     <string name="text_editor">"Éditeur de texte AEE"</string>
     <string name="discard">"Annuler"</string>
     <string name="discard_message">"Annuler les modifications faites sur ce fichier ?"</string>
-    <string name="export_path_apks">"Chemin d'exportation (APK)"</string>
-    <string name="export_path_files_dir">"Dossier externe"</string>
     <string name="language">"Langue"</string>
     <string name="transfer_exported_apk">"Transfert de l'APK préalablement exportée vers le nouveau chemin"</string>
     <string name="user_interface">"Interface utilisateur"</string>
@@ -164,7 +157,6 @@
     <string name="loading">"Chargement…"</string>
     <string name="manifest">"Manifeste"</string>
     <string name="permissions">"Permissions"</string>
-    <string name="save_to_downloads">"Enregistrer dans Téléchargements"</string>
     <string name="saving">"Enregistrement…"</string>
     <string name="sdk_compile">"SDK de compilation : %s"</string>
     <string name="sdk_minimum">"SDK minimum : %s"</string>

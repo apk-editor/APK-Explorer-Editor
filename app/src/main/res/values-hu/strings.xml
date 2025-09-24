@@ -42,7 +42,6 @@
     <string name="sdcard">"Belső tárhely"</string>
     <string name="search">"Keresés…"</string>
     <string name="share">"Megosztás"</string>
-    <string name="share_message">"Megosztod ezt: %s?"</string>
     <string name="share_with">"Megosztás ezzel"</string>
     <string name="signing">"'%s' aláírása…"</string>
     <string name="size">"Méret: %s"</string>
@@ -112,11 +111,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Gyorsítótár törlése"</string>
     <string name="clear_cache_summary">"Törölje az AEE belső beállításait"</string>
-    <string name="clear_cache_message">"Az exportált alkalmazások kivételével minden eltávolításra kerül."</string>
     <string name="export_options">"Exportálásnál (APK'-k)"</string>
-    <string name="export_path_default">"Belső tárhely/AEE"</string>
-    <string name="export_path_download">"Letöltés"</string>
-    <string name="export_path_resources">"Exportálási útvonal (nem APK-k)"</string>
     <string name="installer_action">"Az APK'-k telepítésénél"</string>
     <string name="project_exist_action">"Egy projektből való kilépésnél"</string>
     <string name="prompt">"Súgó"</string>
@@ -131,8 +126,6 @@
     <string name="text_editor">"AEE szövegszerkesztő"</string>
     <string name="discard">"Elvet"</string>
     <string name="discard_message">"Elveted a fájlon végrehajtott módosításokat?"</string>
-    <string name="export_path_apks">"Exportálási útvonal (APK'-k)"</string>
-    <string name="export_path_files_dir">"Külső fájlok könyvtára"</string>
     <string name="language">"Nyelv"</string>
     <string name="transfer_exported_apk">"Korábban exportált APK'-k átvitele új elérési útra…"</string>
     <string name="user_interface">"Felhasználói felület"</string>
@@ -165,7 +158,6 @@
     <string name="loading">"Betöltés…"</string>
     <string name="manifest">"Jegyzék"</string>
     <string name="permissions">"Engedélyek"</string>
-    <string name="save_to_downloads">"Mentés a letöltések közé"</string>
     <string name="saving">"Mentés…"</string>
     <string name="sdk_compile">"Fordítás SDK: %s"</string>
     <string name="sdk_minimum">"Minimális SDK: %s"</string>

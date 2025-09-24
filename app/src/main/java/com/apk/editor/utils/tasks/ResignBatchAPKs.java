@@ -46,7 +46,7 @@ public class ResignBatchAPKs extends sExecutor {
     public void doInBackground() {
         for (String packageName : mPackageNames) {
             if (APKData.isAppBundle(sPackageUtils.getSourceDir(packageName, mActivity))) {
-                File mParent = new File(APKData.getExportAPKsPath(mActivity) , packageName + "_aee-signed");
+                File mParent = new File(APKData.getExportPath(mActivity) , packageName + "_aee-signed");
                 if (mParent.exists()) {
                     sFileUtils.delete(mParent);
                 }
@@ -57,7 +57,7 @@ public class ResignBatchAPKs extends sExecutor {
                     }
                 }
             } else {
-                APKData.signApks(new File(sPackageUtils.getSourceDir(packageName, mActivity)), new File(APKData.getExportAPKsPath(mActivity) , packageName + "_aee-signed.apk"), mActivity);
+                APKData.signApks(new File(sPackageUtils.getSourceDir(packageName, mActivity)), new File(APKData.getExportPath(mActivity) , packageName + "_aee-signed.apk"), mActivity);
             }
         }
     }
@@ -72,7 +72,7 @@ public class ResignBatchAPKs extends sExecutor {
         new MaterialAlertDialogBuilder(mActivity)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.app_name)
-                .setMessage(mActivity.getString(R.string.resigned_apks_path, APKData.getExportAPKsPath(mActivity).getAbsolutePath()))
+                .setMessage(mActivity.getString(R.string.resigned_apks_path, APKData.getExportPath(mActivity).getAbsolutePath()))
                 .setCancelable(false)
                 .setPositiveButton(R.string.cancel, (dialog, id) -> {}
                 ).show();

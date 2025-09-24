@@ -42,7 +42,6 @@
     <string name="sdcard">"Внутрішня пам’ять"</string>
     <string name="search">"Пошук…"</string>
     <string name="share">"Поділитися"</string>
-    <string name="share_message">"Поділитися %s?"</string>
     <string name="share_with">"Поділитися з"</string>
     <string name="signing">"Підписання «%s»…"</string>
     <string name="size">"Розмір: %s"</string>
@@ -70,7 +69,6 @@
     <string name="signing_title">"Підписання APK"</string>
     <string name="apk_installer">"Інсталятор AEE APK"</string>
     <string name="bundle_install_question">"Ви впевнені, що хочете встановити набір додатків \"%s\"?"</string>
-    <string name="export_app_question">"Експортувати «%s» у пам’ять пристрою?"</string>
     <string name="export_project_question">"Зробити копію цієї папки проєкту в пам’ять пристрою?"</string>
     <string name="export_project_replace">"'%s' вже існує. Ви хочете його замінити?"</string>
     <string name="export_resign">"Експорт і Перепис"</string>
@@ -101,11 +99,7 @@
     <string name="sort_order">"А-Я"</string>
     <string name="clear_cache">"Очистити кеш"</string>
     <string name="clear_cache_summary">"Видалити внутрішні налаштування AEE"</string>
-    <string name="clear_cache_message">"Усе, крім експортованих програм, буде видалено."</string>
     <string name="export_options">"Про експорт (APK's)"</string>
-    <string name="export_path_default">"Внутрішня пам'ять/AEE"</string>
-    <string name="export_path_download">"Завантажити"</string>
-    <string name="export_path_resources">"Шлях експорту (не APK's)"</string>
     <string name="installer_action">"Про встановлення APK's"</string>
     <string name="project_exist_action">"При виході з проекту"</string>
     <string name="prompt">"Підказка"</string>
@@ -120,8 +114,6 @@
     <string name="text_editor">"Текстовий редактор AEE"</string>
     <string name="discard">"Скасувати"</string>
     <string name="discard_message">"Скасувати зміни, внесені до цього файлу?"</string>
-    <string name="export_path_apks">"Шлях експорту (Додатків)"</string>
-    <string name="export_path_files_dir">"Каталог зовнішніх файлів"</string>
     <string name="language">"Мова"</string>
     <string name="transfer_exported_apk">"Перенесення попередньо експортованих APK на новий шлях…"</string>
     <string name="user_interface">"Інтерфейс користувача"</string>
@@ -153,7 +145,6 @@
     <string name="loading">"Завантаження…"</string>
     <string name="manifest">"Маніфест"</string>
     <string name="permissions">"Дозволи"</string>
-    <string name="save_to_downloads">"Зберегти до Завантажень"</string>
     <string name="saving">"Збереження…"</string>
     <string name="sdk_compile">"Скомпілювати SDK: %s"</string>
     <string name="sdk_minimum">"Мінімальний SDK: %s"</string>

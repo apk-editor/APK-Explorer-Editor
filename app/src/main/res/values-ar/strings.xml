@@ -82,7 +82,6 @@
     <string name="signing_title">"أشّر APK"</string>
     <string name="apk_installer">"مثبت AEE APK"</string>
     <string name="bundle_install_question">"هل أنت متأكد من تسطيب حزمة التطبيق '%s' ؟"</string>
-    <string name="export_app_question">"تصدير '%s' لذاكرة الأداة؟"</string>
     <string name="export_project_question">"صنع نسخة من مجلد هذا المشروع لذاكرة الأداة؟"</string>
     <string name="export_project_replace">"'%s' موجود مسبقاً! هل تريد استبداله؟"</string>
     <string name="export_resign">"تصدير و إعادة تأشير"</string>
@@ -113,11 +112,7 @@
     <string name="sort_order">"أ-ب"</string>
     <string name="clear_cache">"تنظيف الكاش"</string>
     <string name="clear_cache_summary">"إزالة الإعدادات الداخلية ل AEE"</string>
-    <string name="clear_cache_message">"أي شيء، عدا التطبيقات المصدرة، سيزال!"</string>
     <string name="export_options">"يتم تصدير (APK)"</string>
-    <string name="export_path_default">"ذاكرة داخلية/ AEE"</string>
-    <string name="export_path_download">"تنزيل"</string>
-    <string name="export_path_resources">"مسار تصدير ( اللا- APK)"</string>
     <string name="installer_action">"جار التثبيت APK"</string>
     <string name="project_exist_action">"جار الخروج من المشروع"</string>
     <string name="prompt">"عاجل"</string>
@@ -132,8 +127,6 @@
     <string name="text_editor">"معدل نصوص AEE"</string>
     <string name="discard">"مرفوض"</string>
     <string name="discard_message">"رفض التغيرات المجرات على هذا الملف"</string>
-    <string name="export_path_apks">"مسار تصدير (APK)"</string>
-    <string name="export_path_files_dir">"قاموس الملفات الخاجية"</string>
     <string name="language">"اللغة"</string>
     <string name="transfer_exported_apk">"تحويل APK المصدرة مسبقاً لمسار جديد…"</string>
     <string name="user_interface">"واجهة المستخدم"</string>
@@ -166,7 +159,6 @@
     <string name="loading">"تحميل…"</string>
     <string name="manifest">"قائمة"</string>
     <string name="permissions">"أذونات"</string>
-    <string name="save_to_downloads">"حفظ في التنزيلات"</string>
     <string name="saving">"إنقاذ…"</string>
     <string name="sdk_compile">"تجميع SDK:٪ s"</string>
     <string name="sdk_minimum">"الحد الأدنى من SDK:٪ s"</string>

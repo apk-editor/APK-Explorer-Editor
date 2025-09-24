@@ -59,14 +59,14 @@ public class BuildingActivity extends AppCompatActivity {
 
         String mPackageNameOriginal = getIntent().getStringExtra(PACKAGE_NAME_INTENT);
 
-        mOutputPath.setText(getString(R.string.resigned_apks_path, APKData.getExportAPKsPath(this)));
+        mOutputPath.setText(getString(R.string.resigned_apks_path, APKData.getExportPath(this)));
 
         mInstall.setOnClickListener(v -> {
             if (sPackageUtils.isPackageInstalled(Common.getPackageName(this), this) && APKData.isAppBundle(sPackageUtils
                     .getSourceDir(Common.getPackageName(this), this))) {
-                SplitAPKInstaller.installSplitAPKs(new File(APKData.getExportAPKsPath(this), mPackageNameOriginal + "_aee-signed").getAbsolutePath(), this);
+                SplitAPKInstaller.installSplitAPKs(new File(APKData.getExportPath(this), mPackageNameOriginal + "_aee-signed").getAbsolutePath(), this);
             } else {
-                SplitAPKInstaller.installAPK(new File(APKData.getExportAPKsPath(this), mPackageNameOriginal + "_aee-signed.apk"), this);
+                SplitAPKInstaller.installAPK(new File(APKData.getExportPath(this), mPackageNameOriginal + "_aee-signed.apk"), this);
             }
             finish();
         });

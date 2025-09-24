@@ -42,7 +42,6 @@
     <string name="sdcard">"Bộ nhớ trong"</string>
     <string name="search">"Tìm kiếm…"</string>
     <string name="share">"Chia sẻ"</string>
-    <string name="share_message">"Chia sẻ %s?"</string>
     <string name="share_with">"Chia sẻ bằng"</string>
     <string name="signing">"Đang ký %s…"</string>
     <string name="size">"Kích cỡ: %s"</string>
@@ -82,7 +81,6 @@
     <string name="signing_title">"Ký APK"</string>
     <string name="apk_installer">"Trình cài đặt APK của AEE"</string>
     <string name="bundle_install_question">"Bạn có chắc muốn cài đặt bộ ứng dụng '%s'?"</string>
-    <string name="export_app_question">"Xuất '%s' ra bộ nhớ thiết bị?"</string>
     <string name="export_project_question">"Tạo một bản sao của thư mục dự án này vào bộ nhớ thiết bị?"</string>
     <string name="export_project_replace">"'%s' đã tồn tại! Bạn có muốn thay thế nó không?"</string>
     <string name="export_resign">"Xuất &amp; Ký lại"</string>
@@ -113,11 +111,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Xoá bộ nhớ đệm"</string>
     <string name="clear_cache_summary">"Xoá cài đặt nội bộ của AEE"</string>
-    <string name="clear_cache_message">"Tất cả mọi thứ, trừ các ứng dụng đã xuất, sẽ bị xoá!"</string>
     <string name="export_options">"Khi xuất (APK)"</string>
-    <string name="export_path_default">"Bộ nhớ trong/AEE"</string>
-    <string name="export_path_download">"Tải xuống"</string>
-    <string name="export_path_resources">"Đường dẫn xuất (không phải APK)"</string>
     <string name="installer_action">"Khi cài đặt APK"</string>
     <string name="project_exist_action">"Khi thoát ra khỏi một dự án"</string>
     <string name="prompt">"Hỏi"</string>
@@ -132,8 +126,6 @@
     <string name="text_editor">"Trình chỉnh sửa văn bản của AEE"</string>
     <string name="discard">"Bỏ"</string>
     <string name="discard_message">"Bỏ các thay đổi đã tạo trên tệp này?"</string>
-    <string name="export_path_apks">"Đường dẫn xuất (APK)"</string>
-    <string name="export_path_files_dir">"Thư mục tệp bên ngoài"</string>
     <string name="language">"Ngôn ngữ"</string>
     <string name="transfer_exported_apk">"Chuyển các APK đã xuất trước đó sang đường dẫn mới…"</string>
     <string name="user_interface">"Giao diện người dùng"</string>
@@ -166,7 +158,6 @@
     <string name="loading">"Đang tải…"</string>
     <string name="manifest">"Manifest"</string>
     <string name="permissions">"Quyền"</string>
-    <string name="save_to_downloads">"Lưu vào Downloads"</string>
     <string name="saving">"Đang lưu…"</string>
     <string name="sdk_compile">"SDK biên dịch: %s"</string>
     <string name="sdk_minimum">"SDK tối thiểu: %s"</string>

@@ -43,7 +43,6 @@
     <string name="sdcard">"SD卡"</string>
     <string name="search">"搜索…"</string>
     <string name="share">"分享"</string>
-    <string name="share_message">"是否分享 %s ？"</string>
     <string name="share_with">"分享"</string>
     <string name="signing">"正在签名 %s…"</string>
     <string name="size">"大小：%s"</string>
@@ -113,11 +112,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"清除缓存"</string>
     <string name="clear_cache_summary">"重置AEE设置"</string>
-    <string name="clear_cache_message">"除导出的应用外，所有数据都将被清除"</string>
     <string name="export_options">"对于即将导出的应用"</string>
-    <string name="export_path_default">"内部存储/AEE"</string>
-    <string name="export_path_download">"Download 文件夹"</string>
-    <string name="export_path_resources">"导出路径"</string>
     <string name="installer_action">"对于即将安装的应用"</string>
     <string name="project_exist_action">"保存项目"</string>
     <string name="prompt">"显示提示"</string>
@@ -132,8 +127,6 @@
     <string name="text_editor">"AEE文本编辑器"</string>
     <string name="discard">"放弃"</string>
     <string name="discard_message">"是否放弃对此文件的更改？"</string>
-    <string name="export_path_apks">"导出路径"</string>
-    <string name="export_path_files_dir">"私有目录"</string>
     <string name="language">"语言"</string>
     <string name="transfer_exported_apk">"正在将之前导出的APK转移到新路径…"</string>
     <string name="user_interface">"用户界面"</string>
@@ -166,7 +159,6 @@
     <string name="loading">"加载中"</string>
     <string name="manifest">"应用清单"</string>
     <string name="permissions">"权限"</string>
-    <string name="save_to_downloads">"保存到Downloads目录"</string>
     <string name="saving">"保存中"</string>
     <string name="sdk_compile">"SDK 目标版本：%s"</string>
     <string name="sdk_minimum">"SDK 最低版本： %s"</string>

@@ -42,7 +42,6 @@
     <string name="sdcard">"Stockage interne"</string>
     <string name="search">"Rechercher…"</string>
     <string name="share">"Partager"</string>
-    <string name="share_message">"Partagez %s ?"</string>
     <string name="share_with">"Partager avec"</string>
     <string name="signing">"Signature de '%s'…"</string>
     <string name="size">"Taille : %s"</string>
@@ -82,7 +81,6 @@
     <string name="signing_title">"Signature APK"</string>
     <string name="apk_installer">"Installateur AEE APK"</string>
     <string name="bundle_install_question">"Êtes-vous sûr d'avoir installé l'ensemble d'applications '%s' ?"</string>
-    <string name="export_app_question">"Exporter '%s' vers l'espace de stockage de l'appareil ?"</string>
     <string name="export_project_question">"Faire une copie de ce dossier de projet dans l'espace de stockage de l'appareil ?"</string>
     <string name="export_project_replace">"'%s' existe déjà. Voulez-vous le remplacer?"</string>
     <string name="export_resign">"Exporter et re-signer"</string>
@@ -113,11 +111,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Vider le cache"</string>
     <string name="clear_cache_summary">"Supprimer les paramètres internes d'AEE"</string>
-    <string name="clear_cache_message">"Tout, sauf les applications exportées, sera supprimé."</string>
     <string name="export_options">"À l'exportation (APK)"</string>
-    <string name="export_path_default">"Stockage interne/AEE"</string>
-    <string name="export_path_download">"Télécharger"</string>
-    <string name="export_path_resources">"Chemin d'exportation (non-APK)"</string>
     <string name="installer_action">"Sur l'installation des APK"</string>
     <string name="project_exist_action">"À la sortie d'un projet"</string>
     <string name="prompt">"Rapide"</string>
@@ -132,8 +126,6 @@
     <string name="text_editor">"Éditeur de texte AEE"</string>
     <string name="discard">"Jeter"</string>
     <string name="discard_message">"Supprimer les modifications apportées à ce fichier ?"</string>
-    <string name="export_path_apks">"Chemin d'exportation (APK)"</string>
-    <string name="export_path_files_dir">"Répertoire des fichiers externes"</string>
     <string name="language">"Langue"</string>
     <string name="transfer_exported_apk">"Transfert des fichiers APK précédemment exportés vers un nouveau chemin…"</string>
     <string name="user_interface">"Interface utilisateur"</string>
@@ -166,7 +158,6 @@
     <string name="loading">"Chargement…"</string>
     <string name="manifest">"Manifeste"</string>
     <string name="permissions">"Autorisations"</string>
-    <string name="save_to_downloads">"Enregistrer dans les téléchargements"</string>
     <string name="saving">"Économie…"</string>
     <string name="sdk_compile">"Compiler le SDK : %s"</string>
     <string name="sdk_minimum">"Kit de développement logiciel minimal : %s"</string>

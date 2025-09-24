@@ -20,7 +20,6 @@
     <string name="certificate">Πιστοποιητικό</string>
     <string name="clear_cache">Εκκαθάριση προσωρινής μνήμης</string>
     <string name="clear_cache_summary">Διαγραφή εσωτερικών ρυθμίσεων του AEE</string>
-    <string name="clear_cache_message">Όλα, εκτός από τις εξαγόμενες εφαρμογές, θα καταργηθούν.</string>
     <string name="clearing_cache_message">Εκκαθάριση προσωρινής μνήμης…</string>
     <string name="copying">Αντιγραφή \'%s\'…</string>
     <string name="decompiling">Απομεταγλώττιση \'%s\'…</string>
@@ -37,16 +36,10 @@
     <string name="discard">Απόρριψη</string>
     <string name="discard_message">Απόρριψη αλλαγών που έγιναν σε αυτό το αρχείο?</string>
     <string name="export">Εξαγωγή</string>
-    <string name="export_app_question">Εξαγωγή \'%s\' στον αποθηκευτικό χώρο της συσκευής?</string>
     <string name="export_complete_message">Ο επιλεγμένος πόρος εξήχθη με επιτυχία σε \'%s\'</string>
     <string name="export_options">Σχετικά με την εξαγωγή (APKs)</string>
     <string name="export_project_question">Δημιουργία αντιγράφου αυτού του φακέλου πρότζεκτ στον αποθηκευτικό χώρο της συσκευής?</string>
     <string name="export_project_replace">\'%s\' υπάρχει ήδη. Θέλετε να το αντικαταστήσετε?</string>
-    <string name="export_path_apks">Διαδρομή εξαγωγής (APKs)</string>
-    <string name="export_path_default">Εσωτερικός αποθηκευτικός χώρος/AEE</string>
-    <string name="export_path_download">Λήψη</string>
-    <string name="export_path_files_dir">Κατάλογος Εξωτερικών Αρχείων</string>
-    <string name="export_path_resources">Διαδρομή εξαγωγής (μη-APKs)</string>
     <string name="export_question">Εξαγωγή στον αποθηκευτικό χώρο συσκευής?</string>
     <string name="export_resign">Εξαγωγή &amp; Υπογραφή ξανά</string>
     <string name="export_selected_files">Εξαγωγή επιλεγμένων αρχείων</string>
@@ -112,7 +105,6 @@
     <string name="save_apk_message">Θέλετε να προετοιμάσετε ένα υπογεγραμμένο APK με τις τρέχουσες τροποποιήσεις?</string>
     <string name="save_projects_question">Αποθήκευση πρότζεκτ για μελλοντική χρήση?</string>
     <string name="save_question">Αποθήκευση των αλλαγών που έγιναν σε αυτό το αρχείο?</string>
-    <string name="save_to_downloads">Αποθήκευση στις Λήψεις</string>
     <string name="saving">Αποθήκευση…</string>
     <string name="sdcard">Εσωτερική Αποθήκευση</string>
     <string name="sdk_compile">Μεταγλώττιση SDK: %s</string>
@@ -125,7 +117,6 @@
     <string name="settings_general">Γενικά</string>
     <string name="settings_misc">Διάφορα</string>
     <string name="share">Κοινή Χρήση</string>
-    <string name="share_message">Κοινή Χρήση %s?</string>
     <string name="share_with">Κοινή Χρήση με</string>
     <string name="sign_apk_custom">Προσαρμοσμένο Κλειδί</string>
     <string name="sign_apk_default">Προεπιλεγμένο Κλειδί</string>

@@ -37,8 +37,8 @@ public class ExportApp extends sExecutor {
         mProgressDialog.setIcon(R.mipmap.ic_launcher);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.show();
-        if (!APKData.getExportAPKsPath(mContext).exists()) {
-            sFileUtils.mkdir(APKData.getExportAPKsPath(mContext));
+        if (!APKData.getExportPath(mContext).exists()) {
+            sFileUtils.mkdir(APKData.getExportPath(mContext));
         }
     }
 
@@ -46,7 +46,7 @@ public class ExportApp extends sExecutor {
     public void doInBackground() {
         for (String packageName : mPackageNames) {
             if (APKData.isAppBundle(sPackageUtils.getSourceDir(packageName, mContext))) {
-                File mParent = new File(APKData.getExportAPKsPath(mContext) , packageName);
+                File mParent = new File(APKData.getExportPath(mContext) , packageName);
                 if (mParent.exists()) {
                     sFileUtils.delete(mParent);
                 }
@@ -57,7 +57,7 @@ public class ExportApp extends sExecutor {
                     }
                 }
             } else {
-                sFileUtils.copy(new File(sPackageUtils.getSourceDir(packageName, mContext)), new File(APKData.getExportAPKsPath(mContext),  packageName + ".apk"));
+                sFileUtils.copy(new File(sPackageUtils.getSourceDir(packageName, mContext)), new File(APKData.getExportPath(mContext),  packageName + ".apk"));
             }
         }
     }
@@ -71,7 +71,7 @@ public class ExportApp extends sExecutor {
         new MaterialAlertDialogBuilder(mContext)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.app_name)
-                .setMessage(mContext.getString(R.string.exported_apks_path, APKData.getExportAPKsPath(mContext).getAbsolutePath()))
+                .setMessage(mContext.getString(R.string.exported_apks_path, APKData.getExportPath(mContext).getAbsolutePath()))
                 .setCancelable(false)
                 .setPositiveButton(R.string.cancel, (dialog, id) -> {}
                 ).show();

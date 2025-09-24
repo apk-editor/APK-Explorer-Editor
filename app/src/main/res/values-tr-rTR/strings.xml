@@ -42,7 +42,6 @@
     <string name="sdcard">"Dahili Bellek"</string>
     <string name="search">"Arama…"</string>
     <string name="share">"Paylaş"</string>
-    <string name="share_message">"%s paylaşılsın mı?"</string>
     <string name="share_with">"Paylaş"</string>
     <string name="signing">"%s imzalanıyor"</string>
     <string name="size">"Boyut: %s"</string>
@@ -112,11 +111,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Önbellek temizle"</string>
     <string name="clear_cache_summary">"AEE'nin iç ayarlarını sil"</string>
-    <string name="clear_cache_message">"Dışa aktarılan uygulamalar dışındaki her şey kaldırılacaktır."</string>
     <string name="export_options">"Dışa Aktarmada (APK'lar)"</string>
-    <string name="export_path_default">"Dahili Bellek/AEE"</string>
-    <string name="export_path_download">"İndir"</string>
-    <string name="export_path_resources">"Dışa Aktarma Yolu (APK olmayanlar)"</string>
     <string name="installer_action">"APK Kurulumunda"</string>
     <string name="project_exist_action">"Projeden Çıkldığında"</string>
     <string name="prompt">"Çabuk"</string>
@@ -131,8 +126,6 @@
     <string name="text_editor">"AEE Metin Düzenleyici"</string>
     <string name="discard">"Yoksay"</string>
     <string name="discard_message">"Değişikliklerden vazgeç?"</string>
-    <string name="export_path_apks">"Dışa Aktarma Yolu (APK)"</string>
-    <string name="export_path_files_dir">"Harici Dosya Dizini"</string>
     <string name="language">"Dil"</string>
     <string name="transfer_exported_apk">"Önceden Dışa Aktarılan APK'lar yeni yola aktarılıyor…"</string>
     <string name="user_interface">"Kullanıcı Arabirimi"</string>
@@ -165,7 +158,6 @@
     <string name="loading">"Yükleniyor…"</string>
     <string name="manifest">"Manifest"</string>
     <string name="permissions">"Izinler"</string>
-    <string name="save_to_downloads">"Indirilenlere kaydet"</string>
     <string name="saving">"Kaydediliyor.."</string>
     <string name="sdk_compile">"SDKyı Derle: %s"</string>
     <string name="sdk_minimum">"Minimum SDK: %s"</string>

@@ -42,7 +42,6 @@
     <string name="sdcard">"ที่เก็บข้อมูลภายใน"</string>
     <string name="search">"ค้นหา…"</string>
     <string name="share">"แบ่งปัน"</string>
-    <string name="share_message">"แชร์ %s ไหม"</string>
     <string name="share_with">"ร่วมกับ"</string>
     <string name="signing">"กำลังเซ็นชื่อ '%s'…"</string>
     <string name="size">"ขนาด: %s"</string>
@@ -82,7 +81,6 @@
     <string name="signing_title">"การลงชื่อ APK"</string>
     <string name="apk_installer">"โปรแกรมติดตั้ง AEE APK"</string>
     <string name="bundle_install_question">"คุณแน่ใจหรือไม่ว่าจะติดตั้ง App Bundle '%s'"</string>
-    <string name="export_app_question">"ส่งออก '%s' ไปยังที่เก็บข้อมูลอุปกรณ์หรือไม่"</string>
     <string name="export_project_question">"ทำสำเนาโฟลเดอร์โปรเจ็กต์นี้ลงในที่เก็บข้อมูลอุปกรณ์ไหม"</string>
     <string name="export_project_replace">"'%s' มีอยู่แล้ว คุณต้องการแทนที่หรือไม่"</string>
     <string name="export_resign">"ส่งออก &amp; ลงชื่อใหม่"</string>
@@ -113,11 +111,7 @@
     <string name="sort_order">"ก-ฮ"</string>
     <string name="clear_cache">"ล้างแคช"</string>
     <string name="clear_cache_summary">"ลบการตั้งค่าภายในของ AEE"</string>
-    <string name="clear_cache_message">"ทุกอย่างยกเว้นแอปพลิเคชันที่ส่งออกจะถูกลบออก"</string>
     <string name="export_options">"ในการส่งออก (APK)"</string>
-    <string name="export_path_default">"ที่เก็บข้อมูลภายใน/AEE"</string>
-    <string name="export_path_download">"ดาวน์โหลด"</string>
-    <string name="export_path_resources">"เส้นทางการส่งออก (ไม่ใช่ของ APK)"</string>
     <string name="installer_action">"ในการติดตั้ง APK"</string>
     <string name="project_exist_action">"เมื่อออกจากโครงการ"</string>
     <string name="prompt">"พรอมต์"</string>
@@ -132,8 +126,6 @@
     <string name="text_editor">"โปรแกรมแก้ไขข้อความ AEE"</string>
     <string name="discard">"ทิ้ง"</string>
     <string name="discard_message">"ละทิ้งการเปลี่ยนแปลงที่ทำในไฟล์นี้ไหม"</string>
-    <string name="export_path_apks">"เส้นทางการส่งออก (APK)"</string>
-    <string name="export_path_files_dir">"ไดเร็กทอรีไฟล์ภายนอก"</string>
     <string name="language">"ภาษา"</string>
     <string name="transfer_exported_apk">"กำลังโอน APK ที่ส่งออกก่อนหน้านี้ไปยังเส้นทางใหม่…"</string>
     <string name="user_interface">"หน้าจอผู้ใช้"</string>
@@ -166,7 +158,6 @@
     <string name="loading">"กำลังโหลด…"</string>
     <string name="manifest">"รายการ"</string>
     <string name="permissions">"สิทธิ์"</string>
-    <string name="save_to_downloads">"บันทึกลงดาวน์โหลด"</string>
     <string name="saving">"ประหยัด…"</string>
     <string name="sdk_compile">"รวบรวม SDK: %s"</string>
     <string name="sdk_minimum">"SDK ขั้นต่ำ: %s"</string>

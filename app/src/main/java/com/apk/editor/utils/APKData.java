@@ -1,15 +1,12 @@
 package com.apk.editor.utils;
 
 import android.annotation.SuppressLint;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.provider.MediaStore;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
 import com.apk.editor.BuildConfig;
@@ -17,9 +14,6 @@ import com.apk.editor.R;
 import com.apk.editor.utils.SerializableItems.APKItems;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -66,18 +60,23 @@ public class APKData {
     }
 
     private static File[] getAPKList(Context context) {
-        if (!getExportAPKsPath(context).exists()) {
-            sFileUtils.mkdir(getExportAPKsPath(context));
-        }
-        return getExportAPKsPath(context).listFiles();
+        return getExportPath(context).listFiles();
     }
 
-    public static File getExportAPKsPath(Context context) {
-        if (Build.VERSION.SDK_INT < 29 && sCommonUtils.getString("exportAPKsPath", "externalFiles", context).equals("internalStorage")) {
-            return new File(Environment.getExternalStorageDirectory(), "/AEE/exportedAPKs");
+    public static File getExportPath(Context context) {
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                context.getString(R.string.app_name_short));
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            if (file.exists() && file.isFile()) {
+                sFileUtils.delete(file);
+            }
+            sFileUtils.mkdir(file);
         } else {
-            return context.getExternalFilesDir("");
+            if (!file.exists()) {
+                sFileUtils.mkdir(file);
+            }
         }
+        return file;
     }
 
     public static void signApks(File apk, File signedAPK, Context context) {
@@ -188,21 +187,6 @@ public class APKData {
                     }
                 }
             }
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.Q)
-    public static void saveToDownload(File file, String name, Context context) {
-        try {
-            FileInputStream inputStream = new FileInputStream(file);
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
-            values.put(MediaStore.MediaColumns.MIME_TYPE, "*/*");
-            values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
-            Uri uri = context.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
-            OutputStream outputStream = context.getContentResolver().openOutputStream(Objects.requireNonNull(uri));
-            sFileUtils.copyStream(inputStream, outputStream);
-        } catch (IOException ignored) {
         }
     }
 

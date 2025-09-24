@@ -42,7 +42,6 @@
     <string name="sdcard">"Vnitřní úložiště"</string>
     <string name="search">"Hledat…"</string>
     <string name="share">"Sdílet"</string>
-    <string name="share_message">"Sdílet %s?"</string>
     <string name="share_with">"Sdílet s"</string>
     <string name="signing">"Přihlašování% s…"</string>
     <string name="size">"Velikost:%s"</string>
@@ -82,7 +81,6 @@
     <string name="signing_title">"Podepisování APK"</string>
     <string name="apk_installer">"Instalační program APK AEE"</string>
     <string name="bundle_install_question">"Opravdu chcete nainstalovat balíček aplikace '%s'?"</string>
-    <string name="export_app_question">"Exportovat soubort '%s' do úložiště zařízení?"</string>
     <string name="export_project_question">"Vytvořit kopii této složky projektu do úložiště zařízení?"</string>
     <string name="export_project_replace">"'%s' již existuje! Chceš to vyměnit?"</string>
     <string name="export_resign">"Exportovat &amp; Odstoupit"</string>
@@ -111,11 +109,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Vymazat Cache"</string>
     <string name="clear_cache_summary">"Odstranit interní nastavení AEE"</string>
-    <string name="clear_cache_message">"Vše kromě exportovaných aplikací bude odstraněno!"</string>
     <string name="export_options">"Při exportu (APK)"</string>
-    <string name="export_path_default">"Interní úložiště / AEE"</string>
-    <string name="export_path_download">"Download"</string>
-    <string name="export_path_resources">"Exportovat cestu (jiné než APK)"</string>
     <string name="installer_action">"O instalaci souborů APK"</string>
     <string name="project_exist_action">"Při ukončení projektu"</string>
     <string name="prompt">"Výzva"</string>
@@ -130,8 +124,6 @@
     <string name="text_editor">"AEE Text Editor"</string>
     <string name="discard">"Vyřadit"</string>
     <string name="discard_message">"Zahodit změny provedené v tomto souboru?"</string>
-    <string name="export_path_apks">"Export Cestu (APK)"</string>
-    <string name="export_path_files_dir">"Adresář externích souborů"</string>
     <string name="language">"Jazyk"</string>
     <string name="transfer_exported_apk">"Přenos dříve exportovaných souborů APK na novou cestu …"</string>
     <string name="user_interface">"uživatelské rozhraní"</string>

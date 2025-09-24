@@ -5,7 +5,7 @@ baksmaliVersion = "2.5.2"
 crashreporterVersion = "6b6c74abaa"
 documentfileVersion = "1.1.0"
 sCommonVersion = "0a9f4f410f"
-agpVersion = "8.12.2"
+agpVersion = "8.13.0"
 materialVersion = "1.13.0"
 zip4jVersion = "2.11.5"
 

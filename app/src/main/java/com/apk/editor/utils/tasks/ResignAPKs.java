@@ -75,7 +75,7 @@ public class ResignAPKs extends sExecutor {
             if (mInstall) {
                 mParent = new File(mActivity.getExternalCacheDir(), "aee-signed");
             } else {
-                mParent = new File(APKData.getExportAPKsPath(mActivity), mPackageName != null ? mPackageName : mDetectedPackageName + "_aee-signed");
+                mParent = new File(APKData.getExportPath(mActivity), mPackageName != null ? mPackageName : mDetectedPackageName + "_aee-signed");
             }
             if (mParent.exists()) {
                 sFileUtils.delete(mParent);
@@ -88,7 +88,7 @@ public class ResignAPKs extends sExecutor {
             if (mInstall) {
                 mParent = new File(mActivity.getCacheDir(), "aee-signed.apk");
             } else {
-                mParent = new File(APKData.getExportAPKsPath(mActivity), mPackageName != null ? mPackageName : mDetectedPackageName + "_aee-signed.apk");
+                mParent = new File(APKData.getExportPath(mActivity), mPackageName != null ? mPackageName : mDetectedPackageName + "_aee-signed.apk");
             }
             if (mParent.exists()) {
                 sFileUtils.delete(mParent);

@@ -2,8 +2,6 @@ package com.apk.editor.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
-import android.os.Environment;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -45,14 +43,6 @@ public class Projects {
         return mData;
     }
 
-    public static String getExportPath(Context context) {
-        if (Build.VERSION.SDK_INT < 29 && sCommonUtils.getString("exportPath", null, context) != null) {
-            return sCommonUtils.getString("exportPath", null, context);
-        } else {
-            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-        }
-    }
-
     @SuppressLint("StringFormatInvalid")
     public static void exportProject(File file, Context context) {
         LinearLayout layout = new LinearLayout(context);
@@ -72,7 +62,7 @@ public class Projects {
                 .setNegativeButton(R.string.cancel, (dialog, id) -> {
                 })
                 .setPositiveButton(R.string.ok, (dialog, id) -> {
-                    String text = editText.toString().trim();
+                    String text = editText.getText().toString().trim();
                     if (text.isEmpty()) {
                         sCommonUtils.toast(context.getString(R.string.name_empty), context).show();
                         return;
@@ -81,9 +71,10 @@ public class Projects {
                         text = text.replace(" ", "_");
                     }
                     String name = text;
-                    if (sFileUtils.exist(new File(Projects.getExportPath(context), text))) {
+                    if (sFileUtils.exist(new File(APKData.getExportPath(context), text))) {
                         new MaterialAlertDialogBuilder(context)
-                                .setMessage(context.getString(R.string.export_project_replace, text))
+                                .setIcon(R.mipmap.ic_launcher)
+                                .setTitle(context.getString(R.string.export_project_replace, text))
                                 .setNegativeButton(R.string.cancel, (dialog2, ii) -> {
                                 })
                                 .setPositiveButton(R.string.replace, (dialog2, iii) -> new ExportProject(file, name, context).execute())

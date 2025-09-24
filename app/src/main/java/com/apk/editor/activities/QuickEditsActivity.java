@@ -130,7 +130,7 @@ public class QuickEditsActivity extends AppCompatActivity {
                 public void doInBackground() {
                     update(mXMLData);
 
-                    mOutFile = new File(APKData.getExportAPKsPath(QuickEditsActivity.this), (!Objects.equals(mPackageName,
+                    mOutFile = new File(APKData.getExportPath(QuickEditsActivity.this), (!Objects.equals(mPackageName,
                             mData.get(1).getValue()) ? mData.get(1).getValue() : mPackageName) + "_aee-signed.apk");
                     try {
                         File tmpFile = File.createTempFile("tmpApp",".apk", getExternalCacheDir());

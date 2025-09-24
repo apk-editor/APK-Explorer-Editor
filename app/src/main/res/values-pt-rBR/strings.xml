@@ -42,7 +42,6 @@
     <string name="sdcard">"Armazenamento interno"</string>
     <string name="search">"Procurar…"</string>
     <string name="share">"Compartilhar"</string>
-    <string name="share_message">"Compartilhar %s?"</string>
     <string name="share_with">"Compartilhar com"</string>
     <string name="signing">"Assinando %s…"</string>
     <string name="size">"Tamanho: %s"</string>
@@ -82,7 +81,6 @@
     <string name="signing_title">"Assinando APK"</string>
     <string name="apk_installer">"AEE Instalador de APKs"</string>
     <string name="bundle_install_question">"Você quer instalar o pacote APK '%s'?"</string>
-    <string name="export_app_question">"Exportar '%s' ao armazenamento de dispositivo?"</string>
     <string name="export_project_question">"Fazer uma cópia da pasta deste projeto no armazenamento do dispositivo?"</string>
     <string name="export_project_replace">"'%s' já existe! Você quer substituí-lo?"</string>
     <string name="export_resign">"Exportar &amp; Reassinar"</string>
@@ -113,11 +111,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Limpar o Cache"</string>
     <string name="clear_cache_summary">"Excluir as configurações internas do AEE"</string>
-    <string name="clear_cache_message">"Todas, exceto os Apps exportados, serão excluídos!"</string>
     <string name="export_options">"Exportação (APKs)"</string>
-    <string name="export_path_default">"Armazenamento interno/AEE"</string>
-    <string name="export_path_download">"Download"</string>
-    <string name="export_path_resources">"Local de exportação (não-APKs)"</string>
     <string name="installer_action">"Ao instalar os APKs"</string>
     <string name="project_exist_action">"Sobre saída de projeto"</string>
     <string name="prompt">"Lembrete"</string>
@@ -132,8 +126,6 @@
     <string name="text_editor">"AEE Editor de texto"</string>
     <string name="discard">"Descartar"</string>
     <string name="discard_message">"Descartar as alterações feitas neste arquivo?"</string>
-    <string name="export_path_apks">"Local de exportação (APKs)"</string>
-    <string name="export_path_files_dir">"Pasta de arquivos"</string>
     <string name="language">"Idioma"</string>
     <string name="transfer_exported_apk">"Transferindo os APKs anteriormente exportados para uma nova localização…"</string>
     <string name="user_interface">"Interface do usuário"</string>
@@ -164,7 +156,6 @@
     <string name="loading">"Carregando…"</string>
     <string name="manifest">"Manifesto"</string>
     <string name="permissions">"Permissões"</string>
-    <string name="save_to_downloads">"Salvar para os Downloads"</string>
     <string name="saving">"Salvando…"</string>
     <string name="sdk_compile">"Compilar SDK: %s"</string>
     <string name="sdk_minimum">"Mínimo SDK: %s"</string>

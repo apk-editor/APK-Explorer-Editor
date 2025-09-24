@@ -23,7 +23,7 @@
     <string name="choose_new">Choose New</string>
     <string name="clear_cache">Clear Cache</string>
     <string name="clear_cache_summary">Delete internal settings of AEE</string>
-    <string name="clear_cache_message">Everything, except the exported applications, will be removed.</string>
+    <string name="clear_cache_message">This will remove all saved projects and exported applications.</string>
     <string name="clearing_cache_message">Clearing Cache…</string>
     <string name="copying">Copying \'%s\'…</string>
     <string name="copyright_text">2021–2025, APK Explorer &amp; Editor</string>
@@ -43,16 +43,11 @@
     <string name="discard_message">Discard the changes made on this file?</string>
     <string name="export">Export</string>
     <string name="export_app_batch_question">Export the following apps?</string>
-    <string name="export_complete_message">The selected resource is successfully exported into \'%s\'</string>
+    <string name="export_complete_message">The selected resource(s) is successfully exported into \'%s\'</string>
     <string name="export_options">On Exporting (APK\'s)</string>
     <string name="export_options_title">Export Options</string>
     <string name="export_project_question">Make a copy of this project folder into device storage?</string>
     <string name="export_project_replace">\'%s\' already exists. Do you want to replace it?</string>
-    <string name="export_path_apks">Export Path (APK\'s)</string>
-    <string name="export_path_default">Internal Storage/AEE</string>
-    <string name="export_path_download">Download</string>
-    <string name="export_path_files_dir">External Files Directory</string>
-    <string name="export_path_resources">Export Path (non-APK\'s)</string>
     <string name="export_question">Export to device storage?</string>
     <string name="export_resign">Export &amp; Re-sign</string>
     <string name="export_selected_files">Export selected files</string>
@@ -155,7 +150,6 @@
     <string name="save_apk_message">Do you want to prepare a signed APK with the current modifications?</string>
     <string name="save_projects_question">Save project for future use?</string>
     <string name="save_question">Save changes made on this file?</string>
-    <string name="save_to_downloads">Save to Downloads</string>
     <string name="saving">Saving…</string>
     <string name="sdcard">Internal Storage</string>
     <string name="sdk_compile">Compile SDK: %s</string>
@@ -170,7 +164,6 @@
     <string name="settings_general">General</string>
     <string name="settings_misc">Miscellaneous</string>
     <string name="share">Share</string>
-    <string name="share_message">Share %s?</string>
     <string name="share_with">Share with</string>
     <string name="sign_apk_custom">Custom Key</string>
     <string name="sign_apk_default">Default Key</string>

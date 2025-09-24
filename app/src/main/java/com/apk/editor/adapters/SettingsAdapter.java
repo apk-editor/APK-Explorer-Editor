@@ -1,7 +1,5 @@
 package com.apk.editor.adapters;
 
-import android.graphics.Paint;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +47,6 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
             holder.mIcon.setImageDrawable(data.get(position).getIcon());
         } else {
             holder.mIcon.setVisibility(View.GONE);
-        }
-        if (Build.VERSION.SDK_INT >= 29 && (position == 6 || position == 7)) {
-            holder.Title.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.Description.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         }
     }
 

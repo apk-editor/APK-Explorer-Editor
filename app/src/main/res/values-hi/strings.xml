@@ -42,7 +42,6 @@
     <string name="sdcard">"आंतरिक स्टोरेज"</string>
     <string name="search">"खोज"</string>
     <string name="share">"शेयर करना"</string>
-    <string name="share_message">"%s साझा करें?"</string>
     <string name="share_with">"के साथ शेयर करें"</string>
     <string name="signing">"Signing '%s'"</string>
     <string name="size">"आकार: %s"</string>
@@ -82,7 +81,6 @@
     <string name="signing_title">"Apk Signing"</string>
     <string name="apk_installer">"एई एपीके इंस्टॉलर"</string>
     <string name="bundle_install_question">"क्या आप निश्चित रूप से ऐप बंडल '%s' इंस्टॉल करना चाहते हैं?"</string>
-    <string name="export_app_question">"'%s' को डिवाइस स्टोरेज में निर्यात करें"</string>
     <string name="export_project_question">"इस प्रोजेक्ट फ़ोल्डर की एक प्रतिलिपि डिवाइड स्टोरेज में बनाएं?"</string>
     <string name="export_project_replace">"'%s' पहले से मौजूद है. क्या आप इसे रिप्लेस करना चाहते हैं?"</string>
     <string name="export_resign">"Export &amp; Re-sign"</string>
@@ -111,11 +109,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Cache को साफ़ करें "</string>
     <string name="clear_cache_summary">"Aee की आंतरिक सेटिंग्स हटाएँ"</string>
-    <string name="clear_cache_message">"निर्यात किए गए एप्लिकेशन को छोड़कर, सब कुछ हटा दिया जाएगा।"</string>
     <string name="export_options">"(Apk's) निर्यात पर"</string>
-    <string name="export_path_default">"Internal Storage /एईई"</string>
-    <string name="export_path_download">"डाउनलोड करना "</string>
-    <string name="export_path_resources">"निर्यात पथ"</string>
     <string name="installer_action">"एपीके इंस्टॉल करने पर"</string>
     <string name="project_exist_action">"किसी प्रोजेक्ट से बाहर निकलने पर"</string>
     <string name="prompt">"Prompt"</string>
@@ -130,8 +124,6 @@
     <string name="text_editor">"Aee Text Editor"</string>
     <string name="discard">"खारिज करना"</string>
     <string name="discard_message">"इस फ़ाइल में किए गए परिवर्तनों को त्यागें"</string>
-    <string name="export_path_apks">"निर्यात path (APK's)"</string>
-    <string name="export_path_files_dir">"बाहरी फ़ाइलें निर्देशिका"</string>
     <string name="language">"भाषा"</string>
     <string name="transfer_exported_apk">"पहले से निर्यात किए गए APK's को नए path पर स्थानांतरित करना"</string>
     <string name="user_interface">"प्रयोक्ता इंटरफ़ेस"</string>
@@ -163,7 +155,6 @@
     <string name="loading">"लोड हो रहा है…"</string>
     <string name="manifest">"घोषणापत्र"</string>
     <string name="permissions">"अनुमति"</string>
-    <string name="save_to_downloads">"डाउनलोड में सहेजें"</string>
     <string name="saving">"सहेजा जा रहा है…"</string>
     <string name="sdk_compile">"एसडीके संकलित करें: %s"</string>
     <string name="sdk_minimum">"न्यूनतम एसडीके: %s"</string>

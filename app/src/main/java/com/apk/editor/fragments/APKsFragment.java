@@ -247,6 +247,15 @@ public class APKsFragment extends Fragment {
 
             @Override
             public void doInBackground() {
+                File[] oldList = Objects.requireNonNull(requireActivity().getExternalFilesDir("")).listFiles();
+
+                for (File files : Objects.requireNonNull(oldList)) {
+                    if (files.isFile() && files.getName().endsWith(".apk") || files.isDirectory()) {
+                        sFileUtils.copy(files, new File(APKData.getExportPath(requireActivity()), files.getName()));
+                        sFileUtils.delete(files);
+                    }
+                }
+
                 mRecycleViewAdapter = new APKsAdapter(APKData.getData(searchWord, activity), searchWord);
             }
 

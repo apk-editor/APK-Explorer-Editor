@@ -104,7 +104,7 @@ public class SignAPK extends sExecutor {
         File mParent;
         if (sPackageUtils.isPackageInstalled(packageName, mActivity) && APKData.isAppBundle(sPackageUtils.getSourceDir(packageName, mActivity))) {
             String sourceDirPath = sPackageUtils.getSourceDir(packageName, mActivity);
-            mParent = new File(APKData.getExportAPKsPath(mActivity), Objects.requireNonNull(packageName).replace(".apk", "") + "_aee-signed");
+            mParent = new File(APKData.getExportPath(mActivity), Objects.requireNonNull(packageName).replace(".apk", "") + "_aee-signed");
             if (mParent.exists()) {
                 sFileUtils.delete(mParent);
             }
@@ -123,7 +123,7 @@ public class SignAPK extends sExecutor {
 
             APKData.signApks(mTMPZip, new File(mParent, apkItems.getBaseAPK().getName()), mActivity);
         } else {
-            mParent = new File(APKData.getExportAPKsPath(mActivity), Objects.requireNonNull(packageName).replace(".apk", "") + "_aee-signed.apk");
+            mParent = new File(APKData.getExportPath(mActivity), Objects.requireNonNull(packageName).replace(".apk", "") + "_aee-signed.apk");
             if (mParent.exists()) {
                 sFileUtils.delete(mParent);
             }

@@ -11,8 +11,8 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.apk.editor.R;
+import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.Projects;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -53,7 +53,8 @@ public class ImageViewActivity extends AppCompatActivity {
         }
 
         mMenu.setOnClickListener(v -> new MaterialAlertDialogBuilder(this)
-                .setMessage(R.string.export_question)
+                .setIcon(R.mipmap.ic_launcher)
+                .setTitle(R.string.export_question)
                 .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                 })
                 .setPositiveButton(getString(R.string.export), (dialog, id) -> {
@@ -63,21 +64,19 @@ public class ImageViewActivity extends AppCompatActivity {
                                                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                                         },this);
                             } else {
-                                String mExportPath;
-                                if (Build.VERSION.SDK_INT < 29) {
-                                    File file = new File(Projects.getExportPath(this), Objects.requireNonNull(packageName));
-                                    sFileUtils.mkdir(file);
-                                    mExportPath = file.getAbsolutePath();
-                                } else {
-                                    mExportPath = Projects.getExportPath(this);
+                                File exportPath = new File(APKData.getExportPath(this), Objects.requireNonNull(packageName));
+                                if (!exportPath.exists()) {
+                                    sFileUtils.mkdir(exportPath);
                                 }
                                 if (path != null) {
-                                    APKExplorer.saveImage(BitmapFactory.decodeFile(path), mExportPath + "/" + new File(path).getName(), this);
+                                    APKExplorer.saveImage(BitmapFactory.decodeFile(path), new File(exportPath, new File(path).getName()));
                                 } else {
-                                    APKExplorer.saveImage(APKExplorer.drawableToBitmap(mImage.getDrawable()), mExportPath + "/icon.png", this);
+                                    APKExplorer.saveImage(APKExplorer.drawableToBitmap(mImage.getDrawable()), new File(exportPath,packageName + "icon.png"));
                                 }
                                 new MaterialAlertDialogBuilder(this)
-                                        .setMessage(getString(R.string.export_complete_message, mExportPath))
+                                        .setIcon(R.mipmap.ic_launcher)
+                                        .setTitle(R.string.app_name)
+                                        .setMessage(getString(R.string.export_complete_message, "Download > AEE > " + packageName))
                                         .setPositiveButton(getString(R.string.cancel), (dialog1, id1) -> {
                                         }).show();
                             }

@@ -2,7 +2,6 @@ package com.apk.editor.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -11,9 +10,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Base64;
 
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -31,7 +27,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -203,23 +198,11 @@ public class APKExplorer {
         return null;
     }
 
-    public static void saveImage(Bitmap bitmap, String dest, Context context) {
+    public static void saveImage(Bitmap bitmap, File dest) {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.MediaColumns.DISPLAY_NAME, new File(dest).getName());
-                values.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
-                values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
-                Uri uri = context.getContentResolver().insert(MediaStore.Files.getContentUri("external"), values);
-                OutputStream imageOutStream = context.getContentResolver().openOutputStream(Objects.requireNonNull(uri));
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, Objects.requireNonNull(imageOutStream));
-                imageOutStream.close();
-            } else {
-                File image = new File(dest);
-                FileOutputStream imageOutStream = new FileOutputStream(image);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, imageOutStream);
-                imageOutStream.close();
-            }
+            FileOutputStream imageOutStream = new FileOutputStream(dest);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, imageOutStream);
+            imageOutStream.close();
         } catch(Exception ignored) {
         }
     }

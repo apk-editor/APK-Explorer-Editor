@@ -6,8 +6,7 @@ import android.view.View;
 import androidx.appcompat.widget.PopupMenu;
 
 import com.apk.editor.R;
-import com.apk.editor.utils.dialogs.ShareBundleDialog;
-import com.apk.editor.utils.tasks.SaveBundletoDownloads;
+import com.apk.editor.utils.tasks.ShareBundle;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on February 03, 2023
@@ -18,15 +17,9 @@ public class BundleOptionsMenu extends PopupMenu {
         super(view.getContext(), view);
         Menu menu = getMenu();
         menu.add(Menu.NONE, 0, Menu.NONE, R.string.share);
-        menu.add(Menu.NONE, 1, Menu.NONE, R.string.save_to_downloads);
         setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case 0:
-                    new ShareBundleDialog(bundlePath, view.getContext());
-                    break;
-                case 1:
-                    new SaveBundletoDownloads(bundlePath, true, view.getContext()).execute();
-                    break;
+            if (item.getItemId() == 0) {
+                new ShareBundle(bundlePath, view.getContext()).execute();
             }
             return false;
         });
