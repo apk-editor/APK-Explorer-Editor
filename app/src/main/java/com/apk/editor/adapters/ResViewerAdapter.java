@@ -67,7 +67,6 @@ public class ResViewerAdapter extends RecyclerView.Adapter<ResViewerAdapter.View
         return new ViewHolder(rowItem);
     }
 
-    @SuppressLint("StringFormatInvalid")
     @Override
     public void onBindViewHolder(@NonNull ResViewerAdapter.ViewHolder holder, int position) {
         String name = data.get(position).getName();
@@ -93,67 +92,6 @@ public class ResViewerAdapter extends RecyclerView.Adapter<ResViewerAdapter.View
         } else {
             holder.mIcon.setVisibility(GONE);
         }
-        holder.mMenu.setVisibility(clickable || value == null || (value.startsWith("@") || value.startsWith("?")) ? GONE : VISIBLE);
-
-        holder.mMenu.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
-            Menu menu = popupMenu.getMenu();
-            if (value != null && value.startsWith("res/")) {
-                menu.add(Menu.NONE, 0, Menu.NONE, v.getContext().getString(R.string.export_storage)).setIcon(R.drawable.ic_export);
-            } else {
-                menu.add(Menu.NONE, 1, Menu.NONE, v.getContext().getString(R.string.update)).setIcon(R.drawable.ic_edit);
-            }
-            popupMenu.setForceShowIcon(true);
-            popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getItemId() == 0) {
-                    if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext())) {
-                        sPermissionUtils.requestPermission(
-                                new String[] {
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                }, activity);
-                    } else {
-                        new ExportToStorage(new File(rootPath, Objects.requireNonNull(value)), null, new File(rootPath).getName(), v.getContext()).execute();
-                    }
-                } else if (item.getItemId() == 1) {
-                    int adapterPosition = position;
-                    View rootView = View.inflate(activity, R.layout.layout_res_value_patcher, null);
-                    MaterialAutoCompleteTextView newText = rootView.findViewById(R.id.new_text);
-                    TextInputLayout newTextHint = rootView.findViewById(R.id.new_text_hint);
-
-                    newTextHint.setHint(v.getContext().getString(R.string.res_add_new));
-
-                    newText.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            if (s.toString().trim().length() > Objects.requireNonNull(value).length()) {
-                                newText.setText(s.toString().trim().substring(0, Objects.requireNonNull(value).length()));
-                                newText.setSelection(newText.getText().length());
-                                sCommonUtils.toast("Important: replacement text can’t be longer", v.getContext()).show();
-                            }
-                        }
-                    });
-
-                    new MaterialAlertDialogBuilder(activity)
-                            .setIcon(R.drawable.ic_edit)
-                            .setTitle(v.getContext().getString(R.string.replace_question, Objects.requireNonNull(value)))
-                            .setCancelable(false)
-                            .setView(rootView)
-                            .setNeutralButton(R.string.cancel, (dialogInterface, i) -> {
-                            })
-                            .setPositiveButton(R.string.apply, (dialogInterface, i) -> resPatcher(newText.getText().toString().trim(), data.get(adapterPosition), adapterPosition).execute()).show();
-                }
-                return false;
-            });
-            popupMenu.show();
-        });
     }
 
     private sExecutor resPatcher(String newText, ResEntry entry, int adapterPosition) {
@@ -197,23 +135,82 @@ public class ResViewerAdapter extends RecyclerView.Adapter<ResViewerAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final AppCompatImageButton mIcon, mMenu;
+        private final AppCompatImageButton mIcon;
         private final MaterialTextView mName, mValue;
 
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
             this.mIcon = view.findViewById(R.id.icon);
-            this.mMenu = view.findViewById(R.id.menu);
             this.mName = view.findViewById(R.id.name);
             this.mValue = view.findViewById(R.id.value);
         }
 
+        @SuppressLint("StringFormatInvalid")
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onClick(View view) {
+            int position = getBindingAdapterPosition();
             if (clickable) {
                 clickListener.onItemClick(data.get(getBindingAdapterPosition()).getValue(), view);
+            } else if (data.get(position).getValue() != null && (!data.get(position).getValue().startsWith("@") || !data.get(position).getValue().startsWith("?"))) {
+                PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+                Menu menu = popupMenu.getMenu();
+                if (data.get(position).getValue().startsWith("res/")) {
+                    menu.add(Menu.NONE, 0, Menu.NONE, view.getContext().getString(R.string.export_storage)).setIcon(R.drawable.ic_export);
+                } else {
+                    menu.add(Menu.NONE, 1, Menu.NONE, view.getContext().getString(R.string.update)).setIcon(R.drawable.ic_edit);
+                }
+                popupMenu.setForceShowIcon(true);
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    if (item.getItemId() == 0) {
+                        if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, view.getContext())) {
+                            sPermissionUtils.requestPermission(
+                                    new String[] {
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                    }, activity);
+                        } else {
+                            new ExportToStorage(new File(rootPath, Objects.requireNonNull(data.get(position).getValue())), null, new File(rootPath).getName(), view.getContext()).execute();
+                        }
+                    } else if (item.getItemId() == 1) {
+                        View rootView = View.inflate(activity, R.layout.layout_res_value_patcher, null);
+                        MaterialAutoCompleteTextView newText = rootView.findViewById(R.id.new_text);
+                        TextInputLayout newTextHint = rootView.findViewById(R.id.new_text_hint);
+
+                        newTextHint.setHint(view.getContext().getString(R.string.res_add_new));
+                        newText.setText(data.get(position).getValue());
+
+                        newText.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                                if (s.toString().trim().length() > data.get(position).getValue().length()) {
+                                    newText.setText(s.toString().trim().substring(0, data.get(position).getValue().length()));
+                                    newText.setSelection(newText.getText().length());
+                                    sCommonUtils.toast(R.string.res_patcher_warning, view.getContext()).show();
+                                }
+                            }
+                        });
+
+                        new MaterialAlertDialogBuilder(activity)
+                                .setIcon(R.drawable.ic_edit)
+                                .setTitle(view.getContext().getString(R.string.replace_question, data.get(position).getValue()))
+                                .setCancelable(false)
+                                .setView(rootView)
+                                .setNeutralButton(R.string.cancel, (dialogInterface, i) -> {
+                                })
+                                .setPositiveButton(R.string.apply, (dialogInterface, i) -> resPatcher(newText.getText().toString().trim(), data.get(position), position).execute()).show();
+                    }
+                    return false;
+                });
+                popupMenu.show();
             }
         }
     }

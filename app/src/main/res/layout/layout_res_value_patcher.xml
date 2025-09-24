@@ -9,7 +9,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Important: replacement text can’t be longer"
+        android:text="@string/res_patcher_warning"
         android:textStyle="bold|italic"
         android:textIsSelectable="true"
         android:layout_gravity="center"

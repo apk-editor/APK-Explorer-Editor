@@ -144,6 +144,7 @@
     <string name="resigning_apks">Re-signing selected APK\'s…</string>
     <string name="res_add_new">Add new value</string>
     <string name="res_choose_new">Choose new value for \"%s\"</string>
+    <string name="res_patcher_warning">Important: replacement text cannot be longer than the original</string>
     <string name="res_viewer">Resource Viewer</string>
     <string name="root">Root</string>
     <string name="save">Save</string>
