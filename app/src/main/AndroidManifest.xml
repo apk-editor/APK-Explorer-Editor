@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
-        tools:ignore="QueryAllPackagesPermission" />
+        tools:ignore="PackageVisibilityPolicy,QueryAllPackagesPermission" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"
         tools:node="remove" />
 
@@ -47,6 +47,7 @@
             android:exported="false" />
 
         <activity android:name=".activities.XMLEditorActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="false" />
     </application>
 </manifest>
