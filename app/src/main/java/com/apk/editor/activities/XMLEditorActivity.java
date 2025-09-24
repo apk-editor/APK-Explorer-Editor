@@ -58,9 +58,9 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class XMLEditorActivity extends AppCompatActivity {
 
-    private List<XMLEntry> mData;
     private List<ResEntry> mResourceMap;
     private ContentLoadingProgressBar mProgress;
+    private MaterialButton mSave;
     private RecyclerView mRecyclerView;
     private String mPath = null, mResPath = null, mSearchText = null;
     public static final String PATH_INTENT = "path", RESOURCE_PATH_INTENT = "resource_path";
@@ -74,7 +74,7 @@ public class XMLEditorActivity extends AppCompatActivity {
 
         mProgress = findViewById(R.id.progress);
         MaterialAutoCompleteTextView mSearch = findViewById(R.id.search);
-        MaterialButton mSave = findViewById(R.id.save);
+        mSave = findViewById(R.id.save);
         MaterialTextView mTitle = findViewById(R.id.title);
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -149,20 +149,36 @@ public class XMLEditorActivity extends AppCompatActivity {
                 }
             }
 
+            public List<XMLEntry> filteredData(List<XMLEntry> data) {
+                List<XMLEntry> filteredData;
+                if (searchText == null || searchText.isEmpty()) {
+                    filteredData = data;
+                } else {
+                    filteredData = new ArrayList<>();
+                    for (XMLEntry entry : data) {
+                        if (entry.getText().contains(searchText)) {
+                            filteredData.add(entry);
+                        }
+                    }
+                }
+                return filteredData;
+            }
+
             @Override
             public void doInBackground() {
+                List<XMLEntry> data = null;
                 mResourceMap = getResourceMap();
                 try (FileInputStream fis = new FileInputStream(mPath)) {
                     if (mResourceMap != null) {
-                        mData = new aXMLDecoder(fis, mResourceMap).decode();
+                        data = new aXMLDecoder(fis, mResourceMap).decode();
                     } else {
-                        mData = new aXMLDecoder(fis).decode();
+                        data = new aXMLDecoder(fis).decode();
                     }
                 } catch (IOException | XmlPullParserException ignored) {
                 }
 
-                if (mData != null && !mData.isEmpty()) {
-                    mAdapter = new XMLEditorAdapter(mData, mResourceMap,
+                if (data != null && !data.isEmpty()) {
+                    mAdapter = new XMLEditorAdapter(filteredData(data), data, mResourceMap,
                             (xmlEntry) -> {
                                 mXMLEntry = xmlEntry;
 
@@ -171,7 +187,7 @@ public class XMLEditorActivity extends AppCompatActivity {
                                     chooseImage.launch(pickImage);
                                 } catch (ActivityNotFoundException ignored) {
                                 }
-                            }, mPath, mResPath.replace("/resources.arsc", ""), searchText, XMLEditorActivity.this);
+                            }, mPath, mResPath.replace("/resources.arsc", ""), searchText, mSave, XMLEditorActivity.this);
                     failed = false;
                 } else {
                     failed = true;

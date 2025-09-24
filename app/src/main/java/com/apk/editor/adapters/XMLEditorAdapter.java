@@ -36,20 +36,22 @@ import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
 public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.ViewHolder> {
 
     private final Activity activity;
-    private final List<XMLEntry> data;
+    private final List<XMLEntry> data, originalData;
     private final List<ResEntry> resourceMap;
+    private final MaterialButton saveButton;
     private final String filePath, rootPath, searchWord;
     private final OnPickImageListener pickImageListener;
     private String mXMLString = null;
-    private MaterialButton mSave;
 
-    public XMLEditorAdapter(List<XMLEntry> data, List<ResEntry> resourceMap, OnPickImageListener listener, String filePath, String rootPath, String searchWord, Activity activity) {
+    public XMLEditorAdapter(List<XMLEntry> data, List<XMLEntry> originalData, List<ResEntry> resourceMap, OnPickImageListener listener, String filePath, String rootPath, String searchWord, MaterialButton saveButton, Activity activity) {
         this.data = data;
+        this.originalData = originalData;
         this.resourceMap = resourceMap;
         this.pickImageListener = listener;
         this.filePath = filePath;
         this.rootPath = rootPath;
         this.searchWord = searchWord;
+        this.saveButton = saveButton;
         this.activity = activity;
     }
 
@@ -70,9 +72,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
             holder.mText.setVisibility(GONE);
         }
 
-        mSave = activity.findViewById(R.id.save);
-
-        mSave.setOnClickListener(v -> XMLEditor.encodeToBinaryXML(mXMLString, filePath, activity).execute());
+        saveButton.setOnClickListener(v -> XMLEditor.encodeToBinaryXML(mXMLString, filePath, activity).execute());
     }
 
     @Override
@@ -191,15 +191,25 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
 
                     @Override
                     public void doInBackground() {
+                        int positionOriginal = RecyclerView.NO_POSITION;
+                        for (int i=0; i<originalData.size(); i++) {
+                            if (originalData.get(i) == data.get(position)) {
+                                positionOriginal = i;
+                            }
+                        }
                         if (data.get(position).getEndTag().endsWith("/>") || data.get(position).getEndTag().endsWith(">")) {
+                            if (positionOriginal == RecyclerView.NO_POSITION) return;
                             data.set(position, new XMLEntry("", "", "", data.get(position).getEndTag().replace("\"", "")));
+                            originalData.set(positionOriginal, new XMLEntry("", "", "", data.get(position).getEndTag().replace("\"", "")));
                             removable = false;
                         } else {
+                            if (positionOriginal == RecyclerView.NO_POSITION) return;
                             data.remove(position);
+                            originalData.remove(positionOriginal);
                             removable = true;
                         }
 
-                        mXMLString = XMLEditor.xmlEntriesToXML(data, resourceMap);
+                        mXMLString = XMLEditor.xmlEntriesToXML(originalData, resourceMap);
 
                         invalid = !XMLEditor.isXMLValid(mXMLString);
                     }
@@ -210,7 +220,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                         if (invalid) {
                             sCommonUtils.toast(context.getString(R.string.xml_corrupted), context).show();
                         } else {
-                            mSave.setVisibility(mXMLString != null ? VISIBLE : GONE);
+                            saveButton.setVisibility(mXMLString != null ? VISIBLE : GONE);
                             if (removable) {
                                 notifyItemRemoved(position);
                             } else {
@@ -239,9 +249,17 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
 
             @Override
             public void doInBackground() {
+                int positionOriginal = RecyclerView.NO_POSITION;
+                for (int i=0; i<originalData.size(); i++) {
+                    if (originalData.get(i) == data.get(position)) {
+                        positionOriginal = i;
+                    }
+                }
+                if (positionOriginal == RecyclerView.NO_POSITION) return;
                 data.get(position).setValue(newValue);
+                originalData.get(positionOriginal).setValue(newValue);
 
-                mXMLString = XMLEditor.xmlEntriesToXML(data, resourceMap);
+                mXMLString = XMLEditor.xmlEntriesToXML(originalData, resourceMap);
 
                 invalid = !XMLEditor.isXMLValid(mXMLString);
             }
@@ -252,7 +270,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                 if (invalid) {
                     sCommonUtils.toast(context.getString(R.string.xml_corrupted), context).show();
                 } else {
-                    mSave.setVisibility(mXMLString != null ? VISIBLE : GONE);
+                    saveButton.setVisibility(mXMLString != null ? VISIBLE : GONE);
                     notifyItemChanged(position);
                 }
             }
