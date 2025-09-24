@@ -1,0 +1,34 @@
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/oldIcon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="5sp"
+        android:src="@drawable/ic_image"
+        android:layout_marginTop="5sp"
+        android:background="@null" />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        style="?attr/materialIconButtonFilledTonalStyle"
+        app:iconTint="?attr/colorPrimary"
+        app:icon="@drawable/ic_start"
+        android:rotation="90" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/newIcon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="5sp"
+        android:layout_marginTop="5sp"
+        android:background="@null" />
+</androidx.appcompat.widget.LinearLayoutCompat>

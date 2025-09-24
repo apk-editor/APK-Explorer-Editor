@@ -26,6 +26,7 @@ import java.util.List;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.Dialog.sSingleChoiceDialog;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on October 27, 2024
@@ -35,10 +36,12 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
     private final List<XMLEntry> data;
     private final List<ResEntry> resourceMap;
     private final String filePath, rootPath, searchWord;
+    private final OnPickImageListener pickImageListener;
 
-    public XMLEditorAdapter(List<XMLEntry> data, List<ResEntry> resourceMap, String filePath, String rootPath, String searchWord) {
+    public XMLEditorAdapter(List<XMLEntry> data, List<ResEntry> resourceMap, OnPickImageListener listener, String filePath, String rootPath, String searchWord) {
         this.data = data;
         this.resourceMap = resourceMap;
+        this.pickImageListener = listener;
         this.filePath = filePath;
         this.rootPath = rootPath;
         this.searchWord = searchWord;
@@ -82,20 +85,47 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
             int position = getBindingAdapterPosition();
             if (!APKEditorUtils.isFullVersion(view.getContext()) || data.get(position).getValue().isEmpty()) return;
             if (data.get(position).getTag().trim().equals("android:label") || data.get(position).getValue().startsWith("res/")) {
-                new ResEditorDialog(data.get(position), resourceMap, rootPath, view.getContext()) {
-                    @Override
-                    public void apply(boolean editor, String newValue) {
-                        if (editor) {
-                            launchEditorDialog(position, view.getContext());
-                        } else {
-                            modify(newValue, position, view.getContext()).execute();
+                if (data.get(position).getTag().trim().equals("android:icon") || data.get(position).getTag().trim().equals("android:roundIcon")) {
+                    new sSingleChoiceDialog(R.drawable.ic_image, view.getContext().getString(R.string.xml_editor_icon_title),
+                            new String[] {
+                                    view.getContext().getString(R.string.xml_editor_icon_res),
+                                    view.getContext().getString(R.string.xml_editor_icon_storage)
+                            }, 0, view.getContext()) {
+
+                        @Override
+                        public void onItemSelected(int itemPosition) {
+                            switch (itemPosition) {
+                                case  0:
+                                    chooseResDialog(position, view.getContext());
+                                    break;
+                                case 1:
+                                    if (pickImageListener != null) {
+                                        pickImageListener.onPickImageRequested(data.get(position));
+                                    }
+                                    break;
+                            }
                         }
-                    }
-                };
+                    }.show();
+                } else {
+                    chooseResDialog(position, view.getContext());
+                }
             } else {
                 launchEditorDialog(position, view.getContext());
             }
         }
+    }
+
+    private void chooseResDialog(int position, Context context) {
+        new ResEditorDialog(data.get(position), resourceMap, rootPath, context) {
+            @Override
+            public void apply(boolean editor, String newValue) {
+                if (editor) {
+                    launchEditorDialog(position, context);
+                } else {
+                    modify(newValue, position, context).execute();
+                }
+            }
+        };
     }
 
     private void launchEditorDialog(int position, Context context) {
@@ -197,6 +227,10 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                 }
             }
         };
+    }
+
+    public interface OnPickImageListener {
+        void onPickImageRequested(XMLEntry xmlEntry);
     }
 
 }

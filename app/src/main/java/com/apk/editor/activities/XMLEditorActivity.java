@@ -1,13 +1,25 @@
 package com.apk.editor.activities;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +30,9 @@ import com.apk.axml.serializableItems.ResEntry;
 import com.apk.axml.serializableItems.XMLEntry;
 import com.apk.editor.R;
 import com.apk.editor.adapters.XMLEditorAdapter;
+import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.dialogs.ProgressDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -25,8 +40,11 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
@@ -43,6 +61,7 @@ public class XMLEditorActivity extends AppCompatActivity {
     private String mPath = null, mResPath = null, mSearchText = null;
     public static final String PATH_INTENT = "path", RESOURCE_PATH_INTENT = "resource_path";
     private XMLEditorAdapter mAdapter;
+    private XMLEntry mXMLEntry;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,7 +143,16 @@ public class XMLEditorActivity extends AppCompatActivity {
                     }
                 } catch (IOException | XmlPullParserException ignored) {
                 }
-                mAdapter = new XMLEditorAdapter(mData, mResourceMap, mPath, mResPath.replace("/resources.arsc", ""), searchText);
+
+                mAdapter = new XMLEditorAdapter(mData, mResourceMap,
+                        (xmlEntry) -> {
+                            mXMLEntry = xmlEntry;
+
+                            Intent pickImage = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            try {
+                                chooseImage.launch(pickImage);
+                            } catch (ActivityNotFoundException ignored) {}
+                        }, mPath, mResPath.replace("/resources.arsc", ""), searchText);
             }
 
             @Override
@@ -136,5 +164,138 @@ public class XMLEditorActivity extends AppCompatActivity {
             }
         };
     }
+
+    @SuppressLint("StringFormatInvalid")
+    private final ActivityResultLauncher<Intent> chooseImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    new sExecutor() {
+                        private Activity activity;
+                        private Bitmap bitmapNew = null;
+                        private ProgressDialog mProgressDialog;
+                        private String tag;
+                        private Uri imageUri = null;
+
+                        @Override
+                        public void onPreExecute() {
+                            activity = XMLEditorActivity.this;
+                            mProgressDialog = new ProgressDialog(activity);
+                            mProgressDialog.setTitle(activity.getString(R.string.loading));
+                            mProgressDialog.setIcon(R.mipmap.ic_launcher);
+                            mProgressDialog.setIndeterminate(true);
+                            mProgressDialog.show();
+                        }
+
+                        private Bitmap loadBitmap(Uri uri) {
+                            try {
+                                return MediaStore.Images.Media.getBitmap(activity.getContentResolver(), uri);
+                            } catch (IOException ignored) {
+                            }
+                            return null;
+                        }
+
+                        private String getRef() {
+                            for (ResEntry resEntry : mResourceMap) {
+                                if (mXMLEntry.getValue().equals(resEntry.getValue())) {
+                                    return resEntry.getName();
+                                }
+                            }
+                            return null;
+                        }
+
+                        private List<String> getRefs() {
+                            List<String> refs = new ArrayList<>();
+                            for (ResEntry resEntry : mResourceMap) {
+                                if (resEntry.getName().equals(getRef()) && resEntry.getValue() != null) {
+                                    refs.add(resEntry.getValue());
+                                }
+                            }
+                            return refs;
+                        }
+
+                        @Override
+                        public void doInBackground() {
+                            Intent data = result.getData();
+                            Uri uri = data.getData();
+                            bitmapNew = loadBitmap(uri);
+                            tag = mXMLEntry.getTag().trim();
+
+                            String path = mResPath.replace("resources.arsc", getRefs().get(0));
+                            imageUri = APKExplorer.getIconFromPath(path);
+                        }
+
+                        @Override
+                        public void onPostExecute() {
+                            View rootView = View.inflate(activity, R.layout.layout_imagepicker, null);
+                            AppCompatImageView imageViewOld = rootView.findViewById(R.id.oldIcon);
+                            AppCompatImageView imageViewNew = rootView.findViewById(R.id.newIcon);
+
+                            if (imageUri != null) {
+                                imageViewOld.setImageURI(imageUri);
+                            }
+                            imageViewNew.setImageBitmap(bitmapNew);
+                            mProgressDialog.dismiss();
+                            new MaterialAlertDialogBuilder(activity)
+                                    .setTitle(getString(R.string.replace_question, tag))
+                                    .setCancelable(false)
+                                    .setView(rootView)
+                                    .setNeutralButton(R.string.cancel, (dialogInterface, i) -> {
+                                    })
+                                    .setPositiveButton(R.string.apply, (dialogInterface, i) ->
+                                            new sExecutor() {
+                                                private ProgressDialog mProgressDialog;
+                                                @Override
+                                                public void onPreExecute() {
+                                                    mProgressDialog = new ProgressDialog(activity);
+                                                    mProgressDialog.setTitle(activity.getString(R.string.quick_edits_progress_message));
+                                                    mProgressDialog.setIcon(R.mipmap.ic_launcher);
+                                                    mProgressDialog.setIndeterminate(true);
+                                                    mProgressDialog.show();
+                                                }
+
+                                                @Override
+                                                public void doInBackground() {
+                                                    mProgressDialog.setMax(getRefs().size());
+                                                    for (String paths : getRefs()) {
+                                                        String filePath = mResPath.replace("resources.arsc", paths);
+                                                        Uri fileUri = APKExplorer.getIconFromPath(filePath);
+                                                        String fileExt = APKExplorer.getExt(filePath);
+
+                                                        try {
+                                                            Bitmap bitmap;
+                                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                                                ImageDecoder.Source source = ImageDecoder.createSource(activity.getContentResolver(), Objects.requireNonNull(fileUri));
+                                                                bitmap = ImageDecoder.decodeBitmap(source);
+                                                            } else {
+                                                                bitmap = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), fileUri);
+                                                            }
+                                                            if (bitmap == null) return;
+
+                                                            int width = bitmap.getWidth() > 0 ? bitmap.getWidth() : 1;
+                                                            int height = bitmap.getHeight() > 0 ? bitmap.getHeight() : 1;
+
+                                                            Bitmap scaled = Bitmap.createScaledBitmap(bitmapNew, width, height, true);
+                                                            FileOutputStream out = new FileOutputStream(filePath);
+                                                            scaled.compress(fileExt.equalsIgnoreCase("webp") ? Bitmap.CompressFormat.WEBP : fileExt.equalsIgnoreCase("png") ? Bitmap.CompressFormat.PNG : Bitmap.CompressFormat.JPEG, 100, out);
+                                                            out.flush();
+                                                            out.close();
+                                                        } catch (IOException ignored) {
+                                                        }
+                                                    }
+                                                    mProgressDialog.setProgress(mProgressDialog.getProgress() + 1);
+                                                }
+
+                                                @Override
+                                                public void onPostExecute() {
+                                                    mProgressDialog.dismiss();
+                                                }
+                                            }.execute()
+                                    ).show();
+                        }
+                    }.execute();
+                }
+            }
+    );
 
 }

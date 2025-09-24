@@ -259,6 +259,22 @@ public class APKExplorer {
         return bitmap;
     }
 
+    public static String getExt(String filePath) {
+        if (filePath == null || filePath.isEmpty()) {
+            return null;
+        }
+        String normalized = filePath.replace("\\", "/");
+
+        int lastSlash = normalized.lastIndexOf("/");
+        String fileName = (lastSlash == -1) ? normalized : normalized.substring(lastSlash + 1);
+
+        int lastDot = fileName.lastIndexOf(".");
+        if (lastDot == -1 || lastDot == fileName.length() - 1) {
+            return null;
+        }
+        return fileName.substring(lastDot + 1);
+    }
+
     public static String getFormattedFileSize(File file) {
         long sizeInByte = file.length();
         if (sizeInByte > 1024) {

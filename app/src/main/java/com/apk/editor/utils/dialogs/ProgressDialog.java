@@ -29,6 +29,10 @@ public class ProgressDialog {
                 .setCancelable(false);
     }
 
+    public int getProgress() {
+        return mProgressBar.getProgress();
+    }
+
     public void show() {
         mAlertDialog = mDialogBuilder.create();
         mAlertDialog.show();

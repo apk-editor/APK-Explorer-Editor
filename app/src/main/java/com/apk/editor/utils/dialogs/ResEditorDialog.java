@@ -11,6 +11,7 @@ import com.apk.axml.serializableItems.ResEntry;
 import com.apk.axml.serializableItems.XMLEntry;
 import com.apk.editor.R;
 import com.apk.editor.adapters.ResViewerAdapter;
+import com.apk.editor.utils.APKExplorer;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -67,22 +68,6 @@ public abstract class ResEditorDialog extends MaterialAlertDialogBuilder {
                 mProgressDialog.show();
             }
 
-            private String getExt(String name) {
-                if (name == null || name.isEmpty()) {
-                    return null;
-                }
-                String normalized = name.replace("\\", "/");
-
-                int lastSlash = normalized.lastIndexOf("/");
-                String fileName = (lastSlash == -1) ? normalized : normalized.substring(lastSlash + 1);
-
-                int lastDot = fileName.lastIndexOf(".");
-                if (lastDot == -1 || lastDot == fileName.length() - 1) {
-                    return null;
-                }
-                return fileName.substring(lastDot + 1);
-            }
-
             private String getParentDir(String name) {
                 if (name == null || name.isEmpty()) {
                     return null;
@@ -104,7 +89,7 @@ public abstract class ResEditorDialog extends MaterialAlertDialogBuilder {
                         if (xmlEntry.getTag().trim().equals("android:label") && entry.getName().startsWith("@string/")) {
                             resItems.add(entry);
                         }
-                        if (!xmlEntry.getTag().trim().equals("android:label") && entry.getValue().startsWith(getParentDir(xmlEntry.getValue())) && entry.getValue().endsWith(getExt(xmlEntry.getValue()))) {
+                        if (!xmlEntry.getTag().trim().equals("android:label") && entry.getValue().startsWith(getParentDir(xmlEntry.getValue())) && entry.getValue().endsWith(APKExplorer.getExt(xmlEntry.getValue()))) {
                             resItems.add(entry);
                         }
                     }
