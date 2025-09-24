@@ -59,7 +59,7 @@ public class BuildingActivity extends AppCompatActivity {
 
         String mPackageNameOriginal = getIntent().getStringExtra(PACKAGE_NAME_INTENT);
 
-        mOutputPath.setText(getString(R.string.resigned_apks_path, APKData.getExportPath(this)));
+        mOutputPath.setText(getString(R.string.resigned_apks_path, "Download > AEE"));
 
         mInstall.setOnClickListener(v -> {
             if (sPackageUtils.isPackageInstalled(Common.getPackageName(this), this) && APKData.isAppBundle(sPackageUtils

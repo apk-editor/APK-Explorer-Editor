@@ -125,7 +125,7 @@ public class ResignAPKs extends sExecutor {
                     new MaterialAlertDialogBuilder(mActivity)
                             .setIcon(R.mipmap.ic_launcher)
                             .setTitle(R.string.app_name)
-                            .setMessage(mActivity.getString(R.string.resigned_apks_path, mParent.getAbsolutePath()))
+                            .setMessage(mActivity.getString(R.string.resigned_apks_path, "Download > AEE > " + mParent.getName()))
                             .setCancelable(false)
                             .setPositiveButton(R.string.cancel, (dialog, id) -> {
                                         if (mExit) {

@@ -72,7 +72,7 @@ public class ResignBatchAPKs extends sExecutor {
         new MaterialAlertDialogBuilder(mActivity)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.app_name)
-                .setMessage(mActivity.getString(R.string.resigned_apks_path, APKData.getExportPath(mActivity).getAbsolutePath()))
+                .setMessage(mActivity.getString(R.string.resigned_apks_path, "Download > AEE"))
                 .setCancelable(false)
                 .setPositiveButton(R.string.cancel, (dialog, id) -> {}
                 ).show();
