@@ -26,6 +26,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+        }
+
         release {
             minifyEnabled true
             shrinkResources true
@@ -68,7 +72,7 @@ dependencies {
     implementation libs.permissionutils
     implementation libs.themeutils
     implementation libs.translatorutils
-
+    
     implementation libs.material
     implementation libs.zip4j
     implementation libs.baksmali
