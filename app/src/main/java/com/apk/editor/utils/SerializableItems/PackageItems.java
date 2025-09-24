@@ -5,8 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
-
-import androidx.appcompat.widget.AppCompatImageButton;
+import android.widget.ImageView;
 
 import com.apk.editor.utils.AppData;
 
@@ -60,15 +59,16 @@ public class PackageItems implements Serializable {
         return mPackageName;
     }
 
-    public void loadAppIcon(AppCompatImageButton view) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
+    public void loadAppIcon(ImageView view) {
+        try (ExecutorService executor = Executors.newSingleThreadExecutor()) {
+            Handler handler = new Handler(Looper.getMainLooper());
 
-        executor.execute(() -> {
-            Drawable drawable = sPackageUtils.getAppIcon(mPackageName, mContext);
+            executor.execute(() -> {
+                Drawable drawable = sPackageUtils.getAppIcon(mPackageName, mContext);
 
-            handler.post(() -> view.setImageDrawable(drawable));
-        });
+                handler.post(() -> view.setImageDrawable(drawable));
+            });
+        }
     }
 
 }

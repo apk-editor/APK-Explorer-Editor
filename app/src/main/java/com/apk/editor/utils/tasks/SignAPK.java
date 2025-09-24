@@ -110,18 +110,18 @@ public class SignAPK extends sExecutor {
             }
             sFileUtils.mkdir(mParent);
 
-            APKItems apkItems = new APKItems(new File(sourceDirPath).getParentFile(), APKData.getBaseAPK(Objects.requireNonNull(new File(sourceDirPath).getParentFile()), mActivity));
+            APKItems apkItems = new APKItems(new File(sourceDirPath).getParentFile());
             for (String mSplits : APKData.splitApks(sourceDirPath)) {
-                if (!new File(mSplits).equals(apkItems.getBaseAPK())) {
+                if (!new File(mSplits).equals(apkItems.getBaseAPK(mActivity))) {
                     Common.setStatus(mActivity.getString(R.string.signing, new File(mSplits).getName()), mActivity);
                     APKData.signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), mActivity);
                 }
             }
-            Common.setStatus(mActivity.getString(R.string.signing, apkItems.getBaseAPK().getName()), mActivity);
+            Common.setStatus(mActivity.getString(R.string.signing, apkItems.getBaseAPK(mActivity).getName()), mActivity);
 
-            sCommonUtils.saveString("packageName", sAPKUtils.getPackageName(apkItems.getBaseAPKPath(), mActivity), mActivity);
+            sCommonUtils.saveString("packageName", sAPKUtils.getPackageName(apkItems.getBaseAPKPath(mActivity), mActivity), mActivity);
 
-            APKData.signApks(mTMPZip, new File(mParent, apkItems.getBaseAPK().getName()), mActivity);
+            APKData.signApks(mTMPZip, new File(mParent, apkItems.getBaseAPK(mActivity).getName()), mActivity);
         } else {
             mParent = new File(APKData.getExportPath(mActivity), Objects.requireNonNull(packageName).replace(".apk", "") + "_aee-signed.apk");
             if (mParent.exists()) {

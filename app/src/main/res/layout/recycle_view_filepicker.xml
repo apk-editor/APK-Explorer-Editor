@@ -56,5 +56,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
             android:background="@null"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:clickable="false" />
 </FrameLayout>

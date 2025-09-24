@@ -256,7 +256,7 @@ public class APKsFragment extends Fragment {
                     }
                 }
 
-                mRecycleViewAdapter = new APKsAdapter(APKData.getData(searchWord, activity), searchWord);
+                mRecycleViewAdapter = new APKsAdapter(APKData.getData(searchWord, activity), searchWord, activity);
             }
 
             @Override

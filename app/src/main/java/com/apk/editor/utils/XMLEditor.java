@@ -57,7 +57,11 @@ public class XMLEditor {
 
         for (XMLEntry xmlEntry : xmlEntries) {
             if (!xmlEntry.getTag().trim().equals("android:debuggable") && !xmlEntry.getTag().trim().equals("android:testOnly")) {
-                sb.append(xmlEntry.getText(resEntries)).append("\n");
+                if (resEntries != null && !resEntries.isEmpty()) {
+                    sb.append(xmlEntry.getText(resEntries)).append("\n");
+                } else {
+                    sb.append(xmlEntry.getText()).append("\n");
+                }
             }
         }
 

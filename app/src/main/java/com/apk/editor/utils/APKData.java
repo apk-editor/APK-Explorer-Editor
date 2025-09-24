@@ -32,22 +32,22 @@ public class APKData {
         List<APKItems> mData = new CopyOnWriteArrayList<>();
         for (File mFile : getAPKList(context)) {
             if (sCommonUtils.getString("apkTypes", "apks", context).equals("bundles")) {
-                if (mFile.isDirectory() && !mFile.getName().equals("APK") && getBaseAPK(mFile, context) != null) {
+                if (mFile.isDirectory() && !mFile.getName().equals("APK")) {
                     if (searchWord == null) {
-                        mData.add(new APKItems(mFile, getBaseAPK(mFile, context)));
+                        mData.add(new APKItems(mFile));
                     } else if (Common.isTextMatched(mFile.getAbsolutePath(), searchWord)) {
-                        mData.add(new APKItems(mFile, getBaseAPK(mFile, context)));
+                        mData.add(new APKItems(mFile));
                     }
                 }
             } else {
                 if (mFile.exists() && mFile.getName().endsWith(".apk")) {
                     if (searchWord == null) {
-                        mData.add(new APKItems(mFile, null));
+                        mData.add(new APKItems(mFile));
                     } else if (sAPKUtils.getAPKName(mFile.getAbsolutePath(), context) != null && Common.isTextMatched(Objects.requireNonNull(
                             sAPKUtils.getAPKName(mFile.getAbsolutePath(), context)).toString(), searchWord)) {
-                        mData.add(new APKItems(mFile, null));
+                        mData.add(new APKItems(mFile));
                     } else if (Common.isTextMatched(mFile.getName(), searchWord)) {
-                        mData.add(new APKItems(mFile, null));
+                        mData.add(new APKItems(mFile));
                     }
                 }
             }
@@ -95,15 +95,6 @@ public class APKData {
 
         sFileUtils.mkdir(new File(context.getFilesDir(), "signing"));
         sFileUtils.copyAssetFile("APKEditor.pk8", APKSigner.getPK8PrivateKey(context), context);
-    }
-
-    public static File getBaseAPK(File dir, Context context) {
-        for (File apkFile : Objects.requireNonNull(dir.listFiles()))  {
-            if (sAPKUtils.getPackageName(apkFile.getAbsolutePath(), context) != null) {
-                return apkFile;
-            }
-        }
-        return null;
     }
 
     public static String findPackageName(List<String> apkList, Context context) {

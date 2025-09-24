@@ -3,13 +3,10 @@ package com.apk.editor.activities;
 import static com.apk.editor.utils.APKExplorer.handleAPKs;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -24,9 +21,9 @@ import com.apk.editor.fragments.CertificateFragment;
 import com.apk.editor.fragments.ManifestFragment;
 import com.apk.editor.fragments.PermissionsFragment;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.SplitAPKInstaller;
 import com.apk.editor.utils.dialogs.InvalidFileDialog;
 import com.apk.editor.utils.dialogs.ProgressDialog;
-import com.apk.editor.utils.dialogs.SelectBundleDialog;
 import com.apk.editor.utils.menu.ExploreOptionsMenu;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -128,7 +125,7 @@ public class APKInstallerActivity extends AppCompatActivity {    private AppComp
                             mInstall.setText(getString(R.string.update));
                         }
                     } else if (mFile.getName().endsWith("apkm") || mFile.getName().endsWith("apks") || mFile.getName().endsWith("xapk")) {
-                        new SelectBundleDialog(mFile.getAbsolutePath(), activityResultLauncher, true, activity);
+                        SplitAPKInstaller.handleAppBundle(mFile.getAbsolutePath(), activity);
                     } else {
                         new InvalidFileDialog(true, activity);
                     }
@@ -185,16 +182,5 @@ public class APKInstallerActivity extends AppCompatActivity {    private AppComp
 
         mExploreIcon.setOnClickListener(v -> ExploreOptionsMenu.getMenu(mPackageID.getText().toString().trim(), mFile, null, true, activity));
     }
-
-    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    APKExplorer.setSuccessIntent(true, this);
-                } else if (result.getResultCode() == Activity.RESULT_CANCELED) {
-                    finish();
-                }
-            }
-    );
 
 }

@@ -20,32 +20,31 @@ import com.apk.axml.serializableItems.XMLEntry;
 import com.apk.editor.R;
 import com.apk.editor.adapters.QuickEditsAdapter;
 import com.apk.editor.utils.APKData;
+import com.apk.editor.utils.APKPicker;
+import com.apk.editor.utils.SerializableItems.APKPickerItems;
 import com.apk.editor.utils.SerializableItems.QuickEditsItems;
 import com.apk.editor.utils.SplitAPKInstaller;
 import com.apk.editor.utils.XMLEditor;
+import com.apk.editor.utils.dialogs.BundleInstallDialog;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.FileHeader;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.model.enums.CompressionMethod;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
-import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
@@ -57,8 +56,6 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 public class QuickEditsActivity extends AppCompatActivity {
 
     private static List<QuickEditsItems> mData;
-    private static List<XMLEntry> mXMLData;
-    private List<ResEntry> mResourceMap;
     private static String mAPKPath, mAppName, mMinSDK, mPackageName, mVersionName, mVersionCode;
     private static Uri mUri;
     private RecyclerView mRecyclerView;
@@ -89,16 +86,21 @@ public class QuickEditsActivity extends AppCompatActivity {
                 return;
             }
             new sExecutor() {
+                private final Activity mActivity = QuickEditsActivity.this;
                 private boolean mAppNameChanged = false, mSuccess = false;
                 private File mOutFile;
                 private ProgressDialog mProgressDialog;
+                private final List<APKPickerItems> mAPKs = new ArrayList<>();
+
                 @Override
                 public void onPreExecute() {
-                    mProgressDialog = new ProgressDialog(QuickEditsActivity.this);
+                    mProgressDialog = new ProgressDialog(mActivity);
                     mProgressDialog.setTitle(getString(R.string.quick_edits_progress_message));
                     mProgressDialog.setIcon(R.mipmap.ic_launcher);
                     mProgressDialog.setIndeterminate(true);
-                    mProgressDialog.show();
+                    if (!isFinishing() && !isDestroyed()) {
+                        mProgressDialog.show();
+                    }
                 }
 
                 private void update(List<XMLEntry> xmlItems) {
@@ -126,47 +128,109 @@ public class QuickEditsActivity extends AppCompatActivity {
                     }
                 }
 
-                @Override
-                public void doInBackground() {
-                    update(mXMLData);
+                private boolean isResFileExists(ZipFile zipFile) throws ZipException {
+                    return zipFile.getFileHeader("resources.arsc") != null;
+                }
 
-                    mOutFile = new File(APKData.getExportPath(QuickEditsActivity.this), (!Objects.equals(mPackageName,
-                            mData.get(1).getValue()) ? mData.get(1).getValue() : mPackageName) + "_aee-signed.apk");
+                private void updateSplits(String apkPath, boolean isSplit) {
                     try {
                         File tmpFile = File.createTempFile("tmpApp",".apk", getExternalCacheDir());
-                        FileInputStream fis = new FileInputStream(mAPKPath);
-                        FileOutputStream fos = new FileOutputStream(tmpFile);
-                        ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(fis));
-                        ZipOutputStream zipOutputStream = new ZipOutputStream(fos);
+                        if (tmpFile.exists()) sFileUtils.delete(tmpFile);
 
-                        for (ZipEntry in; (in = zipInputStream.getNextEntry()) != null;) {
-                            ZipEntry out;
-                            InputStream source;
-                            if (in.getName().equals("AndroidManifest.xml")) {
-                                out = new ZipEntry(in);
-                                byte[] encodedData = new aXMLEncoder().encodeString(QuickEditsActivity.this, XMLEditor.xmlEntriesToXML(mXMLData, mResourceMap));
-                                out.setSize(encodedData.length);
-                                source = new ByteArrayInputStream(encodedData);
-                            } else {
-                                out = in;
-                                source = zipInputStream;
-                            }
-                            zipOutputStream.putNextEntry(out);
-                            sFileUtils.copyStream(source, zipOutputStream);
+                        ZipFile inZip = new ZipFile(apkPath);
+                        ZipFile outZip = new ZipFile(tmpFile);
+
+                        List<ResEntry> resEntries = null;
+                        if (isResFileExists(inZip)) {
+                            InputStream resStream = inZip.getInputStream(inZip.getFileHeader("resources.arsc"));
+                            resEntries = new ResourceTableParser(resStream).parse();
                         }
-                        zipInputStream.close();
-                        zipOutputStream.close();
 
-                        APKData.signApks(tmpFile, mOutFile, QuickEditsActivity.this);
+                        mProgressDialog.setMax(inZip.getFileHeaders().size());
+
+                        for (FileHeader header : inZip.getFileHeaders()) {
+                            InputStream source;
+                            String fileName = header.getFileName();
+
+                            if (fileName.equals("AndroidManifest.xml")) {
+                                List<XMLEntry> xmlEntries = (resEntries != null && !resEntries.isEmpty())
+                                        ? new aXMLDecoder(inZip.getInputStream(header), resEntries).decode()
+                                        : new aXMLDecoder(inZip.getInputStream(header)).decode();
+                                update(xmlEntries);
+
+                                byte[] encodedData = (resEntries != null && !resEntries.isEmpty())
+                                        ? new aXMLEncoder().encodeString(mActivity, XMLEditor.xmlEntriesToXML(xmlEntries, resEntries))
+                                        : new aXMLEncoder().encodeString(mActivity, XMLEditor.xmlEntriesToXML(xmlEntries, null));
+
+                                source = new ByteArrayInputStream(encodedData);
+                                outZip.addStream(source, new ZipParameters() {{
+                                    setFileNameInZip("AndroidManifest.xml");
+                                }});
+                                source.close();
+                            } else if (fileName.equals("resources.arsc") || fileName.startsWith("lib/")) {
+                                source = inZip.getInputStream(header);
+                                ZipParameters params = new ZipParameters();
+                                params.setFileNameInZip(fileName);
+                                params.setCompressionMethod(CompressionMethod.STORE);
+                                params.setEntrySize(header.getUncompressedSize());
+                                outZip.addStream(source, params);
+                                source.close();
+                            } else {
+                                source = inZip.getInputStream(header);
+                                outZip.addStream(source, new ZipParameters() {{
+                                    setFileNameInZip(fileName);
+                                }});
+                                source.close();
+                            }
+
+                            mProgressDialog.updateProgress(1);
+                        }
+
+                        outZip.close();
+
+                        if (isSplit) {
+                            APKData.signApks(tmpFile, new File(mOutFile, new File(apkPath).getName()), mActivity);
+                        } else {
+                            APKData.signApks(tmpFile, mOutFile, mActivity);
+                        }
 
                         sFileUtils.delete(tmpFile);
 
-                        if (mOutFile.exists() && sAPKUtils.getPackageName(mOutFile.getAbsolutePath(), QuickEditsActivity.this) != null) {
-                            mSuccess = true;
-                        } else {
-                            sFileUtils.delete(mOutFile);
-                        }
                     } catch (IOException | XmlPullParserException ignored) {
+                    }
+                }
+
+                @Override
+                public void doInBackground() {
+                    if (sPackageUtils.isPackageInstalled(mPackageName, mActivity) && APKData.isAppBundle(sPackageUtils
+                            .getSourceDir(mPackageName, mActivity))) {
+                        mOutFile = new File(APKData.getExportPath(mActivity), (!Objects.equals(mPackageName,
+                                mData.get(1).getValue()) ? mData.get(1).getValue() : mPackageName));
+                        sFileUtils.mkdir(mOutFile);
+
+                        for (String splitAPKPath : APKData.splitApks(sPackageUtils.getSourceDir(mPackageName, mActivity))) {
+                            updateSplits(splitAPKPath, true);
+                        }
+                    } else {
+                        mOutFile = new File(APKData.getExportPath(mActivity), (!Objects.equals(mPackageName,
+                                mData.get(1).getValue()) ? mData.get(1).getValue() : mPackageName) + "_aee-signed.apk");
+                        updateSplits(mAPKPath, false);
+                    }
+
+                    if (mOutFile.exists()) {
+                        mSuccess = mOutFile.isFile() || mOutFile.isDirectory() && APKData.findPackageName(APKData.splitApks(mOutFile), mActivity) != null;
+                    } else {
+                        sFileUtils.delete(mOutFile);
+                    }
+
+                    if (mOutFile.isDirectory()) {
+                        mProgressDialog.setMax(Objects.requireNonNull(mOutFile.listFiles()).length);
+                        for (File files : Objects.requireNonNull(mOutFile.listFiles())) {
+                            if (files.isFile() && files.getName().endsWith("apk")) {
+                                mAPKs.add(new APKPickerItems(files, APKPicker.isSelectedAPK(files, mActivity)));
+                            }
+                            mProgressDialog.updateProgress(1);
+                        }
                     }
                 }
 
@@ -176,16 +240,21 @@ public class QuickEditsActivity extends AppCompatActivity {
                         mProgressDialog.dismiss();
                     } catch (IllegalArgumentException ignored) {}
                     if (mSuccess) {
-                        new MaterialAlertDialogBuilder(QuickEditsActivity.this)
+                        new MaterialAlertDialogBuilder(mActivity)
                                 .setIcon(R.mipmap.ic_launcher)
                                 .setTitle(R.string.app_name)
                                 .setCancelable(false)
                                 .setMessage(getString(R.string.quick_edits_toast_success, mOutFile.getAbsolutePath()))
                                 .setNegativeButton(R.string.cancel, (dialog, id) -> finish())
-                                .setPositiveButton(R.string.install, (dialog, id) -> SplitAPKInstaller.installAPK(true, mOutFile, QuickEditsActivity.this)
-                                ).show();
+                                .setPositiveButton(R.string.install, (dialog, id) -> {
+                                    if (mOutFile.isDirectory()) {
+                                        new BundleInstallDialog(mAPKs, true, mActivity);
+                                    } else {
+                                        SplitAPKInstaller.installAPK(true, mOutFile, mActivity);
+                                    }
+                                }).show();
                     } else {
-                        sCommonUtils.toast(getString(R.string.quick_edits_toast_failed), QuickEditsActivity.this).show();
+                        sCommonUtils.toast(getString(R.string.quick_edits_toast_failed), mActivity).show();
                         finish();
                     }
                 }
@@ -203,6 +272,7 @@ public class QuickEditsActivity extends AppCompatActivity {
     private sExecutor loadUI() {
         return new sExecutor() {
             private final Activity mActivity = QuickEditsActivity.this;
+            private List<XMLEntry> mXMLData;
             private ProgressDialog mProgressDialog;
             @Override
             public void onPreExecute() {
@@ -240,7 +310,6 @@ public class QuickEditsActivity extends AppCompatActivity {
 
             @Override
             public void doInBackground() {
-                mResourceMap = getResourceMap();
                 mXMLData = getManifestDecoded();
                 mPackageName = getPackageNameCurrent();
                 mAppName = getAppNameCurrent();
@@ -268,8 +337,8 @@ public class QuickEditsActivity extends AppCompatActivity {
             private List<XMLEntry> getManifestDecoded() {
                 try {
                     FileHeader fileHeader = getAPKFile().getFileHeader("AndroidManifest.xml");
-                    if (mResourceMap != null) {
-                        return new aXMLDecoder(getAPKFile().getInputStream(fileHeader), mResourceMap).decode();
+                    if (getResourceMap() != null) {
+                        return new aXMLDecoder(getAPKFile().getInputStream(fileHeader), getResourceMap()).decode();
                     } else {
                         return new aXMLDecoder(getAPKFile().getInputStream(fileHeader)).decode();
                     }

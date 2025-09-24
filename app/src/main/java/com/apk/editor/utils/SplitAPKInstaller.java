@@ -5,12 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.activity.result.ActivityResultLauncher;
-
 import com.apk.editor.R;
-import com.apk.editor.activities.FilePickerActivity;
 import com.apk.editor.activities.InstallerActivity;
 import com.apk.editor.services.InstallerService;
+import com.apk.editor.utils.SerializableItems.APKPickerItems;
+import com.apk.editor.utils.dialogs.BundleInstallDialog;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 
 import java.io.File;
@@ -33,9 +32,10 @@ public class SplitAPKInstaller {
         return new Intent(context, InstallerService.class);
     }
 
-    public static void handleAppBundle(ActivityResultLauncher<Intent> activityResultLauncher, String path, Activity activity) {
+    public static void handleAppBundle(String path, Activity activity) {
         new sExecutor() {
             private final File mFile = new File(activity.getExternalCacheDir(), "splits");
+            private final List<APKPickerItems> mAPKs = new ArrayList<>();
             private ProgressDialog mProgressDialog;
 
             @SuppressLint("StringFormatInvalid")
@@ -55,6 +55,14 @@ public class SplitAPKInstaller {
             @Override
             public void doInBackground() {
                 APKEditorUtils.unzip(path, mFile.getAbsolutePath());
+
+                mProgressDialog.setMax(Objects.requireNonNull(mFile.listFiles()).length);
+                for (File files : Objects.requireNonNull(mFile.listFiles())) {
+                    if (files.isFile() && files.getName().endsWith("apk")) {
+                        mAPKs.add(new APKPickerItems(files, APKPicker.isSelectedAPK(files, activity)));
+                    }
+                    mProgressDialog.updateProgress(1);
+                }
             }
 
             @Override
@@ -63,10 +71,7 @@ public class SplitAPKInstaller {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
                 }
-                Intent installer = new Intent(activity, FilePickerActivity.class);
-                installer.putExtra(FilePickerActivity.TITLE_INTENT, activity.getString(R.string.select_apk));
-                installer.putExtra(FilePickerActivity.PATH_INTENT, mFile.getAbsolutePath());
-                activityResultLauncher.launch(installer);
+                new BundleInstallDialog(mAPKs, true, activity);
             }
         }.execute();
     }

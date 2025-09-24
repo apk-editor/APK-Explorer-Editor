@@ -71,7 +71,8 @@ public class ExportApp extends sExecutor {
         new MaterialAlertDialogBuilder(mContext)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.app_name)
-                .setMessage(mContext.getString(R.string.exported_apks_path, APKData.getExportPath(mContext).getAbsolutePath()))
+                .setMessage(mContext.getString(R.string.exported_apks_path,
+                        "Download > AEE"))
                 .setCancelable(false)
                 .setPositiveButton(R.string.cancel, (dialog, id) -> {}
                 ).show();
