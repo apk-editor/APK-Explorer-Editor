@@ -32,7 +32,7 @@ public class APKData {
         List<APKItems> mData = new CopyOnWriteArrayList<>();
         for (File mFile : getAPKList(context)) {
             if (sCommonUtils.getString("apkTypes", "apks", context).equals("bundles")) {
-                if (mFile.isDirectory() && !mFile.getName().equals("APK")) {
+                if (mFile.isDirectory() && !mFile.getName().equals("APK") && isValidBundle(mFile, context)) {
                     if (searchWord == null) {
                         mData.add(new APKItems(mFile));
                     } else if (Common.isTextMatched(mFile.getAbsolutePath(), searchWord)) {
@@ -136,6 +136,15 @@ public class APKData {
         return file.isDirectory() && file.getName().equals(".aeeBackup") || file.isDirectory() && file.getName().equals(".aeeBuild")
                 || file.isDirectory() && file.getName().equals("META-INF") || file.isDirectory() && file.getName().startsWith("classes")
                 && file.getName().endsWith(".dex");
+    }
+
+    private static boolean isValidBundle(File parentDir, Context context) {
+        for (File files : Objects.requireNonNull(parentDir.listFiles())) {
+            if (files.getName().endsWith(".apk") && sAPKUtils.getPackageName(files.getAbsolutePath(), context) != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void shareFile(File file, String type, Context context) {
