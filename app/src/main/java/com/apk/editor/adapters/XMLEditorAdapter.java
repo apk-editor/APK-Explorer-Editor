@@ -107,7 +107,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                         public void onItemSelected(int itemPosition) {
                             switch (itemPosition) {
                                 case 0:
-                                    chooseResDialog(position, view.getContext());
+                                    chooseResDialog(position);
                                     break;
                                 case 1:
                                     launchEditorDialog(position, view.getContext());
@@ -131,7 +131,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                         public void onItemSelected(int itemPosition) {
                             switch (itemPosition) {
                                 case  0:
-                                    chooseResDialog(position, view.getContext());
+                                    chooseResDialog(position);
                                     break;
                                 case 1:
                                     if (!data.get(position).getValue().endsWith(".xml")) {
@@ -149,7 +149,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                         }
                     }.show();
                 } else {
-                    chooseResDialog(position, view.getContext());
+                    chooseResDialog(position);
                 }
             } else {
                 launchEditorDialog(position, view.getContext());
@@ -157,11 +157,11 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
         }
     }
 
-    private void chooseResDialog(int position, Context context) {
-        new ResEditorDialog(data.get(position), resourceMap, rootPath, context) {
+    private void chooseResDialog(int position) {
+        new ResEditorDialog(data.get(position), resourceMap, rootPath, activity) {
             @Override
             public void apply(String newValue) {
-                modify(newValue, position, context).execute();
+                modify(newValue, position, activity).execute();
             }
         };
     }

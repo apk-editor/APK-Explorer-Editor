@@ -227,7 +227,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                             .setNeutralButton(R.string.cancel, (dialog, id) -> {
                             })
                             .setNegativeButton(view.getContext().getString(R.string.export), (dialog, id) -> {
-                                if (sPermissionUtils.isPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, view.getContext())) {
+                                if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, view.getContext())) {
                                     sPermissionUtils.requestPermission(
                                             new String[] {
                                                     Manifest.permission.WRITE_EXTERNAL_STORAGE

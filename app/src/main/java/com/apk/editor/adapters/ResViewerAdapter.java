@@ -3,39 +3,61 @@ package com.apk.editor.adapters;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Build;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.apk.axml.aXMLUtils.Utils;
 import com.apk.axml.serializableItems.ResEntry;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.ResPatcher;
+import com.apk.editor.utils.tasks.ExportToStorage;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
+import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 22, 2025
  */
 public class ResViewerAdapter extends RecyclerView.Adapter<ResViewerAdapter.ViewHolder> {
 
+    private final Activity activity;
     private final boolean clickable;
     private final List<ResEntry> data;
     private final String rootPath;
     private static ClickListener clickListener;
 
-    public ResViewerAdapter(List<ResEntry> data, String rootPath, boolean clickable) {
+    public ResViewerAdapter(List<ResEntry> data, String rootPath, boolean clickable, Activity activity) {
         this.data = data;
         this.rootPath = rootPath;
         this.clickable = clickable;
+        this.activity = activity;
     }
 
     @NonNull
@@ -45,6 +67,7 @@ public class ResViewerAdapter extends RecyclerView.Adapter<ResViewerAdapter.View
         return new ViewHolder(rowItem);
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onBindViewHolder(@NonNull ResViewerAdapter.ViewHolder holder, int position) {
         String name = data.get(position).getName();
@@ -70,6 +93,96 @@ public class ResViewerAdapter extends RecyclerView.Adapter<ResViewerAdapter.View
         } else {
             holder.mIcon.setVisibility(GONE);
         }
+        holder.mMenu.setVisibility(clickable || value == null || (value.startsWith("@") || value.startsWith("?")) ? GONE : VISIBLE);
+
+        holder.mMenu.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+            Menu menu = popupMenu.getMenu();
+            if (value != null && value.startsWith("res/")) {
+                menu.add(Menu.NONE, 0, Menu.NONE, v.getContext().getString(R.string.export_storage)).setIcon(R.drawable.ic_export);
+            } else {
+                menu.add(Menu.NONE, 1, Menu.NONE, v.getContext().getString(R.string.update)).setIcon(R.drawable.ic_edit);
+            }
+            popupMenu.setForceShowIcon(true);
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == 0) {
+                    if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext())) {
+                        sPermissionUtils.requestPermission(
+                                new String[] {
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                }, activity);
+                    } else {
+                        new ExportToStorage(new File(rootPath, Objects.requireNonNull(value)), null, new File(rootPath).getName(), v.getContext()).execute();
+                    }
+                } else if (item.getItemId() == 1) {
+                    int adapterPosition = position;
+                    View rootView = View.inflate(activity, R.layout.layout_res_value_patcher, null);
+                    MaterialAutoCompleteTextView newText = rootView.findViewById(R.id.new_text);
+                    TextInputLayout newTextHint = rootView.findViewById(R.id.new_text_hint);
+
+                    newTextHint.setHint(v.getContext().getString(R.string.res_add_new));
+
+                    newText.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            if (s.toString().trim().length() > Objects.requireNonNull(value).length()) {
+                                newText.setText(s.toString().trim().substring(0, Objects.requireNonNull(value).length()));
+                                newText.setSelection(newText.getText().length());
+                                sCommonUtils.toast("Important: replacement text can’t be longer", v.getContext()).show();
+                            }
+                        }
+                    });
+
+                    new MaterialAlertDialogBuilder(activity)
+                            .setIcon(R.drawable.ic_edit)
+                            .setTitle(v.getContext().getString(R.string.replace_question, Objects.requireNonNull(value)))
+                            .setCancelable(false)
+                            .setView(rootView)
+                            .setNeutralButton(R.string.cancel, (dialogInterface, i) -> {
+                            })
+                            .setPositiveButton(R.string.apply, (dialogInterface, i) -> resPatcher(newText.getText().toString().trim(), data.get(adapterPosition), adapterPosition).execute()).show();
+                }
+                return false;
+            });
+            popupMenu.show();
+        });
+    }
+
+    private sExecutor resPatcher(String newText, ResEntry entry, int adapterPosition) {
+        return new sExecutor() {
+            private boolean success;
+            @Override
+            public void onPreExecute() {
+
+            }
+
+            @Override
+            public void doInBackground() {
+                try (FileInputStream fis = new FileInputStream(rootPath + "/resources.arsc")) {
+                    byte[] arsc = Utils.toByteArray(fis);
+                    success = ResPatcher.patch(arsc, entry, newText);
+                    if (success) {
+                        sFileUtils.copy(arsc, new File(rootPath + "/resources.arsc"));
+                    }
+                } catch (IOException ignored) {}
+            }
+
+            @Override
+            public void onPostExecute() {
+                if (success) {
+                    data.set(adapterPosition, new ResEntry(entry.getResourceId(), entry.getName(), newText));
+                    notifyItemChanged(adapterPosition);
+                }
+            }
+        };
     }
 
     @Override
@@ -84,13 +197,14 @@ public class ResViewerAdapter extends RecyclerView.Adapter<ResViewerAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final AppCompatImageButton mIcon;
+        private final AppCompatImageButton mIcon, mMenu;
         private final MaterialTextView mName, mValue;
 
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
             this.mIcon = view.findViewById(R.id.icon);
+            this.mMenu = view.findViewById(R.id.menu);
             this.mName = view.findViewById(R.id.name);
             this.mValue = view.findViewById(R.id.value);
         }

@@ -53,4 +53,16 @@
                 android:textSize="17sp" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/menu"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        style="?attr/materialIconButtonFilledTonalStyle"
+        android:layout_marginBottom="-10sp"
+        android:layout_gravity="bottom|end"
+        android:tint="?attr/colorPrimary"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_menu"
+        android:background="@null" />
 </com.google.android.material.card.MaterialCardView>

@@ -1,6 +1,6 @@
 package com.apk.editor.utils.dialogs;
 
-import android.content.Context;
+import android.app.Activity;
 import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
@@ -26,31 +26,31 @@ public abstract class ResEditorDialog extends MaterialAlertDialogBuilder {
 
     private static AlertDialog alertDialog = null;
 
-    public ResEditorDialog(XMLEntry xmlEntry, List<ResEntry> resourceMap, String rootPath, Context context) {
-        super(context);
-        View rootView = View.inflate(context, R.layout.layout_recyclerview, null);
+    public ResEditorDialog(XMLEntry xmlEntry, List<ResEntry> resourceMap, String rootPath, Activity activity) {
+        super(activity);
+        View rootView = View.inflate(activity, R.layout.layout_recyclerview, null);
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
 
         setView(rootView);setIcon(R.drawable.ic_edit);
-        setTitle(context.getString(R.string.res_choose_new, xmlEntry.getTag().trim()));
+        setTitle(activity.getString(R.string.res_choose_new, xmlEntry.getTag().trim()));
         setPositiveButton(R.string.cancel, (dialog, id) -> {
         });
 
         alertDialog = create();
         alertDialog.show();
 
-        loadUI(xmlEntry, recyclerView, resourceMap, rootPath, context).execute();
+        loadUI(xmlEntry, recyclerView, resourceMap, rootPath, activity).execute();
     }
 
-    private sExecutor loadUI(XMLEntry xmlEntry, RecyclerView recyclerView, List<ResEntry> resourceMap, String rootPath, Context context) {
+    private sExecutor loadUI(XMLEntry xmlEntry, RecyclerView recyclerView, List<ResEntry> resourceMap, String rootPath, Activity activity) {
         return new sExecutor() {
             private ProgressDialog mProgressDialog;
             private ResViewerAdapter adapter;
             @Override
             public void onPreExecute() {
-                mProgressDialog = new ProgressDialog(context);
-                mProgressDialog.setTitle(context.getString(R.string.loading));
+                mProgressDialog = new ProgressDialog(activity);
+                mProgressDialog.setTitle(activity.getString(R.string.loading));
                 mProgressDialog.setIcon(R.mipmap.ic_launcher);
                 mProgressDialog.setIndeterminate(true);
                 mProgressDialog.show();
@@ -83,7 +83,7 @@ public abstract class ResEditorDialog extends MaterialAlertDialogBuilder {
                     }
                 }
 
-                adapter = new ResViewerAdapter(resItems, rootPath, true);
+                adapter = new ResViewerAdapter(resItems, rootPath, true, activity);
             }
 
             @Override

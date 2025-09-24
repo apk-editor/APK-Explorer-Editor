@@ -144,7 +144,7 @@ public class ResViewerDialog extends MaterialAlertDialogBuilder {
                     mSuccess = false;
                     return;
                 }
-                adapter = new ResViewerAdapter(getData(), path.replace("/resources.arsc", ""), false);
+                adapter = new ResViewerAdapter(getData(), path.replace("/resources.arsc", ""), false, activity);
                 mSuccess = true;
                 mTypeDefault = typeDefault != null ? typeDefault : mTypes.get(0);
             }
