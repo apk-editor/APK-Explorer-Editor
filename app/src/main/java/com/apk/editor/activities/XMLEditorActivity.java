@@ -59,6 +59,7 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 public class XMLEditorActivity extends AppCompatActivity {
 
     private List<ResEntry> mResourceMap;
+    private List<XMLEntry> mData = null;
     private ContentLoadingProgressBar mProgress;
     private MaterialButton mSave;
     private RecyclerView mRecyclerView;
@@ -112,6 +113,11 @@ public class XMLEditorActivity extends AppCompatActivity {
                 if (mProgress.getVisibility() == View.VISIBLE) {
                     return;
                 }
+                if (mSearchText != null && !mSearchText.trim().isEmpty()) {
+                    mSearchText = null;
+                    mSearch.setText(null);
+                    return;
+                }
                 if (mSave.getVisibility() == View.VISIBLE) {
                     new MaterialAlertDialogBuilder(XMLEditorActivity.this)
                             .setIcon(R.mipmap.ic_launcher)
@@ -121,9 +127,6 @@ public class XMLEditorActivity extends AppCompatActivity {
                             .setPositiveButton(R.string.discard, (dialogInterface, i) -> finish())
                             .show();
                     return;
-                }
-                if (mSearchText != null) {
-                    mSearch.setText(null);
                 }
                 finish();
             }
@@ -166,19 +169,20 @@ public class XMLEditorActivity extends AppCompatActivity {
 
             @Override
             public void doInBackground() {
-                List<XMLEntry> data = null;
                 mResourceMap = getResourceMap();
                 try (FileInputStream fis = new FileInputStream(mPath)) {
-                    if (mResourceMap != null) {
-                        data = new aXMLDecoder(fis, mResourceMap).decode();
-                    } else {
-                        data = new aXMLDecoder(fis).decode();
+                    if (mData == null) {
+                        if (mResourceMap != null) {
+                            mData = new aXMLDecoder(fis, mResourceMap).decode();
+                        } else {
+                            mData = new aXMLDecoder(fis).decode();
+                        }
                     }
                 } catch (IOException | XmlPullParserException ignored) {
                 }
 
-                if (data != null && !data.isEmpty()) {
-                    mAdapter = new XMLEditorAdapter(filteredData(data), data, mResourceMap,
+                if (mData != null && !mData.isEmpty()) {
+                    mAdapter = new XMLEditorAdapter(filteredData(mData), mData, mResourceMap,
                             (xmlEntry) -> {
                                 mXMLEntry = xmlEntry;
 
@@ -198,11 +202,11 @@ public class XMLEditorActivity extends AppCompatActivity {
             @Override
             public void onPostExecute() {
                 mProgress.setVisibility(View.GONE);
+                mSearchText = searchText;
                 if (failed) {
                     sCommonUtils.toast(getString(R.string.xml_decode_failed, new File(mPath).getName()), mRecyclerView.getContext()).show();
                     finish();
                 } else {
-                    mSearchText = searchText;
                     mRecyclerView.setAdapter(mAdapter);
                     mRecyclerView.setVisibility(View.VISIBLE);
                 }

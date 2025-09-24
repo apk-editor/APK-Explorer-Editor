@@ -41,7 +41,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
     private final MaterialButton saveButton;
     private final String filePath, rootPath, searchWord;
     private final OnPickImageListener pickImageListener;
-    private String mXMLString = null;
+    private static boolean isModified = false;
 
     public XMLEditorAdapter(List<XMLEntry> data, List<XMLEntry> originalData, List<ResEntry> resourceMap, OnPickImageListener listener, String filePath, String rootPath, String searchWord, MaterialButton saveButton, Activity activity) {
         this.data = data;
@@ -72,7 +72,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
             holder.mText.setVisibility(GONE);
         }
 
-        saveButton.setOnClickListener(v -> XMLEditor.encodeToBinaryXML(mXMLString, filePath, activity).execute());
+        saveButton.setOnClickListener(v -> XMLEditor.encodeToBinaryXML(XMLEditor.xmlEntriesToXML(originalData, resourceMap), filePath, activity).execute());
     }
 
     @Override
@@ -209,9 +209,12 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                             removable = true;
                         }
 
-                        mXMLString = XMLEditor.xmlEntriesToXML(originalData, resourceMap);
+                        String xmlString = XMLEditor.xmlEntriesToXML(originalData, resourceMap);
 
-                        invalid = !XMLEditor.isXMLValid(mXMLString);
+                        invalid = !XMLEditor.isXMLValid(xmlString);
+                        if (!isModified) {
+                            isModified = !invalid;
+                        }
                     }
 
                     @Override
@@ -220,7 +223,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                         if (invalid) {
                             sCommonUtils.toast(context.getString(R.string.xml_corrupted), context).show();
                         } else {
-                            saveButton.setVisibility(mXMLString != null ? VISIBLE : GONE);
+                            saveButton.setVisibility(isModified ? VISIBLE : GONE);
                             if (removable) {
                                 notifyItemRemoved(position);
                             } else {
@@ -259,9 +262,12 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                 data.get(position).setValue(newValue);
                 originalData.get(positionOriginal).setValue(newValue);
 
-                mXMLString = XMLEditor.xmlEntriesToXML(originalData, resourceMap);
+                String xmlString = XMLEditor.xmlEntriesToXML(originalData, resourceMap);
 
-                invalid = !XMLEditor.isXMLValid(mXMLString);
+                invalid = !XMLEditor.isXMLValid(xmlString);
+                if (!isModified) {
+                    isModified = !invalid;
+                }
             }
 
             @Override
@@ -270,7 +276,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                 if (invalid) {
                     sCommonUtils.toast(context.getString(R.string.xml_corrupted), context).show();
                 } else {
-                    saveButton.setVisibility(mXMLString != null ? VISIBLE : GONE);
+                    saveButton.setVisibility(isModified ? VISIBLE : GONE);
                     notifyItemChanged(position);
                 }
             }
