@@ -32,7 +32,7 @@ public class APKPickerAdapter extends RecyclerView.Adapter<APKPickerAdapter.View
     @NonNull
     @Override
     public APKPickerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_filepicker, parent, false);
+        View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_apkpicker, parent, false);
         return new APKPickerAdapter.ViewHolder(rowItem);
     }
 

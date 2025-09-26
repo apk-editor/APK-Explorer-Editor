@@ -26,9 +26,6 @@
         <activity android:name=".activities.BuildingActivity"
             android:exported="false" />
 
-        <activity android:name=".activities.FilePickerActivity"
-            android:exported="false" />
-
         <activity android:name=".activities.InstallerActivity"
             android:exported="false" />
 
