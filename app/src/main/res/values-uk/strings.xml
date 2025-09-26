@@ -54,7 +54,7 @@
     <string name="unknown_file_message">"AEE не обробляє \"%s\" на даний момент.  Якщо вам відомий цей формат файлу, ви можете експортувати його в пам’ять пристрою та спробувати відредагувати за допомогою підтримуваної сторонньої програми. Спробувати відкрити його як текстовий файл?"</string>
     <string name="unsupported_file">"Непідтримуваний файл"</string>
     <string name="unsupported_file_arsc">"Ви вибрали «resources.arsc», який, на жаль, AEE не може прочитати. Що таке resources.arsc? resources.arsc — це двійковий файл ресурсів, що містить специфічні для конфігурації значення програми, такі як цілі числа, логічні значення та рядки, а також посилання на більш складні ресурси, як-от макети інтерфейсу користувача.  Як читати resources.arsc?  Такі інструменти, як Apktool або Android Asset Packaging Tool (AAPT), слід використовувати для друку вмісту resources.arsc у зручному для читання форматі."</string>
-    <string name="unsupported_file_dex">"Ви вибрали файл \"DEX\" (.dex), який, на жаль, AEE не може прочитати.  Що таке файл DEX? Файл Dex містить код, який остаточно виконує Android Runtime. Кожний файл .apk повинен мати файл «classes.dex», який містить посилання на будь-які класи або методи, що використовуються в програмі. По суті, будь-які дії, об’єкти чи фрагменти, що використовуються в базі коду, будуть перетворені на байти у файлі Dex, який можна запускати як додаток для Android.  Як прочитати файл DEX? Файл DEX має бути перетворений у формат «jar», а потім у файл «Java» за допомогою таких інструментів, як «dex2jar» і «JD-GUI»."</string>
+    <string name="unsupported_file_dex">"Ви обрали файл \"DEX\" (.dex), який, на жаль, AEE не може прочитати.  Що таке файл DEX? Файл Dex містить код, який остаточно виконує Android Runtime. Кожний файл .apk повинен мати файл «classes.dex», який містить посилання на будь-які класи або методи, що використовуються в програмі. По суті, будь-які дії, об’єкти чи фрагменти, що використовуються в базі коду, будуть перетворені на байти у файлі Dex, який можна запускати як додаток для Android.  Як прочитати файл DEX? Файл DEX має бути перетворений у формат «jar», а потім у файл «Java» за допомогою таких інструментів, як «dex2jar» і «JD-GUI»."</string>
     <string name="user">"Користувача"</string>
     <string name="bundles">"Пакети"</string>
     <string name="preparing_bundle">"Підготовка набору програм для спільного використання…"</string>
@@ -65,7 +65,7 @@
     <string name="select">"Вибрати"</string>
     <string name="signing_custom">"Налаштування ключа"</string>
     <string name="signing_default">"Підписати ключем за замовчуванням"</string>
-    <string name="signing_question">"Використовуйте \"%s\" як новий"</string>
+    <string name="signing_question">"Використайте \"%s\" як новий"</string>
     <string name="signing_title">"Підписання APK"</string>
     <string name="apk_installer">"Інсталятор AEE APK"</string>
     <string name="bundle_install_question">"Ви впевнені, що хочете встановити набір додатків \"%s\"?"</string>
@@ -99,6 +99,7 @@
     <string name="sort_order">"А-Я"</string>
     <string name="clear_cache">"Очистити кеш"</string>
     <string name="clear_cache_summary">"Видалити внутрішні налаштування AEE"</string>
+    <string name="clear_cache_message">"Усе, крім експортованих програм, буде видалено."</string>
     <string name="export_options">"Про експорт (APK's)"</string>
     <string name="installer_action">"Про встановлення APK's"</string>
     <string name="project_exist_action">"При виході з проекту"</string>
@@ -156,4 +157,50 @@
     <string name="root">"Root"</string>
     <string name="xml_corrupted">"Рядок XML пошкоджено.  Переривання"</string>
     <string name="xml_decode_failed">"Не вдалося декодувати XML"</string>
+    <string name="zip_aligning">"Zip вирівнювання…"</string>
+    <string name="delete_folder">"Видалити теку"</string>
+    <string name="delete_selected_files">"Видалити обрані файли"</string>
+    <string name="export_selected_files">"Експортувати обрані файли"</string>
+    <string name="explore_options">"Досліджуючи додаток"</string>
+    <string name="explore_options_full">"Повна декомпіляція (повільніше)"</string>
+    <string name="explore_options_simple">"Проста декомпіляція (швидше)"</string>
+    <string name="apply">"Застосувати"</string>
+    <string name="batch_options">"Пакетні опції"</string>
+    <string name="choose_new">"Обрати нове"</string>
+    <string name="copyright_text">"2025–2026, APK Explorer &amp; Editor"</string>
+    <string name="delete_all">"Видалити все"</string>
+    <string name="export_app_batch_question">"Експортувати наступні додатки?"</string>
+    <string name="export_options_title">"Опції експорту"</string>
+    <string name="exported_apks_path">"Обрані додатки експортовано до:
+
+        '%s'"</string>
+    <string name="exporting_batch">"Експортуються обрані додатки…"</string>
+    <string name="explore_options_quick">"Швидке редагування (простіше)"</string>
+    <string name="keypair_mismatch_message">"Ключова пара не збігається!"</string>
+    <string name="keystore_alias_hint">"Обрати псевдонім"</string>
+    <string name="keystore_alias_password_hint">"Введіть пароль псевдоніма"</string>
+    <string name="keystore_alias_unavailable">"Псевдонім сховища ключів не знайдено!"</string>
+    <string name="keystore_loading_failed">"Не вдалося завантажити сховище ключів!"</string>
+    <string name="keystore_password_hint">"Введіть пароль сховища ключів"</string>
+    <string name="password_invalid">"Пароль не збігається!"</string>
+    <string name="private_key_invalid">"Обраний приватний ключ недійсний!"</string>
+    <string name="quick_edits_app_name">"Назва додатку"</string>
+    <string name="quick_edits_sdk_min">"Мін. SDK"</string>
+    <string name="quick_edits_package_name">"Назва пакета"</string>
+    <string name="quick_edits_progress_message">"Застосування змін…"</string>
+    <string name="quick_edits_title">"Швидке редагування"</string>
+    <string name="quick_edits_toast_failed">"На жаль, не вдалося створити модифікований APK-файл."</string>
+    <string name="quick_edits_toast_success">"Змінений APK файл згенеровано.
+
+        Шлях: '%s'"</string>
+    <string name="quick_edits_version_code">"Код версії"</string>
+    <string name="quick_edits_version_name">"Назва версії"</string>
+    <string name="reset">"Скидання"</string>
+    <string name="res_viewer">"Переглядач ресурсів"</string>
+    <string name="search_files">"Шукати файли"</string>
+    <string name="select_all">"Обраи все"</string>
+    <string name="sort_files">"Сортувати файли"</string>
+    <string name="sort_time">"Від старих до нових"</string>
+    <string name="x509_certificate_invalid">"Обраний X509Certificate неправильний!"</string>
+    <string name="x509_certificate_requirement_message">"Щоб підписати APK-файли власним ключем, AEE також потребує X509Certificate, експортований з відповідного приватного ключа pk8. Будь ласка, зверніться до сторінки документації за додатковою інформацією."</string>
 </resources>

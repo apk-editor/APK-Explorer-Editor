@@ -111,6 +111,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Gyorsítótár törlése"</string>
     <string name="clear_cache_summary">"Törölje az AEE belső beállításait"</string>
+    <string name="clear_cache_message">"Az exportált alkalmazások kivételével minden eltávolításra kerül."</string>
     <string name="export_options">"Exportálásnál (APK'-k)"</string>
     <string name="installer_action">"Az APK'-k telepítésénél"</string>
     <string name="project_exist_action">"Egy projektből való kilépésnél"</string>
@@ -179,7 +180,7 @@
     <string name="apply">"Alkalmaz"</string>
     <string name="batch_options">"Kötegbeállítások"</string>
     <string name="choose_new">"Válassz újat"</string>
-    <string name="copyright_text">"2021–2025, APK Explorer &amp; Editor"</string>
+    <string name="copyright_text">"2025–2026, APK Explorer &amp; Editor"</string>
     <string name="delete_all">"Az összes törlése"</string>
     <string name="export_app_batch_question">"Exportálod a következő alkalmazásokat?"</string>
     <string name="export_options_title">"Exportálási beállítások"</string>

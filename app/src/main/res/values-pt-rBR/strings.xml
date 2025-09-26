@@ -4,7 +4,7 @@
     <string name="all">"Todos"</string>
     <string name="apks">"APKs"</string>
     <string name="apps">"Apps"</string>
-    <string name="apps_exported">"APKs exportadas"</string>
+    <string name="apps_exported">"APKs exportados"</string>
     <string name="apps_installed">"Apps instalados"</string>
     <string name="cancel">"Cancelar"</string>
     <string name="delete">"Deletar"</string>
@@ -15,7 +15,7 @@
     <string name="donations_summary">"Apoie o desenvolvimento do AEE"</string>
     <string name="export">"Exportar"</string>
     <string name="export_question">"Exportar para armazenamento interno?"</string>
-    <string name="export_complete_message">"O recurso selecionado foi exportado com sucesso para '%s'"</string>
+    <string name="export_complete_message">"O recurso selecionado foi exportado com sucesso em '%s'"</string>
     <string name="exploring">"Explorando %s…"</string>
     <string name="explore_error_status">"Falha ao explorar %s"</string>
     <string name="install">"Instalar"</string>
@@ -25,11 +25,11 @@
     <string name="invite_friends_Summary">"Convide seus amigos para experimentar o AEE"</string>
     <string name="last_modified">"Última modificação: %s"</string>
     <string name="open_as_text">"Abrir como texto"</string>
-    <string name="permission_denied_message">"A permissão de escrever no armazenamento foi negada!"</string>
+    <string name="permission_denied_message">"Permissão negada para acessar armazenamento interno"</string>
     <string name="preparing_apk">"Preparando %s APK…"</string>
-    <string name="press_back">"Pressione novamente o botão Voltar para fechar o Explorador de APK!"</string>
+    <string name="press_back">"Pressione o Botão de Voltar Novamente para fechar o APK Explorer"</string>
     <string name="projects">"Projetos"</string>
-    <string name="rate_us">"Avaliar o AEE"</string>
+    <string name="rate_us">"Avalie AEE"</string>
     <string name="rate_us_Summary">"Avaliação ou/e comentários do AEE no Google Play"</string>
     <string name="replace">"Substituir"</string>
     <string name="replace_question">"Substituir %s com"</string>
@@ -111,6 +111,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Limpar o Cache"</string>
     <string name="clear_cache_summary">"Excluir as configurações internas do AEE"</string>
+    <string name="clear_cache_message">"Todas, exceto os Apps exportados, serão excluídos!"</string>
     <string name="export_options">"Exportação (APKs)"</string>
     <string name="installer_action">"Ao instalar os APKs"</string>
     <string name="project_exist_action">"Sobre saída de projeto"</string>
@@ -167,4 +168,18 @@
     <string name="root">"Raiz"</string>
     <string name="xml_corrupted">"String XML está corrompida. Abortando…"</string>
     <string name="xml_decode_failed">"Falha ao decodificar %s"</string>
+    <string name="keystore_loading_failed">"Falha ao carregar Keystore"</string>
+    <string name="keystore_password_hint">"Insira Senha Keystore"</string>
+    <string name="password_invalid">"Senha não corresponde"</string>
+    <string name="private_key_invalid">"Chave privada selecionada não é válida"</string>
+    <string name="quick_edits_app_name">"Nome App"</string>
+    <string name="quick_edits_sdk_min">"Min SDK"</string>
+    <string name="quick_edits_package_name">"Nome do Pacote"</string>
+    <string name="quick_edits_progress_message">"Aplicando modificações"</string>
+    <string name="quick_edits_title">"Edits Rápidos"</string>
+    <string name="quick_edits_version_code">"Código de Versão"</string>
+    <string name="quick_edits_version_name">"Nome da Versão"</string>
+    <string name="reset">"Resetar"</string>
+    <string name="search_files">"Procurar arquivos"</string>
+    <string name="select_all">"Selecionar todos"</string>
 </resources>
