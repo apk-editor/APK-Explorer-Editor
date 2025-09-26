@@ -201,7 +201,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                     if (APKEditorUtils.isFullVersion(view.getContext())) {
                         intent = new Intent(view.getContext(), TextEditorActivity.class);
                         intent.putExtra(TextEditorActivity.PATH_INTENT, filePath);
-                        intent.putExtra(TextEditorActivity.PACKAGE_NAME_INTENT, packageName);
+                        intent.putExtra(TextEditorActivity.BACKUP_PATH_INTENT, backupFilePath);
                     } else {
                         intent = new Intent(view.getContext(), TextViewActivity.class);
                         intent.putExtra(TextViewActivity.PATH_INTENT, filePath);
@@ -245,7 +245,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                                 if (APKEditorUtils.isFullVersion(view.getContext())) {
                                     intent = new Intent(view.getContext(), TextEditorActivity.class);
                                     intent.putExtra(TextEditorActivity.PATH_INTENT, filePath);
-                                    intent.putExtra(TextEditorActivity.PACKAGE_NAME_INTENT, packageName);
+                                    intent.putExtra(TextEditorActivity.BACKUP_PATH_INTENT, backupFilePath);
                                 } else {
                                     intent = new Intent(view.getContext(), TextViewActivity.class);
                                     intent.putExtra(TextViewActivity.PATH_INTENT, filePath);

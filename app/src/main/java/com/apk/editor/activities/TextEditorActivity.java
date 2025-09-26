@@ -44,7 +44,7 @@ public class TextEditorActivity extends AppCompatActivity {
 
     private ContentLoadingProgressBar mProgressLayout;
     private MaterialAutoCompleteTextView mText;
-    public static final String PACKAGE_NAME_INTENT = "package_name", PATH_INTENT = "path";
+    public static final String BACKUP_PATH_INTENT = "backup_path", PATH_INTENT = "path";
     private String mTextContents = null;
 
     @Override
@@ -60,8 +60,8 @@ public class TextEditorActivity extends AppCompatActivity {
 
         AppData.toggleKeyboard(1, mText, this);
 
+        String backupPath = getIntent().getStringExtra(BACKUP_PATH_INTENT);
         String mPath = getIntent().getStringExtra(PATH_INTENT);
-        String packageName = getIntent().getStringExtra(PACKAGE_NAME_INTENT);
 
         mText.setTextColor(sThemeUtils.isDarkTheme(this) ? Color.WHITE : Color.BLACK);
 
@@ -108,8 +108,7 @@ public class TextEditorActivity extends AppCompatActivity {
             if (mText == null || mText.getText() != null && mText.getText().toString().isEmpty()) return;
             new MaterialAlertDialogBuilder(this)
                     .setIcon(R.mipmap.ic_launcher)
-                    .setTitle(R.string.app_name)
-                    .setMessage(R.string.save_question)
+                    .setTitle(R.string.save_question)
                     .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
                     })
                     .setPositiveButton(getString(R.string.save), (dialog, id) ->
@@ -138,7 +137,7 @@ public class TextEditorActivity extends AppCompatActivity {
                                         sFileUtils.create(text, new File(mPath));
                                         if (mPath.contains("classes") && mPath.endsWith(".smali")) {
                                             try {
-                                                File backupFile = new File(getCacheDir(), packageName + "/.aeeBackup/appData");
+                                                File backupFile = new File(Objects.requireNonNull(backupPath));
                                                 JSONObject jsonObject = new JSONObject(sFileUtils.read(backupFile));
                                                 jsonObject.put("smali_edited", true);
                                                 sFileUtils.create(jsonObject.toString(), backupFile);
@@ -174,8 +173,7 @@ public class TextEditorActivity extends AppCompatActivity {
         if (mTextContents != null && mText.getText() != null && !mTextContents.equals(mText.getText().toString())) {
             new MaterialAlertDialogBuilder(TextEditorActivity.this)
                     .setIcon(R.mipmap.ic_launcher)
-                    .setTitle(R.string.text_editor)
-                    .setMessage(getString(R.string.discard_message))
+                    .setTitle(getString(R.string.discard_message))
                     .setCancelable(false)
                     .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
                     })
