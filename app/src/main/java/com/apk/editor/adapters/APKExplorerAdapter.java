@@ -192,9 +192,9 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
         @SuppressLint("StringFormatInvalid")
         @Override
         public void onClick(View view) {
-            String filePath = data.get(getAdapterPosition());
+            String filePath = data.get(getBindingAdapterPosition());
             if (new File(filePath).isDirectory() || new File(filePath).isFile() && filePath.endsWith(".dex")) {
-                clickListener.onItemClick(data.get(getAdapterPosition()));
+                clickListener.onItemClick(data.get(getBindingAdapterPosition()));
             } else {
                 if (APKExplorer.isTextFile(filePath)) {
                     Intent intent;

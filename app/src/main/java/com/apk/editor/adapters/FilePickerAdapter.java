@@ -110,7 +110,7 @@ public class FilePickerAdapter extends RecyclerView.Adapter<FilePickerAdapter.Vi
 
         @Override
         public void onClick(View view) {
-            clickListener.onItemClick(data.get(getAdapterPosition()), getAdapterPosition());
+            clickListener.onItemClick(data.get(getBindingAdapterPosition()), getBindingAdapterPosition());
         }
     }
 

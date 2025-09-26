@@ -69,7 +69,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            clickListener.onItemClick(getAdapterPosition(), view);
+            clickListener.onItemClick(getBindingAdapterPosition(), view);
         }
     }
 

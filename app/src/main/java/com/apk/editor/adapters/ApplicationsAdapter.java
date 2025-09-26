@@ -141,16 +141,16 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
         @Override
         public void onClick(View view) {
             if (mlongClicked) {
-                if (packageNames.contains(data.get(getAdapterPosition()).getPackageName())) {
-                    packageNames.remove(data.get(getAdapterPosition()).getPackageName());
+                if (packageNames.contains(data.get(getBindingAdapterPosition()).getPackageName())) {
+                    packageNames.remove(data.get(getBindingAdapterPosition()).getPackageName());
                 } else {
-                    packageNames.add(data.get(getAdapterPosition()).getPackageName());
+                    packageNames.add(data.get(getBindingAdapterPosition()).getPackageName());
                 }
-                notifyItemChanged(getAdapterPosition());
+                notifyItemChanged(getBindingAdapterPosition());
                 activity.findViewById(R.id.batch_options).setVisibility(packageNames.isEmpty() ? View.GONE : View.VISIBLE);
                 return;
             }
-            ExploreOptionsMenu.getMenu(data.get(getAdapterPosition()).getPackageName(), null, null, false, activity);
+            ExploreOptionsMenu.getMenu(data.get(getBindingAdapterPosition()).getPackageName(), null, null, false, activity);
         }
     }
 
