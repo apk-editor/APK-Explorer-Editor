@@ -84,9 +84,13 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                 }
             } else if (data.get(position).endsWith(".apk")) {
                 holder.mIcon.setImageDrawable(sAPKUtils.getAPKIcon(data.get(position), holder.mIcon.getContext()));
+            } else if (data.get(position).contains("classes") && data.get(position).endsWith(".dex")) {
+                APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_classes), holder.mIcon.getContext());
+            } else if (data.get(position).endsWith(".arsc")) {
+                APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_res), holder.mIcon.getContext());
             } else {
                 if (data.get(position).endsWith(".xml")) {
-                    APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_xml), holder.mIcon.getContext());
+                    APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), data.get(position).endsWith("AndroidManifest.xml") ? R.drawable.ic_manifest : R.drawable.ic_xml), holder.mIcon.getContext());
                 } else {
                     APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_file), holder.mIcon.getContext());
                 }

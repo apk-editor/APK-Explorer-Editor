@@ -25,18 +25,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
-import com.apk.editor.activities.APKSignActivity;
 import com.apk.editor.adapters.APKExplorerAdapter;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
+import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.DexToSmali;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.apk.editor.utils.tasks.DeleteFile;
-import com.apk.editor.utils.tasks.DeleteProject;
 import com.apk.editor.utils.tasks.ExportToStorage;
-import com.apk.editor.utils.tasks.SignAPK;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -54,7 +52,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
-import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
@@ -68,7 +65,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
     private MaterialAutoCompleteTextView mSearchWord;
     private MaterialTextView mTitle;
     private RecyclerView mRecyclerView;
-    private static File mFile, mRootFile = null;
+    private static File mFile = null, mRootFile = null;
     private static List<File> mFiles = new ArrayList<>();
     private static List<String> mData;
     private static String mBackupFilePath = null, mSearchText = null, mPackageName = null;
@@ -90,7 +87,6 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         View mRootView = inflater.inflate(R.layout.fragment_apkexplorer, container, false);
 
         AppCompatImageButton mBack = mRootView.findViewById(R.id.back);
-        AppCompatImageButton mBuild = mRootView.findViewById(R.id.build);
         MaterialButton mMenuButton = mRootView.findViewById(R.id.menu);
         mTitle = mRootView.findViewById(R.id.title);
         MaterialTextView mError = mRootView.findViewById(R.id.error_status);
@@ -99,11 +95,20 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
         String mAppName = APKExplorer.getAppName(mBackupFilePath);
-        mFile = new File(mBackupFilePath.replace("/.aeeBackup/appData", ""));
+        if (mFile == null || !mBackupFilePath.contains(mRootFile.getName()) || !mFile.exists()) {
+            mFile = new File(mBackupFilePath.replace("/.aeeBackup/appData", ""));
+        }
         mRootFile = new File(mBackupFilePath.replace("/.aeeBackup/appData", ""));
         mTitle.setText(getString(R.string.root));
 
-        mBack.setOnClickListener(v -> retainDialog());
+        mBack.setOnClickListener(v -> {
+            if (Objects.equals(mFile.getParentFile(), requireActivity().getCacheDir())) {
+                AppSettings.navigateToFragment(requireActivity(), 0);
+            } else {
+                mFiles = new ArrayList<>();
+                loadUI(mFile.getParentFile());
+            }
+        });
 
         mSearchWord.addTextChangedListener(new TextWatcher() {
             @Override
@@ -123,39 +128,6 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                 }
             }
         });
-
-        mBuild.setOnClickListener(v -> new MaterialAlertDialogBuilder(requireActivity())
-                .setIcon(R.mipmap.ic_launcher)
-                .setTitle(R.string.app_name)
-                .setMessage(R.string.save_apk_message)
-                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
-                })
-                .setPositiveButton(getString(R.string.build), (dialog, id) -> {
-                    if (!sCommonUtils.getBoolean("firstSigning", false, requireActivity())) {
-                        new sSingleItemDialog(0, null, new String[] {
-                                getString(R.string.signing_default),
-                                getString(R.string.signing_custom)
-                        }, requireActivity()) {
-
-                            @Override
-                            public void onItemSelected(int itemPosition) {
-                                sCommonUtils.saveBoolean("firstSigning", true, requireActivity());
-                                if (itemPosition == 0) {
-                                    new SignAPK(mRootFile, requireActivity()).execute();
-                                } else {
-                                    Intent signing = new Intent(requireActivity(), APKSignActivity.class);
-                                    startActivity(signing);
-                                }
-                            }
-                        }.show();
-                    } else {
-                        new SignAPK(mRootFile, requireActivity()).execute();
-                    }
-                }).show());
-
-        if (APKEditorUtils.isFullVersion(requireActivity())) {
-            mBuild.setVisibility(View.VISIBLE);
-        }
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), APKExplorer.getSpanCount(requireActivity())));
 
@@ -261,7 +233,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                     return;
                 }
                 if (Objects.equals(mFile.getParentFile(), requireActivity().getCacheDir())) {
-                    retainDialog();
+                    AppSettings.navigateToFragment(requireActivity(), 0);
                 } else {
                     mFiles = new ArrayList<>();
                     loadUI(mFile.getParentFile());
@@ -312,23 +284,6 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         };
     }
 
-    private void retainDialog() {
-        if (sCommonUtils.getString("projectAction", null, requireActivity()) == null) {
-            new MaterialAlertDialogBuilder(requireActivity())
-                    .setIcon(R.mipmap.ic_launcher)
-                    .setTitle(R.string.app_name)
-                    .setMessage(R.string.save_projects_question)
-                    .setNeutralButton(getString(R.string.cancel), (dialog, id) -> {
-                    })
-                    .setNegativeButton(getString(R.string.discard), (dialog, id) -> new DeleteProject(new File(requireActivity().getCacheDir(), mRootFile.getName()), requireActivity(), true).execute())
-                    .setPositiveButton(getString(R.string.save), (dialog, id) -> requireActivity().finish()).show();
-        } else if (sCommonUtils.getString("projectAction", null, requireActivity()).equals(getString(R.string.delete))) {
-            new DeleteProject(new File(requireActivity().getCacheDir(), mRootFile.getName()), requireActivity(), true).execute();
-        } else {
-            requireActivity().finish();
-        }
-    }
-
     private void loadUI(File file) {
         new sExecutor() {
 
@@ -356,7 +311,6 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                 if (!name.equals(requireActivity().getCacheDir().getName())) {
                     mSearchWord.setVisibility(View.GONE);
                 }
-                requireActivity().findViewById((R.id.info_button)).setVisibility(name.equals(requireActivity().getCacheDir().getName()) ? View.VISIBLE : View.GONE);
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mProgressLayout.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.VISIBLE);

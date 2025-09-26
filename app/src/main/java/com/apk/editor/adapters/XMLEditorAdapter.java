@@ -197,13 +197,12 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                                 positionOriginal = i;
                             }
                         }
+                        if (positionOriginal == RecyclerView.NO_POSITION) return;
                         if (data.get(position).getEndTag().endsWith("/>") || data.get(position).getEndTag().endsWith(">")) {
-                            if (positionOriginal == RecyclerView.NO_POSITION) return;
                             data.set(position, new XMLEntry("", "", "", data.get(position).getEndTag().replace("\"", "")));
                             originalData.set(positionOriginal, new XMLEntry("", "", "", data.get(position).getEndTag().replace("\"", "")));
                             removable = false;
                         } else {
-                            if (positionOriginal == RecyclerView.NO_POSITION) return;
                             data.remove(position);
                             originalData.remove(positionOriginal);
                             removable = true;

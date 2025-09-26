@@ -1,6 +1,6 @@
 [versions]
-apksigVersion = "8.12.2"
-aXMLVersion = "51db0eecad"
+apksigVersion = "8.13.0"
+aXMLVersion = "d43b54358d"
 baksmaliVersion = "2.5.2"
 crashreporterVersion = "6b6c74abaa"
 documentfileVersion = "1.1.0"

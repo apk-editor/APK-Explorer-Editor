@@ -49,6 +49,8 @@ public class ExternalAPKData {
     public static String sdkToAndroidVersion(String sdkVersion, Context context) {
         int sdk = Integer.parseInt(sdkVersion);
         switch (sdk) {
+            case 36:
+                return context.getString(R.string.android_version, "16 (BAKLAVA, " + sdkVersion + ")");
             case 35:
                 return context.getString(R.string.android_version, "15 (VANILLA_ICE_CREAM, " + sdkVersion + ")");
             case 34:

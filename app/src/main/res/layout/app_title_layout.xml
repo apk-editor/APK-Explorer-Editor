@@ -46,14 +46,15 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/info_button"
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/build"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?attr/materialIconButtonFilledTonalStyle"
-        android:layout_gravity="end|center_vertical"
-        app:icon="@drawable/ic_info"
+        android:layout_gravity="center|end"
+        android:gravity="center_vertical"
+        android:src="@drawable/ic_build"
         android:layout_margin="5dp"
+        android:background="@null"
         android:visibility="gone"
-        android:scaleX="-1" />
+        android:scaleX="-1"/>
 </FrameLayout>
