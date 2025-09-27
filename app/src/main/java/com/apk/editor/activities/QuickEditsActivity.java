@@ -167,7 +167,9 @@ public class QuickEditsActivity extends AppCompatActivity {
                                     setFileNameInZip("AndroidManifest.xml");
                                 }});
                                 source.close();
-                            } else if (fileName.equals("resources.arsc") || fileName.startsWith("lib/")) {
+                            } else if (fileName.equals("resources.arsc") || fileName.startsWith("lib/")
+                                        || fileName.startsWith("assets/") || fileName.startsWith("res/")
+                                        || fileName.startsWith("r/") || fileName.startsWith("R/")) {
                                 source = inZip.getInputStream(header);
                                 ZipParameters params = new ZipParameters();
                                 params.setFileNameInZip(fileName);
