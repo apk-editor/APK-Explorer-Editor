@@ -20,6 +20,7 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 
 /*
@@ -70,6 +71,7 @@ public class XMLEditor {
 
     public static sExecutor encodeToBinaryXML(String xmlString, String filePath, Activity activity) {
         return new sExecutor() {
+            boolean invalid = false;
             private ProgressDialog progressDialog;
             @Override
             public void onPreExecute() {
@@ -82,17 +84,26 @@ public class XMLEditor {
 
             @Override
             public void doInBackground() {
-                try (FileOutputStream fos = new FileOutputStream(filePath)) {
-                    aXMLEncoder aXMLEncoder = new aXMLEncoder();
-                    byte[] bs = aXMLEncoder.encodeString(activity, xmlString);
-                    fos.write(bs);
-                } catch (IOException | XmlPullParserException ignored) {
+                if (XMLEditor.isXMLValid(xmlString)) {
+                    invalid = false;
+                    try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                        aXMLEncoder aXMLEncoder = new aXMLEncoder();
+                        byte[] bs = aXMLEncoder.encodeString(activity, xmlString);
+                        fos.write(bs);
+                    } catch (IOException | XmlPullParserException ignored) {
+                    }
+                } else {
+                    invalid = true;
                 }
+
             }
 
             @Override
             public void onPostExecute() {
                 progressDialog.dismiss();
+                if (invalid) {
+                    sCommonUtils.toast(activity.getString(R.string.xml_corrupted), activity).show();
+                }
                 activity.finish();
             }
         };
