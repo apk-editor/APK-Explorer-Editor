@@ -1,0 +1,9 @@
+* Resource Viewer: New option to export supported resources to storage.
+* Main: AEE now exports APKs and other resources to sdcard > Download > AEE.
+* Installer: Improved Split APK Installer — AEE now suggests the required split APKs automatically.
+* Quick Edits: Added support for split APKs and improved file compression when adding content.
+* App Icons: Added support for replacing app icons for many apps.
+* APK Explorer: Enhanced main view with new pages (e.g., App Info and Strings).
+* Text Editor: Fixed crashes in specific scenarios.
+* UI & Performance: Updated RecyclerView handling, improved progress dialogs, added new downloads icon, and general refinements.
+* Miscellaneous: Updated import translations and proguard rules for the apksig library.

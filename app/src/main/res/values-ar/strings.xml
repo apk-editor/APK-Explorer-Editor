@@ -42,7 +42,6 @@
     <string name="sdcard">"الذاكرة الخارجية"</string>
     <string name="search">"بحث…"</string>
     <string name="share">"مشاركة"</string>
-    <string name="share_message">"مشاركة %s؟"</string>
     <string name="share_with">"مشاركة مع"</string>
     <string name="signing">"يتم التوقيع %s…"</string>
     <string name="size">"الحجم: %s"</string>
