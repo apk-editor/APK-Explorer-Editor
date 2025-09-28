@@ -57,7 +57,7 @@ public class XMLEditor {
         StringBuilder sb = new StringBuilder();
 
         for (XMLEntry xmlEntry : xmlEntries) {
-            if (!xmlEntry.getTag().trim().equals("android:debuggable") && !xmlEntry.getTag().trim().equals("android:testOnly")) {
+            if (!xmlEntry.isEmpty() && !xmlEntry.getTag().trim().equals("android:debuggable") && !xmlEntry.getTag().trim().equals("android:testOnly")) {
                 if (resEntries != null && !resEntries.isEmpty()) {
                     sb.append(xmlEntry.getText(resEntries)).append("\n");
                 } else {

@@ -177,7 +177,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
             @Override
             public void removeLine() {
                 new sExecutor() {
-                    private boolean invalid = false, removable;
+                    private boolean invalid = false;
                     private ProgressDialog progressDialog;
 
                     @Override
@@ -192,27 +192,34 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                     @Override
                     public void doInBackground() {
                         int positionOriginal = RecyclerView.NO_POSITION;
-                        for (int i=0; i<originalData.size(); i++) {
-                            if (originalData.get(i) == data.get(position)) {
+
+                        for (int i = 0; i < originalData.size(); i++) {
+                            if (originalData.get(i).getId().equals(data.get(position).getId())) {
                                 positionOriginal = i;
+                                break;
                             }
                         }
                         if (positionOriginal == RecyclerView.NO_POSITION) return;
-                        if (data.get(position).getEndTag().endsWith("/>") || data.get(position).getEndTag().endsWith(">")) {
-                            data.set(position, new XMLEntry("", "", "", data.get(position).getEndTag().replace("\"", "")));
-                            originalData.set(positionOriginal, new XMLEntry("", "", "", data.get(position).getEndTag().replace("\"", "")));
-                            removable = false;
-                        } else {
-                            data.remove(position);
+
+                        XMLEntry target = data.get(position);
+                        if (target.getEndTag().trim().isEmpty()) {
+                            data.set(position, new XMLEntry("", "", "", ""));
                             originalData.remove(positionOriginal);
-                            removable = true;
+                        } else {
+                            XMLEntry entry = new XMLEntry("", "", "", data.get(position).getEndTag().replace("\"", ""));
+                            data.set(position, entry);
+                            originalData.set(positionOriginal, entry);
                         }
 
-                        String xmlString = XMLEditor.xmlEntriesToXML(originalData, resourceMap);
-
-                        invalid = !XMLEditor.isXMLValid(xmlString);
-                        if (!isModified) {
-                            isModified = !invalid;
+                        if (XMLEditor.isXMLValid(XMLEditor.xmlEntriesToXML(originalData, resourceMap))) {
+                            if (!isModified) {
+                                isModified = true;
+                            }
+                            invalid = false;
+                        } else {
+                            data.set(position, target);
+                            originalData.set(positionOriginal, target);
+                            invalid = true;
                         }
                     }
 
@@ -223,12 +230,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                             sCommonUtils.toast(context.getString(R.string.xml_corrupted), context).show();
                         } else {
                             saveButton.setVisibility(isModified ? VISIBLE : GONE);
-                            if (removable) {
-                                notifyItemRemoved(position);
-                            } else {
-                                notifyItemChanged(position);
-                            }
-                            notifyItemRangeChanged(position, getItemCount());
+                            notifyItemChanged(position);
                         }
                     }
                 }.execute();
@@ -252,20 +254,29 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
             @Override
             public void doInBackground() {
                 int positionOriginal = RecyclerView.NO_POSITION;
-                for (int i=0; i<originalData.size(); i++) {
-                    if (originalData.get(i) == data.get(position)) {
+
+                for (int i = 0; i < originalData.size(); i++) {
+                    if (originalData.get(i).getId().equals(data.get(position).getId())) {
                         positionOriginal = i;
+                        break;
                     }
                 }
+
                 if (positionOriginal == RecyclerView.NO_POSITION) return;
+
+                String oldValue = data.get(position).getValue();
                 data.get(position).setValue(newValue);
                 originalData.get(positionOriginal).setValue(newValue);
 
-                String xmlString = XMLEditor.xmlEntriesToXML(originalData, resourceMap);
-
-                invalid = !XMLEditor.isXMLValid(xmlString);
-                if (!isModified) {
-                    isModified = !invalid;
+                if (XMLEditor.isXMLValid(XMLEditor.xmlEntriesToXML(originalData, resourceMap))) {
+                    if (!isModified) {
+                        isModified = true;
+                    }
+                    invalid = false;
+                } else {
+                    data.get(position).setValue(oldValue);
+                    originalData.get(positionOriginal).setValue(oldValue);
+                    invalid = true;
                 }
             }
 
