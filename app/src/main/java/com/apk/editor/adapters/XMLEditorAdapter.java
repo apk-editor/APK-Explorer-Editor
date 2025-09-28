@@ -121,10 +121,8 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                                     new String[] {
                                             view.getContext().getString(R.string.xml_editor_res),
                                             view.getContext().getString(R.string.xml_editor_storage),
-                                            view.getContext().getString(R.string.xml_editor_text)
                                     } : new String[] {
                                     view.getContext().getString(R.string.xml_editor_res),
-                                    view.getContext().getString(R.string.xml_editor_text)
                             }, view.getContext()) {
 
                         @Override
@@ -138,12 +136,7 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
                                         if (pickImageListener != null) {
                                             pickImageListener.onPickImageRequested(data.get(position));
                                         }
-                                    } else {
-                                        launchEditorDialog(position, view.getContext());
                                     }
-                                    break;
-                                case 2:
-                                    launchEditorDialog(position, view.getContext());
                                     break;
                             }
                         }
