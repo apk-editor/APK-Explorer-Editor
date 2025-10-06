@@ -7,7 +7,6 @@
     <string name="apk_installer">Πρόγραμμα εγκατάστασης AEE APK</string>
     <string name="apks">APKs</string>
     <string name="apply">Εφαρμογή</string>
-    <string name="app_name_short" translatable="false">AEE</string>
     <string name="apps">Εφαρμογές</string>
     <string name="apps_exported">Εξαγόμενα APK</string>
     <string name="apps_installed">Εγκατεστημένες Εφαρμογές</string>
@@ -90,19 +89,6 @@
     <string name="keystore_loading_failed">Αποτυχία φόρτωσης Keystore!</string>
     <string name="keystore_password_hint">Εισαγωγή Κωδικού Πρόσβασης Keystore</string>
     <string name="language">Γλώσσα</string>
-    <string name="language_ar" translatable="false">العربية (%s)</string>
-    <string name="language_el" translatable="false">Ελληνικά</string>
-    <string name="language_en" translatable="false">English (%s)</string>
-    <string name="language_es" translatable="false">Español (%s)</string>
-    <string name="language_fr" translatable="false">français (%s)</string>
-    <string name="language_hu" translatable="false">Magyar</string>
-    <string name="language_in" translatable="false">bahasa Indonesia</string>
-    <string name="language_ja" translatable="false">日本</string>
-    <string name="language_ko" translatable="false">한국어</string>
-    <string name="language_pl" translatable="false">Polski"</string>
-    <string name="language_pt" translatable="false">Português (%s)</string>
-    <string name="language_ru" translatable="false">русский</string>
-    <string name="language_zh" translatable="false">中文 (%s)</string>
     <string name="last_modified">Τελευταία Τροποποίηση: %s</string>
     <string name="loading">Φόρτωση…</string>
     <string name="manifest">Μανιφέστο</string>
