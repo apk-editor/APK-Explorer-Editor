@@ -20,7 +20,6 @@ import java.util.Objects;
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
-import in.sunilpaulmathew.sCommon.InstallerUtils.sInstallerParams;
 import in.sunilpaulmathew.sCommon.InstallerUtils.sInstallerUtils;
 
 /*
@@ -30,6 +29,19 @@ public class SplitAPKInstaller {
 
     private static Intent getCallbackIntent(Context context) {
         return new Intent(context, InstallerService.class);
+    }
+
+    private static long getTotalSize(List<String> apkList) {
+        int totalSize = 0;
+        if (apkList != null) {
+            for (String mSplits : apkList) {
+                File mFile = new File(mSplits);
+                if (mFile.exists() && mSplits.endsWith(".apk")) {
+                    totalSize += (int) mFile.length();
+                }
+            }
+        }
+        return totalSize;
     }
 
     public static void handleAppBundle(String path, Activity activity) {
@@ -112,7 +124,7 @@ public class SplitAPKInstaller {
                 int sessionId = 0;
                 if (apkFile != null && apkFile.exists()) {
                     apkList = APKData.splitApks(apkFile);
-                    sessionId = sInstallerUtils.runInstallCreate(sInstallerUtils.makeInstallParams(getTotalSize(apkList)), activity);
+                    sessionId = sInstallerUtils.runInstallCreate(getTotalSize(apkList), activity);
                     try {
                         for (String mSplits : Objects.requireNonNull(apkList)) {
                             File mFile = new File(mSplits);
@@ -122,7 +134,7 @@ public class SplitAPKInstaller {
                         }
                     } catch (NullPointerException ignored) {}
                 } else if (apks != null && !apks.isEmpty()) {
-                    sessionId = sInstallerUtils.runInstallCreate(sInstallerUtils.makeInstallParams(getTotalSize(apks)), activity);
+                    sessionId = sInstallerUtils.runInstallCreate(getTotalSize(apks), activity);
                     for (String string : apks) {
                         if (sFileUtils.exist(new File(string))) {
                             File mFile = new File(string);
@@ -135,19 +147,6 @@ public class SplitAPKInstaller {
 
 
                 sInstallerUtils.doCommitSession(sessionId, getCallbackIntent(activity), activity);
-            }
-
-            private long getTotalSize(List<String> apkList) {
-                int totalSize = 0;
-                if (apkList != null) {
-                    for (String mSplits : apkList) {
-                        File mFile = new File(mSplits);
-                        if (mFile.exists() && mSplits.endsWith(".apk")) {
-                            totalSize += (int) mFile.length();
-                        }
-                    }
-                }
-                return totalSize;
             }
 
             @Override
@@ -177,9 +176,7 @@ public class SplitAPKInstaller {
 
             @Override
             public void doInBackground() {
-                int sessionId;
-                final sInstallerParams installParams = sInstallerUtils.makeInstallParams(APK.length());
-                sessionId = sInstallerUtils.runInstallCreate(installParams, activity);
+                int sessionId = sInstallerUtils.runInstallCreate(APK.length(), activity);
                 try {
                     sInstallerUtils.runInstallWrite(APK.length(), sessionId, APK.getName(), APK.getAbsolutePath(), activity);
                 } catch (NullPointerException ignored) {}

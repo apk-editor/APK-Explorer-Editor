@@ -159,8 +159,8 @@ public class QuickEditsActivity extends AppCompatActivity {
                                 update(xmlEntries);
 
                                 byte[] encodedData = (resEntries != null && !resEntries.isEmpty())
-                                        ? new aXMLEncoder().encodeString(mActivity, XMLEditor.xmlEntriesToXML(xmlEntries, resEntries))
-                                        : new aXMLEncoder().encodeString(mActivity, XMLEditor.xmlEntriesToXML(xmlEntries, null));
+                                        ? new aXMLEncoder().encodeString(XMLEditor.xmlEntriesToXML(xmlEntries, resEntries), mActivity)
+                                        : new aXMLEncoder().encodeString(XMLEditor.xmlEntriesToXML(xmlEntries, null), mActivity);
 
                                 source = new ByteArrayInputStream(encodedData);
                                 outZip.addStream(source, new ZipParameters() {{

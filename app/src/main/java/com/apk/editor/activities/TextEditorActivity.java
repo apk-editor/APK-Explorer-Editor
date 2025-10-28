@@ -126,7 +126,7 @@ public class TextEditorActivity extends AppCompatActivity {
                                         if (XMLEditor.isXMLValid(text)) {
                                             try (FileOutputStream fos = new FileOutputStream(mPath)) {
                                                 aXMLEncoder aXMLEncoder = new aXMLEncoder();
-                                                byte[] bs = aXMLEncoder.encodeString(TextEditorActivity.this, text);
+                                                byte[] bs = aXMLEncoder.encodeString(text, TextEditorActivity.this);
                                                 fos.write(bs);
                                             } catch (IOException | XmlPullParserException ignored) {
                                             }

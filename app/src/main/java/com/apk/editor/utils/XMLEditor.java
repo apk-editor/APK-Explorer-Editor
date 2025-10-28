@@ -88,7 +88,7 @@ public class XMLEditor {
                     invalid = false;
                     try (FileOutputStream fos = new FileOutputStream(filePath)) {
                         aXMLEncoder aXMLEncoder = new aXMLEncoder();
-                        byte[] bs = aXMLEncoder.encodeString(activity, xmlString);
+                        byte[] bs = aXMLEncoder.encodeString(xmlString, activity);
                         fos.write(bs);
                     } catch (IOException | XmlPullParserException ignored) {
                     }

@@ -320,7 +320,7 @@ public class XMLEditorActivity extends AppCompatActivity {
                                                 private void encodeXML(String xml, String path) {
                                                     try (FileOutputStream fos = new FileOutputStream(path)) {
                                                         aXMLEncoder aXMLEncoder = new aXMLEncoder();
-                                                        byte[] bs = aXMLEncoder.encodeString(activity, xml);
+                                                        byte[] bs = aXMLEncoder.encodeString(xml, activity);
                                                         fos.write(bs);
                                                     } catch (IOException | XmlPullParserException ignored) {
                                                     }

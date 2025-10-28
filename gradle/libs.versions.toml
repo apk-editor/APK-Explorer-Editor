@@ -1,10 +1,10 @@
 [versions]
 apksigVersion = "8.13.0"
-aXMLVersion = "42ad3160e5"
+aXMLVersion = "2e22f6c11f"
 baksmaliVersion = "2.5.2"
 crashreporterVersion = "6b6c74abaa"
 documentfileVersion = "1.1.0"
-sCommonVersion = "0a9f4f410f"
+sCommonVersion = "d91cc0e601"
 agpVersion = "8.13.0"
 materialVersion = "1.13.0"
 zip4jVersion = "2.11.5"
