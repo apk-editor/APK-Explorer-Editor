@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviator Game - Spribe Style</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">✈️ AVIATOR</div>
+            <div class="balance">
+                <span class="balance-label">Balance:</span>
+                <span class="balance-amount" id="balance">$1000.00</span>
+            </div>
+        </div>
+
+        <!-- Game Area -->
+        <div class="game-container">
+            <div class="game-canvas-wrapper">
+                <canvas id="gameCanvas"></canvas>
+                <div class="multiplier-display" id="multiplierDisplay">
+                    <span class="multiplier-value">1.00x</span>
+                </div>
+                <div class="game-status" id="gameStatus">
+                    <span>Waiting for next round...</span>
+                </div>
+            </div>
+
+            <!-- History -->
+            <div class="history-panel">
+                <div class="history-title">History</div>
+                <div class="history-items" id="historyItems"></div>
+            </div>
+        </div>
+
+        <!-- Betting Panel -->
+        <div class="betting-panel">
+            <!-- Bet 1 -->
+            <div class="bet-section">
+                <div class="bet-controls">
+                    <div class="input-group">
+                        <label>Bet Amount</label>
+                        <div class="input-wrapper">
+                            <button class="btn-small" onclick="decreaseBet(1)">-</button>
+                            <input type="number" id="betAmount1" value="10" min="1" step="1">
+                            <button class="btn-small" onclick="increaseBet(1)">+</button>
+                        </div>
+                    </div>
+                    <div class="quick-bets">
+                        <button class="btn-quick" onclick="setBet(1, 10)">10</button>
+                        <button class="btn-quick" onclick="setBet(1, 50)">50</button>
+                        <button class="btn-quick" onclick="setBet(1, 100)">100</button>
+                        <button class="btn-quick" onclick="setBet(1, 500)">500</button>
+                    </div>
+                </div>
+                <button class="btn-bet" id="betButton1" onclick="handleBet(1)">
+                    <span class="btn-text">Place Bet</span>
+                </button>
+                <div class="bet-info" id="betInfo1"></div>
+            </div>
+
+            <!-- Bet 2 -->
+            <div class="bet-section">
+                <div class="bet-controls">
+                    <div class="input-group">
+                        <label>Bet Amount</label>
+                        <div class="input-wrapper">
+                            <button class="btn-small" onclick="decreaseBet(2)">-</button>
+                            <input type="number" id="betAmount2" value="10" min="1" step="1">
+                            <button class="btn-small" onclick="increaseBet(2)">+</button>
+                        </div>
+                    </div>
+                    <div class="quick-bets">
+                        <button class="btn-quick" onclick="setBet(2, 10)">10</button>
+                        <button class="btn-quick" onclick="setBet(2, 50)">50</button>
+                        <button class="btn-quick" onclick="setBet(2, 100)">100</button>
+                        <button class="btn-quick" onclick="setBet(2, 500)">500</button>
+                    </div>
+                </div>
+                <button class="btn-bet" id="betButton2" onclick="handleBet(2)">
+                    <span class="btn-text">Place Bet</span>
+                </button>
+                <div class="bet-info" id="betInfo2"></div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-panel">
+            <div class="stat-item">
+                <span class="stat-label">Total Bets:</span>
+                <span class="stat-value" id="totalBets">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Wins:</span>
+                <span class="stat-value" id="totalWins">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Total Wagered:</span>
+                <span class="stat-value" id="totalWagered">$0.00</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Net Profit:</span>
+                <span class="stat-value" id="netProfit">$0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
