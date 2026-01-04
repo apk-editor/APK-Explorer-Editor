@@ -1,0 +1,103 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: user <user@example.com>
+Date: Thu, 04 Jan 2026 00:00:00 +0000
+Subject: [PATCH] Add radio preference: decoded files in private or
+ Download/AEE_D
+
+---
+ .../main/java/com/apk/editor/utils/Utils.java   | 17 ++++++++++++++++-
+ app/src/main/res/values/arrays.xml              | 10 ++++++++++
+ app/src/main/res/values/strings.xml             |  5 +++++
+ app/src/main/res/xml/misc_preferences.xml       |  8 ++++++++
+ 4 files changed, 39 insertions(+), 1 deletion(-)
+
+diff --git a/app/src/main/java/com/apk/editor/utils/Utils.java b/app/src/main/java/com/apk/editor/utils/Utils.java
+index abc123..def456 100644
+--- a/app/src/main/java/com/apk/editor/utils/Utils.java
++++ b/app/src/main/java/com/apk/editor/utils/Utils.java
+@@ -4,6 +4,7 @@ import android.content.Context;
+ import android.content.SharedPreferences;
+ import android.os.Environment;
+ import android.preference.PreferenceManager;
++import java.io.File;
+ 
+ public class Utils {
+ 
+@@ -198,8 +199,22 @@ public class Utils {
+      * Return the root directory that will hold decoded APK projects.
+      */
+     public static File getAPKEEOutputPath(Context context) {
++        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
++        String location = prefs.getString("decode_location", "private");
++
++        if ("public".equals(location)) {
++            File download = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
++            File publicDir = new File(download, "AEE_D");
++            if (!publicDir.exists()) publicDir.mkdirs();
++            return publicDir;
++        }
++
++        /* original private path */
+         File externalFilesDir = context.getExternalFilesDir(null);
+-        return externalFilesDir != null ? externalFilesDir : context.getFilesDir();
++        if (externalFilesDir == null) {
++            return context.getFilesDir();
++        }
++        return externalFilesDir;
+     }
+ }
+ 
+diff --git a/app/src/main/res/values/arrays.xml b/app/src/main/res/values/arrays.xml
+index 1234567..2345678 100644
+--- a/app/src/main/res/values/arrays.xml
++++ b/app/src/main/res/values/arrays.xml
+@@ -8,4 +8,14 @@
+         <item>system</item>
+     </string-array>
+ 
++    <!-- Decode location choices -->
++    <string-array name="decode_location_entries">
++        <item>@string/decode_location_private</item>
++        <item>@string/decode_location_public</item>
++    </string-array>
++    <string-array name="decode_location_values">
++        <item>private</item>
++        <item>public</item>
++    </string-array>
++
+ </resources>
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index 1111111..2222222 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -85,6 +85,11 @@
+     <string name="fetch_apk_summary">Automatically fetch APK files from installed applications</string>
+     <string name="dark_theme_title">Dark theme</string>
+     <string name="dark_theme_summary">Use dark theme across the app</string>
++
++    <string name="decode_location_title">Decode storage location</string>
++    <string name="decode_location_summary">Choose where decoded projects are stored</string>
++    <string name="decode_location_private">Private app folder</string>
++    <string name="decode_location_public">Public Download/AEE_D</string>
+ 
+     <!-- categories -->
+     <string name="misc_category">Miscellaneous</string>
+diff --git a/app/src/main/res/xml/misc_preferences.xml b/app/src/main/res/xml/misc_preferences.xml
+index 1234567..2345678 100644
+--- a/app/src/main/res/xml/misc_preferences.xml
++++ b/app/src/main/res/xml/misc_preferences.xml
+@@ -18,4 +18,12 @@
+         android:summary="@string/dark_theme_summary"
+         android:defaultValue="false" />
+ 
++    <ListPreference
++        android:key="decode_location"
++        android:title="@string/decode_location_title"
++        android:summary="@string/decode_location_summary"
++        android:entries="@array/decode_location_entries"
++        android:entryValues="@array/decode_location_values"
++        android:defaultValue="private" />
++
+ </PreferenceScreen>
+-- 
+2.40.0
