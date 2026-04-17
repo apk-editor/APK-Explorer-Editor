@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
     android:id="@+id/card"
     android:layout_width="match_parent"
@@ -11,68 +10,76 @@
     app:cardCornerRadius="10dp"
     android:layout_margin="5dp" >
 
-        <FrameLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start|center_vertical"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="start|center"
             android:padding="5dp" >
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/icon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@null"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:background="@drawable/app_icon_bg"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_android_app"
-                    android:scaleType="fitCenter"
+                    android:layout_marginEnd="10dp"
+                    android:scaleType="centerCrop"
                     android:clickable="false" />
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="50sp"
-                    android:layout_marginEnd="50sp"
-                    android:orientation="vertical" >
+                    android:layout_gravity="center" >
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:focusable="false"
-                            android:textSize="17sp" />
-
-                        <FrameLayout
+                        <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center" >
+                            android:layout_marginEnd="55sp"
+                            android:orientation="vertical" >
 
                                 <com.google.android.material.textview.MaterialTextView
-                                    android:id="@+id/version"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="start"
-                                    android:visibility="gone"
-                                    android:textStyle="bold"
-                                    android:maxLines="1" />
-
-                                <com.google.android.material.textview.MaterialTextView
-                                    android:id="@+id/size"
+                                    android:id="@+id/title"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="end"
-                                    android:visibility="gone" />
-                        </FrameLayout>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-        </FrameLayout>
+                                    android:layout_gravity="center_vertical"
+                                    android:focusable="false"
+                                    android:textSize="17sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?attr/materialIconButtonFilledTonalStyle"
-            android:layout_gravity="center|end"
-            app:iconTint="?attr/colorPrimary"
-            app:icon="@drawable/ic_delete"
-            android:layout_margin="5dp" />
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center" >
+
+                                        <com.google.android.material.textview.MaterialTextView
+                                            android:id="@+id/version"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="start"
+                                            android:visibility="gone"
+                                            android:textStyle="bold"
+                                            android:maxLines="1" />
+
+                                        <com.google.android.material.textview.MaterialTextView
+                                            android:id="@+id/size"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="end"
+                                            android:visibility="gone" />
+                                </FrameLayout>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/delete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="?attr/materialIconButtonFilledTonalStyle"
+                            android:layout_gravity="center|end"
+                            app:iconTint="?attr/colorPrimary"
+                            app:icon="@drawable/ic_delete"
+                            android:layout_margin="5dp" />
+                </FrameLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 </com.google.android.material.card.MaterialCardView>

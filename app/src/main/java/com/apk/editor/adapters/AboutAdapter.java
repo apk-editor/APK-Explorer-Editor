@@ -48,6 +48,7 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
         holder.Title.setText(data.get(position).getTextOne());
         holder.Description.setText(data.get(position).getTextTwo());
         holder.mIcon.setImageDrawable(data.get(position).getIcon());
+        AppSettings.setSlideInAnimation(holder.Description, position);
         holder.mRVLayout.setOnClickListener(v -> {
             if (data.get(position).getTextThree() != null) {
                 sCommonUtils.launchUrl(data.get(position).getTextThree(), (Activity) v.getContext());

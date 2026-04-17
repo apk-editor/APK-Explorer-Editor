@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
+import com.apk.editor.utils.AppSettings;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class APKDetailsAdapter extends RecyclerView.Adapter<APKDetailsAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull APKDetailsAdapter.ViewHolder holder, int position) {
         holder.mText.setText(data.get(position));
+        AppSettings.setSlideInAnimation(holder.mText, position);
     }
 
     @Override

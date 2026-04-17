@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.axml.serializableItems.ResEntry;
 import com.apk.editor.R;
+import com.apk.editor.utils.AppSettings;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -36,6 +37,7 @@ public class StringViewAdapter extends RecyclerView.Adapter<StringViewAdapter.Vi
     public void onBindViewHolder(@NonNull StringViewAdapter.ViewHolder holder, int position) {
         holder.mTitle.setHint(data.get(position).getName());
         holder.mValue.setText(data.get(position).getValue());
+        AppSettings.setSlideInAnimation(holder.itemView, position);
     }
 
     @Override

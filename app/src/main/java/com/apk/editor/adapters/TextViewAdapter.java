@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -43,6 +44,7 @@ public class TextViewAdapter extends RecyclerView.Adapter<TextViewAdapter.ViewHo
         } else {
             holder.mText.setText(data.get(position));
         }
+        AppSettings.setSlideInAnimation(holder.itemView, position);
     }
 
     @Override

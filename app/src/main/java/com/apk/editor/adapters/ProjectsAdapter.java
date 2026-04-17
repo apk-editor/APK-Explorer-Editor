@@ -18,6 +18,7 @@ import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.apk.editor.utils.tasks.DeleteProject;
@@ -73,6 +74,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
             }
             holder.mTotalSize.setText(holder.mAppName.getContext().getString(R.string.last_modified, DateFormat.getDateTimeInstance()
                     .format(new File(data.get(position)).lastModified())));
+            AppSettings.setSlideInAnimation(holder.itemView, position);
             holder.mCard.setOnClickListener(v -> {
                 Intent explorer = new Intent(v.getContext(), APKExploreActivity.class);
                 if (sFileUtils.exist(new File(data.get(position), ".aeeBackup/appData"))) {

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
+import com.apk.editor.utils.AppSettings;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.HashMap;
@@ -43,6 +44,7 @@ public class ExploredInfoAdapter extends RecyclerView.Adapter<ExploredInfoAdapte
         } else {
             holder.mDescription.setVisibility(GONE);
         }
+        AppSettings.setSlideInAnimation(holder.mDescription, position);
     }
 
     @Override

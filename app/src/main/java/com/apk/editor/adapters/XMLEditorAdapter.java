@@ -17,6 +17,7 @@ import com.apk.axml.serializableItems.ResEntry;
 import com.apk.axml.serializableItems.XMLEntry;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
+import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.XMLEditor;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.apk.editor.utils.dialogs.ResEditorDialog;
@@ -71,6 +72,8 @@ public class XMLEditorAdapter extends RecyclerView.Adapter<XMLEditorAdapter.View
         } else {
             holder.mText.setVisibility(GONE);
         }
+
+        AppSettings.setSlideInAnimation(holder.mText, position);
 
         saveButton.setOnClickListener(v -> XMLEditor.encodeToBinaryXML(XMLEditor.xmlEntriesToXML(originalData, resourceMap), filePath, activity).execute());
     }

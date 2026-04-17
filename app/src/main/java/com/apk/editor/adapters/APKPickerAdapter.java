@@ -12,6 +12,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
+import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.SerializableItems.APKPickerItems;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textview.MaterialTextView;
@@ -50,6 +51,7 @@ public class APKPickerAdapter extends RecyclerView.Adapter<APKPickerAdapter.View
         holder.mSize.setVisibility(VISIBLE);
         holder.mCheckBox.setChecked(data.get(position).isSelected());
         holder.mCheckBox.setVisibility(VISIBLE);
+        AppSettings.setSlideInAnimation(holder.mCheckBox, position);
     }
 
     @Override

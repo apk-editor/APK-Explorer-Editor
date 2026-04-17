@@ -21,12 +21,12 @@
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/icon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@null"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:background="@drawable/app_icon_bg"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="10dp"
-                    android:scaleType="fitCenter" />
+                    android:scaleType="centerCrop" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                                 <androidx.appcompat.widget.LinearLayoutCompat
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginEnd="40sp"
+                                    android:layout_marginEnd="55sp"
                                     android:orientation="vertical">
 
                                         <com.google.android.material.textview.MaterialTextView

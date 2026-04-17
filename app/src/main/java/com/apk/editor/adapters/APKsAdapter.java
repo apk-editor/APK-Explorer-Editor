@@ -17,6 +17,7 @@ import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKPicker;
+import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.SerializableItems.APKItems;
 import com.apk.editor.utils.SerializableItems.APKPickerItems;
@@ -95,6 +96,8 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
             holder.mSize.setText(data.get(position).getSize(holder.mSize.getContext()));
             holder.mSize.setVisibility(View.VISIBLE);
             holder.mVersion.setVisibility(View.VISIBLE);
+
+            AppSettings.setSlideInAnimation(holder.itemView, position);
 
             holder.mCard.setOnClickListener(v -> {
                 if (APKEditorUtils.isFullVersion(v.getContext())) {

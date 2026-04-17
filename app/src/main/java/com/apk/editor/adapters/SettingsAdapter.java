@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
+import com.apk.editor.utils.AppSettings;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;

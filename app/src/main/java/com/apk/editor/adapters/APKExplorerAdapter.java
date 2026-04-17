@@ -24,6 +24,7 @@ import com.apk.editor.activities.TextViewActivity;
 import com.apk.editor.activities.XMLEditorActivity;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.dialogs.ResViewerDialog;
 import com.apk.editor.utils.tasks.DeleteFile;
@@ -113,6 +114,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
         holder.mTitle.setText(new File(data.get(position)).getName());
         holder.mDescription.setText(APKExplorer.getFormattedFileSize(new File(data.get(position))));
         holder.mDescription.setVisibility(View.VISIBLE);
+        AppSettings.setSlideInAnimation(holder.itemView, position);
     }
 
     private sSingleItemDialog longClickDialog(int position, Context context) {

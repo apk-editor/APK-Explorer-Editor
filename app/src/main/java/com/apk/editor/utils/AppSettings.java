@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 
 import com.apk.editor.MainActivity;
 import com.apk.editor.R;
@@ -513,6 +515,23 @@ public class AppSettings {
                 context.startActivity(intent);
             }
         }.show();
+    }
+
+    public static void setSlideInAnimation(final View viewToAnimate, int position) {
+        if (position > -1) {
+            viewToAnimate.setTranslationY(50f);
+            viewToAnimate.setAlpha(0f);
+
+            viewToAnimate.animate()
+                    .translationY(0f)
+                    .alpha(1f)
+                    .setDuration(150)
+                    .setInterpolator(new DecelerateInterpolator())
+                    .start();
+        } else {
+            viewToAnimate.setTranslationY(0f);
+            viewToAnimate.setAlpha(1f);
+        }
     }
 
     public static boolean isCustomKey(Context context) {
