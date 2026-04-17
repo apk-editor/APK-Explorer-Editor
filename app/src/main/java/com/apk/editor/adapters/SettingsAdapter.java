@@ -9,12 +9,11 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
-import com.apk.editor.utils.AppSettings;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
 
-import in.sunilpaulmathew.sCommon.CommonUtils.sSerializableItems;
+import com.apk.editor.utils.SerializableItems.SettingsItems;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 31, 2021
@@ -23,9 +22,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
 
     private static ClickListener clickListener;
 
-    private static ArrayList<sSerializableItems> data;
+    private static ArrayList<SettingsItems> data;
 
-    public SettingsAdapter(ArrayList<sSerializableItems> data) {
+    public SettingsAdapter(ArrayList<SettingsItems> data) {
         SettingsAdapter.data = data;
     }
 
@@ -38,9 +37,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull SettingsAdapter.ViewHolder holder, int position) {
-        holder.Title.setText(data.get(position).getTextOne());
-        if (data.get(position).getTextTwo() != null) {
-            holder.Description.setText(data.get(position).getTextTwo());
+        holder.Title.setText(data.get(position).getTitle());
+        if (data.get(position).getDescription() != null) {
+            holder.Description.setText(data.get(position).getDescription());
         } else {
             holder.Description.setVisibility(View.GONE);
         }

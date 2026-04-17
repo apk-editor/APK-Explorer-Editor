@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,7 +21,7 @@ import com.apk.editor.utils.menu.ExploreOptionsMenu;
 import java.util.ArrayList;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
-import in.sunilpaulmathew.sCommon.CommonUtils.sSerializableItems;
+import com.apk.editor.utils.SerializableItems.SettingsItems;
 import in.sunilpaulmathew.sCommon.Dialog.sSingleChoiceDialog;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
@@ -30,7 +31,7 @@ import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
  */
 public class SettingsActivity extends BaseActivity {
 
-    private final ArrayList<sSerializableItems> mData = new ArrayList<>();
+    private final ArrayList<SettingsItems> mData = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,25 +46,50 @@ public class SettingsActivity extends BaseActivity {
         SettingsAdapter mRecycleViewAdapter = new SettingsAdapter(mData);
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
-        mData.add(new sSerializableItems(null, getString(R.string.user_interface), null, null));
-        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_theme, this), getString(R.string.app_theme), sThemeUtils.getAppTheme(this), null));
-        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_translate, this), getString(R.string.language), AppSettings.getLanguageDescription(this), null));
-        mData.add(new sSerializableItems(null, getString(R.string.settings_general), null, null));
-        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, this), getString(R.string.explore_options), AppSettings.getExploreOptions(this), null));
-        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_projects, this), getString(R.string.project_exist_action), AppSettings.getProjectExistAction(this), null));
+        mData.add(new SettingsItems(null, getString(R.string.user_interface), null));
+        mData.add(new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_theme, this), getString(R.string.app_theme), sThemeUtils.getAppTheme(this)));
+        mData.add(new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_translate, this), getString(R.string.language), AppSettings.getLanguageDescription(this)));
+        mData.add(new SettingsItems(null, getString(R.string.settings_general), null));
+        mData.add(new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_explore, this), getString(R.string.explore_options), AppSettings.getExploreOptions(this)));
+        mData.add(new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_projects, this), getString(R.string.project_exist_action), AppSettings.getProjectExistAction(this)));
         if (APKEditorUtils.isFullVersion(this)) {
-            mData.add(new sSerializableItems(null, getString(R.string.signing_title), null, null));
-            mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_android_app, this), getString(R.string.export_options), AppSettings.getAPKs(this), null));
-            mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_installer, this), getString(R.string.installer_action), AppSettings.getInstallerAction(this), null));
-            mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_key, this), getString(R.string.sign_apk_with), AppSettings.getAPKSign(this), null));
+            mData.add(new SettingsItems(null, getString(R.string.signing_title), null));
+            mData.add(new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_android_app, this), getString(R.string.export_options), AppSettings.getAPKs(this)));
+            mData.add(new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_installer, this), getString(R.string.installer_action), AppSettings.getInstallerAction(this)));
+            mData.add(new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_key, this), getString(R.string.sign_apk_with), AppSettings.getAPKSign(this)));
         }
-        mData.add(new sSerializableItems(null, getString(R.string.settings_misc), null, null));
-        mData.add(new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_delete, this), getString(R.string.clear_cache), getString(R.string.clear_cache_summary), null));
+        mData.add(new SettingsItems(null, getString(R.string.settings_misc), null));
+        mData.add(new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_delete, this), getString(R.string.clear_cache), getString(R.string.clear_cache_summary)));
 
         mRecycleViewAdapter.setOnItemClickListener((position, v) -> {
-            if (mData.get(position).getTextTwo() != null) {
+            if (mData.get(position).getDescription() != null) {
                 if (position == 1) {
-                    sThemeUtils.setAppTheme(this);
+                    new sSingleChoiceDialog(R.drawable.ic_theme, getString(R.string.app_theme),
+                            AppSettings.getAppThemeMenu(this), AppSettings.getAppThemePosition(this), this) {
+
+                        @Override
+                        public void onItemSelected(int itemPosition) {
+                            if (itemPosition == AppSettings.getAppThemePosition(SettingsActivity.this)) {
+                                return;
+                            }
+                            switch (itemPosition) {
+                                case 2:
+                                    sCommonUtils.saveInt("appTheme", 2, SettingsActivity.this);
+                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                                    break;
+                                case 1:
+                                    sCommonUtils.saveInt("appTheme", 1, SettingsActivity.this);
+                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                                    break;
+                                default:
+                                    sCommonUtils.saveInt("appTheme", 0, SettingsActivity.this);
+                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                                    break;
+                            }
+                            mData.get(position).setDescription(sThemeUtils.getAppTheme(SettingsActivity.this));
+                            mRecycleViewAdapter.notifyItemChanged(position);
+                        }
+                    }.show();
                 } else if (position == 2) {
                     AppSettings.setLanguage(this);
                 } else if (position == 4) {
@@ -74,19 +100,19 @@ public class SettingsActivity extends BaseActivity {
                         public void onItemSelected(int itemPosition) {
                             if (itemPosition == 0) {
                                 sCommonUtils.saveString("decompileSetting", getString(R.string.explore_options_simple), SettingsActivity.this);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, SettingsActivity.this), getString(R.string.explore_options), AppSettings.getExploreOptions(SettingsActivity.this), null));
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_explore, SettingsActivity.this), getString(R.string.explore_options), AppSettings.getExploreOptions(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             } else if (itemPosition == 1) {
                                 sCommonUtils.saveString("decompileSetting", getString(R.string.explore_options_full), SettingsActivity.this);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, SettingsActivity.this), getString(R.string.explore_options), AppSettings.getExploreOptions(SettingsActivity.this), null));
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_explore, SettingsActivity.this), getString(R.string.explore_options), AppSettings.getExploreOptions(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             } else if (APKEditorUtils.isFullVersion(SettingsActivity.this) && itemPosition == 2) {
                                 sCommonUtils.saveString("decompileSetting", getString(R.string.explore_options_quick), SettingsActivity.this);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, SettingsActivity.this), getString(R.string.explore_options), AppSettings.getExploreOptions(SettingsActivity.this), null));
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_explore, SettingsActivity.this), getString(R.string.explore_options), AppSettings.getExploreOptions(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             } else {
                                 sCommonUtils.saveString("decompileSetting", null, SettingsActivity.this);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_explore, SettingsActivity.this), getString(R.string.explore_options), AppSettings.getExploreOptions(SettingsActivity.this), null));
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_explore, SettingsActivity.this), getString(R.string.explore_options), AppSettings.getExploreOptions(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             }
                         }
@@ -99,15 +125,15 @@ public class SettingsActivity extends BaseActivity {
                         public void onItemSelected(int itemPosition) {
                             if (itemPosition == 0) {
                                 sCommonUtils.saveString("projectAction", getString(R.string.save), SettingsActivity.this);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_projects, SettingsActivity.this), getString(R.string.project_exist_action), AppSettings.getProjectExistAction(SettingsActivity.this), null));
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_projects, SettingsActivity.this), getString(R.string.project_exist_action), AppSettings.getProjectExistAction(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             } else if (itemPosition == 1) {
                                 sCommonUtils.saveString("projectAction", getString(R.string.delete), SettingsActivity.this);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_projects, SettingsActivity.this), getString(R.string.project_exist_action), AppSettings.getProjectExistAction(SettingsActivity.this), null));
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_projects, SettingsActivity.this), getString(R.string.project_exist_action), AppSettings.getProjectExistAction(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             } else {
                                 sCommonUtils.saveString("projectAction", null, SettingsActivity.this);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(R.drawable.ic_projects, SettingsActivity.this), getString(R.string.project_exist_action), AppSettings.getProjectExistAction(SettingsActivity.this), null));
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(R.drawable.ic_projects, SettingsActivity.this), getString(R.string.project_exist_action), AppSettings.getProjectExistAction(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             }
                         }
@@ -120,21 +146,21 @@ public class SettingsActivity extends BaseActivity {
                         public void onItemSelected(int itemPosition) {
                             if (itemPosition == 0) {
                                 sCommonUtils.saveString("exportAPKs", getString(R.string.export_storage), SettingsActivity.this);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(
                                         R.drawable.ic_android_app, SettingsActivity.this), getString(R.string.export_options), AppSettings
-                                        .getAPKs(SettingsActivity.this), null));
+                                        .getAPKs(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             } else if (itemPosition == 1) {
                                 sCommonUtils.saveString("exportAPKs", getString(R.string.export_resign), SettingsActivity.this);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(
                                         R.drawable.ic_android_app, SettingsActivity.this), getString(R.string.export_options), AppSettings
-                                        .getAPKs(SettingsActivity.this), null));
+                                        .getAPKs(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             } else {
                                 sCommonUtils.saveString("exportAPKs", null, SettingsActivity.this);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(
                                         R.drawable.ic_android_app, SettingsActivity.this), getString(R.string.export_options), AppSettings
-                                        .getAPKs(SettingsActivity.this), null));
+                                        .getAPKs(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             }
                         }
@@ -147,21 +173,21 @@ public class SettingsActivity extends BaseActivity {
                         public void onItemSelected(int itemPosition) {
                             if (itemPosition == 0) {
                                 sCommonUtils.saveString("installerAction", getString(R.string.install), SettingsActivity.this);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(
                                         R.drawable.ic_installer, SettingsActivity.this), getString(R.string.installer_action), AppSettings
-                                        .getInstallerAction(SettingsActivity.this), null));
+                                        .getInstallerAction(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             } else if (itemPosition == 1) {
                                 sCommonUtils.saveString("installerAction", getString(R.string.install_resign), SettingsActivity.this);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(
                                         R.drawable.ic_installer, SettingsActivity.this), getString(R.string.installer_action), AppSettings
-                                        .getInstallerAction(SettingsActivity.this), null));
+                                        .getInstallerAction(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             } else {
                                 sCommonUtils.saveString("installerAction", null, SettingsActivity.this);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(
                                         R.drawable.ic_installer, SettingsActivity.this), getString(R.string.installer_action), AppSettings
-                                        .getInstallerAction(SettingsActivity.this), null));
+                                        .getInstallerAction(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             }
                         }
@@ -183,17 +209,17 @@ public class SettingsActivity extends BaseActivity {
                                     if (sFileUtils.exist(APKSigner.getSigningCredentials(SettingsActivity.this))) {
                                         sFileUtils.delete(APKSigner.getSigningCredentials(SettingsActivity.this));
                                     }
-                                    mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(
+                                    mData.set(position, new SettingsItems(sCommonUtils.getDrawable(
                                             R.drawable.ic_key, SettingsActivity.this), getString(R.string.sign_apk_with), AppSettings
-                                            .getAPKSign(SettingsActivity.this), null));
+                                            .getAPKSign(SettingsActivity.this)));
                                     mRecycleViewAdapter.notifyItemChanged(position);
                                 }
                             } else {
                                 Intent signing = new Intent(SettingsActivity.this, APKSignActivity.class);
                                 startActivity(signing);
-                                mData.set(position, new sSerializableItems(sCommonUtils.getDrawable(
+                                mData.set(position, new SettingsItems(sCommonUtils.getDrawable(
                                         R.drawable.ic_key, SettingsActivity.this), getString(R.string.sign_apk_with), AppSettings
-                                        .getAPKSign(SettingsActivity.this), null));
+                                        .getAPKSign(SettingsActivity.this)));
                                 mRecycleViewAdapter.notifyItemChanged(position);
                             }
                         }

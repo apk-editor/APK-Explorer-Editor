@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+
 import in.sunilpaulmathew.sCommon.CommonUtils.sSerializableItems;
 import in.sunilpaulmathew.sCommon.Dialog.sSingleChoiceDialog;
 
@@ -116,6 +117,10 @@ public class AppSettings {
             }
         }
         return 2;
+    }
+
+    public static int getAppThemePosition(Context context) {
+        return sCommonUtils.getInt("appTheme", 0, context);
     }
 
     public static List<sSerializableItems> getCredits(Context context) {
@@ -300,6 +305,14 @@ public class AppSettings {
                 context.getString(R.string.language_el),
                 context.getString(R.string.language_pt, "PT"),
                 context.getString(R.string.language_pt, "BR")
+        };
+    }
+
+    public static String[] getAppThemeMenu(Context context) {
+        return new String[] {
+                context.getString(R.string.app_theme_auto),
+                context.getString(R.string.app_theme_dark),
+                context.getString(R.string.app_theme_light)
         };
     }
 

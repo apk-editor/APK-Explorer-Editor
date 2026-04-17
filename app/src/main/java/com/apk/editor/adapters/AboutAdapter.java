@@ -21,6 +21,7 @@ import com.google.android.material.textview.MaterialTextView;
 import java.util.List;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+
 import in.sunilpaulmathew.sCommon.CommonUtils.sSerializableItems;
 import in.sunilpaulmathew.sCommon.Credits.sCreditsUtils;
 import in.sunilpaulmathew.sCommon.TranslatorUtils.sTranslatorUtils;
