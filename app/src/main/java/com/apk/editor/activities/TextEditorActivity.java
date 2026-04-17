@@ -7,7 +7,6 @@ import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.widget.ContentLoadingProgressBar;
 
@@ -40,7 +39,7 @@ import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 25, 2021
  */
-public class TextEditorActivity extends AppCompatActivity {
+public class TextEditorActivity extends BaseActivity {
 
     private ContentLoadingProgressBar mProgressLayout;
     private MaterialAutoCompleteTextView mText;
@@ -50,7 +49,7 @@ public class TextEditorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_texteditor);
+        setContentView(R.layout.activity_texteditor, R.id.layout_root);
 
         AppCompatImageButton mBack = findViewById(R.id.back);
         MaterialButton mSave = findViewById(R.id.save);

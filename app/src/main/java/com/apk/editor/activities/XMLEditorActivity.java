@@ -18,7 +18,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -56,7 +55,7 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on October 27, 2024
  */
-public class XMLEditorActivity extends AppCompatActivity {
+public class XMLEditorActivity extends BaseActivity {
 
     private List<ResEntry> mResourceMap;
     private List<XMLEntry> mData = null;
@@ -71,7 +70,7 @@ public class XMLEditorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_xmleditor);
+        setContentView(R.layout.activity_xmleditor, R.id.layout_root);
 
         mProgress = findViewById(R.id.progress);
         MaterialAutoCompleteTextView mSearch = findViewById(R.id.search);

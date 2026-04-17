@@ -42,7 +42,7 @@ public class AboutFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                AppSettings.navigateToFragment(requireActivity(), R.id.nav_apks);
+                AppSettings.navigateToFragment(requireActivity(), 2);
             }
         });
 

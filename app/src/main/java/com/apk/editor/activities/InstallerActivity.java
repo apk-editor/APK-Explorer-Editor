@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.apk.editor.R;
@@ -31,7 +30,7 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
-public class InstallerActivity extends AppCompatActivity {
+public class InstallerActivity extends BaseActivity {
 
     private final Handler mHandler = new Handler();
     private Runnable mRunnable;
@@ -44,7 +43,7 @@ public class InstallerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_installer);
+        setContentView(R.layout.activity_installer, R.id.layout_root);
 
         AppCompatImageButton mIcon = findViewById(R.id.icon);
         ProgressBar mProgress = findViewById(R.id.progress);

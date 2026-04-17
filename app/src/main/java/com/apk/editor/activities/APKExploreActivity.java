@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.apk.editor.R;
@@ -45,8 +49,17 @@ public class APKExploreActivity extends AppCompatActivity {
         AppCompatImageButton mBuild = findViewById(R.id.build);
         AppCompatImageView mApplicationIcon = findViewById(R.id.app_image);
         BottomNavigationView mBottomNav = findViewById(R.id.bottom_navigation);
+        FrameLayout mFragmentContainer = findViewById(R.id.fragment_container);
         MaterialTextView mApplicationName = findViewById(R.id.app_title);
         MaterialTextView mPackageName = findViewById(R.id.package_id);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_root), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            view.setPadding(0, systemBars.top, 0, 0);
+
+            return insets;
+        });
 
         String mBackupFilePath = getIntent().getStringExtra(BACKUP_PATH_INTENT);
         File mRootFile = new File(Objects.requireNonNull(mBackupFilePath).replace("/.aeeBackup/appData", ""));
@@ -121,6 +134,8 @@ public class APKExploreActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     getExploreInfoFragment(mBackupFilePath)).commit();
         }
+
+        mBottomNav.post(() -> mFragmentContainer.setPadding(0, 0, 0, mBottomNav.getHeight()));
     }
 
     private Fragment getAPKExplorerFragment(String backupFilePath, String packageName) {

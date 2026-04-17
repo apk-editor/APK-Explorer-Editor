@@ -10,7 +10,6 @@ import android.widget.ProgressBar;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 
@@ -29,7 +28,7 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on Feb. 21, 2025
  */
-public class BuildingActivity extends AppCompatActivity {
+public class BuildingActivity extends BaseActivity {
 
     private final Handler mHandler = new Handler();
     private Runnable mRunnable;
@@ -39,7 +38,7 @@ public class BuildingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_building);
+        setContentView(R.layout.activity_building, R.id.layout_root);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 

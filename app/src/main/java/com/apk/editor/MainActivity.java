@@ -1,10 +1,14 @@
 package com.apk.editor;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.apk.editor.activities.SettingsActivity;
@@ -18,7 +22,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 
 import in.sunilpaulmathew.crashreporter.Utils.CrashReporter;
-import in.sunilpaulmathew.sCommon.Adapters.sPagerAdapter;
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
@@ -29,19 +32,27 @@ public class MainActivity extends AppCompatActivity {
 
     private Fragment mFragment;
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         // Initialize App Theme & Language
         sThemeUtils.initializeAppTheme(this);
         AppSettings.initializeAppLanguage(this);
-        setContentView(R.layout.activity_main);
 
         new CrashReporter("E-Mail: apkeditor@protonmail.com", this).initialize();
 
         BottomNavigationView mBottomNav = findViewById(R.id.bottom_navigation);
+        FrameLayout mFragmentContainer = findViewById(R.id.fragment_container);
         MaterialButton mSettings = findViewById(R.id.settings_menu);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_root), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            view.setPadding(0, systemBars.top, 0, 0);
+
+            return insets;
+        });
 
         if (!sCommonUtils.getBoolean("welcome_message", false, this)) {
             Intent intent = new Intent(this, StartActivity.class);
@@ -50,26 +61,25 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        sPagerAdapter adapter = new sPagerAdapter(getSupportFragmentManager());
-
-        adapter.AddFragment(new ApplicationsFragment(), null);
-        adapter.AddFragment(new ProjectsFragment(), null);
-        adapter.AddFragment(new APKsFragment(), null);
-        adapter.AddFragment(new AboutFragment(), null);
+        Menu menu = mBottomNav.getMenu();
+        menu.add(Menu.NONE, 0, Menu.NONE, null).setIcon(R.drawable.ic_apps).setTitle(R.string.apps);
+        menu.add(Menu.NONE, 1, Menu.NONE, null).setIcon(R.drawable.ic_projects).setTitle(R.string.projects);
+        menu.add(Menu.NONE, 2, Menu.NONE, null).setIcon(R.drawable.ic_android).setTitle(R.string.apks);
+        menu.add(Menu.NONE, 3, Menu.NONE, null).setIcon(R.drawable.ic_about).setTitle(R.string.about);
 
         mBottomNav.setOnItemSelectedListener(
                 menuItem -> {
                     switch (menuItem.getItemId()) {
-                        case R.id.nav_apps:
+                        case 0:
                             mFragment = new ApplicationsFragment();
                             break;
-                        case R.id.nav_projects:
+                        case 1:
                             mFragment = new ProjectsFragment();
                             break;
-                        case R.id.nav_apks:
+                        case 2:
                             mFragment = new APKsFragment();
                             break;
-                        case R.id.nav_about:
+                        case 3:
                             mFragment = new AboutFragment();
                             break;
                     }
@@ -83,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new ApplicationsFragment()).commit();
         }
+
+        mBottomNav.post(() -> mFragmentContainer.setPadding(0, 0, 0, mBottomNav.getHeight()));
 
         mSettings.setOnClickListener(v -> {
             Intent settings = new Intent(this, SettingsActivity.class);

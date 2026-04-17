@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,7 +52,7 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 11, 2025
  */
-public class QuickEditsActivity extends AppCompatActivity {
+public class QuickEditsActivity extends BaseActivity {
 
     private static List<QuickEditsItems> mData;
     private static String mAPKPath, mAppName, mMinSDK, mPackageName, mVersionName, mVersionCode;
@@ -65,7 +64,7 @@ public class QuickEditsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quickedits);
+        setContentView(R.layout.activity_quickedits, R.id.layout_root);
 
         AppCompatImageButton mBack = findViewById(R.id.back);
         AppCompatImageButton mBuild = findViewById(R.id.build);

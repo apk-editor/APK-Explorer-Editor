@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.LinearLayoutCompat;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.documentfile.provider.DocumentFile;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.apk.axml.APKParser;
 import com.apk.editor.R;
@@ -28,6 +28,7 @@ import com.apk.editor.utils.menu.ExploreOptionsMenu;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
@@ -43,27 +44,28 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 27, 2021
  */
-public class APKInstallerActivity extends AppCompatActivity {    private AppCompatImageView mAppIcon;
+public class APKInstallerActivity extends BaseActivity {
+
+    private AppCompatImageView mAppIcon;
     private APKParser mAPKParser;
     private File mFile = null;
-    private LinearLayoutCompat mMainLayout, mIconsLayout;
+    private ConstraintLayout mMainLayout;
     private MaterialButton mExploreIcon;
     private MaterialButton mCancel, mInstall;
     private MaterialTextView mAppName, mPackageID;
     private TabLayout mTabLayout;
-    private ViewPager mViewPager;
+    private ViewPager2 mViewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_apkdetails);
+        setContentView(R.layout.activity_apkdetails, R.id.layout_root);
 
         mExploreIcon = findViewById(R.id.explore);
         mAppIcon = findViewById(R.id.app_image);
         mAppName = findViewById(R.id.app_title);
         mPackageID = findViewById(R.id.package_id);
-        mMainLayout = findViewById(R.id.main_layout);
-        mIconsLayout = findViewById(R.id.icons_layout);
+        mMainLayout = findViewById(R.id.layout_root);
         mInstall = findViewById(R.id.install);
         mCancel = findViewById(R.id.cancel);
         mTabLayout = findViewById(R.id.tab_Layout);
@@ -71,16 +73,17 @@ public class APKInstallerActivity extends AppCompatActivity {    private AppComp
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.containsKey("apkFileUri") && bundle.getString("apkFileUri") != null) {
-            manageInstallation(Uri.parse(bundle.getString("apkFileUri")), null, this).execute();
+            manageInstallation(Uri.parse(bundle.getString("apkFileUri")), null).execute();
         } else if (bundle != null && bundle.containsKey("apkFilePath") && bundle.getString("apkFilePath") != null) {
-            manageInstallation(null, bundle.getString("apkFilePath"), this).execute();
+            manageInstallation(null, bundle.getString("apkFilePath")).execute();
         } else if (getIntent().getData() != null) {
-            manageInstallation(getIntent().getData(), null, this).execute();
+            manageInstallation(getIntent().getData(), null).execute();
         }
     }
 
-    private sExecutor manageInstallation(Uri uri, String filePath, Activity activity) {
+    private sExecutor manageInstallation(Uri uri, String filePath) {
         return new sExecutor() {
+            private final Activity activity = APKInstallerActivity.this;
             private ProgressDialog mProgressDialog;
 
             @Override
@@ -120,7 +123,7 @@ public class APKInstallerActivity extends AppCompatActivity {    private AppComp
                 }
                 if (mFile.exists()) {
                     if (mAPKParser.isParsed()) {
-                        loadAPKDetails(activity);
+                        loadAPKDetails();
                         if (sPackageUtils.isPackageInstalled(mAPKParser.getPackageName(), activity)) {
                             mInstall.setText(getString(R.string.update));
                         }
@@ -141,13 +144,13 @@ public class APKInstallerActivity extends AppCompatActivity {    private AppComp
         };
     }
 
-    private void loadAPKDetails(Activity activity) {
-        sPagerAdapter adapter = new sPagerAdapter(getSupportFragmentManager());
+    private void loadAPKDetails() {
+        sPagerAdapter adapter = new sPagerAdapter(this);
         try {
-            if (sPackageUtils.isPackageInstalled(mAPKParser.getPackageName(), activity)) {
-                mAppName.setText(sPackageUtils.getAppName(mAPKParser.getPackageName(), activity));
+            if (sPackageUtils.isPackageInstalled(mAPKParser.getPackageName(), this)) {
+                mAppName.setText(sPackageUtils.getAppName(mAPKParser.getPackageName(), this));
                 mPackageID.setText(mAPKParser.getPackageName());
-                mAppIcon.setImageDrawable(sPackageUtils.getAppIcon(mAPKParser.getPackageName(), activity));
+                mAppIcon.setImageDrawable(sPackageUtils.getAppIcon(mAPKParser.getPackageName(), this));
                 mPackageID.setVisibility(View.VISIBLE);
             } else {
                 mAppName.setText(mFile.getName().replace(".apk", ""));
@@ -156,31 +159,33 @@ public class APKInstallerActivity extends AppCompatActivity {    private AppComp
                 mPackageID.setVisibility(View.VISIBLE);
             }
 
-            adapter.AddFragment(new APKDetailsFragment(), getString(R.string.details));
+            adapter.addFragment(new APKDetailsFragment(), getString(R.string.details));
             if (mAPKParser.getPermissions() != null) {
-                adapter.AddFragment(new PermissionsFragment(), getString(R.string.permissions));
+                adapter.addFragment(new PermissionsFragment(), getString(R.string.permissions));
             }
             if (mAPKParser.getManifest() != null) {
-                adapter.AddFragment(new ManifestFragment(), getString(R.string.manifest));
+                adapter.addFragment(new ManifestFragment(), getString(R.string.manifest));
             }
             if (mAPKParser.getCertificate() != null) {
-                adapter.AddFragment(new CertificateFragment(), getString(R.string.certificate));
+                adapter.addFragment(new CertificateFragment(), getString(R.string.certificate));
             }
         } catch (Exception ignored) {}
 
         mViewPager.setAdapter(adapter);
-        mTabLayout.setupWithViewPager(mViewPager);
+        new TabLayoutMediator(mTabLayout, mViewPager,
+                (tab, position) -> tab.setText(adapter.getPageTitle(position))
+        ).attach();
+
         mMainLayout.setVisibility(View.VISIBLE);
-        mIconsLayout.setVisibility(View.VISIBLE);
 
         mCancel.setOnClickListener(v -> APKExplorer.setCancelIntent(this));
         mInstall.setOnClickListener(v -> {
             List<String> appList = new ArrayList<>();
             appList.add(mFile.getAbsolutePath());
-            handleAPKs(true, appList, activity);
+            handleAPKs(true, appList, this);
         });
 
-        mExploreIcon.setOnClickListener(v -> ExploreOptionsMenu.getMenu(mPackageID.getText().toString().trim(), mFile, null, true, activity));
+        mExploreIcon.setOnClickListener(v -> ExploreOptionsMenu.getMenu(mPackageID.getText().toString().trim(), mFile, null, true, this));
     }
 
 }

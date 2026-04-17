@@ -1,108 +1,113 @@
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/layout_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    android:padding="16dp" >
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/heading"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             style="@style/AppTheme.Title"
-            android:gravity="center"
-            android:padding="10dp" />
+            android:gravity="start" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:layout_margin="15dp"
-            android:gravity="center" >
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/icon"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/title"
+            android:background="@null" />
 
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@null"
-                    android:layout_gravity="center_vertical"
-                    android:scaleType="fitCenter"
-                    android:layout_marginEnd="10dp" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/progress"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textStyle="bold"
+            android:textSize="18sp" />
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical" >
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            app:layout_constraintBottom_toTopOf="@+id/status"
+            app:layout_constraintStart_toStartOf="@+id/title"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:indeterminate="true" />
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:textColor="?attr/colorPrimary"
-                            android:textSize="17sp" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/buttons_container"
+            app:layout_constraintTop_toBottomOf="@+id/progress"
+            app:layout_constraintStart_toStartOf="@+id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="4dp"
+            android:textSize="14sp" />
 
-                        <ProgressBar
-                            android:id="@+id/progress"
-                            android:layout_width="match_parent"
-                            android:layout_height="20dp"
-                            style="?android:attr/progressBarStyleHorizontal"
-                            android:progressBackgroundTint="?attr/colorPrimary"
-                            android:layout_gravity="center"
-                            android:indeterminate="true" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/status"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical" />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/buttons_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            android:layout_margin="25dp"
-            android:gravity="center" >
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="5dp" >
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/open"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="?attr/materialIconButtonFilledTonalStyle"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/cancel"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:textColor="?attr/colorPrimary"
                     app:iconTint="?attr/colorPrimary"
+                    android:layout_marginEnd="8dp"
                     android:textStyle="bold|italic"
-                    android:layout_margin="25dp"
                     app:icon="@drawable/ic_open"
                     android:text="@string/open"
-                    android:paddingStart="10sp"
                     android:visibility="gone"
-                    android:paddingEnd="10sp"
-                    app:iconGravity="start"
                     android:textSize="17sp"
+                    android:padding="15sp"
                     app:iconPadding="10sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/cancel"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="?attr/materialIconButtonFilledTonalStyle"
+                    app:layout_constraintStart_toEndOf="@+id/open"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:textColor="?attr/colorPrimary"
                     app:iconTint="?attr/colorPrimary"
+                    android:layout_marginStart="8dp"
                     android:textStyle="bold|italic"
                     app:icon="@drawable/ic_cancel"
                     android:text="@string/cancel"
-                    android:layout_margin="25dp"
-                    android:paddingStart="10sp"
                     android:visibility="gone"
-                    android:paddingEnd="10sp"
                     android:textSize="17sp"
-                    app:iconPadding="10sp"
-                    app:iconGravity="end" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-</RelativeLayout>
+                    android:padding="15sp"
+                    app:iconPadding="10sp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,13 +1,13 @@
 [versions]
-apksigVersion = "8.13.0"
-aXMLVersion = "2e22f6c11f"
+apksigVersion = "9.1.1"
+aXMLVersion = "394e0bd599"
 baksmaliVersion = "2.5.2"
 crashreporterVersion = "6b6c74abaa"
 documentfileVersion = "1.1.0"
-sCommonVersion = "d91cc0e601"
-agpVersion = "8.13.0"
+sCommonVersion = "d532608ca4"
+agpVersion = "9.1.1"
 materialVersion = "1.13.0"
-zip4jVersion = "2.11.5"
+zip4jVersion = "2.11.6"
 
 [libraries]
 apksig = { module = "com.android.tools.build:apksig", version.ref = "apksigVersion" }

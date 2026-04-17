@@ -1,8 +1,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/layout_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent" >
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -14,14 +15,17 @@
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="55dp" />
+            android:layout_height="match_parent" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        app:labelVisibilityMode="unlabeled"
+        android:layout_height="wrap_content"
+        app:itemTextAppearanceActive="?attr/colorPrimary"
+        app:itemActiveIndicatorStyle="?attr/colorPrimary"
         android:layout_gravity="bottom|center"
-        android:layout_height="55dp" />
+        app:labelVisibilityMode="unlabeled"
+        app:itemTextColor="@null"
+        app:itemIconTint="@null" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

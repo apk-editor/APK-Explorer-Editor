@@ -7,7 +7,6 @@ import android.view.View;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +28,7 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
-public class TextViewActivity extends AppCompatActivity {
+public class TextViewActivity extends BaseActivity {
 
     private ContentLoadingProgressBar mProgressLayout;
     private RecyclerView mRecyclerView;
@@ -39,7 +38,7 @@ public class TextViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_textview);
+        setContentView(R.layout.activity_textview, R.id.layout_root);
 
         AppCompatImageButton mBack = findViewById(R.id.back);
         MaterialButton mSearch = findViewById(R.id.search);

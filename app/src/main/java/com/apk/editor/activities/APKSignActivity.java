@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.android.apksig.internal.util.ByteStreams;
@@ -30,7 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +55,7 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 19, 2021
  */
-public class APKSignActivity extends AppCompatActivity {
+public class APKSignActivity extends BaseActivity {
 
     private MaterialButton mClearKey;
     private MaterialTextView mKeySummary, mText;
@@ -67,7 +65,7 @@ public class APKSignActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_apksign);
+        setContentView(R.layout.activity_apksign, R.id.layout_root);
 
         AppCompatImageButton mBack = findViewById(R.id.back);
         mClearKey = findViewById(R.id.clear_key);

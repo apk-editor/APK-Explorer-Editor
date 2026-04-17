@@ -1,98 +1,93 @@
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:visibility="gone" >
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/main_layout"
-        android:layout_width="match_parent"
+    <include
+        android:id="@+id/title_include"
+        layout="@layout/app_title_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/explore"
+        style="?attr/materialIconButtonFilledTonalStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone" >
+        app:layout_constraintBottom_toBottomOf="@+id/tab_Layout"
+        app:layout_constraintTop_toTopOf="@+id/tab_Layout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        app:iconTint="?attr/colorPrimary"
+        app:icon="@drawable/ic_explore" />
 
-        <include layout="@layout/app_title_layout" />
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_Layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/explore"
+        app:layout_constraintTop_toBottomOf="@id/title_include"
+        app:tabMode="scrollable"
+        app:tabGravity="fill" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" >
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/icons_layout"
+        app:layout_constraintTop_toBottomOf="@id/tab_Layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:gravity="center" >
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/explore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="?attr/materialIconButtonFilledTonalStyle"
-                    app:iconTint="?attr/colorPrimary"
-                    android:layout_gravity="center"
-                    app:icon="@drawable/ic_explore"
-                    android:layout_marginStart="10dp" />
-
-                <com.google.android.material.tabs.TabLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabGravity="center"
-                    android:layout_gravity="center"
-                    app:tabMode="scrollable"
-                    android:textAlignment="center"
-                    android:id="@+id/tab_Layout" />
-            </androidx.appcompat.widget.LinearLayoutCompat>
-        </FrameLayout>
-
-        <androidx.viewpager.widget.ViewPager
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/view_pager" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/icons_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:gravity="center" >
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="5dp" >
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="?attr/materialIconButtonFilledTonalStyle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/install"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
             android:textColor="?attr/colorPrimary"
             app:iconTint="?attr/colorPrimary"
             android:textStyle="bold|italic"
+            android:layout_marginEnd="8dp"
             app:icon="@drawable/ic_cancel"
             android:text="@string/cancel"
-            android:layout_margin="25dp"
-            android:paddingStart="10sp"
-            android:paddingEnd="10sp"
-            app:iconGravity="start"
             android:textSize="17sp"
+            android:padding="15sp"
             app:iconPadding="10sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/install"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="?attr/materialIconButtonFilledTonalStyle"
+            app:layout_constraintStart_toEndOf="@+id/cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:textColor="?attr/colorPrimary"
             app:iconTint="?attr/colorPrimary"
             app:icon="@drawable/ic_installer"
+            android:layout_marginStart="8dp"
             android:textStyle="bold|italic"
             android:text="@string/install"
-            android:layout_margin="25dp"
-            android:paddingStart="10sp"
-            android:paddingEnd="10sp"
             android:textSize="17sp"
+            android:padding="15sp"
             app:iconPadding="10sp"
             app:iconGravity="end" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -174,7 +174,7 @@ public class APKsFragment extends Fragment {
                     mSearchWord.setVisibility(View.GONE);
                     return;
                 }
-                AppSettings.navigateToFragment(requireActivity(), R.id.nav_projects);
+                AppSettings.navigateToFragment(requireActivity(), 1);
             }
         });
 

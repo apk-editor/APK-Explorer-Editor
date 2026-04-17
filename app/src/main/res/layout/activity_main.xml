@@ -1,4 +1,5 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/layout_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
@@ -12,13 +13,12 @@
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="75dp" />
+            android:layout_height="match_parent" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:clickable="false" >
 
@@ -26,11 +26,14 @@
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:itemTextAppearanceActive="?attr/colorPrimary"
+            app:itemActiveIndicatorStyle="?attr/colorPrimary"
+            android:layout_gravity="bottom|center"
             app:labelVisibilityMode="labeled"
-            app:menu="@menu/navigation_main"
-            android:layout_gravity="bottom"
             android:paddingStart="5sp"
-            android:paddingEnd="50sp" />
+            android:paddingEnd="50sp"
+            app:itemTextColor="@null"
+            app:itemIconTint="@null" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/settings_menu"
@@ -42,7 +45,7 @@
             app:iconTint="?attr/colorPrimary"
             app:icon="@drawable/ic_settings"
             android:translationZ="90dp"
-            app:iconGravity="textEnd"
+            app:iconGravity="top"
             android:gravity="center"
             android:padding="1dp"
             app:iconPadding="1dp"/>

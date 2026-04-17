@@ -115,7 +115,7 @@ public class ProjectsFragment extends Fragment {
                     mSearchWord.setVisibility(View.GONE);
                     return;
                 }
-                AppSettings.navigateToFragment(requireActivity(), R.id.nav_apps);
+                AppSettings.navigateToFragment(requireActivity(), 0);
             }
         });
 

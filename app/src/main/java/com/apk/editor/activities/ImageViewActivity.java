@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 
@@ -27,7 +26,7 @@ import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
-public class ImageViewActivity extends AppCompatActivity {
+public class ImageViewActivity extends BaseActivity {
 
     public static final String PACKAGE_NAME_INTENT = "package_name", PATH_INTENT = "path";
 
@@ -35,7 +34,7 @@ public class ImageViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_imageview);
+        setContentView(R.layout.activity_imageview, R.id.layout_root);
 
         AppCompatImageButton mBack = findViewById(R.id.back);
         MaterialButton mMenu = findViewById(R.id.export);

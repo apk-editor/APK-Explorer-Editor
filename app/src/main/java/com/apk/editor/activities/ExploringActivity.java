@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.Common;
@@ -19,7 +18,7 @@ import com.google.android.material.textview.MaterialTextView;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on Feb 21, 2025
  */
-public class ExploringActivity extends AppCompatActivity {
+public class ExploringActivity extends BaseActivity {
 
     private final Handler mHandler = new Handler();
     private Runnable mRunnable;
@@ -27,7 +26,7 @@ public class ExploringActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exploring);
+        setContentView(R.layout.activity_exploring, R.id.layout_root);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
