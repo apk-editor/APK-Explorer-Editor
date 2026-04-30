@@ -33,7 +33,7 @@ import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.DexToSmali;
 import com.apk.editor.utils.dialogs.ProgressDialog;
-import com.apk.editor.utils.tasks.DeleteFile;
+import com.apk.editor.utils.tasks.DeleteFiles;
 import com.apk.editor.utils.tasks.ExportToStorage;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -184,7 +184,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                         }
                         break;
                     case 3:
-                        new DeleteFile(null, mFiles, mBackupFilePath, requireActivity()) {
+                        new DeleteFiles(null, mFiles, mBackupFilePath, requireActivity()) {
 
                             @Override
                             public void onPostExecute() {
@@ -197,7 +197,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                         }.execute();
                         break;
                     case 4:
-                        new DeleteFile(mFile, null, mBackupFilePath, requireActivity()) {
+                        new DeleteFiles(mFile, null, mBackupFilePath, requireActivity()) {
 
                             @Override
                             public void onPostExecute() {

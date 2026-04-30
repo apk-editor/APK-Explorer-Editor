@@ -1,5 +1,8 @@
 package com.apk.editor.adapters;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -9,7 +12,6 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
@@ -27,7 +29,7 @@ import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.dialogs.ResViewerDialog;
-import com.apk.editor.utils.tasks.DeleteFile;
+import com.apk.editor.utils.tasks.DeleteFiles;
 import com.apk.editor.utils.tasks.ExportToStorage;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -71,49 +73,65 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (new File(data.get(position)).isDirectory()) {
+        String explorerItem = this.data.get(position);
+        boolean isSelected = files.contains(new File(explorerItem));
+
+        if (new File(explorerItem).isDirectory()) {
             holder.mIcon.setImageDrawable(ContextCompat.getDrawable(holder.mTitle.getContext(), R.drawable.ic_folder));
-            holder.mCheckBox.setVisibility(View.GONE);
-            holder.mDescription.setVisibility(View.GONE);
+            holder.mDescription.setVisibility(GONE);
+            holder.mIcon.setClickable(false);
         } else {
-            holder.mCheckBox.setVisibility(View.VISIBLE);
-            if (APKExplorer.isImageFile(data.get(position))) {
-                if (APKExplorer.getIconFromPath(data.get(position)) != null) {
-                    holder.mIcon.setImageURI(APKExplorer.getIconFromPath(data.get(position)));
+            if (APKExplorer.isImageFile(explorerItem)) {
+                if (APKExplorer.getIconFromPath(explorerItem) != null) {
+                    holder.mIcon.setImageURI(APKExplorer.getIconFromPath(explorerItem));
                 } else {
                     APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_file), holder.mIcon.getContext());
                 }
-            } else if (data.get(position).endsWith(".apk")) {
-                holder.mIcon.setImageDrawable(sAPKUtils.getAPKIcon(data.get(position), holder.mIcon.getContext()));
-            } else if (data.get(position).contains("classes") && data.get(position).endsWith(".dex")) {
+            } else if (explorerItem.endsWith(".apk")) {
+                holder.mIcon.setImageDrawable(sAPKUtils.getAPKIcon(explorerItem, holder.mIcon.getContext()));
+            } else if (explorerItem.contains("classes") && explorerItem.endsWith(".dex")) {
                 APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_classes), holder.mIcon.getContext());
-            } else if (data.get(position).endsWith(".arsc")) {
+            } else if (explorerItem.endsWith(".arsc")) {
                 APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_res), holder.mIcon.getContext());
             } else {
-                if (data.get(position).endsWith(".xml")) {
-                    APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), data.get(position).endsWith("AndroidManifest.xml") ? R.drawable.ic_manifest : R.drawable.ic_xml), holder.mIcon.getContext());
+                if (explorerItem.endsWith(".xml")) {
+                    APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), explorerItem.endsWith("AndroidManifest.xml") ? R.drawable.ic_manifest : R.drawable.ic_xml), holder.mIcon.getContext());
                 } else {
                     APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_file), holder.mIcon.getContext());
                 }
             }
-            if (APKEditorUtils.isFullVersion(holder.mLayout.getContext())) {
-                holder.mLayout.setOnLongClickListener(v -> {
-                    longClickDialog(position, v.getContext()).show();
-                    return true;
-                });
+            holder.mIcon.setClickable(true);
+
+            if (isSelected) {
+                holder.mCheckBox.setVisibility(View.VISIBLE);
+                holder.mIcon.setVisibility(View.GONE);
+                holder.mCheckBox.setChecked(true);
+            } else {
+                holder.mCheckBox.setVisibility(View.GONE);
+                holder.mIcon.setVisibility(View.VISIBLE);
+                holder.mCheckBox.setChecked(false);
             }
 
+            holder.mIcon.setOnClickListener(v -> {
+                int currentPos = holder.getBindingAdapterPosition();
+                if (currentPos != RecyclerView.NO_POSITION) {
+                    files.add(new File(data.get(currentPos)));
+                    notifyItemChanged(currentPos);
+                }
+            });
+
             holder.mCheckBox.setOnClickListener(v -> {
-                if (holder.mCheckBox.isChecked()) {
-                    files.add(new File(data.get(position)));
-                } else {
-                    files.remove(new File(data.get(position)));
+                int currentPos = holder.getBindingAdapterPosition();
+                if (currentPos != RecyclerView.NO_POSITION) {
+                    files.remove(new File(data.get(currentPos)));
+                    notifyItemChanged(currentPos);
                 }
             });
         }
-        holder.mTitle.setText(new File(data.get(position)).getName());
-        holder.mDescription.setText(APKExplorer.getFormattedFileSize(new File(data.get(position))));
-        holder.mDescription.setVisibility(View.VISIBLE);
+
+        holder.mTitle.setText(new File(explorerItem).getName());
+        holder.mDescription.setText(APKExplorer.getFormattedFileSize(new File(explorerItem)));
+        holder.mDescription.setVisibility(VISIBLE);
         AppSettings.setSlideInAnimation(holder.itemView, position);
     }
 
@@ -134,10 +152,11 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                             .setMessage(context.getString(R.string.delete_question, new File(data.get(position)).getName()))
                             .setNegativeButton(R.string.cancel, (dialog, id) -> {
                             })
-                            .setPositiveButton(R.string.delete, (dialog, id) -> new DeleteFile(new File(data.get(position)), null, backupFilePath, context) {
+                            .setPositiveButton(R.string.delete, (dialog, id) -> new DeleteFiles(new File(data.get(position)), null, backupFilePath, context) {
                                 @Override
                                 public void onPostExecute() {
                                     data.remove(position);
+                                    files.remove(new File(data.get(position)));
                                     notifyItemRemoved(position);
                                     notifyItemRangeChanged(position, data.size());
                                 }
@@ -172,12 +191,11 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return this.data.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final AppCompatImageButton mIcon;
-        private final FrameLayout mLayout;
         private final MaterialCheckBox mCheckBox;
         private final MaterialTextView mDescription, mTitle;
 
@@ -186,18 +204,35 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
             view.setOnClickListener(this);
             this.mIcon = view.findViewById(R.id.icon);
             this.mCheckBox = view.findViewById(R.id.checkbox);
-            this.mLayout = view.findViewById(R.id.layout_main);
             this.mTitle = view.findViewById(R.id.title);
             this.mDescription = view.findViewById(R.id.description);
+
+            view.setOnLongClickListener(v -> {
+                if (new File(data.get(getBindingAdapterPosition())).isDirectory() || !APKEditorUtils.isFullVersion(view.getContext())) {
+                    return false;
+                }
+                longClickDialog(getBindingAdapterPosition(), v.getContext()).show();
+                return true;
+            });
         }
 
         @SuppressLint("StringFormatInvalid")
         @Override
         public void onClick(View view) {
-            String filePath = data.get(getBindingAdapterPosition());
+            int currentPos = getBindingAdapterPosition();
+            String filePath = data.get(currentPos);
+            if (currentPos == RecyclerView.NO_POSITION) return;
+
             if (new File(filePath).isDirectory() || new File(filePath).isFile() && filePath.endsWith(".dex")) {
-                clickListener.onItemClick(data.get(getBindingAdapterPosition()));
+                clickListener.onItemClick(data.get(currentPos));
             } else {
+                if (files.contains(new File(filePath))) {
+                    view.post(() -> {
+                        files.remove(new File(filePath));
+                        notifyItemChanged(currentPos);
+                    });
+                    return;
+                }
                 if (APKExplorer.isTextFile(filePath)) {
                     Intent intent;
                     if (APKEditorUtils.isFullVersion(view.getContext())) {

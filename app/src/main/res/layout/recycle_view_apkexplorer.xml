@@ -1,30 +1,41 @@
-<FrameLayout
-    android:id="@+id/layout_main"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
     android:layout_margin="10dp"
-    android:longClickable="true"
     android:gravity="center" >
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/icon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center_vertical"
-            android:background="@null"
-            android:clickable="false" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical" >
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="@null" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/checkbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:buttonTint="?attr/colorPrimary"
+                    android:background="@null"
+                    android:visibility="gone" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="45dp"
             android:layout_gravity="center"
             android:orientation="vertical"
-            android:gravity="center">
+            android:clickable="false"
+            android:gravity="center" >
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/title"
@@ -43,12 +54,4 @@
                     android:textStyle="italic"
                     android:focusable="false" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/checkbox"
-            android:layout_width="35dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center"
-            android:background="@null"
-            android:visibility="gone" />
-</FrameLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

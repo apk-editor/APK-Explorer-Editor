@@ -1,94 +1,57 @@
 package com.apk.editor.utils.tasks;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
+import android.app.Activity;
 
 import com.apk.editor.R;
+import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
- * Created by APK Explorer & Editor <apkeditor@protonmail.com> on November 05, 2023
+ * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 28, 2023
  */
-public abstract class DeleteFile {
+public class DeleteFile extends sExecutor {
 
-    private final Context mContext;
-    private final ExecutorService executors;
+    private final Activity mActivity;
+    private final boolean mSetSuccess;
     private final File mFile;
-    private final List<File> mFiles;
-    private final String mBackupFilePath;
     private ProgressDialog mProgressDialog;
 
-    public DeleteFile(File file, List<File> files, String backupFilePath, Context context) {
+    public DeleteFile(File file, Activity activity, boolean setSuccess) {
         mFile = file;
-        mFiles = files;
-        mBackupFilePath = backupFilePath;
-        mContext = context;
-        this.executors = Executors.newSingleThreadExecutor();
-    }
-
-    private boolean isSmaliEdited() {
-        if (mFiles != null && !mFiles.isEmpty()) {
-            for (File file : mFiles) {
-                return file.getName().endsWith(".smali");
-            }
-        } else if (mFile.exists()) {
-            return mFile.getName().endsWith(".smali");
-        }
-        return false;
+        mActivity = activity;
+        mSetSuccess = setSuccess;
     }
 
     @SuppressLint("StringFormatInvalid")
-    public void execute() {
-        mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setTitle(mContext.getString(R.string.deleting, mFiles != null && !mFiles.isEmpty() ?
-                mContext.getString(R.string.delete_selected_files) : mFile.getName()));
+    @Override
+    public void onPreExecute() {
+        mProgressDialog = new ProgressDialog(mActivity);
+        mProgressDialog.setTitle(mActivity.getString(R.string.deleting, mFile.getName()));
         mProgressDialog.setIcon(R.mipmap.ic_launcher);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.show();
-
-        executors.execute(() -> {
-            if (mFiles != null && !mFiles.isEmpty()) {
-                for (File file : mFiles) {
-                    sFileUtils.delete(file);
-                }
-            } else if (mFile.exists()) {
-                sFileUtils.delete(mFile);
-            }
-
-            if (isSmaliEdited()) {
-                try {
-                    JSONObject jsonObject = new JSONObject(sFileUtils.read(new File(mBackupFilePath)));
-                    jsonObject.put("smali_edited", true);
-                    sFileUtils.create(jsonObject.toString(), new File(mBackupFilePath));
-                } catch (JSONException ignored) {
-                }
-            }
-
-            new Handler(Looper.getMainLooper()).post(() -> {
-
-                onPostExecute();
-
-                try {
-                    mProgressDialog.dismiss();
-                } catch (IllegalArgumentException ignored) {
-                }
-                if (!executors.isShutdown()) executors.shutdown();
-            });
-        });
     }
 
-    public abstract void onPostExecute();
+    @Override
+    public void doInBackground() {
+        sFileUtils.delete(mFile);
+    }
+
+    @Override
+    public void onPostExecute() {
+        try {
+            mProgressDialog.dismiss();
+        } catch (IllegalArgumentException ignored) {
+        }
+        if (mSetSuccess) {
+            APKExplorer.setSuccessIntent(true, mActivity);
+        }
+    }
 
 }

@@ -1,5 +1,8 @@
 package com.apk.editor.fragments;
 
+import static android.view.View.GONE;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
@@ -31,6 +34,7 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.AppSettings;
+import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.apk.editor.utils.menu.ExploreOptionsMenu;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -44,6 +48,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
@@ -56,8 +61,10 @@ public class APKsFragment extends Fragment {
 
     private APKsAdapter mRecycleViewAdapter;
     private ContentLoadingProgressBar mProgress;
+    private MaterialButton mBatchButton;
     private RecyclerView mRecyclerView;
     private String mSearchText = null;
+    private final List<File> mAPKFiles = new CopyOnWriteArrayList<>();
 
     @Nullable
     @Override
@@ -65,6 +72,7 @@ public class APKsFragment extends Fragment {
         View mRootView = inflater.inflate(R.layout.fragment_apks, container, false);
 
         MaterialAutoCompleteTextView mSearchWord = mRootView.findViewById(R.id.search_word);
+        mBatchButton = mRootView.findViewById(R.id.batch_options);
         MaterialButton mSearchButton = mRootView.findViewById(R.id.search_button);
         MaterialButton mSortButton = mRootView.findViewById(R.id.sort_button);
         MaterialButton mAddButton = mRootView.findViewById(R.id.add_button);
@@ -109,6 +117,39 @@ public class APKsFragment extends Fragment {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+        mBatchButton.setOnClickListener(v -> new sExecutor() {
+                    private ProgressDialog mProgressDialog;
+
+                    @SuppressLint("StringFormatInvalid")
+                    @Override
+                    public void onPreExecute() {
+                        mProgressDialog = new ProgressDialog(requireActivity());
+                        mProgressDialog.setTitle(getString(R.string.deleting, getString(R.string.apks)));
+                        mProgressDialog.setIcon(R.mipmap.ic_launcher);
+                        mProgressDialog.setIndeterminate(true);
+                        mProgressDialog.show();
+                    }
+
+                    @Override
+                    public void doInBackground() {
+                        for (File apkFiles : mAPKFiles) {
+                            sFileUtils.delete(apkFiles);
+                        }
+                    }
+
+                    @Override
+                    public void onPostExecute() {
+                        try {
+                            mProgressDialog.dismiss();
+                        } catch (IllegalArgumentException ignored) {
+                        }
+                        mAPKFiles.clear();
+                        mBatchButton.setVisibility(GONE);
+                        loadAPKs(mSearchText, requireActivity());
+                    }
+                }.execute()
+        );
 
         mSearchButton.setOnClickListener(v -> {
             if (mSearchWord.getVisibility() == View.VISIBLE) {
@@ -172,6 +213,12 @@ public class APKsFragment extends Fragment {
                         mSearchWord.setText(null);
                     }
                     mSearchWord.setVisibility(View.GONE);
+                    return;
+                }
+                if (mBatchButton.getVisibility() == View.VISIBLE) {
+                    mAPKFiles.clear();
+                    mBatchButton.setVisibility(GONE);
+                    loadAPKs(mSearchText, requireActivity());
                     return;
                 }
                 AppSettings.navigateToFragment(requireActivity(), 1);
@@ -256,7 +303,7 @@ public class APKsFragment extends Fragment {
                     }
                 }
 
-                mRecycleViewAdapter = new APKsAdapter(APKData.getData(searchWord, activity), searchWord, activity);
+                mRecycleViewAdapter = new APKsAdapter(APKData.getData(searchWord, activity), mAPKFiles, mBatchButton, searchWord, activity);
             }
 
             @Override

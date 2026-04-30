@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apk.editor.R;
 import com.apk.editor.adapters.ExploredInfoAdapter;
 import com.apk.editor.utils.APKExplorer;
-import com.apk.editor.utils.tasks.DeleteProject;
+import com.apk.editor.utils.tasks.DeleteFile;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONException;
@@ -118,10 +118,10 @@ public class ExploredInfoFragment extends Fragment {
                     .setTitle(R.string.save_projects_question)
                     .setNeutralButton(getString(R.string.cancel), (dialog, id) -> {
                     })
-                    .setNegativeButton(getString(R.string.discard), (dialog, id) -> new DeleteProject(rootFile, requireActivity(), true).execute())
+                    .setNegativeButton(getString(R.string.discard), (dialog, id) -> new DeleteFile(rootFile, requireActivity(), true).execute())
                     .setPositiveButton(getString(R.string.save), (dialog, id) -> requireActivity().finish()).show();
         } else if (sCommonUtils.getString("projectAction", null, requireActivity()).equals(getString(R.string.delete))) {
-            new DeleteProject(rootFile, requireActivity(), true).execute();
+            new DeleteFile(rootFile, requireActivity(), true).execute();
         } else {
             requireActivity().finish();
         }

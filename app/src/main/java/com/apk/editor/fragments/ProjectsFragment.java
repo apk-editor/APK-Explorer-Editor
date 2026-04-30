@@ -1,5 +1,8 @@
 package com.apk.editor.fragments;
 
+import static android.view.View.GONE;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,11 +28,17 @@ import com.apk.editor.adapters.ProjectsAdapter;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Projects;
+import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
+import java.io.File;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 06, 2021
@@ -37,9 +46,11 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 public class ProjectsFragment extends Fragment {
 
     private ContentLoadingProgressBar mProgress;
+    private MaterialButton mBatchButton;
     private RecyclerView mRecyclerView;
     private ProjectsAdapter mRecycleViewAdapter;
     private String mSearchText = null;
+    private final List<String> mProjectNames = new CopyOnWriteArrayList<>();
 
     @Nullable
     @Override
@@ -48,6 +59,7 @@ public class ProjectsFragment extends Fragment {
 
         MaterialAutoCompleteTextView mSearchWord = mRootView.findViewById(R.id.search_word);
         mProgress = mRootView.findViewById(R.id.progress);
+        mBatchButton = mRootView.findViewById(R.id.batch_options);
         MaterialButton mSearchButton = mRootView.findViewById(R.id.search_button);
         MaterialButton mSortButton = mRootView.findViewById(R.id.sort_button);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
@@ -55,7 +67,7 @@ public class ProjectsFragment extends Fragment {
 
         mSearchButton.setOnClickListener(v -> {
             if (mSearchWord.getVisibility() == View.VISIBLE) {
-                mSearchWord.setVisibility(View.GONE);
+                mSearchWord.setVisibility(GONE);
                 if (mSearchText != null) {
                     mSearchText = null;
                     mSearchWord.setText(null);
@@ -67,6 +79,39 @@ public class ProjectsFragment extends Fragment {
                 AppData.toggleKeyboard(1, mSearchWord, requireActivity());
             }
         });
+
+        mBatchButton.setOnClickListener(v -> new sExecutor() {
+                    private ProgressDialog mProgressDialog;
+
+                    @SuppressLint("StringFormatInvalid")
+                    @Override
+                    public void onPreExecute() {
+                        mProgressDialog = new ProgressDialog(requireActivity());
+                        mProgressDialog.setTitle(getString(R.string.deleting, getString(R.string.projects)));
+                        mProgressDialog.setIcon(R.mipmap.ic_launcher);
+                        mProgressDialog.setIndeterminate(true);
+                        mProgressDialog.show();
+                    }
+
+                    @Override
+                    public void doInBackground() {
+                        for (String projectPath : mProjectNames) {
+                            sFileUtils.delete(new File(projectPath));
+                        }
+                    }
+
+                    @Override
+                    public void onPostExecute() {
+                        try {
+                            mProgressDialog.dismiss();
+                        } catch (IllegalArgumentException ignored) {
+                        }
+                        mProjectNames.clear();
+                        mBatchButton.setVisibility(GONE);
+                        loadProjects(mSearchText, requireActivity());
+                    }
+                }.execute()
+        );
 
         mSortButton.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(requireActivity(), mSortButton);
@@ -112,7 +157,13 @@ public class ProjectsFragment extends Fragment {
                         mSearchText = null;
                         mSearchWord.setText(null);
                     }
-                    mSearchWord.setVisibility(View.GONE);
+                    mSearchWord.setVisibility(GONE);
+                    return;
+                }
+                if (mBatchButton.getVisibility() == View.VISIBLE) {
+                    mProjectNames.clear();
+                    mBatchButton.setVisibility(GONE);
+                    loadProjects(mSearchText, requireActivity());
                     return;
                 }
                 AppSettings.navigateToFragment(requireActivity(), 0);
@@ -127,14 +178,14 @@ public class ProjectsFragment extends Fragment {
 
             @Override
             public void onPreExecute() {
-                mRecyclerView.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(GONE);
                 mProgress.setVisibility(View.VISIBLE);
                 mRecyclerView.removeAllViews();
             }
 
             @Override
             public void doInBackground() {
-                mRecycleViewAdapter = new ProjectsAdapter(Projects.getData(searchWord, activity), searchWord, activityResultLauncher, activity);
+                mRecycleViewAdapter = new ProjectsAdapter(Projects.getData(searchWord, activity), mProjectNames, mBatchButton, searchWord, activityResultLauncher, activity);
             }
 
             @Override
@@ -142,7 +193,7 @@ public class ProjectsFragment extends Fragment {
                 mSearchText = searchWord;
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mRecyclerView.setVisibility(View.VISIBLE);
-                mProgress.setVisibility(View.GONE);
+                mProgress.setVisibility(GONE);
             }
         }.execute();
     }

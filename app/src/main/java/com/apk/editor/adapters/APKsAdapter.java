@@ -26,8 +26,9 @@ import com.apk.editor.utils.dialogs.BundleInstallDialog;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.apk.editor.utils.dialogs.SignatureMismatchDialog;
 import com.apk.editor.utils.menus.BundleOptionsMenu;
+import com.apk.editor.utils.tasks.DeleteFile;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -38,7 +39,6 @@ import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
-import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -47,10 +47,14 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
 
     private final Activity activity;
     private final List<APKItems> data;
+    private final List<File> selectedAPKs;
+    private final MaterialButton batchButton;
     private final String searchWord;
 
-    public APKsAdapter(List<APKItems> data, String searchWord, Activity activity) {
+    public APKsAdapter(List<APKItems> data, List<File> selectedAPKs, MaterialButton batchButton, String searchWord, Activity activity) {
         this.data = data;
+        this.selectedAPKs = selectedAPKs;
+        this.batchButton = batchButton;
         this.searchWord = searchWord;
         this.activity = activity;
     }
@@ -66,89 +70,92 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull APKsAdapter.ViewHolder holder, int position) {
         try {
-            if (data.get(position).getVersionName(holder.mVersion.getContext()) != null) {
-                holder.mVersion.setText(data.get(position).getVersionName(holder.mVersion.getContext()));
+            APKItems apkItems = this.data.get(position);
+            boolean isSelected = selectedAPKs.contains(apkItems.getAPKFile());
+
+            if (apkItems.getVersionName(holder.mVersion.getContext()) != null) {
+                holder.mVersion.setText(apkItems.getVersionName(holder.mVersion.getContext()));
             }
 
-            this.data.get(position).loadAppIcon(holder.mAppIcon);
+            apkItems.loadAppIcon(holder.mAppIcon);
 
-            if (data.get(position).getAppName(holder.mAppName.getContext()) != null) {
-                if (searchWord != null && Common.isTextMatched(Objects.requireNonNull(data.get(position).getAppName(holder.mAppName.getContext())).toString(), searchWord)) {
-                    holder.mAppName.setText(APKEditorUtils.fromHtml(Objects.requireNonNull(data.get(position).getAppName(holder.mAppName.getContext())).toString().replace(searchWord,
+            if (apkItems.getAppName(holder.mAppName.getContext()) != null) {
+                if (searchWord != null && Common.isTextMatched(Objects.requireNonNull(apkItems.getAppName(holder.mAppName.getContext())).toString(), searchWord)) {
+                    holder.mAppName.setText(APKEditorUtils.fromHtml(Objects.requireNonNull(apkItems.getAppName(holder.mAppName.getContext())).toString().replace(searchWord,
                             "<b><i><font color=\"" + Color.RED + "\">" + searchWord + "</font></i></b>")));
                 } else {
-                    holder.mAppName.setText(data.get(position).getAppName(holder.mAppName.getContext()));
+                    holder.mAppName.setText(apkItems.getAppName(holder.mAppName.getContext()));
                 }
             } else {
-                if (searchWord != null && Common.isTextMatched(data.get(position).getName(),searchWord)) {
-                    holder.mAppName.setText(APKEditorUtils.fromHtml(data.get(position).getName().replace(searchWord,
+                if (searchWord != null && Common.isTextMatched(apkItems.getName(),searchWord)) {
+                    holder.mAppName.setText(APKEditorUtils.fromHtml(apkItems.getName().replace(searchWord,
                             "<b><i><font color=\"" + Color.RED + "\">" + searchWord + "</font></i></b>")));
                 } else {
-                    holder.mAppName.setText(data.get(position).getName());
+                    holder.mAppName.setText(apkItems.getName());
                 }
                 holder.mAppName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                holder.mCard.setOnClickListener(v -> sCommonUtils.snackBar(v, v.getContext().getString(R.string.apk_corrupted)).show());
             }
-            if (data.get(position).getPackageName(holder.mAppName.getContext()) == null) {
+
+            if (apkItems.getPackageName(holder.mAppName.getContext()) == null) {
                 holder.mAppName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                holder.mCard.setOnClickListener(v -> sCommonUtils.snackBar(v, v.getContext().getString(R.string.apk_corrupted)).show());
             }
-            holder.mSize.setText(data.get(position).getSize(holder.mSize.getContext()));
+
+            holder.mSize.setText(apkItems.getSize(holder.mSize.getContext()));
             holder.mSize.setVisibility(View.VISIBLE);
             holder.mVersion.setVisibility(View.VISIBLE);
 
+            if (isSelected) {
+                holder.mCheckBox.setVisibility(View.VISIBLE);
+                holder.mAppIcon.setVisibility(View.GONE);
+                holder.mCheckBox.setChecked(true);
+            } else {
+                holder.mCheckBox.setVisibility(View.GONE);
+                holder.mAppIcon.setVisibility(View.VISIBLE);
+                holder.mCheckBox.setChecked(false);
+            }
+
+            toggleBatchMenu();
+
+            holder.mAppIcon.setOnClickListener(v -> {
+                int currentPos = holder.getBindingAdapterPosition();
+                if (currentPos != RecyclerView.NO_POSITION) {
+                    selectedAPKs.add(data.get(currentPos).getAPKFile());
+                    notifyItemChanged(currentPos);
+                    toggleBatchMenu();
+                }
+            });
+
+            holder.mCheckBox.setOnClickListener(v -> {
+                int currentPos = holder.getBindingAdapterPosition();
+                if (currentPos != RecyclerView.NO_POSITION) {
+                    selectedAPKs.remove(data.get(currentPos).getAPKFile());
+                    notifyItemChanged(currentPos);
+                    toggleBatchMenu();
+                }
+            });
+
             AppSettings.setSlideInAnimation(holder.itemView, position);
 
-            holder.mCard.setOnClickListener(v -> {
-                if (APKEditorUtils.isFullVersion(v.getContext())) {
-                    if (data.get(position).getName().contains("_aee-signed") && !sCommonUtils.getBoolean("signature_warning", false, v.getContext())) {
-                        new SignatureMismatchDialog(v.getContext());
-                    } else {
-                        if (data.get(position).isDirectory()) {
-                            bundleInstaller(data.get(position).getAPKFile(), v.getContext()).execute();
-                        } else {
-                        new MaterialAlertDialogBuilder(v.getContext())
-                                .setIcon(holder.mAppIcon.getDrawable())
-                                .setTitle(v.getContext().getString(R.string.install_question, data.get(position).getName()))
-                                .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                                })
-                                .setPositiveButton(R.string.install, (dialog, id) ->
-                                        SplitAPKInstaller.installAPK(data.get(position).getAPKFile(), activity)
-                                ).show();
-                        }
-                    }
-                } else {
-                    if (data.get(position).isDirectory()) {
-                        new BundleOptionsMenu(data.get(position).getPath(), v);
-                    } else {
-                        APKData.shareFile(data.get(position).getAPKFile(), "application/java-archive", v.getContext());
-                    }
-                }
-            });
+            holder.mDelete.setOnClickListener(v -> {
+                int currentPos = holder.getBindingAdapterPosition();
+                if (currentPos == RecyclerView.NO_POSITION) return;
 
-            holder.mCard.setOnLongClickListener(v -> {
-                if (APKEditorUtils.isFullVersion(v.getContext())) {
-                    if (data.get(position).isDirectory()) {
-                        new BundleOptionsMenu(data.get(position).getPath(), v);
-                    } else {
-                        APKData.shareFile(data.get(position).getAPKFile(), "application/java-archive", v.getContext());
-                    }
-                }
-                return false;
+                APKItems itemToDelete = data.get(currentPos);
+                new MaterialAlertDialogBuilder(v.getContext())
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setTitle(R.string.app_name)
+                        .setMessage(v.getContext().getString(R.string.delete_question, itemToDelete.getName()))
+                        .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                        })
+                        .setPositiveButton(R.string.delete, (dialog, id) -> {
+                            new DeleteFile(itemToDelete.getAPKFile(), activity, false).execute();
+                            selectedAPKs.remove(itemToDelete.getAPKFile());
+                            data.remove(currentPos);
+                            notifyItemRemoved(currentPos);
+                            notifyItemRangeChanged(currentPos, data.size());
+                            toggleBatchMenu();
+                        }).show();
             });
-
-            holder.mDelete.setOnClickListener(v -> new MaterialAlertDialogBuilder(v.getContext())
-                    .setIcon(R.mipmap.ic_launcher)
-                    .setTitle(R.string.app_name)
-                    .setMessage(v.getContext().getString(R.string.delete_question, data.get(position).getName()))
-                    .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                    })
-                    .setPositiveButton(R.string.delete, (dialog, id) -> {
-                        sFileUtils.delete(data.get(position).getAPKFile());
-                        data.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, data.size());
-                    }).show());
         } catch (NullPointerException ignored) {
         }
     }
@@ -190,25 +197,92 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
         };
     }
 
-    @Override
-    public int getItemCount() {
-        return data.size();
+    private void toggleBatchMenu() {
+        if (selectedAPKs.isEmpty()) {
+            batchButton.setVisibility(View.GONE);
+        } else {
+            batchButton.setVisibility(View.VISIBLE);
+        }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemCount() {
+        return this.data.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final AppCompatImageButton mAppIcon;
         private final MaterialButton mDelete;
-        private final MaterialCardView mCard;
+        private final MaterialCheckBox mCheckBox;
         private final MaterialTextView mAppName, mSize, mVersion;
 
         public ViewHolder(View view) {
             super(view);
-            this.mCard = view.findViewById(R.id.card);
+            view.setOnClickListener(this);
             this.mAppIcon = view.findViewById(R.id.icon);
+            this.mCheckBox = view.findViewById(R.id.checkbox);
             this.mDelete = view.findViewById(R.id.delete);
             this.mAppName = view.findViewById(R.id.title);
             this.mSize = view.findViewById(R.id.size);
             this.mVersion = view.findViewById(R.id.version);
+
+            view.setOnLongClickListener(v -> {
+                if (APKEditorUtils.isFullVersion(v.getContext())) {
+                    if (data.get(getBindingAdapterPosition()).isDirectory()) {
+                        new BundleOptionsMenu(data.get(getBindingAdapterPosition()).getPath(), v);
+                    } else {
+                        APKData.shareFile(data.get(getBindingAdapterPosition()).getAPKFile(), "application/java-archive", v.getContext());
+                    }
+                }
+                return false;
+            });
+        }
+
+        @SuppressLint("StringFormatInvalid")
+        @Override
+        public void onClick(View view) {
+            int currentPos = getBindingAdapterPosition();
+            APKItems apkItems = data.get(currentPos);
+            if (currentPos == RecyclerView.NO_POSITION) return;
+
+            if (selectedAPKs.contains(apkItems.getAPKFile())) {
+                view.post(() -> {
+                    selectedAPKs.remove(apkItems.getAPKFile());
+                    notifyItemChanged(currentPos);
+                    toggleBatchMenu();
+                });
+                return;
+            }
+
+            if (apkItems.getAppName(view.getContext()) == null || apkItems.getPackageName(view.getContext()) == null) {
+                sCommonUtils.toast(view.getContext().getString(R.string.apk_corrupted), view.getContext()).show();
+                return;
+            }
+
+            if (APKEditorUtils.isFullVersion(view.getContext())) {
+                if (apkItems.getName().contains("_aee-signed") && !sCommonUtils.getBoolean("signature_warning", false, view.getContext())) {
+                    new SignatureMismatchDialog(view.getContext());
+                } else {
+                    if (apkItems.isDirectory()) {
+                        bundleInstaller(apkItems.getAPKFile(), view.getContext()).execute();
+                    } else {
+                        new MaterialAlertDialogBuilder(view.getContext())
+                                .setIcon(mAppIcon.getDrawable())
+                                .setTitle(view.getContext().getString(R.string.install_question, apkItems.getName()))
+                                .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                                })
+                                .setPositiveButton(R.string.install, (dialog, id) ->
+                                        SplitAPKInstaller.installAPK(apkItems.getAPKFile(), activity)
+                                ).show();
+                    }
+                }
+            } else {
+                if (apkItems.isDirectory()) {
+                    new BundleOptionsMenu(apkItems.getPath(), view);
+                } else {
+                    APKData.shareFile(apkItems.getAPKFile(), "application/java-archive", view.getContext());
+                }
+            }
         }
     }
 

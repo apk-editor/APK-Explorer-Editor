@@ -41,7 +41,7 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 public class ApplicationsFragment extends Fragment {
 
     private ApplicationsAdapter mRecycleViewAdapter;
-    private boolean mExit = false, mLongClicked = false, mSelectAll = false;
+    private boolean mExit = false, mSelectAll = false;
     private final Handler mHandler = new Handler();
     private final List<String> mPackageNames = new CopyOnWriteArrayList<>();
     private ContentLoadingProgressBar mProgress;
@@ -210,13 +210,12 @@ public class ApplicationsFragment extends Fragment {
                 mRecyclerView.setVisibility(View.GONE);
                 mProgress.setVisibility(View.VISIBLE);
                 mRecyclerView.removeAllViews();
-                mLongClicked = !mPackageNames.isEmpty();
             }
 
             @Override
             public void doInBackground() {
                 List<PackageItems> mData = AppData.getData(searchWord, requireActivity());
-                mRecycleViewAdapter = new ApplicationsAdapter(mData, mPackageNames, searchWord, mLongClicked, requireActivity());
+                mRecycleViewAdapter = new ApplicationsAdapter(mData, mPackageNames, mBatchButton, searchWord, requireActivity());
                 if (mSelectAll) {
                     mPackageNames.clear();
                     for (PackageItems items : mData) {
@@ -230,7 +229,6 @@ public class ApplicationsFragment extends Fragment {
                 mSearchText = searchWord;
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mRecyclerView.setVisibility(View.VISIBLE);
-                mBatchButton.setVisibility(!mPackageNames.isEmpty() ? View.VISIBLE : View.GONE);
                 mProgress.setVisibility(View.GONE);
             }
         }.execute();
