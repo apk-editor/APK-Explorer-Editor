@@ -100,7 +100,7 @@
     <string name="apk_corrupted">"APK файл(ы) поврежден(ы). Завершение…"</string>
     <string name="install_resign">"Подпись &amp; Установка"</string>
     <string name="resign_only">"Только подпись"</string>
-    <string name="resigned_apks_path">"Генерируются переподписанные APK файл(ы).
+    <string name="resigned_apks_path">"Генерируются переподписаннве APK файл(ы).
 
         Путь: '%s'"</string>
     <string name="resigning_apks">"Подпись выбранных APK…"</string>
@@ -111,6 +111,7 @@
     <string name="sort_order">"А-Я"</string>
     <string name="clear_cache">"Очистить кэш"</string>
     <string name="clear_cache_summary">"Удалить внутренние настройки AEE"</string>
+    <string name="clear_cache_message">"Все, кроме экспортированных приложений, будет удалено."</string>
     <string name="export_options">"При экспорте (APK)"</string>
     <string name="installer_action">"При установке APK-файлов"</string>
     <string name="project_exist_action">"При выходе из проекта"</string>
@@ -179,7 +180,6 @@
     <string name="apply">"Применить"</string>
     <string name="batch_options">"Опции Группы"</string>
     <string name="choose_new">"Выбрать Новый"</string>
-    <string name="copyright_text">"2021–2025, APK Explorer &amp; Editor"</string>
     <string name="delete_all">"Удалить Все"</string>
     <string name="export_app_batch_question">"Экспортировать следующие приложения?"</string>
     <string name="export_options_title">"Настройки Экспорта"</string>
@@ -215,4 +215,10 @@
     <string name="sort_time">"От старых к новым"</string>
     <string name="x509_certificate_invalid">"Выбранный X509Certificate не действителен!"</string>
     <string name="x509_certificate_requirement_message">"Чтобы подписать APK файлы кастомным ключом, AEE также рекомендет чтобы X509Certificate был экспортирован из того же pk8 приватного ключа. Пожалуйста обратитесь к странице в Документации для большей информации."</string>
+    <string name="res_add_new">"Добавить новое значение"</string>
+    <string name="res_choose_new">"Выбрать значение \"%s\""</string>
+    <string name="xml_editor_res_title">"Изменить ресурс:"</string>
+    <string name="xml_editor_res">"Из папки resource"</string>
+    <string name="xml_editor_storage">"Из памяти устройства"</string>
+    <string name="xml_modify_title">"Изменить значение на"</string>
 </resources>

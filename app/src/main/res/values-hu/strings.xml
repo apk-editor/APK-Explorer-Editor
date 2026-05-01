@@ -180,7 +180,6 @@
     <string name="apply">"Alkalmaz"</string>
     <string name="batch_options">"Kötegbeállítások"</string>
     <string name="choose_new">"Válassz újat"</string>
-    <string name="copyright_text">"2025–2026, APK Explorer &amp; Editor"</string>
     <string name="delete_all">"Az összes törlése"</string>
     <string name="export_app_batch_question">"Exportálod a következő alkalmazásokat?"</string>
     <string name="export_options_title">"Exportálási beállítások"</string>
@@ -216,4 +215,11 @@
     <string name="sort_time">"A régitől az újig"</string>
     <string name="x509_certificate_invalid">"A kiválasztott X509 tanúsítvány érvénytelen!"</string>
     <string name="x509_certificate_requirement_message">"Az APK-k egyéni kulccsal történő aláírásához az AEE-nek szüksége van ugyanabból a pk8 privát kulcsból exportált X509 tanúsítványra is. További információért olvasd el a dokumentációt."</string>
+    <string name="res_add_new">"Új érték hozzáadása"</string>
+    <string name="res_choose_new">"„%s” számára válasszon új értéket"</string>
+    <string name="xml_editor_res_title">"Módosítsa ezt az erőforrást:"</string>
+    <string name="xml_editor_res">"az erőforrások mappából"</string>
+    <string name="xml_editor_storage">"az eszköz tárolójából"</string>
+    <string name="xml_editor_text">"Kemény kódolással"</string>
+    <string name="xml_modify_title">"Módosítsa ezt az értéket erre:"</string>
 </resources>

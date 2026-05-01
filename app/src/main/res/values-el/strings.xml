@@ -25,7 +25,6 @@
     <string name="clear_cache_message">Όλα, εκτός από τις εξαγόμενες εφαρμογές, θα καταργηθούν.</string>
     <string name="clearing_cache_message">Εκκαθάριση προσωρινής μνήμης…</string>
     <string name="copying">Αντιγραφή \'%s\'…</string>
-    <string name="copyright_text">2021–2025, APK Explorer &amp; Editor</string>
     <string name="decompiling">Απομεταγλώττιση \'%s\'…</string>
     <string name="delete">Διαγραφή</string>
     <string name="delete_all">Διαγραφή Όλων</string>
@@ -47,11 +46,6 @@
     <string name="export_options_title">Επιλογές Εξαγωγής</string>
     <string name="export_project_question">Δημιουργία αντιγράφου αυτού του φακέλου πρότζεκτ στον αποθηκευτικό χώρο της συσκευής?</string>
     <string name="export_project_replace">\'%s\' υπάρχει ήδη. Θέλετε να το αντικαταστήσετε?</string>
-    <string name="export_path_apks">Διαδρομή Εξαγωγής (APK)</string>
-    <string name="export_path_default">Εσωτερικός Αποθηκευτικός Χώρος/AEE</string>
-    <string name="export_path_download">Λήψη</string>
-    <string name="export_path_files_dir">Κατάλογος Εξωτερικών Αρχείων</string>
-    <string name="export_path_resources">Διαδρομή Εξαγωγής (μη-APK)</string>
     <string name="export_question">Εξαγωγή στον αποθηκευτικό χώρο συσκευής?</string>
     <string name="export_resign">Εξαγωγή &amp; Επανυπογραφή</string>
     <string name="export_selected_files">Εξαγωγή επιλεγμένων αρχείων</string>
@@ -139,7 +133,6 @@
     <string name="save_apk_message">Προετοιμασία υπογεγραμμένου APK με τις τρέχουσες τροποποιήσεις?</string>
     <string name="save_projects_question">Αποθήκευση πρότζεκτ για μελλοντική χρήση?</string>
     <string name="save_question">Αποθήκευση αλλαγών που έγιναν σε αυτό το αρχείο?</string>
-    <string name="save_to_downloads">Αποθήκευση στις Λήψεις</string>
     <string name="saving">Αποθήκευση…</string>
     <string name="sdcard">Εσωτερική Αποθήκευση</string>
     <string name="sdk_compile">Μεταγλώττιση SDK: %s</string>
@@ -154,7 +147,6 @@
     <string name="settings_general">Γενικά</string>
     <string name="settings_misc">Διάφορα</string>
     <string name="share">Κοινή Χρήση</string>
-    <string name="share_message">Κοινή Χρήση %s?</string>
     <string name="share_with">Κοινή Χρήση με</string>
     <string name="sign_apk_custom">Προσαρμοσμένο Κλειδί</string>
     <string name="sign_apk_default">Προεπιλεγμένο Κλειδί</string>

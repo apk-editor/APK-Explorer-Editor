@@ -15,7 +15,7 @@
     <string name="donations_summary">"Soutenir le développement de l'AEE"</string>
     <string name="export">"Exporter"</string>
     <string name="export_question">"Exporter vers le stockage de l'appareil ?"</string>
-    <string name="export_complete_message">"La ressource sélectionnée est exportée avec succès dans '%s'"</string>
+    <string name="export_complete_message">"La (les) ressource/s sélectionnée/s ont été exportée/s dans %s"</string>
     <string name="exploring">"Exploration de %s…"</string>
     <string name="explore_error_status">"Impossible d'explorer %s"</string>
     <string name="install">"Installer"</string>
@@ -111,6 +111,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Vider le cache"</string>
     <string name="clear_cache_summary">"Supprimer les paramètres internes d'AEE"</string>
+    <string name="clear_cache_message">"Tout, sauf les applications exportées, sera supprimé."</string>
     <string name="export_options">"À l'exportation (APK)"</string>
     <string name="installer_action">"Sur l'installation des APK"</string>
     <string name="project_exist_action">"À la sortie d'un projet"</string>
@@ -169,4 +170,18 @@
     <string name="root">"Racine"</string>
     <string name="xml_corrupted">"La chaîne XML est corrompue. Abandon…"</string>
     <string name="xml_decode_failed">"Impossible de décoder %s"</string>
+    <string name="delete_folder">"Supprimer le dossier"</string>
+    <string name="delete_selected_files">"Supprimer les fichiers sélectionnés"</string>
+    <string name="export_selected_files">"Exporter les fichiers sélectionnés"</string>
+    <string name="explore_options_full">"Décompiler entièrement (lent)"</string>
+    <string name="explore_options_simple">"Décompiler partiellement (lent)"</string>
+    <string name="apply">"Appliquer"</string>
+    <string name="choose_new">"Choisir un nouveau"</string>
+    <string name="delete_all">"Tout supprimer"</string>
+    <string name="export_app_batch_question">"Exporter les applications ?"</string>
+    <string name="export_options_title">"Exporter les options"</string>
+    <string name="exported_apks_path">"Les apps sélectionnées sont exportés vers :
+
+        '%s'"</string>
+    <string name="exporting_batch">"Exporter les apps sélectionnés"</string>
 </resources>

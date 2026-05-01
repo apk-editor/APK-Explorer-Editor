@@ -112,6 +112,7 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"清除缓存"</string>
     <string name="clear_cache_summary">"重置AEE设置"</string>
+    <string name="clear_cache_message">"除导出的应用外，所有数据都将被清除"</string>
     <string name="export_options">"对于即将导出的应用"</string>
     <string name="installer_action">"对于即将安装的应用"</string>
     <string name="project_exist_action">"保存项目"</string>
@@ -180,7 +181,6 @@
     <string name="apply">"应用"</string>
     <string name="batch_options">"批量操作"</string>
     <string name="choose_new">"选择新的"</string>
-    <string name="copyright_text">"2021–2025, APK Explorer &amp; Editor"</string>
     <string name="delete_all">"全删"</string>
     <string name="export_app_batch_question">"导出下列应用？"</string>
     <string name="export_options_title">"导出选项"</string>
@@ -216,4 +216,11 @@
     <string name="sort_time">"旧到新"</string>
     <string name="x509_certificate_invalid">"所选的 X509Certificate 无效！"</string>
     <string name="x509_certificate_requirement_message">"为了用自定义密钥签名 APK 文件，本应用还需要从同一 pk8 密钥导出的 X509Certificate。更多信息请参考文档页。"</string>
+    <string name="res_add_new">"添加新值"</string>
+    <string name="res_choose_new">"选择 \"%s\" 的新值"</string>
+    <string name="xml_editor_res_title">"修改此资源："</string>
+    <string name="xml_editor_res">"从资源文件夹"</string>
+    <string name="xml_editor_storage">"从设备存储"</string>
+    <string name="xml_editor_text">"按硬编码"</string>
+    <string name="xml_modify_title">"更改此值为"</string>
 </resources>

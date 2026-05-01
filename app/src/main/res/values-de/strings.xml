@@ -2,116 +2,117 @@
 
     <string name="about">"Info"</string>
     <string name="all">"Alle"</string>
-    <string name="apks">"APK's"</string>
+    <string name="apks">"APKs"</string>
     <string name="apps">"Apps"</string>
-    <string name="apps_exported">"Exportierte APK's"</string>
+    <string name="apps_exported">"Exportierte APKs"</string>
     <string name="apps_installed">"Installierte Apps"</string>
     <string name="cancel">"Abbrechen"</string>
     <string name="delete">"Löschen"</string>
     <string name="delete_question">"%s löschen?"</string>
-    <string name="documentation">"Dokumenation"</string>
-    <string name="documentation_summary">"Schau auf die AEE Dokumentation"</string>
+    <string name="documentation">"Dokumentation"</string>
+    <string name="documentation_summary">"Sehen Sie sich die AEE-Dokumentation an"</string>
     <string name="donations">"Spenden"</string>
-    <string name="donations_summary">"Spende die Entwicklung von AEE"</string>
+    <string name="donations_summary">"Unterstützen Sie die Entwicklung von AEE"</string>
     <string name="export">"Exportieren"</string>
     <string name="export_question">"Zum Gerätespeicher exportieren?"</string>
-    <string name="export_complete_message">"Die ausgewählte Resource is erfolgreich zu '%s@ exportiert wurden!"</string>
-    <string name="exploring">"Durchsuche %s…"</string>
-    <string name="explore_error_status">"Fehler beim durchsuchen von %s!"</string>
+    <string name="export_complete_message">"Die ausgewählten Ressourcen wurde erfolgreich nach '%s' exportiert."</string>
+    <string name="exploring">"%s wird untersucht…"</string>
+    <string name="explore_error_status">"Fehler beim Untersuchen von %s!"</string>
     <string name="install">"Installieren"</string>
-    <string name="install_question">"%s intallieren?"</string>
-    <string name="installing">"Installiere %s"</string>
+    <string name="install_question">"%s installieren?"</string>
+    <string name="installing">"Installiere %s…"</string>
     <string name="invite_friends">"Freunde einladen"</string>
-    <string name="invite_friends_Summary">"Lade deine Freunde zu AEE ein"</string>
+    <string name="invite_friends_Summary">"Laden Sie Ihre Freunde ein, AEE auszuprobieren"</string>
     <string name="last_modified">"Zuletzt geändert: %s"</string>
     <string name="open_as_text">"Als Text öffnen"</string>
     <string name="permission_denied_message">"Fehlende Berechtigungen beim Schreiben auf den Speicher!"</string>
-    <string name="preparing_apk">"Bereite APK %s vor…"</string>
-    <string name="press_back">"Drücke den Zurück-Knopf nochmal, um APK Explorer zu beenden!"</string>
+    <string name="preparing_apk">"APK %s wird vorbereitet…"</string>
+    <string name="press_back">"Drücken Sie den Zurück-Knopf noch mal, um APK Explorer zu beenden!"</string>
     <string name="projects">"Projekte"</string>
     <string name="rate_us">"AEE bewerten"</string>
-    <string name="rate_us_Summary">"Bewerte AEE in Google Play"</string>
+    <string name="rate_us_Summary">"Bewerten Sie AEE in Google Play"</string>
     <string name="replace">"Ersetzen"</string>
     <string name="replace_question">"%s ersetzen mit"</string>
     <string name="report_issue">"Problem melden"</string>
-    <string name="report_issue_summary">"Melde ein Problem bei GitHub"</string>
+    <string name="report_issue_summary">"Melden Sie ein Problem bei GitHub"</string>
     <string name="save">"Speichern"</string>
-    <string name="save_projects_question">"Speichere das Projekt für später?"</string>
-    <string name="save_question">"Speichere Änderungen für diese Datei?"</string>
-    <string name="save_apk_message">"Möchtest du eine signierte APK mit den aktuellen Veränderungen vorbereiten?"</string>
+    <string name="save_projects_question">"Projekt für spätere Verwendung speichern?"</string>
+    <string name="save_question">"Änderungen an dieser Datei speichern?"</string>
+    <string name="save_apk_message">"Möchten Sie eine signierte APK mit den aktuellen Veränderungen vorbereiten?"</string>
     <string name="sdcard">"Lokaler Speicher"</string>
     <string name="search">"Suchen…"</string>
     <string name="share">"Teilen"</string>
     <string name="share_with">"Teilen mit"</string>
-    <string name="signing">"Signiere %s…"</string>
+    <string name="signing">"Signieren von '%s'…"</string>
     <string name="size">"Größe: %s"</string>
     <string name="source_code">"Quellcode"</string>
-    <string name="source_code_summary">"Schau dir den Quellcode von AEE an"</string>
-    <string name="split_apk_installer">"AEE Geteilte APK Installer"</string>
-    <string name="support_group">"Support-Gruppe"</string>
-    <string name="support_group_summary">"Trete der AEE Support-Gruppe bei"</string>
+    <string name="source_code_summary">"Schauen Sie sich den Quellcode von AEE an"</string>
+    <string name="split_apk_installer">"AEE Split APK Installer"</string>
+    <string name="support_group">"Supportgruppe"</string>
+    <string name="support_group_summary">"Treten Sie der AEE-Supportgruppe bei"</string>
     <string name="system">"System"</string>
-    <string name="unknown_file_message">"AEE kann im Moment nicht mit '%s' umgehen. Wenn Sie dieses Dateiformat kennen, können Sie diese Datei in den Gerätespeicher exportieren und versuchen, sie mit einer unterstützten Drittanbieteranwendung zu bearbeiten. Alternativ können Sie auch versuchen, die Datei als Textdatei zu öffnen?"</string>
+    <string name="unknown_file_message">"AEE kann derzeit nicht mit '%s' umgehen. Wenn Sie dieses Dateiformat kennen, können Sie diese Datei in den Gerätespeicher exportieren und versuchen, sie mit einer unterstützten Drittanbieteranwendung zu bearbeiten. Alternativ können Sie versuchen, die Datei als Textdatei zu öffnen."</string>
     <string name="unsupported_file">"Nicht unterstützte Datei"</string>
     <string name="unsupported_file_arsc">"Sie haben 'resources.arsc' ausgewählt, was für AEE leider nicht lesbar ist.
 
         Was ist resources.arsc?
-        resources.arsc ist eine binäre Ressourcendatei, die konfigurationsspezifischen Werte einer App enthält, wie z. B. Integer, Booleans und Strings, sowie Verweise auf komplexere Ressourcen, wie UI-Layouts.
+        resources.arsc ist eine binäre Ressourcendatei, die die konfigurationsspezifischen Werte einer App enthält, wie z. B. Integer, Booleans und Strings, sowie Verweise auf komplexere Ressourcen, wie UI-Layouts.
 
         Wie kann man resources.arsc lesen?
-        Tools wie Apktool oder Android Asset Packaging Tool (AAPT) sind zu verwenden, um den Inhalt von resources.arsc in ein für Menschen lesbares Format auszugeben."</string>
+        Tools wie Apktool oder Android Asset Packaging Tool (AAPT) sollten verwendet werden, um den Inhalt von resources.arsc in ein für Menschen lesbares Format auszugeben."</string>
     <string name="unsupported_file_dex">"Sie haben eine 'DEX'-Datei (.dex) ausgewählt, die von AEE leider nicht gelesen werden kann.
 
         Was ist eine DEX-Datei?
-        Eine Dex-Datei enthält Code, der letztendlich von der Android Runtime ausgeführt wird. Jede APK sollte eine 'classes.dex'-Datei haben, die alle Klassen oder Methoden referenziert, die innerhalb einer App verwendet werden. Im Wesentlichen wird jede Activity, jedes Objekt oder Fragment, das innerhalb der Codebasis verwendet wird, in einer Dex-Datei in Bytes umgewandelt, die als Android-App ausgeführt werden können.
+        Eine DEX-Datei enthält Code, der letztendlich von der Android Runtime ausgeführt wird. Jede APK sollte eine Datei 'classes.dex' haben, die alle Klassen oder Methoden referenziert, die innerhalb einer App verwendet werden. Im Wesentlichen werden alle innerhalb der Codebasis verwendeten Aktivitäten, Objekte oder Fragmente in einer DEX-Datei in Bytes umgewandelt, die als Android-App ausgeführt werden können.
 
         Wie liest man eine DEX-Datei?
         Eine DEX-Datei muss mit Tools wie 'dex2jar' und 'JD-GUI' in das 'jar'-Format und später in eine 'Java'-Datei konvertiert werden."</string>
     <string name="user">"Nutzer"</string>
-    <string name="bundles">"Bündel"</string>
-    <string name="preparing_bundle">"App-Bundle für das Teilen vorbereiten…"</string>
+    <string name="bundles">"Pakete"</string>
+    <string name="preparing_bundle">"App-Paket für das Teilen vorbereiten…"</string>
     <string name="privacy_policy">"Datenschutzrichtlinie"</string>
     <string name="privacy_policy_summary">"Datenschutzrichtlinie lesen"</string>
     <string name="private_key">"Privater Schlüssel"</string>
     <string name="private_key_summary">"Benutzerdefinierten privaten Schlüssel auswählen"</string>
     <string name="select">"Auswählen"</string>
     <string name="signing_custom">"Privaten Schlüssel konfigurieren"</string>
-    <string name="signing_default">"Mit Standard-Schlüssel signieren"</string>
+    <string name="signing_default">"Mit Standardschlüssel signieren"</string>
     <string name="signing_question">"'%s' als neues verwenden"</string>
-    <string name="signing_title">"APK Signierung"</string>
+    <string name="signing_title">"APK-Signierung"</string>
     <string name="apk_installer">"AEE APK Installer"</string>
-    <string name="bundle_install_question">"Sind Sie sicher, dass Sie das App-Bundle '%s' installieren wollen?"</string>
-    <string name="export_project_question">"Eine Kopie dieses Projektordners in den Gerätespeicher erstellen?"</string>
+    <string name="bundle_install_question">"Sind Sie sicher, dass Sie das App-Paket '%s' installieren wollen?"</string>
+    <string name="export_project_question">"Eine Kopie dieses Projektordners im Gerätespeicher erstellen?"</string>
     <string name="export_project_replace">"'%s' existiert bereits! Möchten Sie es ersetzen?"</string>
     <string name="export_resign">"Exportieren und neu signieren"</string>
     <string name="export_storage">"In den Speicher exportieren"</string>
-    <string name="exporting">"Exportiere %s…"</string>
+    <string name="exporting">"Exportieren von %s…"</string>
     <string name="got_it">"Fertig"</string>
     <string name="install_storage">"Installation aus dem Speicher"</string>
-    <string name="installer_message">"Der AEE Split APK Installer verarbeitet normale APKs, geteilte APKs sowie 'xapk', 'apks' und 'apkm' App-Bundles. Um eine Installation zu starten, wählen Sie einfach die Installationsdatei(en) auf dem nächsten Bildschirm aus und folgen den Anweisungen auf dem Bildschirm."</string>
+    <string name="installer_message">"Der AEE Split APK Installer verarbeitet normale APKs, geteilte APKs sowie die App-Pakete 'xapk', 'apks' und 'apkm'. Um eine Installation zu starten, wählen Sie einfach die Installationsdatei(en) auf dem nächsten Bildschirm aus und folgen Sie den Anweisungen."</string>
     <string name="installation_cancel_message">"Sind Sie sicher, dass Sie die Installation abbrechen wollen?"</string>
-    <string name="name_empty">"Name sollte nicht leer sein! Abbruch."</string>
+    <string name="name_empty">"Name darf nicht leer sein! Abbruch…"</string>
     <string name="ok">"OK"</string>
     <string name="preparing_bundle_install">"Vorbereiten von '%s' für die Installation…"</string>
-    <string name="select_apk">"Wählen Sie geteilte APKs"</string>
-    <string name="signature_warning">"Es ist wichtig, die alte Version (falls vorhanden) der App zu deinstallieren, bevor Sie eine AEE-signierte APK/App-Bundle installieren, um einen Installationsfehler aufgrund einer fehlenden Signatur zu vermeiden!"</string>
+    <string name="select_apk">"Wählen Sie Split APKs"</string>
+    <string name="signature_warning">"Es ist wichtig, die alte Version (falls vorhanden) der App zu deinstallieren, bevor Sie eine AEE-signierte APK/ein App-Paket installieren, um einen Installationsfehler aufgrund einer fehlenden Signatur zu vermeiden."</string>
     <string name="wrong_extension">"Bitte wählen Sie eine Datei mit der %s-Endung."</string>
     <string name="yes">"Ja"</string>
-    <string name="apk_corrupted">"APK-Datei(en) ist/sind beschädigt! Abbruch."</string>
+    <string name="apk_corrupted">"APK-Datei(en) ist/sind beschädigt! Abbruch…"</string>
     <string name="install_resign">"Neu signieren &amp; installieren"</string>
     <string name="resign_only">"Nur neu signieren"</string>
-    <string name="resigned_apks_path">"Re-signierte APK-Datei(en) wurde generiert!
+    <string name="resigned_apks_path">"Neu signierte APK-Datei(en) wurde(n) generiert!
 
         Pfad: '%s'"</string>
-    <string name="resigning_apks">"Neu-Signieren ausgewählter APK's…"</string>
+    <string name="resigning_apks">"Ausgewählte APKs werden neu signiert…"</string>
     <string name="select_storage">"Wählen Sie aus dem Speicher"</string>
     <string name="sort_by">"Apps sortieren"</string>
     <string name="sort_by_name">"Name"</string>
-    <string name="sort_by_id">"Package ID"</string>
+    <string name="sort_by_id">"Paket-ID"</string>
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Cache leeren"</string>
     <string name="clear_cache_summary">"Interne Einstellungen von AEE löschen"</string>
-    <string name="export_options">"Beim Exportieren (APK's)"</string>g>
+    <string name="clear_cache_message">"Dadurch werden alle gespeicherten Projekte und exportierten Anwendungen entfernt."</string>
+    <string name="export_options">"Beim Exportieren (APKs)"</string>
     <string name="installer_action">"Bei der Installation von APKs"</string>
     <string name="project_exist_action">"Beim Beenden eines Projekts"</string>
     <string name="prompt">"Aufforderung"</string>
@@ -123,46 +124,102 @@
     <string name="sign_apk_with">"Signieren von APKs mit"</string>
     <string name="warning">"Warnung"</string>
     <string name="file_path_error">"Dateipfad konnte nicht vom externen Dateimanager geladen werden!"</string>
-    <string name="text_editor">"AEE Text Editor"</string>
+    <string name="text_editor">"AEE-Texteditor"</string>
     <string name="discard">"Verwerfen"</string>
     <string name="discard_message">"Änderungen an dieser Datei verwerfen?"</string>
     <string name="language">"Sprache"</string>
-    <string name="transfer_exported_apk">"Zu neuem Ort exportieren"</string>
-    <string name="user_interface">"User Interface"</string>
-    <string name="decompiling">"Dekompiliere '%s'…"</string>
-    <string name="deleting">"Lösche '%s'…"</string>
+    <string name="transfer_exported_apk">"Übertragen zuvor exportierter APKs in neuen Pfad…"</string>
+    <string name="user_interface">"Benutzeroberfläche"</string>
+    <string name="decompiling">"Dekompilieren von '%s'…"</string>
+    <string name="deleting">"Löschen von '%s'…"</string>
     <string name="grant">"Erteilen"</string>
     <string name="important">"Wichtig"</string>
     <string name="assembling">"Zusammenfügen
         '%s'"</string>
     <string name="build">"Erstellen"</string>
-    <string name="building">"Erstelle'%s'…"</string>
-    <string name="copying">"Kopiere '%s'…"</string>
+    <string name="building">"Erstellen von '%s'…"</string>
+    <string name="copying">"Kopieren von '%s'…"</string>
     <string name="details">"Details"</string>
-    <string name="failed">"Fehler"</string>
-    <string name="failed_smali_message">"Die folgenden 'Smali' Dateien konnten nicht assembliert werden!
+    <string name="failed">"Fehlgeschlagen"</string>
+    <string name="failed_smali_message">"Die folgenden 'smali'-Dateien konnten nicht assembliert werden!
 
         %s"</string>
     <string name="open">"Öffnen"</string>
-    <string name="preparing_source">"Bereite Quell-APK zum Bauen vor…"</string>
-    <string name="resigned_apks_error">"Bauen wegen Fehlern beim Assemblieren abgebrochen. Siehe 'Details' für mehr Infos!"</string>
+    <string name="preparing_source">"Quelle für APK-Erstellung vorbereiten…"</string>
+    <string name="resigned_apks_error">"Das Bauen wurde aufgrund von Fehlern beim Zusammenstellen der 'smali'-Dateien abgebrochen. Siehe 'Details' für mehr Infos."</string>
     <string name="success">"Erfolgreich"</string>
     <string name="sort_by_installed">"Installationszeit"</string>
     <string name="sort_by_size">"Größe"</string>
-    <string name="sort_by_updated">"Updatezeit"</string>
+    <string name="sort_by_updated">"Änderungszeit"</string>
     <string name="sort_size">"Größe"</string>
     <string name="start">"Start"</string>
     <string name="android_version">"Android %s"</string>
     <string name="certificate">"Zertifikat"</string>
-    <string name="install_bundle_question">"Willst Du das gewählte Paket installieren?"</string>
-    <string name="loading">"Lade…"</string>
+    <string name="install_bundle_question">"Wollen Sie das ausgewählte App-Paket installieren?"</string>
+    <string name="loading">"Laden…"</string>
     <string name="manifest">"Manifest"</string>
     <string name="permissions">"Berechtigungen"</string>
     <string name="saving">"Speichern…"</string>
-    <string name="sdk_compile">"Kompiliere SDK: %s"</string>
-    <string name="sdk_minimum">"Niedrigste SDK: %s"</string>
-    <string name="signing_select_question">"Ausgewählte Datei als %s speichern?"</string>
+    <string name="sdk_compile">"SDK-Kompilierung: %s"</string>
+    <string name="sdk_minimum">"Mindest-SDK: %s"</string>
+    <string name="signing_select_question">"Ausgewählte Datei als neue %s speichern?"</string>
     <string name="cancelling">"Abbrechen"</string>
-    <string name="replace_file_question">"%s mit der Ausgewählten Datei ersetzen?"</string>
+    <string name="replace_file_question">"%s durch ausgewählte Datei ersetzen?"</string>
     <string name="update">"Aktualisieren"</string>
+    <string name="clearing_cache_message">"Cache wird gelöscht…"</string>
+    <string name="root">"Root"</string>
+    <string name="xml_corrupted">"XML-Zeichenfolge ist beschädigt. Abbruch…"</string>
+    <string name="xml_decode_failed">"https://www.facebook.com/100000836658220/posts/pfbid028vvATdZ1frheaWiBFVFvA64bPY1ocRGKsYqKad3fHHHdyhk9M41mZVS71KMhJ5Sel/"</string>
+    <string name="zip_aligning">"Zip-Ausrichtung…"</string>
+    <string name="delete_folder">"Ordner löschen"</string>
+    <string name="delete_selected_files">"Ausgewählte Dateien löschen"</string>
+    <string name="export_selected_files">"Ausgewählte Dateien exportieren"</string>
+    <string name="explore_options">"Zum Untersuchen einer App"</string>
+    <string name="explore_options_full">"Vollständige Dekompilierung (langsamer)"</string>
+    <string name="explore_options_simple">"Einfache Dekompilierung (schneller)"</string>
+    <string name="apply">"Anwenden"</string>
+    <string name="batch_options">"Batch-Optionen"</string>
+    <string name="choose_new">"Neu wählen"</string>
+    <string name="delete_all">"Alle löschen"</string>
+    <string name="export_app_batch_question">"Die folgenden Apps exportieren?"</string>
+    <string name="export_options_title">"Exportoptionen"</string>
+    <string name="exported_apks_path">"Ausgewählte Apps werden exportiert nach:
+
+        '%s'"</string>
+    <string name="exporting_batch">"Ausgewählte Apps exportieren…"</string>
+    <string name="explore_options_quick">"Schnelle Bearbeitung (einfacher)"</string>
+    <string name="keypair_mismatch_message">"Nicht übereinstimmendes Schlüsselpaar!"</string>
+    <string name="keystore_alias_hint">"Einen Alias auswählen"</string>
+    <string name="keystore_alias_password_hint">"Alias-Passwort eingeben"</string>
+    <string name="keystore_alias_unavailable">"Schlüsselspeicher-Alias nicht gefunden!"</string>
+    <string name="keystore_loading_failed">"Schlüsselspeicher konnte nicht geladen werden!"</string>
+    <string name="keystore_password_hint">"Passwort für den Schlüsselspeicher eingeben"</string>
+    <string name="password_invalid">"Passwort stimmt nicht überein!"</string>
+    <string name="private_key_invalid">"Der ausgewählte private Schlüssel ist ungültig!"</string>
+    <string name="quick_edits_app_name">"App-Name"</string>
+    <string name="quick_edits_sdk_min">"Mindest-SDK"</string>
+    <string name="quick_edits_package_name">"Paketname"</string>
+    <string name="quick_edits_progress_message">"Änderungen werden übernommen…"</string>
+    <string name="quick_edits_title">"Schnellbearbeitung"</string>
+    <string name="quick_edits_toast_failed">"Leider ist die Erstellung der modifizierten APK-Datei fehlgeschlagen."</string>
+    <string name="quick_edits_toast_success">"Eine geänderte APK-Datei wird erstellt.
+
+        Pfad: '%s'"</string>
+    <string name="quick_edits_version_code">"Versionscode"</string>
+    <string name="quick_edits_version_name">"Versionsname"</string>
+    <string name="reset">"Zurücksetzen"</string>
+    <string name="res_viewer">"Ressourcen-Betrachter"</string>
+    <string name="search_files">"Dateien suchen"</string>
+    <string name="select_all">"Alle auswählen"</string>
+    <string name="sort_files">"Dateien sortieren"</string>
+    <string name="sort_time">"Alt zu neu"</string>
+    <string name="x509_certificate_invalid">"Das ausgewählte X.509-Zertifikat ist ungültig!"</string>
+    <string name="x509_certificate_requirement_message">"Um APKs mit einem benutzerdefinierten Schlüssel zu signieren, benötigt AEE außerdem das X.509-Zertifikat, das aus demselben privaten pk8-Schlüssel exportiert wurde. Weitere Informationen finden Sie auf der Dokumentationsseite."</string>
+    <string name="res_add_new">"Neuen Wert hinzufügen"</string>
+    <string name="res_choose_new">"Neuen Wert für „%s“ auswählen"</string>
+    <string name="xml_editor_res_title">"Diese Ressource ändern:"</string>
+    <string name="xml_editor_res">"aus dem Ressourcen-Ordner"</string>
+    <string name="xml_editor_storage">"aus dem Gerätespeicher"</string>
+    <string name="xml_editor_text">"durch Hardcoding"</string>
+    <string name="xml_modify_title">"Diesen Wert ändern in"</string>
 </resources>
