@@ -10,14 +10,14 @@ android {
         includeInBundle = false
     }
 
-    compileSdkVersion 36
+    compileSdkVersion 37
     namespace 'com.apk.editor'
 
     defaultConfig {
         minSdkVersion 23
-        targetSdk 36
-        versionCode 32
-        versionName "v0.32"
+        targetSdk 37
+        versionCode 33
+        versionName "v0.33"
         vectorDrawables.useSupportLibrary = true
         testFunctionalTest = false
         testHandleProfiling = false

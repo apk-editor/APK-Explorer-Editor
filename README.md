@@ -2,7 +2,7 @@
 
 ![AEE](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png?raw=true)
 
-[![](https://img.shields.io/badge/APK%20Explorer%20&%20Editor%20(AEE)-v0.32-green)](https://github.com/apk-editor/APK-Explorer-Editor/releases)
+[![](https://img.shields.io/badge/APK%20Explorer%20&%20Editor%20(AEE)-v0.33-green)](https://github.com/apk-editor/APK-Explorer-Editor/releases)
 ![](https://img.shields.io/github/downloads/apk-editor/APK-Explorer-Editor/total)
 ![](https://img.shields.io/github/languages/top/apk-editor/APK-Explorer-Editor)
 ![](https://img.shields.io/github/contributors/apk-editor/APK-Explorer-Editor)
@@ -49,7 +49,7 @@ Please help me to translate this application via [POEditor](https://poeditor.com
 
 ## License
 
-    Copyright (C) 2021-2025 APK Explorer & Editor <apkeditor@protonmail.com>
+    Copyright (C) 2021-2026 APK Explorer & Editor <apkeditor@protonmail.com>
 
     APK Explorer & Editor (AEE) is a free softwares: you can redistribute it and/or
     modify it under the terms of the GNU General Public License as published by the
