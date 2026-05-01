@@ -64,7 +64,7 @@ public class APKsFragment extends Fragment {
     private MaterialButton mBatchButton;
     private RecyclerView mRecyclerView;
     private String mSearchText = null;
-    private final List<File> mAPKFiles = new CopyOnWriteArrayList<>();
+    private final List<String> mAPKPaths = new CopyOnWriteArrayList<>();
 
     @Nullable
     @Override
@@ -133,8 +133,8 @@ public class APKsFragment extends Fragment {
 
                     @Override
                     public void doInBackground() {
-                        for (File apkFiles : mAPKFiles) {
-                            sFileUtils.delete(apkFiles);
+                        for (String apkPaths : mAPKPaths) {
+                            sFileUtils.delete(new File(apkPaths));
                         }
                     }
 
@@ -144,7 +144,7 @@ public class APKsFragment extends Fragment {
                             mProgressDialog.dismiss();
                         } catch (IllegalArgumentException ignored) {
                         }
-                        mAPKFiles.clear();
+                        mAPKPaths.clear();
                         mBatchButton.setVisibility(GONE);
                         loadAPKs(mSearchText, requireActivity());
                     }
@@ -216,7 +216,7 @@ public class APKsFragment extends Fragment {
                     return;
                 }
                 if (mBatchButton.getVisibility() == View.VISIBLE) {
-                    mAPKFiles.clear();
+                    mAPKPaths.clear();
                     mBatchButton.setVisibility(GONE);
                     loadAPKs(mSearchText, requireActivity());
                     return;
@@ -303,7 +303,7 @@ public class APKsFragment extends Fragment {
                     }
                 }
 
-                mRecycleViewAdapter = new APKsAdapter(APKData.getData(searchWord, activity), mAPKFiles, mBatchButton, searchWord, activity);
+                mRecycleViewAdapter = new APKsAdapter(APKData.getData(searchWord, activity), mAPKPaths, mBatchButton, searchWord, activity);
             }
 
             @Override

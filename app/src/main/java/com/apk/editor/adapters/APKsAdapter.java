@@ -47,11 +47,11 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
 
     private final Activity activity;
     private final List<APKItems> data;
-    private final List<File> selectedAPKs;
+    private final List<String> selectedAPKs;
     private final MaterialButton batchButton;
     private final String searchWord;
 
-    public APKsAdapter(List<APKItems> data, List<File> selectedAPKs, MaterialButton batchButton, String searchWord, Activity activity) {
+    public APKsAdapter(List<APKItems> data, List<String> selectedAPKs, MaterialButton batchButton, String searchWord, Activity activity) {
         this.data = data;
         this.selectedAPKs = selectedAPKs;
         this.batchButton = batchButton;
@@ -71,7 +71,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull APKsAdapter.ViewHolder holder, int position) {
         try {
             APKItems apkItems = this.data.get(position);
-            boolean isSelected = selectedAPKs.contains(apkItems.getAPKFile());
+            boolean isSelected = selectedAPKs.contains(apkItems.getPath());
 
             if (apkItems.getVersionName(holder.mVersion.getContext()) != null) {
                 holder.mVersion.setText(apkItems.getVersionName(holder.mVersion.getContext()));
@@ -119,7 +119,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
             holder.mAppIcon.setOnClickListener(v -> {
                 int currentPos = holder.getBindingAdapterPosition();
                 if (currentPos != RecyclerView.NO_POSITION) {
-                    selectedAPKs.add(data.get(currentPos).getAPKFile());
+                    selectedAPKs.add(data.get(currentPos).getPath());
                     notifyItemChanged(currentPos);
                     toggleBatchMenu();
                 }
@@ -128,7 +128,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
             holder.mCheckBox.setOnClickListener(v -> {
                 int currentPos = holder.getBindingAdapterPosition();
                 if (currentPos != RecyclerView.NO_POSITION) {
-                    selectedAPKs.remove(data.get(currentPos).getAPKFile());
+                    selectedAPKs.remove(data.get(currentPos).getPath());
                     notifyItemChanged(currentPos);
                     toggleBatchMenu();
                 }
@@ -149,7 +149,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                         })
                         .setPositiveButton(R.string.delete, (dialog, id) -> {
                             new DeleteFile(itemToDelete.getAPKFile(), activity, false).execute();
-                            selectedAPKs.remove(itemToDelete.getAPKFile());
+                            selectedAPKs.remove(itemToDelete.getPath());
                             data.remove(currentPos);
                             notifyItemRemoved(currentPos);
                             notifyItemRangeChanged(currentPos, data.size());
@@ -245,9 +245,9 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
             APKItems apkItems = data.get(currentPos);
             if (currentPos == RecyclerView.NO_POSITION) return;
 
-            if (selectedAPKs.contains(apkItems.getAPKFile())) {
+            if (selectedAPKs.contains(apkItems.getPath())) {
                 view.post(() -> {
-                    selectedAPKs.remove(apkItems.getAPKFile());
+                    selectedAPKs.remove(apkItems.getPath());
                     notifyItemChanged(currentPos);
                     toggleBatchMenu();
                 });
