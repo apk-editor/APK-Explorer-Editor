@@ -10,8 +10,8 @@ import com.apk.editor.activities.BuildingActivity;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.BundleFile;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.SerializableItems.APKItems;
 import com.apk.editor.utils.ZipAlign;
 
 import org.json.JSONException;
@@ -110,18 +110,18 @@ public class SignAPK extends sExecutor {
             }
             sFileUtils.mkdir(mParent);
 
-            APKItems apkItems = new APKItems(new File(sourceDirPath).getParentFile());
+            BundleFile bundleFile = new BundleFile(Objects.requireNonNull(new File(sourceDirPath).getParentFile()));
             for (String mSplits : APKData.splitApks(sourceDirPath)) {
-                if (!new File(mSplits).equals(apkItems.getBaseAPK(mActivity))) {
+                if (!new File(mSplits).equals(bundleFile.getBaseAPK(mActivity))) {
                     Common.setStatus(mActivity.getString(R.string.signing, new File(mSplits).getName()), mActivity);
                     APKData.signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), mActivity);
                 }
             }
-            Common.setStatus(mActivity.getString(R.string.signing, apkItems.getBaseAPK(mActivity).getName()), mActivity);
+            Common.setStatus(mActivity.getString(R.string.signing, bundleFile.getBaseAPK(mActivity).getName()), mActivity);
 
-            sCommonUtils.saveString("packageName", sAPKUtils.getPackageName(apkItems.getBaseAPKPath(mActivity), mActivity), mActivity);
+            sCommonUtils.saveString("packageName", sAPKUtils.getPackageName(bundleFile.getBaseAPKPath(mActivity), mActivity), mActivity);
 
-            APKData.signApks(mTMPZip, new File(mParent, apkItems.getBaseAPK(mActivity).getName()), mActivity);
+            APKData.signApks(mTMPZip, new File(mParent, bundleFile.getBaseAPKName(mActivity)), mActivity);
         } else {
             mParent = new File(APKData.getExportPath(mActivity), Objects.requireNonNull(packageName).replace(".apk", "") + "_aee-signed.apk");
             if (mParent.exists()) {

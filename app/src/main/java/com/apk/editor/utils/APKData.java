@@ -11,7 +11,6 @@ import androidx.core.content.FileProvider;
 
 import com.apk.editor.BuildConfig;
 import com.apk.editor.R;
-import com.apk.editor.utils.SerializableItems.APKItems;
 
 import java.io.File;
 import java.util.Collections;
@@ -28,31 +27,28 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class APKData {
 
-    public static List<APKItems> getData(String searchWord, Context context) {
-        List<APKItems> mData = new CopyOnWriteArrayList<>();
+    public static List<File> getData(String searchWord, Context context) {
+        List<File> mData = new CopyOnWriteArrayList<>();
         for (File mFile : getAPKList(context)) {
             if (sCommonUtils.getString("apkTypes", "apks", context).equals("bundles")) {
                 if (mFile.isDirectory() && !mFile.getName().equals("APK") && isValidBundle(mFile, context)) {
                     if (searchWord == null) {
-                        mData.add(new APKItems(mFile));
-                    } else if (Common.isTextMatched(mFile.getAbsolutePath(), searchWord)) {
-                        mData.add(new APKItems(mFile));
+                        mData.add(mFile);
+                    } else if (Common.isTextMatched(mFile.getName(), searchWord)) {
+                        mData.add(mFile);
                     }
                 }
             } else {
                 if (mFile.exists() && mFile.getName().endsWith(".apk")) {
                     if (searchWord == null) {
-                        mData.add(new APKItems(mFile));
-                    } else if (sAPKUtils.getAPKName(mFile.getAbsolutePath(), context) != null && Common.isTextMatched(Objects.requireNonNull(
-                            sAPKUtils.getAPKName(mFile.getAbsolutePath(), context)).toString(), searchWord)) {
-                        mData.add(new APKItems(mFile));
+                        mData.add(mFile);
                     } else if (Common.isTextMatched(mFile.getName(), searchWord)) {
-                        mData.add(new APKItems(mFile));
+                        mData.add(mFile);
                     }
                 }
             }
         }
-        Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getAPKFile().getName(), rhs.getAPKFile().getName()));
+        Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getName(), rhs.getName()));
         if (!sCommonUtils.getBoolean("az_order", true, context)) {
             Collections.reverse(mData);
         }
@@ -139,9 +135,14 @@ public class APKData {
     }
 
     private static boolean isValidBundle(File parentDir, Context context) {
-        for (File files : Objects.requireNonNull(parentDir.listFiles())) {
-            if (files.getName().endsWith(".apk") && sAPKUtils.getPackageName(files.getAbsolutePath(), context) != null) {
-                return true;
+        File baseAPK = new File(parentDir, "base.apk");
+        if (baseAPK.exists()) {
+            return true;
+        } else {
+            for (File files : Objects.requireNonNull(parentDir.listFiles())) {
+                if (files.isFile() && files.getName().endsWith(".apk") && sAPKUtils.getPackageName(files.getAbsolutePath(), context) != null) {
+                    return true;
+                }
             }
         }
         return false;
