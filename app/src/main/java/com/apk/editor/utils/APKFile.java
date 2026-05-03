@@ -4,9 +4,11 @@ import static android.view.View.VISIBLE;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.format.Formatter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -73,10 +75,10 @@ public class APKFile extends File {
         } else {
             length = length();
         }
-        return context.getString(R.string.size, sAPKUtils.getAPKSize(length));
+        return context.getString(R.string.size, Formatter.formatFileSize(context, length));
     }
 
-    public void load(ImageView icon, TextView name, TextView size, TextView version) {
+    public void load(ImageView icon, TextView name, TextView path, TextView size, TextView version) {
         try (ExecutorService executor = Executors.newSingleThreadExecutor()) {
             Handler handler = new Handler(Looper.getMainLooper());
 
@@ -84,8 +86,9 @@ public class APKFile extends File {
                 CharSequence appName;
                 Drawable appIcon;
                 String appSize, appVersion;
+                String packageName = getPackageName(name.getContext());
 
-                if (getPackageName(name.getContext()) != null) {
+                if (packageName != null) {
                     appName = sAPKUtils.getAPKName(getBaseAPKPath(name.getContext()), name.getContext());
                     appIcon = sAPKUtils.getAPKIcon(getBaseAPKPath(icon.getContext()), icon.getContext());
                     appSize = getSize(size.getContext());
@@ -99,8 +102,12 @@ public class APKFile extends File {
 
                 handler.post(() -> {
                     name.setText(appName);
+                    path.setText(getName());
                     icon.setImageDrawable(appIcon);
                     version.setVisibility(VISIBLE);
+                    if (packageName == null) {
+                        name.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                    }
                     version.setText(appVersion);
                     size.setVisibility(VISIBLE);
                     size.setText(appSize);

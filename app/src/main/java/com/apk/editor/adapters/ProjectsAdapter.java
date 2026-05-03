@@ -1,9 +1,10 @@
 package com.apk.editor.adapters;
 
+import static android.view.View.VISIBLE;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKExploreActivity;
-import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppSettings;
-import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Projects;
 import com.apk.editor.utils.tasks.DeleteFile;
 import com.google.android.material.button.MaterialButton;
@@ -30,8 +29,8 @@ import com.google.android.material.textview.MaterialTextView;
 import java.io.File;
 import java.text.DateFormat;
 import java.util.List;
-import java.util.Objects;
 
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
@@ -45,13 +44,11 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
     private final List<String> data;
     private final List<String> selectedProjects;
     private final MaterialButton batchButton;
-    private final String searchWord;
 
-    public ProjectsAdapter(List<String> data, List<String> selectedProjects, MaterialButton batchButton, String searchWord, ActivityResultLauncher<Intent> activityResultLauncher, Activity activity) {
+    public ProjectsAdapter(List<String> data, List<String> selectedProjects, MaterialButton batchButton, ActivityResultLauncher<Intent> activityResultLauncher, Activity activity) {
         this.data = data;
         this.selectedProjects = selectedProjects;
         this.batchButton = batchButton;
-        this.searchWord = searchWord;
         this.activityResultLauncher = activityResultLauncher;
         this.activity = activity;
     }
@@ -59,7 +56,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
     @NonNull
     @Override
     public ProjectsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_apks, parent, false);
+        View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view, parent, false);
         return new ViewHolder(rowItem);
     }
 
@@ -73,16 +70,14 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
             if (APKExplorer.getAppIcon(projectPath + "/.aeeBackup/appData") != null) {
                 holder.mAppIcon.setImageBitmap(APKExplorer.getAppIcon(projectPath + "/.aeeBackup/appData"));
             }
-            if (searchWord != null && Common.isTextMatched((Objects.requireNonNull(APKExplorer.getAppName(projectPath + "/.aeeBackup/appData"))), searchWord)) {
-                holder.mAppName.setText(APKEditorUtils.fromHtml(Objects.requireNonNull(APKExplorer.getAppName(projectPath + "/.aeeBackup/appData")).replace(searchWord,
-                        "<b><i><font color=\"" + Color.RED + "\">" + searchWord + "</font></i></b>")));
-            } else {
-                holder.mAppName.setText(APKExplorer.getAppName(projectPath + "/.aeeBackup/appData"));
-            }
+            holder.mAppName.setText(APKExplorer.getAppName(projectPath + "/.aeeBackup/appData"));
+            holder.mPackageName.setText(APKExplorer.getPackageName(projectPath + "/.aeeBackup/appData"));
 
-            holder.mTotalSize.setText(holder.mAppName.getContext().getString(R.string.last_modified, DateFormat.getDateTimeInstance()
+            holder.mDelete.setIcon(sCommonUtils.getDrawable(R.drawable.ic_delete, holder.mDelete.getContext()));
+            holder.mVersion.setText(holder.mVersion.getContext().getString(R.string.last_modified, DateFormat.getDateTimeInstance()
                     .format(new File(projectPath).lastModified())));
-            holder.mTotalSize.setVisibility(View.VISIBLE);
+            holder.mSize.setText(APKExplorer.getVersionInfo(projectPath + "/.aeeBackup/appData"));
+            holder.mDelete.setVisibility(VISIBLE);
 
             if (isSelected) {
                 holder.mCheckBox.setVisibility(View.VISIBLE);
@@ -157,16 +152,18 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
         private final AppCompatImageButton mAppIcon;
         private final MaterialButton mDelete;
         private final MaterialCheckBox mCheckBox;
-        private final MaterialTextView mAppName, mTotalSize;
+        private final MaterialTextView mAppName, mPackageName, mSize, mVersion;
 
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
             this.mAppIcon = view.findViewById(R.id.icon);
             this.mCheckBox = view.findViewById(R.id.checkbox);
-            this.mDelete = view.findViewById(R.id.delete);
+            this.mDelete = view.findViewById(R.id.open);
             this.mAppName = view.findViewById(R.id.title);
-            this.mTotalSize = view.findViewById(R.id.version);
+            this.mPackageName = view.findViewById(R.id.description);
+            this.mVersion = view.findViewById(R.id.version);
+            this.mSize = view.findViewById(R.id.size);
 
             view.setOnLongClickListener(v -> {
                 new MaterialAlertDialogBuilder(v.getContext())

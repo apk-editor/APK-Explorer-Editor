@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.format.Formatter;
 import android.widget.ImageView;
 
 import com.apk.editor.utils.AppData;
@@ -57,6 +58,11 @@ public class PackageItems implements Serializable {
 
     public String getPackageName() {
         return mPackageName;
+    }
+
+    public String getSize(Context context) {
+        long sizeInByte = getAPKSize();
+        return Formatter.formatFileSize(context, sizeInByte);
     }
 
     public void loadAppIcon(ImageView view) {

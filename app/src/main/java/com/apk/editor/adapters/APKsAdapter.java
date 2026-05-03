@@ -6,7 +6,6 @@ import static android.view.View.VISIBLE;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +60,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
     @NonNull
     @Override
     public APKsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_apks, parent, false);
+        View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view, parent, false);
         return new ViewHolder(rowItem);
     }
 
@@ -72,11 +71,10 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
             APKFile apkItems = new APKFile(this.data.get(position));
             boolean isSelected = selectedAPKs.contains(apkItems.getPath());
 
-            apkItems.load(holder.mAppIcon, holder.mAppName, holder.mSize, holder.mVersion);
+            apkItems.load(holder.mAppIcon, holder.mAppName, holder.mPath, holder.mSize, holder.mVersion);
 
-            if (apkItems.getPackageName(holder.mAppName.getContext()) == null) {
-                holder.mAppName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            }
+            holder.mDelete.setIcon(sCommonUtils.getDrawable(R.drawable.ic_delete, holder.mDelete.getContext()));
+            holder.mDelete.setVisibility(VISIBLE);
 
             if (isSelected) {
                 holder.mCheckBox.setVisibility(VISIBLE);
@@ -188,15 +186,16 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
         private final AppCompatImageButton mAppIcon;
         private final MaterialButton mDelete;
         private final MaterialCheckBox mCheckBox;
-        private final MaterialTextView mAppName, mSize, mVersion;
+        private final MaterialTextView mAppName, mPath, mSize, mVersion;
 
         public ViewHolder(View view) {
             super(view);
             view.setOnClickListener(this);
             this.mAppIcon = view.findViewById(R.id.icon);
             this.mCheckBox = view.findViewById(R.id.checkbox);
-            this.mDelete = view.findViewById(R.id.delete);
+            this.mDelete = view.findViewById(R.id.open);
             this.mAppName = view.findViewById(R.id.title);
+            this.mPath = view.findViewById(R.id.description);
             this.mSize = view.findViewById(R.id.size);
             this.mVersion = view.findViewById(R.id.version);
 

@@ -29,8 +29,6 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
 
-import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
-
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
@@ -129,7 +127,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
             });
 
             holder.mVersion.setText(holder.mAppName.getContext().getString(R.string.version, packageItems.getAppVersion()));
-            holder.mSize.setText(holder.mAppName.getContext().getString(R.string.size, sAPKUtils.getAPKSize(packageItems.getAPKSize())));
+            holder.mSize.setText(holder.mAppName.getContext().getString(R.string.size, packageItems.getSize(holder.mSize.getContext())));
             holder.mSize.setVisibility(VISIBLE);
             holder.mVersion.setVisibility(VISIBLE);
 

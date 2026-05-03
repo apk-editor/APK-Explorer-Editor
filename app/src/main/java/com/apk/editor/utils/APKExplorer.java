@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.text.format.Formatter;
 import android.util.Base64;
 
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -161,6 +162,15 @@ public class APKExplorer {
         return null;
     }
 
+    public static String getVersionInfo(String path) {
+        if (getAppData(path) == null) return null;
+        try {
+            return Objects.requireNonNull(getAppData(path)).getString("version_info");
+        } catch (JSONException ignored) {
+        }
+        return null;
+    }
+
     @SuppressLint("StringFormatInvalid")
     public static List<String> getTextViewData(String path, String searchWord, boolean parsedManifest, Context context) {
         List<String> mData = new CopyOnWriteArrayList<>();
@@ -227,19 +237,9 @@ public class APKExplorer {
         return bitmap;
     }
 
-    public static String getFormattedFileSize(File file) {
+    public static String getFormattedFileSize(File file, Context context) {
         long sizeInByte = file.length();
-        if (sizeInByte > 1024) {
-            long sizeInKB = sizeInByte / 1024;
-            long decimal = (sizeInKB - 1024) / 1024;
-            if (sizeInKB > 1024) {
-                return sizeInKB / 1024 + "." + decimal + " MB";
-            } else {
-                return sizeInKB + " KB";
-            }
-        } else {
-            return sizeInByte + " B";
-        }
+        return Formatter.formatFileSize(context, sizeInByte);
     }
 
     private static void installAPKs(boolean exit, List<String> apkList, Activity activity) {

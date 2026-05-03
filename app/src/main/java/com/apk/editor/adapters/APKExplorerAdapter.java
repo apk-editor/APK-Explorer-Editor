@@ -130,7 +130,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
         }
 
         holder.mTitle.setText(new File(explorerItem).getName());
-        holder.mDescription.setText(APKExplorer.getFormattedFileSize(new File(explorerItem)));
+        holder.mDescription.setText(APKExplorer.getFormattedFileSize(new File(explorerItem), holder.mDescription.getContext()));
         holder.mDescription.setVisibility(VISIBLE);
         AppSettings.setSlideInAnimation(holder.itemView, position);
     }

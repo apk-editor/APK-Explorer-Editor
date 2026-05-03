@@ -185,7 +185,7 @@ public class ProjectsFragment extends Fragment {
 
             @Override
             public void doInBackground() {
-                mRecycleViewAdapter = new ProjectsAdapter(Projects.getData(searchWord, activity), mProjectNames, mBatchButton, searchWord, activityResultLauncher, activity);
+                mRecycleViewAdapter = new ProjectsAdapter(Projects.getData(searchWord, activity), mProjectNames, mBatchButton, activityResultLauncher, activity);
             }
 
             @Override
