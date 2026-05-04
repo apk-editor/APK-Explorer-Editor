@@ -100,15 +100,16 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                     APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_file), holder.mIcon.getContext());
                 }
             }
+            holder.mDescription.setVisibility(VISIBLE);
             holder.mIcon.setClickable(true);
 
             if (isSelected) {
-                holder.mCheckBox.setVisibility(View.VISIBLE);
+                holder.mCheckBox.setVisibility(VISIBLE);
                 holder.mIcon.setVisibility(View.GONE);
                 holder.mCheckBox.setChecked(true);
             } else {
                 holder.mCheckBox.setVisibility(View.GONE);
-                holder.mIcon.setVisibility(View.VISIBLE);
+                holder.mIcon.setVisibility(VISIBLE);
                 holder.mCheckBox.setChecked(false);
             }
 
@@ -131,7 +132,6 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
 
         holder.mTitle.setText(new File(explorerItem).getName());
         holder.mDescription.setText(APKExplorer.getFormattedFileSize(new File(explorerItem), holder.mDescription.getContext()));
-        holder.mDescription.setVisibility(VISIBLE);
         AppSettings.setSlideInAnimation(holder.itemView, position);
     }
 
