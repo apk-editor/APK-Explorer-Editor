@@ -34,6 +34,11 @@ public class KeyPair {
 
     public KeyPair(Context context) {
         this.context = context;
+
+        // Ensure private key from old versions removed
+        if (getPK8PrivateKey(context).exists() && !getSigningCredentials(context).exists()) {
+            reset(context);
+        }
     }
 
     public static File getPK8PrivateKey(Context context) {
