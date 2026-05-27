@@ -38,18 +38,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel"
-            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="wrap_content"
-            style="?attr/materialIconButtonFilledTonalStyle"
-            android:textColor="?attr/colorPrimary"
-            app:iconTint="?attr/colorPrimary"
-            android:textStyle="bold|italic"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10sp"
             app:icon="@drawable/ic_cancel"
             android:text="@string/cancel"
             android:layout_margin="50dp"
-            android:paddingStart="10sp"
-            android:paddingEnd="10sp"
-            android:textSize="17sp"
-            app:iconPadding="10sp"
-            app:iconGravity="end" />
+            android:alpha="0.75"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

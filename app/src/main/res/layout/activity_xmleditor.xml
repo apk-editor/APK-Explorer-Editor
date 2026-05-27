@@ -55,19 +55,14 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/save"
+        style="@style/Widget.Material3.Button.TonalButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?attr/materialIconButtonFilledTonalStyle"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="45sp"
         android:layout_marginEnd="45sp"
         app:icon="@drawable/ic_save"
         android:text="@string/save"
-        app:iconGravity="textStart"
         android:visibility="gone"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="15sp"
-        android:padding="15sp"
-        app:iconPadding="5sp" />
+        android:gravity="center" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

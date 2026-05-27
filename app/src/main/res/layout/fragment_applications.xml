@@ -89,20 +89,14 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/batch_options"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        style="?attr/materialIconButtonFilledTonalStyle"
-        android:textColor="?attr/colorPrimary"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Button.TonalButton"
         android:text="@string/batch_options"
         android:layout_gravity="bottom|end"
-        app:iconTint="?attr/colorPrimary"
         android:textStyle="bold|italic"
         app:icon="@drawable/ic_batch"
-        android:layout_margin="75dp"
-        android:paddingStart="10sp"
+        android:layout_margin="85dp"
         android:visibility="gone"
-        android:paddingEnd="10sp"
-        app:iconGravity="start"
-        android:textSize="20sp"
-        app:iconPadding="10sp" />
+        android:textSize="15sp" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

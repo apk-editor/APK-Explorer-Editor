@@ -44,50 +44,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/icons_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="5dp" >
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp" >
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?attr/materialIconButtonFilledTonalStyle"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/install"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textColor="?attr/colorPrimary"
-            app:iconTint="?attr/colorPrimary"
-            android:textStyle="bold|italic"
-            android:layout_marginEnd="8dp"
             app:icon="@drawable/ic_cancel"
             android:text="@string/cancel"
-            android:textSize="17sp"
-            android:padding="15sp"
-            app:iconPadding="10sp" />
+            android:alpha="0.75"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/install"
+            style="@style/Widget.Material3.Button.TonalButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?attr/materialIconButtonFilledTonalStyle"
-            app:layout_constraintStart_toEndOf="@+id/cancel"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="?attr/colorPrimary"
-            app:iconTint="?attr/colorPrimary"
             app:icon="@drawable/ic_installer"
-            android:layout_marginStart="8dp"
-            android:textStyle="bold|italic"
-            android:text="@string/install"
-            android:textSize="17sp"
-            android:padding="15sp"
-            app:iconPadding="10sp"
-            app:iconGravity="end" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:text="@string/install" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,8 +13,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            style="@style/AppTheme.Title"
-            android:gravity="start" />
+            android:paddingHorizontal="15dp"
+            android:gravity="center|start"
+            style="@style/AppTheme.Title" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/icon"
@@ -24,6 +25,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/status"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/title"
+            android:layout_marginHorizontal="10dp"
             android:background="@null" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -37,6 +39,7 @@
             app:layout_constraintStart_toEndOf="@+id/icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginVertical="4dp"
             android:textStyle="bold"
             android:textSize="18sp" />
 
@@ -49,7 +52,7 @@
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/title"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp"
+            android:layout_marginVertical="4dp"
             android:indeterminate="true" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -60,54 +63,40 @@
             app:layout_constraintTop_toBottomOf="@+id/progress"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="4dp"
+            android:layout_marginVertical="4dp"
             android:textSize="14sp" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/buttons_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="5dp" >
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp" >
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/open"
+                    style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="?attr/materialIconButtonFilledTonalStyle"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/cancel"
-                    app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:textColor="?attr/colorPrimary"
-                    app:iconTint="?attr/colorPrimary"
-                    android:layout_marginEnd="8dp"
-                    android:textStyle="bold|italic"
+                    android:text="@string/install"
                     app:icon="@drawable/ic_open"
-                    android:text="@string/open"
-                    android:visibility="gone"
-                    android:textSize="17sp"
-                    android:padding="15sp"
-                    app:iconPadding="10sp" />
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/cancel"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="?attr/materialIconButtonFilledTonalStyle"
-                    app:layout_constraintStart_toEndOf="@+id/open"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="?attr/colorPrimary"
-                    app:iconTint="?attr/colorPrimary"
-                    android:layout_marginStart="8dp"
-                    android:textStyle="bold|italic"
                     app:icon="@drawable/ic_cancel"
                     android:text="@string/cancel"
                     android:visibility="gone"
-                    android:textSize="17sp"
-                    android:padding="15sp"
-                    app:iconPadding="10sp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:alpha="0.75"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.constraintlayout.widget.ConstraintLayout>

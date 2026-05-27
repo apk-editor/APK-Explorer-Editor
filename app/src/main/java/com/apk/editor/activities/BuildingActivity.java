@@ -52,6 +52,10 @@ public class BuildingActivity extends BaseActivity {
         MaterialTextView mTaskSummary = findViewById(R.id.task_summary);
         MaterialTextView mSuccess = findViewById(R.id.success);
 
+        if (Common.getError() > 0) {
+            Common.setError(0);
+        }
+
         mError.setTextColor(Color.RED);
         mSuccess.setTextColor(Color.GREEN);
         mIcon.setScaleX(-1);

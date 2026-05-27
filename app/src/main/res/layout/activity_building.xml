@@ -78,60 +78,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_margin="25dp"
-            android:gravity="center" >
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp" >
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/install"
-                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="wrap_content"
-                    style="?attr/materialIconButtonFilledTonalStyle"
-                    android:textColor="?attr/colorPrimary"
-                    app:iconTint="?attr/colorPrimary"
+                    android:layout_height="wrap_content"
                     app:icon="@drawable/ic_installer"
-                    android:textStyle="bold|italic"
                     android:text="@string/install"
-                    android:layout_margin="25dp"
-                    android:paddingStart="10sp"
-                    android:visibility="gone"
-                    android:paddingEnd="10sp"
-                    app:iconGravity="start"
-                    android:textSize="17sp"
-                    app:iconPadding="10sp" />
+                    android:visibility="gone" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/details"
-                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="wrap_content"
-                    style="?attr/materialIconButtonFilledTonalStyle"
-                    android:textColor="?attr/colorPrimary"
-                    app:iconTint="?attr/colorPrimary"
-                    android:textStyle="bold|italic"
+                    android:layout_height="wrap_content"
                     app:icon="@drawable/ic_expand"
                     android:text="@string/details"
-                    android:layout_margin="25dp"
-                    android:paddingStart="10sp"
-                    android:visibility="gone"
-                    android:paddingEnd="10sp"
-                    app:iconGravity="start"
-                    android:textSize="17sp"
-                    app:iconPadding="10sp" />
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/cancel"
-                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
-                    style="?attr/materialIconButtonFilledTonalStyle"
-                    android:textColor="?attr/colorPrimary"
-                    app:iconTint="?attr/colorPrimary"
-                    android:textStyle="bold|italic"
+                    android:layout_height="wrap_content"
                     app:icon="@drawable/ic_cancel"
                     android:text="@string/cancel"
-                    android:layout_margin="25dp"
-                    android:paddingStart="10sp"
-                    android:paddingEnd="10sp"
-                    android:textSize="17sp"
-                    app:iconPadding="10sp"
-                    app:iconGravity="end" />
+                    android:alpha="0.75"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.appcompat.widget.LinearLayoutCompat>
