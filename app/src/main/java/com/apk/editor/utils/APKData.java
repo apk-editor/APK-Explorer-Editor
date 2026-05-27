@@ -77,20 +77,9 @@ public class APKData {
 
     public static void signApks(File apk, File signedAPK, Context context) {
         try {
-            checkAndPrepareSigningEnvironment(context);
-
-            APKSigner apkSigner = new APKSigner(context);
-            apkSigner.sign(apk, signedAPK);
+            APKSigner apkSigner = new APKSigner();
+            apkSigner.sign(apk, signedAPK, context);
         } catch (Exception ignored) {}
-    }
-
-    private static void checkAndPrepareSigningEnvironment(Context context) {
-        if (APKSigner.getPK8PrivateKey(context).exists()) {
-            return;
-        }
-
-        sFileUtils.mkdir(new File(context.getFilesDir(), "signing"));
-        sFileUtils.copyAssetFile("APKEditor.pk8", APKSigner.getPK8PrivateKey(context), context);
     }
 
     public static String findPackageName(List<String> apkList, Context context) {

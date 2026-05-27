@@ -19,7 +19,7 @@ import com.apk.axml.APKParser;
 import com.apk.editor.R;
 import com.apk.editor.interfaces.KeyStoreAliasChoiceDialog;
 import com.apk.editor.interfaces.KeyStoreVerifierInterface;
-import com.apk.editor.utils.APKSigner;
+import com.apk.editor.utils.KeyPair;
 import com.apk.editor.utils.PK8File;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -85,9 +85,7 @@ public class APKSignActivity extends BaseActivity {
         });
 
         mClearKey.setOnClickListener(v -> {
-            sFileUtils.delete(APKSigner.getPK8PrivateKey(this));
-            sFileUtils.delete(APKSigner.getSigningCredentials(this));
-            mKeySummary.setText(mKeySummaryText);
+            KeyPair.reset(this);
             mClearKey.setVisibility(View.GONE);
             mText.setVisibility(View.GONE);
             mText.setText(null);
@@ -97,9 +95,9 @@ public class APKSignActivity extends BaseActivity {
     }
 
     private void setStatus() {
-        if (APKSigner.getSigningCredentials(this).exists()) {
+        if (KeyPair.isCustomSigning(this)) {
             try {
-                mJSONObject = new JSONObject(sFileUtils.read(APKSigner.getSigningCredentials(this)));
+                mJSONObject = new JSONObject(KeyPair.getCredentials(this));
                 mKeySummary.setText(mJSONObject.getString("privateKey"));
                 mClearKey.setVisibility(View.VISIBLE);
 
@@ -123,13 +121,13 @@ public class APKSignActivity extends BaseActivity {
 
                     if (uriFile != null) {
                         try {
-                            X509Certificate x509Certificate = APKSigner.encodeCertificate(getContentResolver().openInputStream(uriFile));
+                            X509Certificate x509Certificate = KeyPair.encodeCertificate(getContentResolver().openInputStream(uriFile));
                             if (x509Certificate != null) {
-                                PrivateKey privateKey = new PK8File(APKSigner.getPK8PrivateKey(this)).getPrivateKey();
+                                PrivateKey privateKey = new PK8File(KeyPair.getPK8PrivateKey(this)).getPrivateKey();
                                 if (!isKeysMatches(privateKey, x509Certificate)) {
                                     new MaterialAlertDialogBuilder(this)
                                             .setMessage(R.string.keypair_mismatch_message)
-                                            .setNegativeButton(getString(R.string.cancel), (dialog, id) -> sFileUtils.delete(APKSigner.getPK8PrivateKey(this)))
+                                            .setNegativeButton(getString(R.string.cancel), (dialog, id) -> sFileUtils.delete(KeyPair.getPK8PrivateKey(this)))
                                             .setPositiveButton(getString(R.string.choose_new), (dialog, id) -> chooseCertificate()
                                             ).show();
                                     return;
@@ -141,13 +139,13 @@ public class APKSignActivity extends BaseActivity {
                                 mJSONObject.put("x509Certificate", decodedCertificate);
                                 String summaryText = APKParser.getCertificateDetails(x509Certificate);
                                 mJSONObject.put("certificate", summaryText);
-                                sFileUtils.create(mJSONObject.toString(), APKSigner.getSigningCredentials(this));
+                                sFileUtils.create(mJSONObject.toString(), KeyPair.getSigningCredentials(this));
                                 mText.setVisibility(View.VISIBLE);
                                 mText.setText(summaryText);
                             } else {
                                 sCommonUtils.toast(getString(R.string.x509_certificate_invalid), this).show();
                             }
-                        } catch (JSONException | IOException ignored) {
+                        } catch (JSONException | IOException | CertificateException ignored) {
                         }
 
                         setStatus();
@@ -169,12 +167,12 @@ public class APKSignActivity extends BaseActivity {
                         // Check if the selected file is a PK8 private key
                         PrivateKey privateKey = getPrivateKeyFromUri(uriFile);
                         if (privateKey != null) {
-                            privateKeyToFile(privateKey, APKSigner.getPK8PrivateKey(this));
+                            privateKeyToFile(privateKey, KeyPair.getPK8PrivateKey(this));
                             new MaterialAlertDialogBuilder(this)
                                     .setIcon(R.mipmap.ic_launcher)
                                     .setTitle(R.string.app_name)
                                     .setMessage(R.string.x509_certificate_requirement_message)
-                                    .setNegativeButton(getString(R.string.cancel), (dialog, id) -> sFileUtils.delete(APKSigner.getPK8PrivateKey(this)))
+                                    .setNegativeButton(getString(R.string.cancel), (dialog, id) -> sFileUtils.delete(KeyPair.getPK8PrivateKey(this)))
                                     .setPositiveButton(getString(R.string.select), (dialog, id) -> chooseCertificate()
                                     ).show();
                             mKeySummary.setText(Base64.encodeToString(privateKey.getEncoded(), 0));
@@ -205,7 +203,7 @@ public class APKSignActivity extends BaseActivity {
                                                                     PrivateKey privateKey = (PrivateKey) keyStore.getKey(Objects.requireNonNull(getAliases(keyStore))[itemPosition], s.toString().trim().toCharArray());
                                                                     X509Certificate x509Certificate = (X509Certificate) keyStore.getCertificate(Objects.requireNonNull(getAliases(keyStore))[itemPosition]);
 
-                                                                    if (privateKeyToFile(privateKey, APKSigner.getPK8PrivateKey(APKSignActivity.this))) {
+                                                                    if (privateKeyToFile(privateKey, KeyPair.getPK8PrivateKey(APKSignActivity.this))) {
                                                                         String decodedPrivateKey = Base64.encodeToString(privateKey.getEncoded(), 0);
                                                                         mJSONObject.put("privateKey", decodedPrivateKey);
                                                                     }
@@ -214,7 +212,7 @@ public class APKSignActivity extends BaseActivity {
                                                                     String summaryText = APKParser.getCertificateDetails(x509Certificate);
                                                                     mJSONObject.put("certificate", summaryText);
 
-                                                                    sFileUtils.create(mJSONObject.toString(), APKSigner.getSigningCredentials(APKSignActivity.this));
+                                                                    sFileUtils.create(mJSONObject.toString(), KeyPair.getSigningCredentials(APKSignActivity.this));
 
                                                                     mClearKey.setVisibility(View.VISIBLE);
                                                                     setStatus();
@@ -292,8 +290,7 @@ public class APKSignActivity extends BaseActivity {
     }
 
     private PrivateKey getPrivateKeyFromUri(Uri uri) {
-        try {
-            InputStream inputStream = getContentResolver().openInputStream(uri);
+        try (InputStream inputStream = getContentResolver().openInputStream(uri)) {
             byte[] keyBytes = ByteStreams.toByteArray(Objects.requireNonNull(inputStream));
             PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
             KeyFactory kf = KeyFactory.getInstance("RSA");

@@ -548,7 +548,7 @@ public class AppSettings {
     }
 
     public static boolean isCustomKey(Context context) {
-        return APKSigner.getSigningCredentials(context).exists() && APKSigner.getPK8PrivateKey(context).exists();
+        return KeyPair.isCustomSigning(context);
     }
 
 }

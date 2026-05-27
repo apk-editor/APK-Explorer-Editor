@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apk.editor.R;
 import com.apk.editor.adapters.SettingsAdapter;
 import com.apk.editor.utils.APKEditorUtils;
-import com.apk.editor.utils.APKSigner;
 import com.apk.editor.utils.AppSettings;
+import com.apk.editor.utils.KeyPair;
 import com.apk.editor.utils.dialogs.ClearAppSettingsDialog;
 import com.apk.editor.utils.menu.ExploreOptionsMenu;
 
@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import com.apk.editor.utils.SerializableItems.SettingsItems;
 import in.sunilpaulmathew.sCommon.Dialog.sSingleChoiceDialog;
-import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
@@ -203,12 +202,7 @@ public class SettingsActivity extends BaseActivity {
                         public void onItemSelected(int itemPosition) {
                             if (itemPosition == 0) {
                                 if (AppSettings.isCustomKey(SettingsActivity.this)) {
-                                    if (sFileUtils.exist(APKSigner.getPK8PrivateKey(SettingsActivity.this))) {
-                                        sFileUtils.delete(APKSigner.getPK8PrivateKey(SettingsActivity.this));
-                                    }
-                                    if (sFileUtils.exist(APKSigner.getSigningCredentials(SettingsActivity.this))) {
-                                        sFileUtils.delete(APKSigner.getSigningCredentials(SettingsActivity.this));
-                                    }
+                                    KeyPair.reset(SettingsActivity.this);
                                     mData.set(position, new SettingsItems(sCommonUtils.getDrawable(
                                             R.drawable.ic_key, SettingsActivity.this), getString(R.string.sign_apk_with), AppSettings
                                             .getAPKSign(SettingsActivity.this)));
