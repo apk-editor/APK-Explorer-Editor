@@ -21,7 +21,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
-import com.apk.editor.utils.SafeSortHelper;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -49,7 +48,7 @@ public class APKData {
                 }
             }
         }
-        SafeSortHelper.safeSort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getName(), rhs.getName()));
+        Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getName(), rhs.getName()));
         if (!sCommonUtils.getBoolean("az_order", true, context)) {
             Collections.reverse(mData);
         }

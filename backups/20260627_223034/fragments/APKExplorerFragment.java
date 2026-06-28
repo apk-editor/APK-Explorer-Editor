@@ -54,7 +54,6 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
-import com.apk.editor.utils.SafeSortHelper;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 05, 2021
@@ -331,7 +330,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             @Override
             public void doInBackground() {
                 getData(mRootFile);
-                SafeSortHelper.safeSort(mData, String.CASE_INSENSITIVE_ORDER);
+                Collections.sort(mData, String.CASE_INSENSITIVE_ORDER);
                 if (!sCommonUtils.getBoolean("az_order", true, requireActivity())) {
                     Collections.reverse(mData);
                 }

@@ -17,7 +17,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
-import com.apk.editor.utils.SafeSortHelper;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -52,15 +51,15 @@ public class AppData {
             }
         }
         if (sCommonUtils.getInt("sort_apps", 1, context) == 0) {
-            SafeSortHelper.safeSort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getAppName(), rhs.getAppName()));
+            Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getAppName(), rhs.getAppName()));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getInt("sort_apps", 1, context) == 4) {
-            SafeSortHelper.safeSort(mData, Comparator.comparingLong(PackageItems::getAPKSize));
+            Collections.sort(mData, Comparator.comparingLong(PackageItems::getAPKSize));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getInt("sort_apps", 1, context) == 2) {
-            SafeSortHelper.safeSort(mData, Comparator.comparingLong(PackageItems::getInstalledTime));
+            Collections.sort(mData, Comparator.comparingLong(PackageItems::getInstalledTime));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && sCommonUtils.getInt("sort_apps", 1, context) == 3) {
-            SafeSortHelper.safeSort(mData, Comparator.comparingLong(PackageItems::getUpdatedTime));
+            Collections.sort(mData, Comparator.comparingLong(PackageItems::getUpdatedTime));
         } else {
-            SafeSortHelper.safeSort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getPackageName(), rhs.getPackageName()));
+            Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getPackageName(), rhs.getPackageName()));
         }
         if (!sCommonUtils.getBoolean("az_order", true, context)) {
             Collections.reverse(mData);

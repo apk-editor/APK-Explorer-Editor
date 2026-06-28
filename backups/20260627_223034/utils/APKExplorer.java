@@ -37,7 +37,6 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
-import com.apk.editor.utils.SafeSortHelper;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -55,7 +54,7 @@ public class APKExplorer {
                     mDir.add(mFile.getAbsolutePath());
                 }
             }
-            SafeSortHelper.safeSort(mDir, String.CASE_INSENSITIVE_ORDER);
+            Collections.sort(mDir, String.CASE_INSENSITIVE_ORDER);
             if (!sCommonUtils.getBoolean("az_order", true, activity)) {
                 Collections.reverse(mDir);
             }
@@ -71,7 +70,7 @@ public class APKExplorer {
 
                 }
             }
-            SafeSortHelper.safeSort(mFiles, String.CASE_INSENSITIVE_ORDER);
+            Collections.sort(mFiles, String.CASE_INSENSITIVE_ORDER);
             if (!sCommonUtils.getBoolean("az_order", true, activity)) {
                 Collections.reverse(mFiles);
             }

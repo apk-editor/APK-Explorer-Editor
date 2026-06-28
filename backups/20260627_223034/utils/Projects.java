@@ -19,7 +19,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
-import com.apk.editor.utils.SafeSortHelper;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -37,7 +36,7 @@ public class Projects {
                 }
             }
         }
-        SafeSortHelper.safeSort(mData);
+        Collections.sort(mData);
         if (!sCommonUtils.getBoolean("az_order", true, context)) {
             Collections.reverse(mData);
         }
