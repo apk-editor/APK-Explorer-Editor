@@ -1,12 +1,12 @@
 [versions]
-apksigVersion = "9.2.0"
+apksigVersion = "9.2.1"
 aXMLVersion = "394e0bd599"
 baksmaliVersion = "2.5.2"
 crashreporterVersion = "01df38c1bb"
 documentfileVersion = "1.1.0"
 sCommonVersion = "d532608ca4"
-agpVersion = "9.2.0"
-materialVersion = "1.13.0"
+agpVersion = "9.2.1"
+materialVersion = "1.14.0"
 zip4jVersion = "2.11.6"
 
 [libraries]

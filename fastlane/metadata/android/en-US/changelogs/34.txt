@@ -1,5 +1,0 @@
-* Optimized main UI view sizes and introduced smoother loading animations for a more fluid experience.
-* Optimized and updated the workflow—batch processing, now conveniently initiated by clicking individual item icons.
-* AEE now targeting the latest Android SDK to ensure maximum compatibility, performance, and security on newer devices.
-* Resolved a bug where the app theme status would occasionally fail to update in specific scenarios.
-* Integrated the latest community translations from POEditor and performed general translation cleanup.
