@@ -16,7 +16,7 @@ public class ClearAppSettingsDialog {
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.warning)
                 .setMessage(activity.getString(R.string.clear_cache_message))
-                .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                .setNeutralButton(R.string.cancel, (dialog, id) -> {
                 })
                 .setPositiveButton(R.string.delete, (dialog, id) ->
                         new ClearAppSettings(activity).execute()

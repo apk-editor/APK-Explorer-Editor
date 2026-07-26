@@ -1,7 +1,5 @@
 package com.apk.editor.utils.SerializableItems;
 
-import android.graphics.drawable.Drawable;
-
 import java.io.Serializable;
 
 /*
@@ -9,18 +7,30 @@ import java.io.Serializable;
  */
 public class SettingsItems implements Serializable {
 
-    private final Drawable icon;
+    private final int id, iconRes;
     private final String title;
     private String description;
 
-    public SettingsItems(Drawable icon, String title, String description) {
-        this.icon = icon;
+    public SettingsItems(String title) {
+        this.iconRes = Integer.MIN_VALUE;
         this.title = title;
-        this.description = description;
+        this.description = null;
+        this.id = 0;
     }
 
-    public Drawable getIcon() {
-        return this.icon;
+    public SettingsItems(int iconRes, String title, String description, int id) {
+        this.iconRes = iconRes;
+        this.title = title;
+        this.description = description;
+        this.id = id;
+    }
+
+    public int getIconRes() {
+        return this.iconRes;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public String getTitle() {

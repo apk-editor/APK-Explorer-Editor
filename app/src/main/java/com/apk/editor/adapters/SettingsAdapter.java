@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
@@ -43,11 +44,19 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
         } else {
             holder.Description.setVisibility(View.GONE);
         }
-        if (data.get(position).getIcon() != null) {
-            holder.mIcon.setImageDrawable(data.get(position).getIcon());
+        if (data.get(position).getIconRes() != Integer.MIN_VALUE) {
+            holder.mIcon.setImageResource(data.get(position).getIconRes());
         } else {
             holder.mIcon.setVisibility(View.GONE);
         }
+        if (data.get(position).getId() == 0) {
+            holder.Title.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            holder.Title.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        } else {
+            holder.Title.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+        }
+
     }
 
     @Override
@@ -69,7 +78,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            clickListener.onItemClick(getBindingAdapterPosition(), view);
+            if (data.get(getBindingAdapterPosition()).getId() != 0) {
+                clickListener.onItemClick(data.get(getBindingAdapterPosition()).getId(), view);
+            }
         }
     }
 
