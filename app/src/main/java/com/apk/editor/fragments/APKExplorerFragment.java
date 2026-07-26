@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,7 +18,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +30,8 @@ import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.DexToSmali;
+import com.apk.editor.utils.SerializableItems.ExploreOptionsItems;
+import com.apk.editor.utils.dialogs.ExplorerOptionsDialog;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.apk.editor.utils.tasks.DeleteFiles;
 import com.apk.editor.utils.tasks.ExportToStorage;
@@ -152,75 +152,73 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         }
 
         mMenuButton.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(requireActivity(), mMenuButton);
-            Menu menu = popupMenu.getMenu();
-            menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setIcon(R.drawable.ic_sort_az).setCheckable(true)
-                    .setChecked(sCommonUtils.getBoolean("az_order", true, requireActivity()));
+            List<ExploreOptionsItems> menuItem = new CopyOnWriteArrayList<>();
+            menuItem.add(new ExploreOptionsItems(R.drawable.ic_sort_az, getString(R.string.sort_order), true, sCommonUtils.getBoolean("az_order", true, requireActivity()), 0));
             if (mSearchWord.getVisibility() == View.GONE && Objects.requireNonNull(mFile.getParentFile()).getName().equals(requireActivity().getCacheDir().getName())) {
-                menu.add(Menu.NONE, 1, Menu.NONE, getString(R.string.search_files)).setIcon(R.drawable.ic_search_folder);
+                menuItem.add(new ExploreOptionsItems(R.drawable.ic_search_folder, getString(R.string.search_files), 1));
             }
             if (mFiles != null && !mFiles.isEmpty()) {
-                menu.add(Menu.NONE, 2, Menu.NONE, getString(R.string.export_selected_files)).setIcon(R.drawable.ic_export_file);
+                menuItem.add(new ExploreOptionsItems(R.drawable.ic_export_file, getString(R.string.export_selected_files), 2));
                 if (APKEditorUtils.isFullVersion(requireActivity())) {
-                    menu.add(Menu.NONE, 3, Menu.NONE, getString(R.string.delete_selected_files)).setIcon(R.drawable.ic_delete_file);
+                    menuItem.add(new ExploreOptionsItems(R.drawable.ic_delete_file, getString(R.string.delete_selected_files), 3));
                 }
             }
             if (APKEditorUtils.isFullVersion(requireActivity()) && !Objects.requireNonNull(mFile.getParentFile()).getName().equals(requireActivity().getCacheDir().getName())) {
-                menu.add(Menu.NONE, 4, Menu.NONE, getString(R.string.delete_folder)).setIcon(R.drawable.ic_delete_folder);
+                menuItem.add(new ExploreOptionsItems(R.drawable.ic_delete_folder, getString(R.string.delete_folder), 4));
             }
-            popupMenu.setForceShowIcon(true);
-            popupMenu.setOnMenuItemClickListener(item -> {
-                switch (item.getItemId()) {
-                    case 0:
-                        sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
-                        if (mSearchText != null) {
+            new ExplorerOptionsDialog(menuItem, requireContext()) {
+                @Override
+                public void onMenuItemClicked(int id) {
+                    switch (id) {
+                        case 0:
+                            sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
+                            if (mSearchText != null) {
+                                loadUI(mSearchText);
+                            } else {
+                                loadUI(mFile);
+                            }
+                            break;
+                        case 1:
+                            mSearchWord.setVisibility(View.VISIBLE);
+                            mSearchWord.requestFocus();
                             loadUI(mSearchText);
-                        } else {
-                            loadUI(mFile);
-                        }
-                        break;
-                    case 1:
-                        mSearchWord.setVisibility(View.VISIBLE);
-                        mSearchWord.requestFocus();
-                        loadUI(mSearchText);
-                        break;
-                    case 2:
-                        if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, requireActivity())) {
-                            sPermissionUtils.requestPermission(
-                                    new String[] {
-                                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                    }, requireActivity());
-                        } else {
-                            new ExportToStorage(null, mFiles, mRootFile.getName(), requireActivity()).execute();
-                        }
-                        break;
-                    case 3:
-                        new DeleteFiles(null, mFiles, mBackupFilePath, requireActivity()) {
+                            break;
+                        case 2:
+                            if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, requireActivity())) {
+                                sPermissionUtils.requestPermission(
+                                        new String[] {
+                                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                        }, requireActivity());
+                            } else {
+                                new ExportToStorage(null, mFiles, mRootFile.getName(), requireActivity()).execute();
+                            }
+                            break;
+                        case 3:
+                            new DeleteFiles(null, mFiles, mBackupFilePath, requireActivity()) {
 
-                            @Override
-                            public void onPostExecute() {
-                                if (mSearchText != null) {
-                                    loadUI(mSearchText);
-                                } else {
-                                    loadUI(mFile);
+                                @Override
+                                public void onPostExecute() {
+                                    if (mSearchText != null) {
+                                        loadUI(mSearchText);
+                                    } else {
+                                        loadUI(mFile);
+                                    }
                                 }
-                            }
-                        }.execute();
-                        break;
-                    case 4:
-                        new DeleteFiles(mFile, null, mBackupFilePath, requireActivity()) {
+                            }.execute();
+                            break;
+                        case 4:
+                            new DeleteFiles(mFile, null, mBackupFilePath, requireActivity()) {
 
-                            @Override
-                            public void onPostExecute() {
-                                mFiles = new ArrayList<>();
-                                loadUI(mFile.getParentFile());
-                            }
-                        }.execute();
-                        break;
+                                @Override
+                                public void onPostExecute() {
+                                    mFiles = new ArrayList<>();
+                                    loadUI(mFile.getParentFile());
+                                }
+                            }.execute();
+                            break;
+                    }
                 }
-                return false;
-            });
-            popupMenu.show();
+            };
         });
 
         mRecycleViewAdapter.setOnItemClickListener(filePath -> {
