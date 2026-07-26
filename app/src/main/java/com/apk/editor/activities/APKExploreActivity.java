@@ -6,12 +6,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.apk.editor.R;
 import com.apk.editor.fragments.APKExplorerFragment;
@@ -37,14 +33,14 @@ import navView.serializableItems.NavViewEntry;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
-public class APKExploreActivity extends AppCompatActivity {
+public class APKExploreActivity extends BaseActivity {
 
     public static final String BACKUP_PATH_INTENT = "backup_path";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_apkexplorer);
+        setContentView(R.layout.activity_apkexplorer, R.id.layout_root);
 
         AppCompatImageButton mBuild = findViewById(R.id.build);
         AppCompatImageView mApplicationIcon = findViewById(R.id.app_image);
@@ -52,14 +48,6 @@ public class APKExploreActivity extends AppCompatActivity {
         FrameLayout mFragmentContainer = findViewById(R.id.fragment_container);
         MaterialTextView mApplicationName = findViewById(R.id.app_title);
         MaterialTextView mPackageName = findViewById(R.id.package_id);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_root), (view, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-            view.setPadding(0, systemBars.top, 0, 0);
-
-            return insets;
-        });
 
         String mBackupFilePath = getIntent().getStringExtra(BACKUP_PATH_INTENT);
         File mRootFile = new File(Objects.requireNonNull(mBackupFilePath).replace("/.aeeBackup/appData", ""));

@@ -4,11 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
+import com.apk.editor.activities.BaseActivity;
 import com.apk.editor.activities.SettingsActivity;
 import com.apk.editor.activities.StartActivity;
 import com.apk.editor.fragments.APKsFragment;
@@ -29,13 +25,14 @@ import navView.serializableItems.NavViewEntry;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main, R.id.layout_root);
+        
         // Initialize App Theme & Language
         sThemeUtils.initializeAppTheme(this);
         AppSettings.initializeAppLanguage(this);
@@ -44,14 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
         NavView mNavView = findViewById(R.id.nav_view);
         FrameLayout mFragmentContainer = findViewById(R.id.fragment_container);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_root), (view, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-            view.setPadding(0, systemBars.top, 0, 0);
-
-            return insets;
-        });
 
         if (!sCommonUtils.getBoolean("welcome_message", false, this)) {
             Intent intent = new Intent(this, StartActivity.class);
