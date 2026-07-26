@@ -111,7 +111,6 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Effacer le cache"</string>
     <string name="clear_cache_summary">"Effacer les réglages internes d'AEE"</string>
-    <string name="clear_cache_message">"Tout va être supprimé à l'exception des applications exportées !"</string>
     <string name="export_options">"A l'exportation (APK)"</string>
     <string name="installer_action">"A l'installation d'un APK"</string>
     <string name="project_exist_action">"A la fermeture d'un projet"</string>
@@ -122,7 +121,6 @@
     <string name="sign_apk_custom">"Clé personnalisée"</string>
     <string name="sign_apk_default">"Clé par défaut"</string>
     <string name="sign_apk_with">"Signer les APK avec"</string>
-    <string name="warning">"Attention"</string>
     <string name="file_path_error">"Échec de récupération du chemin du fichier depuis le gestionnaire de fichiers externe"</string>
     <string name="text_editor">"Éditeur de texte AEE"</string>
     <string name="discard">"Annuler"</string>

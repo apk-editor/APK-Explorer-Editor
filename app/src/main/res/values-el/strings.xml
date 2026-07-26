@@ -22,7 +22,6 @@
     <string name="choose_new">Επιλογή Νέου</string>
     <string name="clear_cache">Εκκαθάριση προσωρινής μνήμης</string>
     <string name="clear_cache_summary">Διαγραφή εσωτερικών ρυθμίσεων του AEE</string>
-    <string name="clear_cache_message">Όλα, εκτός από τις εξαγόμενες εφαρμογές, θα καταργηθούν.</string>
     <string name="clearing_cache_message">Εκκαθάριση προσωρινής μνήμης…</string>
     <string name="copying">Αντιγραφή \'%s\'…</string>
     <string name="decompiling">Απομεταγλώττιση \'%s\'…</string>
@@ -186,7 +185,6 @@
     <string name="update">Ενημέρωση</string>
     <string name="user">Χρήστη</string>
     <string name="user_interface">Διεπαφή Χρήστη</string>
-    <string name="warning">Προειδοποίηση</string>
     <string name="wrong_extension">Επιλέξτε ένα αρχείο με επέκταση %s.</string>
     <string name="x509_certificate_invalid">Το επιλεγμένο πιστοποιητικό X509 δεν είναι έγκυρο!</string>
     <string name="x509_certificate_requirement_message">Για να υπογράψει APK με ένα προσαρμοσμένο κλειδί, το AEE απαιτεί επίσης το πιστοποιητικό X509 που έχει εξαχθεί από το ίδιο ιδιωτικό κλειδί pk8. Ανατρέξτε στη σελίδα Εγγράφων για περισσότερες πληροφορίες.</string>

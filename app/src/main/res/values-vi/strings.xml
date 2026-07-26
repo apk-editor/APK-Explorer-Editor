@@ -121,7 +121,6 @@
     <string name="sign_apk_custom">"Mã tuỳ chỉnh"</string>
     <string name="sign_apk_default">"Mã mặc định"</string>
     <string name="sign_apk_with">"Ký APK bằng"</string>
-    <string name="warning">"Cảnh báo"</string>
     <string name="file_path_error">"Lấy đường dẫn tệp từ trình quản lý tệp ngoài thất bại!"</string>
     <string name="text_editor">"Trình chỉnh sửa văn bản của AEE"</string>
     <string name="discard">"Bỏ"</string>

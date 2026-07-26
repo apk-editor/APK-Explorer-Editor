@@ -121,7 +121,6 @@
     <string name="sign_apk_custom">"مفتاح مخصص"</string>
     <string name="sign_apk_default">"مفتاح إفتراضي"</string>
     <string name="sign_apk_with">"توقيع APK باستخدام"</string>
-    <string name="warning">"تحذير"</string>
     <string name="file_path_error">"فشل في الحصول على مسار الملف من مدير ملفات خارجي!"</string>
     <string name="text_editor">"معدل نصوص AEE"</string>
     <string name="discard">"مرفوض"</string>

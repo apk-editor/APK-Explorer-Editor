@@ -119,7 +119,6 @@
     <string name="sign_apk_custom">"Custom key"</string>
     <string name="sign_apk_default">"डिफ़ॉल्ट key"</string>
     <string name="sign_apk_with">"साइन एपीके के साथ"</string>
-    <string name="warning">"चेतावनी"</string>
     <string name="file_path_error">"बाह्य फ़ाइल प्रबंधक से फ़ाइल पथ प्राप्त करने में विफल"</string>
     <string name="text_editor">"Aee Text Editor"</string>
     <string name="discard">"खारिज करना"</string>

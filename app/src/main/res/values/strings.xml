@@ -23,7 +23,6 @@
     <string name="choose_new">Choose New</string>
     <string name="clear_cache">Clear Cache</string>
     <string name="clear_cache_summary">Delete internal settings of AEE</string>
-    <string name="clear_cache_message">This will remove all saved projects and exported applications.</string>
     <string name="clearing_cache_message">Clearing Cache…</string>
     <string name="copying">Copying \'%s\'…</string>
     <string name="copyright_text" translatable="false">2021–2026, APK Explorer &amp; Editor</string>
@@ -204,7 +203,6 @@
     <string name="update">Update</string>
     <string name="user">User</string>
     <string name="user_interface">User Interface</string>
-    <string name="warning">Warning</string>
     <string name="wrong_extension">Please select a file with %s extension.</string>
     <string name="x509_certificate_invalid">Selected X509Certificate is invalid!</string>
     <string name="x509_certificate_requirement_message">In order to sign APK\'s with a custom key, AEE also requires the X509Certificate exported from the same pk8 private key. Please refer the Documentation page for more info.</string>

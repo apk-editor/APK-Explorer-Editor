@@ -119,7 +119,6 @@
     <string name="sign_apk_custom">"Vlastní klíč"</string>
     <string name="sign_apk_default">"Výchozí klíč"</string>
     <string name="sign_apk_with">"Podepsat APK pomocí"</string>
-    <string name="warning">"Upozornění"</string>
     <string name="file_path_error">"Nepodařilo se získat cestu k souboru z externího správce souborů!"</string>
     <string name="text_editor">"AEE Text Editor"</string>
     <string name="discard">"Vyřadit"</string>

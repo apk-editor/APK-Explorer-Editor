@@ -59,7 +59,7 @@ public abstract class XMLEditorDialog extends MaterialAlertDialogBuilder {
         });
         setPositiveButton(R.string.apply, (dialog, id) -> {
             if (modified || !value.getText().toString().trim().isEmpty() && !value.getText().toString().trim().equals(xmlEntry.getValue())) {
-                modifyLine(enable.getVisibility() == VISIBLE ? enable.isChecked() ? "true" : "false" : value.getText().toString().trim());
+                modifyLine(enable.getVisibility() == VISIBLE ? Boolean.toString(enable.isChecked()) : value.getText().toString().trim());
             }
         });
 

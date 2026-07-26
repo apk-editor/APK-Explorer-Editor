@@ -9,20 +9,22 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 30, 2023
  */
-public class InvalidFileDialog {
+public class InvalidFileDialog extends MaterialAlertDialogBuilder {
 
     @SuppressLint("StringFormatInvalid")
     public InvalidFileDialog(boolean exit, Activity activity) {
-        new MaterialAlertDialogBuilder(activity)
-                .setIcon(R.mipmap.ic_launcher)
-                .setTitle(R.string.split_apk_installer)
-                .setMessage(activity.getString(R.string.wrong_extension, ".apks/.apkm/.xapk"))
-                .setCancelable(false)
-                .setPositiveButton(R.string.cancel, (dialogInterface, i) -> {
-                    if (exit) {
-                        activity.finish();
-                    }
-                }).show();
+        super(activity);
+
+        setIcon(R.mipmap.ic_launcher);
+        setTitle(R.string.split_apk_installer);
+        setMessage(activity.getString(R.string.wrong_extension, ".apks/.apkm/.xapk"));
+        setCancelable(false);
+        setPositiveButton(R.string.cancel, (dialogInterface, i) -> {
+            if (exit) {
+                activity.finish();
+            }
+        });
+        show();
     }
 
 }

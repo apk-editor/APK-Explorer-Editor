@@ -24,11 +24,13 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 30, 2023
  */
-public abstract class ExportOptionsDialog {
+public abstract class ExportOptionsDialog extends MaterialAlertDialogBuilder {
 
     private AlertDialog alertDialog = null;
 
     public ExportOptionsDialog(List<String> packageNames, boolean checked, Activity activity) {
+        super(activity);
+
         boolean full = APKEditorUtils.isFullVersion(activity);
         View rootView = View.inflate(activity, R.layout.layout_batchoptions, null);
         LinearLayoutCompat linearLayoutCompat = rootView.findViewById(R.id.select_all_layout);
@@ -45,25 +47,24 @@ public abstract class ExportOptionsDialog {
             alertDialog.dismiss();
         });
 
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(activity)
-                .setIcon(R.drawable.ic_export_file)
-                .setTitle(R.string.export_app_batch_question)
-                .setView(rootView)
-                .setNeutralButton(getNeutralButtonTitle(full, activity), (dialog, id) -> {
-                    if (full && sCommonUtils.getString("exportAPKs", null, activity) == null) {
-                        new ExportApp(packageNames, activity).execute();
-                    }
-                })
-                .setPositiveButton(getPositiveButtonTitle(full, activity), (dialog, id) -> {
-                    if (full && (sCommonUtils.getString("exportAPKs", null, activity) == null || sCommonUtils.getString(
-                            "exportAPKs", null, activity).equals(activity.getString(R.string.export_resign)))) {
-                        resign(packageNames, activity);
-                    } else {
-                        new ExportApp(packageNames, activity).execute();
-                    }
-                });
+        setIcon(R.drawable.ic_export_file);
+        setTitle(R.string.export_app_batch_question);
+        setView(rootView);
+        setNeutralButton(getNeutralButtonTitle(full, activity), (dialog, id) -> {
+            if (full && sCommonUtils.getString("exportAPKs", null, activity) == null) {
+                new ExportApp(packageNames, activity).execute();
+            }
+        });
+        setPositiveButton(getPositiveButtonTitle(full, activity), (dialog, id) -> {
+            if (full && (sCommonUtils.getString("exportAPKs", null, activity) == null || sCommonUtils.getString(
+                    "exportAPKs", null, activity).equals(activity.getString(R.string.export_resign)))) {
+                resign(packageNames, activity);
+            } else {
+                new ExportApp(packageNames, activity).execute();
+            }
+        });
 
-        alertDialog = alertDialogBuilder.create();
+        alertDialog = create();
         alertDialog.show();
     }
 

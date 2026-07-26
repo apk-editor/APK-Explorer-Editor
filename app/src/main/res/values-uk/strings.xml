@@ -99,7 +99,6 @@
     <string name="sort_order">"А-Я"</string>
     <string name="clear_cache">"Очистити кеш"</string>
     <string name="clear_cache_summary">"Видалити внутрішні налаштування AEE"</string>
-    <string name="clear_cache_message">"Усе, крім експортованих програм, буде видалено."</string>
     <string name="export_options">"Про експорт (APK's)"</string>
     <string name="installer_action">"Про встановлення APK's"</string>
     <string name="project_exist_action">"При виході з проекту"</string>
@@ -110,7 +109,6 @@
     <string name="sign_apk_custom">"Своїм ключем"</string>
     <string name="sign_apk_default">"Ключем за замовчуванням"</string>
     <string name="sign_apk_with">"Підписання APK за допомогою"</string>
-    <string name="warning">"Увага"</string>
     <string name="file_path_error">"Не вдалося отримати шлях до файлу із зовнішнього диспетчера файлів"</string>
     <string name="text_editor">"Текстовий редактор AEE"</string>
     <string name="discard">"Скасувати"</string>

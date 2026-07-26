@@ -14,13 +14,14 @@ import com.apk.editor.adapters.SettingsAdapter;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.KeyPair;
-import com.apk.editor.utils.dialogs.ClearAppSettingsDialog;
 import com.apk.editor.utils.menu.ExploreOptionsMenu;
 
 import java.util.ArrayList;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import com.apk.editor.utils.SerializableItems.SettingsItems;
+import com.apk.editor.utils.tasks.ClearAppSettings;
+
 import in.sunilpaulmathew.sCommon.Dialog.sSingleChoiceDialog;
 import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
@@ -208,7 +209,7 @@ public class SettingsActivity extends BaseActivity {
                     }
                 }.show();
             } else if (position == 8) {
-                new ClearAppSettingsDialog(this);
+                new ClearAppSettings(this).execute();
             }
         });
 

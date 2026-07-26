@@ -6,7 +6,6 @@ import android.content.Intent;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKSignActivity;
-import com.apk.editor.utils.tasks.ResignAPKs;
 import com.apk.editor.utils.tasks.ResignBatchAPKs;
 
 import java.util.List;

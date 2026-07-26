@@ -119,7 +119,6 @@
     <string name="sign_apk_custom">"Clave personalizada"</string>
     <string name="sign_apk_default">"Clave predeterminada"</string>
     <string name="sign_apk_with">"Firmar APKs con"</string>
-    <string name="warning">"Atención"</string>
     <string name="file_path_error">"No se ha podido recuperar la ruta del archivo desde el gestor de archivos externo."</string>
     <string name="text_editor">"Editor de texto AEE"</string>
     <string name="discard">"Descartar"</string>

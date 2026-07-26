@@ -111,7 +111,6 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Cache leeren"</string>
     <string name="clear_cache_summary">"Interne Einstellungen von AEE löschen"</string>
-    <string name="clear_cache_message">"Dadurch werden alle gespeicherten Projekte und exportierten Anwendungen entfernt."</string>
     <string name="export_options">"Beim Exportieren (APKs)"</string>
     <string name="installer_action">"Bei der Installation von APKs"</string>
     <string name="project_exist_action">"Beim Beenden eines Projekts"</string>
@@ -122,7 +121,6 @@
     <string name="sign_apk_custom">"Benutzerdefinierter Schlüssel"</string>
     <string name="sign_apk_default">"Standardschlüssel"</string>
     <string name="sign_apk_with">"Signieren von APKs mit"</string>
-    <string name="warning">"Warnung"</string>
     <string name="file_path_error">"Dateipfad konnte nicht vom externen Dateimanager geladen werden!"</string>
     <string name="text_editor">"AEE-Texteditor"</string>
     <string name="discard">"Verwerfen"</string>

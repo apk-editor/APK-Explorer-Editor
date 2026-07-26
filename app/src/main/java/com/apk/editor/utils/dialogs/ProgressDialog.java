@@ -1,8 +1,6 @@
 package com.apk.editor.utils.dialogs;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
@@ -14,56 +12,37 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 19, 2025
  */
-public class ProgressDialog {
+public class ProgressDialog extends MaterialAlertDialogBuilder {
 
-    private static AlertDialog mAlertDialog = null;
-    private static ContentLoadingProgressBar mProgressBar = null;
-    private static MaterialAlertDialogBuilder mDialogBuilder = null;
+    private AlertDialog mAlertDialog = null;
+    private final ContentLoadingProgressBar mProgressBar;
 
     public ProgressDialog(Context context) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View progressLayout = layoutInflater.inflate(R.layout.progress_layout, null);
+        super(context);
+
+        View progressLayout = View.inflate(context, R.layout.progress_layout, null);
         mProgressBar = progressLayout.findViewById(R.id.progress);
-        mDialogBuilder = new MaterialAlertDialogBuilder(context)
-                .setView(progressLayout)
-                .setCancelable(false);
+
+        setView(progressLayout);
+        setCancelable(false);
     }
 
     public int getProgress() {
         return mProgressBar.getProgress();
     }
 
-    public void show() {
-        mAlertDialog = mDialogBuilder.create();
-        mAlertDialog.show();
+    public AlertDialog show() {
+        if (mAlertDialog == null || !mAlertDialog.isShowing()) {
+            mAlertDialog = create();
+            mAlertDialog.show();
+        }
+        return mAlertDialog;
     }
 
     public void dismiss() {
-        mAlertDialog.dismiss();
-    }
-
-    public void setIcon(int resourceID) {
-        mDialogBuilder.setIcon(resourceID);
-    }
-
-    public void setIcon(Drawable icon) {
-        mDialogBuilder.setIcon(icon);
-    }
-
-    public void setMessage(int resourceID) {
-        mDialogBuilder.setMessage(resourceID);
-    }
-
-    public void setMessage(CharSequence charSequence) {
-        mDialogBuilder.setMessage(charSequence);
-    }
-
-    public void setTitle(int resourceID) {
-        mDialogBuilder.setTitle(resourceID);
-    }
-
-    public void setTitle(CharSequence charSequence) {
-        mDialogBuilder.setTitle(charSequence);
+        if (mAlertDialog != null && mAlertDialog.isShowing()) {
+            mAlertDialog.dismiss();
+        }
     }
 
     public void setIndeterminate(boolean b) {

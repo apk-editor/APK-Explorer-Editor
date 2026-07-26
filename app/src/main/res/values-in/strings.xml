@@ -109,7 +109,6 @@
     <string name="sort_order">"A-Z"</string>
     <string name="clear_cache">"Bersihkan Sampah"</string>
     <string name="clear_cache_summary">"Hapus pengaturan internal AEE"</string>
-    <string name="clear_cache_message">"Semuanya, kecuali aplikasi yang diekspor, akan dihapus!"</string>
     <string name="export_options">"Saat Mengekspor (APK)"</string>
     <string name="installer_action">"Saat Menginstal APK"</string>
     <string name="project_exist_action">"Saat Keluar dari Proyek"</string>
@@ -120,7 +119,6 @@
     <string name="sign_apk_custom">"Kunci Kustom"</string>
     <string name="sign_apk_default">"Kunci Default"</string>
     <string name="sign_apk_with">"Sign APK dengan"</string>
-    <string name="warning">"Peringatan"</string>
     <string name="file_path_error">"Gagal mendapatkan jalur file dari Manajer File eksternal!"</string>
     <string name="text_editor">"Editor Teks AEE"</string>
     <string name="discard">"Membuang"</string>

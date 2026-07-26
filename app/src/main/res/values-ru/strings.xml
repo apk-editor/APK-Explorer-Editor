@@ -111,7 +111,6 @@
     <string name="sort_order">"А-Я"</string>
     <string name="clear_cache">"Очистить кэш"</string>
     <string name="clear_cache_summary">"Удалить внутренние настройки AEE"</string>
-    <string name="clear_cache_message">"Все, кроме экспортированных приложений, будет удалено."</string>
     <string name="export_options">"При экспорте (APK)"</string>
     <string name="installer_action">"При установке APK-файлов"</string>
     <string name="project_exist_action">"При выходе из проекта"</string>
@@ -122,7 +121,6 @@
     <string name="sign_apk_custom">"Кастомный ключ"</string>
     <string name="sign_apk_default">"Дефолтный ключ"</string>
     <string name="sign_apk_with">"Подписать APK с помощью"</string>
-    <string name="warning">"Предупреждение"</string>
     <string name="file_path_error">"Не удалось получить путь из внешнего файлового менеджера"</string>
     <string name="text_editor">"Текстовый редактор AEE"</string>
     <string name="discard">"Отменить"</string>
