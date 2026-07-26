@@ -1,19 +1,15 @@
 package com.apk.editor.fragments;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +20,7 @@ import com.apk.editor.adapters.ApplicationsAdapter;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.SerializableItems.PackageItems;
 import com.apk.editor.utils.dialogs.ExportOptionsDialog;
+import com.apk.editor.utils.dialogs.SortOptionsDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -45,7 +42,7 @@ public class ApplicationsFragment extends Fragment {
     private final Handler mHandler = new Handler();
     private final List<String> mPackageNames = new CopyOnWriteArrayList<>();
     private ContentLoadingProgressBar mProgress;
-    private MaterialButton mBatchButton, mMenuButton;
+    private MaterialButton mBatchButton;
     private RecyclerView mRecyclerView;
     private String mSearchText = null;
 
@@ -58,7 +55,7 @@ public class ApplicationsFragment extends Fragment {
         mBatchButton = mRootView.findViewById(R.id.batch_options);
         mProgress = mRootView.findViewById(R.id.progress);
         MaterialButton mSearchButton = mRootView.findViewById(R.id.search_button);
-        mMenuButton = mRootView.findViewById(R.id.menu_button);
+        MaterialButton mMenuButton = mRootView.findViewById(R.id.menu_button);
         TabLayout mTabLayout = mRootView.findViewById(R.id.tab_layout);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
@@ -138,7 +135,12 @@ public class ApplicationsFragment extends Fragment {
             }
         });
 
-        mMenuButton.setOnClickListener(v -> sortMenu());
+        mMenuButton.setOnClickListener(v -> new SortOptionsDialog(requireActivity()) {
+            @Override
+            public void onItemClicked() {
+                loadApps(mSearchText);
+            }
+        });
 
         mSearchWord.addTextChangedListener(new TextWatcher() {
             @Override
@@ -232,92 +234,6 @@ public class ApplicationsFragment extends Fragment {
                 mProgress.setVisibility(View.GONE);
             }
         }.execute();
-    }
-
-    private void sortMenu() {
-        PopupMenu popupMenu = new PopupMenu(requireActivity(), mMenuButton);
-        Menu menu = popupMenu.getMenu();
-        SubMenu sort = menu.addSubMenu(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_by)).setIcon(R.drawable.ic_sort);
-
-        sort.add(0, 1, Menu.NONE, getString(R.string.sort_by_name)).setCheckable(true)
-                .setChecked(sCommonUtils.getInt("sort_apps", 1, requireActivity()) == 0);
-        sort.add(0, 2, Menu.NONE, getString(R.string.sort_by_id)).setCheckable(true)
-                .setChecked(sCommonUtils.getInt("sort_apps", 1, requireActivity()) == 1);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            sort.add(0, 3, Menu.NONE, getString(R.string.sort_by_installed)).setCheckable(true)
-                    .setChecked(sCommonUtils.getInt("sort_apps", 1, requireActivity()) == 2);
-            sort.add(0, 4, Menu.NONE, getString(R.string.sort_by_updated)).setCheckable(true)
-                    .setChecked(sCommonUtils.getInt("sort_apps", 1, requireActivity()) == 3);
-            sort.add(0, 5, Menu.NONE, getString(R.string.sort_by_size)).setCheckable(true)
-                    .setChecked(sCommonUtils.getInt("sort_apps", 1, requireActivity()) == 4);
-        }
-        menu.add(Menu.NONE, 6, Menu.NONE, getSortTitle()).setIcon(getSortIcon()).setCheckable(true).setChecked(sCommonUtils.getBoolean("az_order", true, requireActivity()));
-        sort.setGroupCheckable(0, true, true);
-        popupMenu.setForceShowIcon(true);
-        popupMenu.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case 0:
-                    break;
-                case 1:
-                    if (sCommonUtils.getInt("sort_apps", 1, requireActivity()) != 0) {
-                        sCommonUtils.saveInt("sort_apps", 0, requireActivity());
-                        loadApps(mSearchText);
-                    }
-                    break;
-                case 2:
-                    if (sCommonUtils.getInt("sort_apps", 1, requireActivity()) != 1) {
-                        sCommonUtils.saveInt("sort_apps", 1, requireActivity());
-                        loadApps(mSearchText);
-                    }
-                    break;
-                case 3:
-                    if (sCommonUtils.getInt("sort_apps", 1, requireActivity()) != 2) {
-                        sCommonUtils.saveInt("sort_apps", 2, requireActivity());
-                        loadApps(mSearchText);
-                    }
-                    break;
-                case 4:
-                    if (sCommonUtils.getInt("sort_apps", 1, requireActivity()) != 3) {
-                        sCommonUtils.saveInt("sort_apps", 3, requireActivity());
-                        loadApps(mSearchText);
-                    }
-                    break;
-                case 5:
-                    if (sCommonUtils.getInt("sort_apps", 1, requireActivity()) != 4) {
-                        sCommonUtils.saveInt("sort_apps", 4, requireActivity());
-                        loadApps(mSearchText);
-                    }
-                    break;
-                case 6:
-                    sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
-                    loadApps(mSearchText);
-                    break;
-            }
-            return false;
-        });
-        popupMenu.show();
-    }
-
-    private int getSortIcon() {
-        if (sCommonUtils.getInt("sort_apps", 1, requireActivity()) == 4) {
-            return R.drawable.ic_sort_size;
-        } else if (sCommonUtils.getInt("sort_apps", 1, requireActivity()) == 2 ||
-                sCommonUtils.getInt("sort_apps", 0, requireActivity()) == 3) {
-            return R.drawable.ic_sort_time;
-        } else {
-            return R.drawable.ic_sort_az;
-        }
-    }
-
-    private String getSortTitle() {
-        if (sCommonUtils.getInt("sort_apps", 1, requireActivity()) == 4) {
-            return getString(R.string.sort_size);
-        } else if (sCommonUtils.getInt("sort_apps", 1, requireActivity()) == 2 ||
-                sCommonUtils.getInt("sort_apps", 0, requireActivity()) == 3) {
-            return getString(R.string.sort_time);
-        } else {
-            return getString(R.string.sort_order);
-        }
     }
     
 }

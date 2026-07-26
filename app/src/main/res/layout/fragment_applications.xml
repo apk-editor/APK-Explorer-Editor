@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     style="?attr/materialIconButtonFilledTonalStyle"
                     app:iconTint="?attr/colorPrimary"
-                    app:icon="@drawable/ic_dots" />
+                    app:icon="@drawable/ic_sort" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </FrameLayout>
 
