@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-include ':app'
+include(":app", ":navView")
 rootProject.name = "APK Editor"

@@ -70,14 +70,25 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
     private static List<String> mData;
     private static String mBackupFilePath = null, mSearchText = null, mPackageName = null;
 
+    public static APKExplorerFragment newInstance(String backupFilePath, String packageName) {
+        APKExplorerFragment fragment = new APKExplorerFragment();
+
+        Bundle args = new Bundle();
+        args.putString("backupFilePath", backupFilePath);
+        args.putString("packageName", packageName);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle arguments = getArguments();
-        if (arguments == null) return;
 
-        mBackupFilePath = arguments.getString("backupFilePath");
-        mPackageName = arguments.getString("packageName");
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mBackupFilePath = arguments.getString("backupFilePath");
+            mPackageName = arguments.getString("packageName");
+        }
     }
 
     @SuppressLint({"SetTextI18n", "StringFormatInvalid"})

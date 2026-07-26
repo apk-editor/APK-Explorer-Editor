@@ -59,6 +59,8 @@ android {
 }
 
 dependencies {
+    api(project(":navView"))
+
     implementation libs.apksig
     implementation libs.axml
     implementation libs.crashReporter

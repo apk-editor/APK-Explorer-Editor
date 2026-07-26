@@ -221,6 +221,7 @@ public class APKsFragment extends Fragment {
                     loadAPKs(mSearchText, requireActivity());
                     return;
                 }
+
                 AppSettings.navigateToFragment(requireActivity(), 1);
             }
         });

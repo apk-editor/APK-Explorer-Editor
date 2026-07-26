@@ -1,6 +1,6 @@
 [versions]
 apksigVersion = "9.2.1"
-aXMLVersion = "394e0bd599"
+aXMLVersion = "001c28e4c2"
 baksmaliVersion = "2.5.2"
 crashreporterVersion = "01df38c1bb"
 documentfileVersion = "1.1.0"
@@ -30,3 +30,4 @@ zip4j = { module = "net.lingala.zip4j:zip4j", version.ref = "zip4jVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agpVersion" }
+androidLibrary = { id = "com.android.library", version.ref = "agpVersion" }

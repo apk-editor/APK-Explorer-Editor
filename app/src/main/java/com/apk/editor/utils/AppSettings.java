@@ -12,7 +12,6 @@ import android.view.animation.DecelerateInterpolator;
 import com.apk.editor.MainActivity;
 import com.apk.editor.R;
 import com.apk.editor.utils.menu.ExploreOptionsMenu;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,7 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sSerializableItems;
 import in.sunilpaulmathew.sCommon.Dialog.sSingleChoiceDialog;
+import navView.NavView;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 25, 2021
@@ -349,8 +349,8 @@ public class AppSettings {
     }
 
     public static void navigateToFragment(Activity activity, int position) {
-        BottomNavigationView bottomNavigationView = activity.findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(position);
+        NavView navView = activity.findViewById(R.id.nav_view);
+        navView.setSelectedPosition(position);
     }
 
     public static void setLanguage(Context context) {

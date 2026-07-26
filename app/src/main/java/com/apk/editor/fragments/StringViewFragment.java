@@ -30,15 +30,25 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
  */
 public class StringViewFragment extends Fragment {
 
-    private String mResFilePath;
+    private String mBackupFilePath;
+
+    public static StringViewFragment newInstance(String backupFilePath) {
+        StringViewFragment fragment = new StringViewFragment();
+
+        Bundle args = new Bundle();
+        args.putString("backupFilePath", backupFilePath);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle arguments = getArguments();
-        if (arguments == null) return;
 
-        mResFilePath = arguments.getString("resFilePath");
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mBackupFilePath = arguments.getString("backupFilePath");
+        }
     }
 
     @Nullable
@@ -48,7 +58,7 @@ public class StringViewFragment extends Fragment {
 
         RecyclerView mRecyclerView = mRootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        
+
         new sExecutor() {
             private StringViewAdapter mAdapter;
             @Override
@@ -62,7 +72,7 @@ public class StringViewFragment extends Fragment {
 
             private List<ResEntry> getData() {
                 List<ResEntry> data = new ArrayList<>();
-                try (FileInputStream fis = new FileInputStream(mResFilePath)) {
+                try (FileInputStream fis = new FileInputStream(mBackupFilePath.replace("/.aeeBackup/appData", "/resources.arsc"))) {
                     for (ResEntry entry : new ResourceTableParser(fis).parse()) {
                         if (entry.getName().startsWith("@string/") && entry.getValue() != null && !entry.getValue().isEmpty()) {
                             data.add(entry);

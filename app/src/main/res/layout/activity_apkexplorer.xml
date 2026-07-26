@@ -1,7 +1,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:id="@+id/layout_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent" >
 
@@ -18,14 +17,9 @@
             android:layout_height="match_parent" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <navView.NavView
+        android:id="@+id/nav_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemTextAppearanceActive="?attr/colorPrimary"
-        app:itemActiveIndicatorStyle="?attr/colorPrimary"
-        android:layout_gravity="bottom|center"
-        app:labelVisibilityMode="unlabeled"
-        app:itemTextColor="@null"
-        app:itemIconTint="@null" />
+        android:layout_gravity="bottom" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

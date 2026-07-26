@@ -1,0 +1,21 @@
+plugins {
+    alias(libs.plugins.androidLibrary)
+}
+
+android {
+    namespace 'bottomNavView'
+    compileSdk 37
+
+    defaultConfig {
+        minSdk 23
+        consumerProguardFiles("proguard-rules.pro")
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+}
+
+dependencies {
+    implementation libs.material
+}

@@ -37,13 +37,23 @@ public class ExploredInfoFragment extends Fragment {
 
     private String mBackupPath;
 
+    public static ExploredInfoFragment newInstance(String backupFilePath) {
+        ExploredInfoFragment fragment = new ExploredInfoFragment();
+
+        Bundle args = new Bundle();
+        args.putString("backupFilePath", backupFilePath);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle arguments = getArguments();
-        if (arguments == null) return;
 
-        mBackupPath = arguments.getString("backupFilePath");
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mBackupPath = arguments.getString("backupFilePath");
+        }
     }
 
     @Nullable
@@ -71,22 +81,22 @@ public class ExploredInfoFragment extends Fragment {
                 List<HashMap<String, String>> data = new ArrayList<>();
                 try {
                     JSONObject jsonObject = APKExplorer.getAppData(mBackupPath);
-                    data.add(new HashMap<String, String>() {{
-                            put("title", Objects.requireNonNull(jsonObject).getString("version_info"));
-                            put("description", null);
-                        }}
+                    data.add(new HashMap<>() {{
+                                 put("title", Objects.requireNonNull(jsonObject).getString("version_info"));
+                                 put("description", null);
+                             }}
                     );
-                    data.add(new HashMap<String, String>() {{
+                    data.add(new HashMap<>() {{
                                  put("title", Objects.requireNonNull(jsonObject).getString("sdk_minimum"));
                                  put("description", null);
                              }}
                     );
-                    data.add(new HashMap<String, String>() {{
+                    data.add(new HashMap<>() {{
                                  put("title", Objects.requireNonNull(jsonObject).getString("sdk_compiled"));
                                  put("description", null);
                              }}
                     );
-                    data.add(new HashMap<String, String>() {{
+                    data.add(new HashMap<>() {{
                                  put("title", getString(R.string.certificate));
                                  put("description", Objects.requireNonNull(jsonObject).getString("certificate_info"));
                              }}

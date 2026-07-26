@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
+import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.adapters.ProjectsAdapter;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.AppSettings;
@@ -166,6 +167,7 @@ public class ProjectsFragment extends Fragment {
                     loadProjects(mSearchText, requireActivity());
                     return;
                 }
+
                 AppSettings.navigateToFragment(requireActivity(), 0);
             }
         });
@@ -176,6 +178,8 @@ public class ProjectsFragment extends Fragment {
     private void loadProjects(String searchWord, Activity activity) {
         new sExecutor() {
 
+            private List<String> date;
+
             @Override
             public void onPreExecute() {
                 mRecyclerView.setVisibility(GONE);
@@ -185,11 +189,20 @@ public class ProjectsFragment extends Fragment {
 
             @Override
             public void doInBackground() {
-                mRecycleViewAdapter = new ProjectsAdapter(Projects.getData(searchWord, activity), mProjectNames, mBatchButton, activityResultLauncher, activity);
+                date = Projects.getData(searchWord, activity);
             }
 
             @Override
             public void onPostExecute() {
+                if (!isAdded()) return;
+                mRecycleViewAdapter = new ProjectsAdapter(date, mProjectNames, mBatchButton, backupPath -> {
+                    Intent explorer = new Intent(activity, APKExploreActivity.class);
+                    if (backupPath != null) {
+                        explorer.putExtra(APKExploreActivity.BACKUP_PATH_INTENT, backupPath);
+                    }
+                    activityResultLauncher.launch(explorer);
+                }, activity);
+
                 mSearchText = searchWord;
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
                 mRecyclerView.setVisibility(View.VISIBLE);

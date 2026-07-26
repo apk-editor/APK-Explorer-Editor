@@ -4,19 +4,16 @@ import static android.view.View.VISIBLE;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
-import com.apk.editor.activities.APKExploreActivity;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Projects;
@@ -40,16 +37,16 @@ import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
 
     private final Activity activity;
-    private final ActivityResultLauncher<Intent> activityResultLauncher;
+    private final ClickListener clickListener;
     private final List<String> data;
     private final List<String> selectedProjects;
     private final MaterialButton batchButton;
 
-    public ProjectsAdapter(List<String> data, List<String> selectedProjects, MaterialButton batchButton, ActivityResultLauncher<Intent> activityResultLauncher, Activity activity) {
+    public ProjectsAdapter(List<String> data, List<String> selectedProjects, MaterialButton batchButton, ClickListener clickListener, Activity activity) {
         this.data = data;
         this.selectedProjects = selectedProjects;
         this.batchButton = batchButton;
-        this.activityResultLauncher = activityResultLauncher;
+        this.clickListener = clickListener;
         this.activity = activity;
     }
 
@@ -200,12 +197,12 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                 return;
             }
 
-            Intent explorer = new Intent(view.getContext(), APKExploreActivity.class);
-            if (sFileUtils.exist(new File(folderPath, ".aeeBackup/appData"))) {
-                explorer.putExtra(APKExploreActivity.BACKUP_PATH_INTENT, new File(data.get(getBindingAdapterPosition()), ".aeeBackup/appData").getAbsolutePath());
-            }
-            activityResultLauncher.launch(explorer);
+            clickListener.onItemClick(sFileUtils.exist(new File(folderPath, ".aeeBackup/appData")) ? new File(folderPath, ".aeeBackup/appData").getAbsolutePath() : null);
         }
+    }
+
+    public interface ClickListener {
+        void onItemClick(String backupPath);
     }
 
 }
