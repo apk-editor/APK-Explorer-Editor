@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import bottomNavView.R;
 import navView.adapters.NavViewAdapter;
-import navView.serializableItems.NavViewEntry;
+import navView.serializables.NavViewEntry;
 import navView.utils.NavViewUtils;
 
 import com.google.android.material.button.MaterialButton;

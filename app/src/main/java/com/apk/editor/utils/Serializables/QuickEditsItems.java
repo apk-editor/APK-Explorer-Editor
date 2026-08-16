@@ -1,4 +1,4 @@
-package com.apk.editor.utils.SerializableItems;
+package com.apk.editor.utils.Serializables;
 
 import java.io.Serializable;
 

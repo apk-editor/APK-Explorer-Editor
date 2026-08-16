@@ -14,7 +14,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.AppData;
-import com.apk.editor.utils.SerializableItems.PackageItems;
+import com.apk.editor.utils.Serializables.PackageItems;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 

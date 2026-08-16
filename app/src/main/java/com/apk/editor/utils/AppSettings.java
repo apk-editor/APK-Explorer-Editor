@@ -5,9 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.MainActivity;
 import com.apk.editor.R;
@@ -183,6 +187,10 @@ public class AppSettings {
         }
     }
 
+    private static NavView getNavView(Activity activity) {
+        return activity.findViewById(R.id.nav_view);
+    }
+
     private static String getCountry(Context context) {
         return sCommonUtils.getString("country", java.util.Locale.getDefault().getLanguage(), context);
     }
@@ -340,6 +348,20 @@ public class AppSettings {
         };
     }
 
+    public static void applyMargin(RecyclerView recyclerView, Activity activity) {
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
+                                       @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                if (parent.getChildAdapterPosition(view) == state.getItemCount() - 1) {
+                    outRect.bottom = getNavView(activity).getHeight();
+                } else {
+                    outRect.bottom = 0;
+                }
+            }
+        });
+    }
+
     public static void initializeAppLanguage(Context context) {
         Resources res = context.getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -349,8 +371,7 @@ public class AppSettings {
     }
 
     public static void navigateToFragment(Activity activity, int position) {
-        NavView navView = activity.findViewById(R.id.nav_view);
-        navView.setSelectedPosition(position);
+        getNavView(activity).setSelectedPosition(position);
     }
 
     public static void setLanguage(Context context) {

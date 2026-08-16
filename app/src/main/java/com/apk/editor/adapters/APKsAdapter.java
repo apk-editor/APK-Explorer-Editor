@@ -20,7 +20,7 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKFile;
 import com.apk.editor.utils.APKPicker;
 import com.apk.editor.utils.AppSettings;
-import com.apk.editor.utils.SerializableItems.APKPickerItems;
+import com.apk.editor.utils.Serializables.APKPickerItems;
 import com.apk.editor.utils.SplitAPKInstaller;
 import com.apk.editor.utils.dialogs.BundleInstallDialog;
 import com.apk.editor.utils.dialogs.ProgressDialog;

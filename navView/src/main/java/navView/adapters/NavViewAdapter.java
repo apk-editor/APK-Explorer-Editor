@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import bottomNavView.R;
-import navView.serializableItems.NavViewEntry;
+import navView.serializables.NavViewEntry;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.List;

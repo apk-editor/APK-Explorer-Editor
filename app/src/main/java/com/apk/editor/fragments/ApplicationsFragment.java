@@ -2,6 +2,7 @@ package com.apk.editor.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -11,14 +12,14 @@ import android.view.ViewGroup;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.core.widget.ContentLoadingProgressBar;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.adapters.ApplicationsAdapter;
 import com.apk.editor.utils.AppData;
-import com.apk.editor.utils.SerializableItems.PackageItems;
+import com.apk.editor.utils.AppSettings;
+import com.apk.editor.utils.Serializables.PackageItems;
 import com.apk.editor.utils.dialogs.ExportOptionsDialog;
 import com.apk.editor.utils.dialogs.SortOptionsDialog;
 import com.google.android.material.button.MaterialButton;
@@ -35,11 +36,10 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
-public class ApplicationsFragment extends Fragment {
+public class ApplicationsFragment extends BaseFragment {
 
     private ApplicationsAdapter mRecycleViewAdapter;
     private boolean mExit = false, mSelectAll = false;
-    private final Handler mHandler = new Handler();
     private final List<String> mPackageNames = new CopyOnWriteArrayList<>();
     private ContentLoadingProgressBar mProgress;
     private MaterialButton mBatchButton;
@@ -159,7 +159,9 @@ public class ApplicationsFragment extends Fragment {
 
         loadApps(mSearchText);
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+        AppSettings.applyMargin(mRecyclerView, requireActivity());
+
+        onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (mProgress.getVisibility() == View.VISIBLE) {
@@ -185,10 +187,10 @@ public class ApplicationsFragment extends Fragment {
                 } else {
                     sCommonUtils.toast(getString(R.string.press_back), requireActivity()).show();
                     mExit = true;
-                    mHandler.postDelayed(() -> mExit = false, 2000);
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> mExit = false, 2000);
                 }
             }
-        });
+        };
 
         return mRootView;
     }
@@ -230,6 +232,7 @@ public class ApplicationsFragment extends Fragment {
             public void onPostExecute() {
                 mSearchText = searchWord;
                 mRecyclerView.setAdapter(mRecycleViewAdapter);
+
                 mRecyclerView.setVisibility(View.VISIBLE);
                 mProgress.setVisibility(View.GONE);
             }

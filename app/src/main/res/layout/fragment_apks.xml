@@ -87,29 +87,39 @@
             android:layout_height="wrap_content" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/batch_options"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.Material3.Button.TonalButton"
-        android:text="@string/delete_selected"
-        android:layout_gravity="bottom|end"
-        android:textStyle="bold|italic"
-        app:icon="@drawable/ic_batch"
-        android:layout_margin="85dp"
-        android:visibility="gone"
-        android:textSize="15sp" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/add_button"
-        android:layout_width="wrap_content"
-        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_gravity="bottom|center"
-        android:layout_marginHorizontal="15dp"
-        android:text="@string/select_storage"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="15sp"
-        app:icon="@drawable/ic_add"
-        android:textStyle="bold"
-        android:textSize="15sp" />
+        android:layout_marginVertical="75dp"
+        android:orientation="vertical"
+        android:gravity="center" >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/batch_options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_marginHorizontal="15dp"
+            android:text="@string/delete_selected"
+            android:layout_marginVertical="5dp"
+            android:textStyle="bold|italic"
+            app:icon="@drawable/ic_batch"
+            android:layout_gravity="end"
+            android:visibility="gone"
+            android:textSize="15sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/add_button"
+            android:layout_width="wrap_content"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_marginHorizontal="15dp"
+            android:text="@string/select_storage"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:layout_gravity="center"
+            app:icon="@drawable/ic_add"
+            android:textStyle="bold"
+            android:textSize="15sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

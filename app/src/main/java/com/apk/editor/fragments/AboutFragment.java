@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,7 +26,7 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sSerializableItems;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
-public class AboutFragment extends Fragment {
+public class AboutFragment extends BaseFragment {
 
     @Nullable
     @Override
@@ -39,12 +38,14 @@ public class AboutFragment extends Fragment {
         AboutAdapter mRecycleViewAdapter = new AboutAdapter(getData());
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+        AppSettings.applyMargin(mRecyclerView, requireActivity());
+
+        onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 AppSettings.navigateToFragment(requireActivity(), 2);
             }
-        });
+        };
 
         return mRootView;
     }

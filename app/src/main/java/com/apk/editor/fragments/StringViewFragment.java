@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,7 +27,7 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on Sept. 25, 2025
  */
-public class StringViewFragment extends Fragment {
+public class StringViewFragment extends BaseFragment {
 
     private String mBackupFilePath;
 
@@ -60,18 +59,14 @@ public class StringViewFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
         new sExecutor() {
-            private StringViewAdapter mAdapter;
+            private List<ResEntry> data = new ArrayList<>();
             @Override
             public void onPreExecute() {
             }
 
             @Override
             public void doInBackground() {
-                mAdapter = new StringViewAdapter(getData());
-            }
-
-            private List<ResEntry> getData() {
-                List<ResEntry> data = new ArrayList<>();
+                data = new ArrayList<>();
                 try (FileInputStream fis = new FileInputStream(mBackupFilePath.replace("/.aeeBackup/appData", "/resources.arsc"))) {
                     for (ResEntry entry : new ResourceTableParser(fis).parse()) {
                         if (entry.getName().startsWith("@string/") && entry.getValue() != null && !entry.getValue().isEmpty()) {
@@ -80,21 +75,22 @@ public class StringViewFragment extends Fragment {
                     }
                 } catch (IOException ignored) {
                 }
-                return data;
             }
 
             @Override
             public void onPostExecute() {
-                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.setAdapter(new StringViewAdapter(data));
             }
         }.execute();
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+        AppSettings.applyMargin(mRecyclerView, requireActivity());
+
+        onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 AppSettings.navigateToFragment(requireActivity(), 0);
             }
-        });
+        };
 
         return mRootView;
     }

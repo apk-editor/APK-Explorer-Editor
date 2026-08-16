@@ -13,8 +13,9 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="10dp" >
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="5dp"
+            android:layout_gravity="center" >
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/back"
@@ -49,9 +50,9 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_marginHorizontal="10dp"
             app:strokeColor="?attr/colorPrimary"
-            app:cardCornerRadius="45dp"
-            android:layout_margin="5dp" >
+            app:cardCornerRadius="45dp" >
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/search_word"
@@ -69,16 +70,4 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <include layout="@layout/layout_recyclerview" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/error_status"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="50dp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:textIsSelectable="true"
-        android:visibility="gone"
-        android:textSize="17sp" />
 </androidx.appcompat.widget.LinearLayoutCompat>

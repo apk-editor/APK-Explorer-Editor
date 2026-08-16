@@ -1,12 +1,12 @@
 package com.apk.editor.utils.dialogs;
 
+import static android.view.View.VISIBLE;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.view.Menu;
 import android.view.View;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,65 +14,65 @@ import com.apk.axml.ResourceTableParser;
 import com.apk.axml.serializableItems.ResEntry;
 import com.apk.editor.R;
 import com.apk.editor.adapters.ResViewerAdapter;
+import com.apk.editor.utils.Serializables.ResViewerOptionsItems;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on Sept. 03, 2025
  */
-public class ResViewerDialog extends MaterialAlertDialogBuilder {
+public class ResViewerDialog extends BottomSheetDialog {
 
-    private static AlertDialog mAlertDialog = null;
     private static List<String> mTypes = null;
     private static String mTypeDefault = null;
 
     public ResViewerDialog(String filePath, Activity activity) {
         super(activity);
         View rootView = View.inflate(activity, R.layout.layout_resviewer, null);
+        MaterialButton cancel = rootView.findViewById(R.id.cancel);
         MaterialButton menu = rootView.findViewById(R.id.menu_button);
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
 
+        menu.setVisibility(VISIBLE);
+
         loadUI(recyclerView, filePath, mTypeDefault, activity).execute();
 
         menu.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(activity, v);
-            Menu pMenu = popupMenu.getMenu();
+            List<ResViewerOptionsItems> data = new ArrayList<>();
             for (int i=0; i<mTypes.size(); i++) {
-                pMenu.add(0, i, Menu.NONE, mTypes.get(i)).setChecked(true).setChecked(Objects.equals(mTypes.get(i), mTypeDefault));
+                data.add(new ResViewerOptionsItems(i, mTypes.get(i)));
             }
-            pMenu.setGroupCheckable(0, true, true);
-            popupMenu.setOnMenuItemClickListener(item -> {
-                loadUI(recyclerView, filePath, mTypes.get(item.getItemId()), activity).execute();
-                return false;
-            });
-            popupMenu.show();
+
+            new ResViewerOptionsDialog(data, mTypeDefault, v.getContext()) {
+                @Override
+                public void OnSelected(String text) {
+                    loadUI(recyclerView, filePath, text, activity).execute();
+                }
+            };
         });
 
-        setView(rootView);
-        setCancelable(false);
-        setPositiveButton(R.string.cancel, (dialog, id) -> {
-        });
-        mAlertDialog = create();
-        mAlertDialog.show();
+        cancel.setOnClickListener(v -> dismiss());
+
+        setContentView(rootView);
+        show();
     }
 
-    private static sExecutor loadUI(RecyclerView recyclerView, String path, String typeDefault, Activity activity) {
+    private sExecutor loadUI(RecyclerView recyclerView, String path, String typeDefault, Activity activity) {
         return new sExecutor() {
             private boolean mSuccess;
             private List<ResEntry> mResourceMap = null;
             private ProgressDialog mProgressDialog;
-            private ResViewerAdapter adapter;
 
             @SuppressLint("StringFormatInvalid")
             @Override
@@ -144,7 +144,6 @@ public class ResViewerDialog extends MaterialAlertDialogBuilder {
                     mSuccess = false;
                     return;
                 }
-                adapter = new ResViewerAdapter(getData(), path.replace("/resources.arsc", ""), false, activity);
                 mSuccess = true;
                 mTypeDefault = typeDefault != null ? typeDefault : mTypes.get(0);
             }
@@ -154,10 +153,13 @@ public class ResViewerDialog extends MaterialAlertDialogBuilder {
             public void onPostExecute() {
                 mProgressDialog.dismiss();
                 if (mSuccess) {
-                    recyclerView.setAdapter(adapter);
+                    recyclerView.setAdapter(new ResViewerAdapter(getData(), path.replace("/resources.arsc", ""), false,newValue ->
+                            sPermissionUtils.requestPermission(new String[] {
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            }, activity)));
                 } else {
                     sCommonUtils.toast(activity.getString(R.string.xml_decode_failed, "resources.arsc"), activity).show();
-                    mAlertDialog.dismiss();
+                    dismiss();
                 }
             }
         };

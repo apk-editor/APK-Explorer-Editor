@@ -19,7 +19,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.widget.ContentLoadingProgressBar;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,7 +43,7 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 06, 2021
  */
-public class ProjectsFragment extends Fragment {
+public class ProjectsFragment extends BaseFragment {
 
     private ContentLoadingProgressBar mProgress;
     private MaterialButton mBatchButton;
@@ -132,6 +131,8 @@ public class ProjectsFragment extends Fragment {
 
         loadProjects(mSearchText, requireActivity());
 
+        AppSettings.applyMargin(mRecyclerView, requireActivity());
+
         mSearchWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -147,7 +148,7 @@ public class ProjectsFragment extends Fragment {
             }
         });
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+        onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (mProgress.getVisibility() == View.VISIBLE) {
@@ -170,7 +171,7 @@ public class ProjectsFragment extends Fragment {
 
                 AppSettings.navigateToFragment(requireActivity(), 0);
             }
-        });
+        };
 
         return mRootView;
     }

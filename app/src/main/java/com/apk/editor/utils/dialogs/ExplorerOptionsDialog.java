@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.adapters.ExploreOptionsAdapter;
-import com.apk.editor.utils.SerializableItems.ExploreOptionsItems;
+import com.apk.editor.utils.Serializables.ExploreOptionsItems;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textview.MaterialTextView;
 

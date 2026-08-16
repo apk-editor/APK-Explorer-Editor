@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.inputmethod.InputMethodManager;
 
-import com.apk.editor.utils.SerializableItems.PackageItems;
+import com.apk.editor.utils.Serializables.PackageItems;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 import java.util.Collections;

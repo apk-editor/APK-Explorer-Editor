@@ -1,4 +1,4 @@
-package navView.serializableItems;
+package navView.serializables;
 
 import static android.view.View.VISIBLE;
 import static com.google.android.material.button.MaterialButton.ICON_GRAVITY_TEXT_START;

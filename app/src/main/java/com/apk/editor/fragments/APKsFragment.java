@@ -22,7 +22,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.documentfile.provider.DocumentFile;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,7 +56,7 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
-public class APKsFragment extends Fragment {
+public class APKsFragment extends BaseFragment {
 
     private APKsAdapter mRecycleViewAdapter;
     private ContentLoadingProgressBar mProgress;
@@ -201,7 +200,9 @@ public class APKsFragment extends Fragment {
 
         mAddButton.setOnClickListener(v -> launchInstallerFilePicker());
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+        AppSettings.applyMargin(mRecyclerView, requireActivity());
+
+        onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (mProgress.getVisibility() == View.VISIBLE) {
@@ -224,7 +225,7 @@ public class APKsFragment extends Fragment {
 
                 AppSettings.navigateToFragment(requireActivity(), 1);
             }
-        });
+        };
 
         return mRootView;
     }

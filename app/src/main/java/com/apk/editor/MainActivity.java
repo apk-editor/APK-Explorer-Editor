@@ -2,7 +2,6 @@ package com.apk.editor;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
 import com.apk.editor.activities.BaseActivity;
 import com.apk.editor.activities.SettingsActivity;
@@ -20,7 +19,7 @@ import in.sunilpaulmathew.crashreporter.Utils.CrashReporter;
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 import navView.NavView;
-import navView.serializableItems.NavViewEntry;
+import navView.serializables.NavViewEntry;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -40,7 +39,6 @@ public class MainActivity extends BaseActivity {
         new CrashReporter("E-Mail: apkeditor@protonmail.com", this).initialize();
 
         NavView mNavView = findViewById(R.id.nav_view);
-        FrameLayout mFragmentContainer = findViewById(R.id.fragment_container);
 
         if (!sCommonUtils.getBoolean("welcome_message", false, this)) {
             Intent intent = new Intent(this, StartActivity.class);
@@ -72,7 +70,6 @@ public class MainActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new ApplicationsFragment()).commit();
         }
-        mNavView.post(() -> mFragmentContainer.setPadding(0, 0, 0, mNavView.getHeight()));
     }
 
 }

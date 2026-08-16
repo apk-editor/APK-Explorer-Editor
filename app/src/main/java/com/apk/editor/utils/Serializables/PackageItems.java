@@ -1,4 +1,4 @@
-package com.apk.editor.utils.SerializableItems;
+package com.apk.editor.utils.Serializables;
 
 import android.content.Context;
 import android.content.Intent;

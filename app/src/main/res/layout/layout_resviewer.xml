@@ -5,34 +5,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <FrameLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="10dp" >
+        android:layout_marginHorizontal="10dp"
+        android:layout_gravity="center|start"
+        android:layout_marginVertical="5dp"
+        android:orientation="horizontal"
+        android:gravity="center" >
 
-        <com.google.android.material.textview.MaterialTextView
+        <androidx.appcompat.widget.AppCompatImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tint="?attr/colorPrimary"
+            android:src="@drawable/ic_res"
+            android:scaleType="fitCenter"
+            android:background="@null" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:textColor="?attr/colorPrimary"
-            android:layout_gravity="start|center"
             android:text="@string/res_viewer"
-            android:layout_marginEnd="40dp"
-            android:gravity="start|center"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:singleLine="false"
+            android:layout_weight="1"
             android:textStyle="bold"
             android:textSize="20sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/menu_button"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="?attr/materialIconButtonFilledTonalStyle"
-            android:layout_gravity="center|end"
             app:iconTint="?attr/colorPrimary"
-            android:layout_marginEnd="5dp"
-            app:icon="@drawable/ic_dots" />
-    </FrameLayout>
+            app:icon="@drawable/ic_dots"
+            android:visibility="gone" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <include layout="@layout/layout_recyclerview" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:nestedScrollingEnabled="true"
+        android:layout_weight="1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="end|bottom"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        android:textStyle="bold|italic"
+        app:icon="@drawable/ic_cancel"
+        android:text="@string/cancel"
+        android:gravity="center|end"
+        app:iconGravity="textStart"
+        android:textSize="15sp" />
 </androidx.appcompat.widget.LinearLayoutCompat>

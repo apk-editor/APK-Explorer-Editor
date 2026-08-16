@@ -14,19 +14,19 @@ import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
 
-import com.apk.editor.utils.SerializableItems.SettingsItems;
+import com.apk.editor.utils.Serializables.SettingsItems;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 31, 2021
  */
 public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHolder> {
 
-    private static ClickListener clickListener;
+    private final ArrayList<SettingsItems> data;
+    private final OnItemClickListener clickListener;
 
-    private static ArrayList<SettingsItems> data;
-
-    public SettingsAdapter(ArrayList<SettingsItems> data) {
-        SettingsAdapter.data = data;
+    public SettingsAdapter(ArrayList<SettingsItems> data, OnItemClickListener clickListener) {
+        this.data = data;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -64,7 +64,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
         return data.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final AppCompatImageButton mIcon;
         private final MaterialTextView Description, Title;
 
@@ -78,18 +78,12 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
 
         @Override
         public void onClick(View view) {
-            if (data.get(getBindingAdapterPosition()).getId() != 0) {
-                clickListener.onItemClick(data.get(getBindingAdapterPosition()).getId(), view);
-            }
+            clickListener.onItemClick(getBindingAdapterPosition());
         }
     }
 
-    public void setOnItemClickListener(ClickListener clickListener) {
-        SettingsAdapter.clickListener = clickListener;
-    }
-
-    public interface ClickListener {
-        void onItemClick(int position, View v);
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 
 }

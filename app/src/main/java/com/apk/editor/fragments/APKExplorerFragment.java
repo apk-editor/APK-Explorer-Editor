@@ -30,7 +30,7 @@ import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.DexToSmali;
-import com.apk.editor.utils.SerializableItems.ExploreOptionsItems;
+import com.apk.editor.utils.Serializables.ExploreOptionsItems;
 import com.apk.editor.utils.dialogs.ExplorerOptionsDialog;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.apk.editor.utils.tasks.DeleteFiles;
@@ -58,7 +58,7 @@ import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 05, 2021
  */
-public class APKExplorerFragment extends androidx.fragment.app.Fragment {
+public class APKExplorerFragment extends BaseFragment {
 
     private APKExplorerAdapter mRecycleViewAdapter;
     private ContentLoadingProgressBar mProgressLayout;
@@ -100,12 +100,10 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
         AppCompatImageButton mBack = mRootView.findViewById(R.id.back);
         MaterialButton mMenuButton = mRootView.findViewById(R.id.menu);
         mTitle = mRootView.findViewById(R.id.title);
-        MaterialTextView mError = mRootView.findViewById(R.id.error_status);
         mSearchWord = mRootView.findViewById(R.id.search_word);
         mProgressLayout = mRootView.findViewById(R.id.progress);
         mRecyclerView = mRootView.findViewById(R.id.recycler_view);
 
-        String mAppName = APKExplorer.getAppName(mBackupFilePath);
         if (mFile == null || !mBackupFilePath.contains(mRootFile.getName()) || !mFile.exists()) {
             mFile = new File(mBackupFilePath.replace("/.aeeBackup/appData", ""));
         }
@@ -142,14 +140,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), APKExplorer.getSpanCount(requireActivity())));
 
-        try {
-            mRecycleViewAdapter = new APKExplorerAdapter(APKExplorer.getData(mFile, true, requireActivity()), activityResultLauncher, mFiles, mPackageName, mBackupFilePath, requireActivity());
-            mRecyclerView.setAdapter(mRecycleViewAdapter);
-        } catch (NullPointerException ignored) {
-            mRecyclerView.setVisibility(View.GONE);
-            mError.setText(getString(R.string.explore_error_status, mAppName));
-            mError.setVisibility(View.VISIBLE);
-        }
+        loadUI(mFile);
 
         mMenuButton.setOnClickListener(v -> {
             List<ExploreOptionsItems> menuItem = new CopyOnWriteArrayList<>();
@@ -221,16 +212,9 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             };
         });
 
-        mRecycleViewAdapter.setOnItemClickListener(filePath -> {
-            if (new File(filePath).isFile() && filePath.endsWith(".dex")) {
-                decompileDexToSmali(new File(filePath)).execute();
-            } else {
-                mFiles = new ArrayList<>();
-                loadUI(new File(filePath));
-            }
-        });
+        AppSettings.applyMargin(mRecyclerView, requireActivity());
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+        onBackPressedCallback = new OnBackPressedCallback(false) {
             @Override
             public void handleOnBackPressed() {
                 if (mSearchWord.getVisibility() == View.VISIBLE) {
@@ -248,9 +232,20 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                     loadUI(mFile.getParentFile());
                 }
             }
-        });
+        };
 
         return mRootView;
+    }
+
+    private APKExplorerAdapter.OnItemClickListener clickListener() {
+        return filePath -> {
+            if (new File(filePath).isFile() && filePath.endsWith(".dex")) {
+                decompileDexToSmali(new File(filePath)).execute();
+            } else {
+                mFiles = new ArrayList<>();
+                loadUI(new File(filePath));
+            }
+        };
     }
 
     private sExecutor decompileDexToSmali(File inputFile) {
@@ -306,7 +301,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
             @Override
             public void doInBackground() {
                 mData = APKExplorer.getData(file, true, requireActivity());
-                mRecycleViewAdapter = new APKExplorerAdapter(mData, activityResultLauncher, mFiles, mPackageName, mBackupFilePath, requireActivity());
+                mRecycleViewAdapter = new APKExplorerAdapter(mData, activityResultLauncher, mFiles, mPackageName, mBackupFilePath, clickListener(), requireActivity());
             }
 
             @Override
@@ -343,7 +338,7 @@ public class APKExplorerFragment extends androidx.fragment.app.Fragment {
                 if (!sCommonUtils.getBoolean("az_order", true, requireActivity())) {
                     Collections.reverse(mData);
                 }
-                mRecycleViewAdapter = new APKExplorerAdapter(mData, null, mFiles, mPackageName, mBackupFilePath, requireActivity());
+                mRecycleViewAdapter = new APKExplorerAdapter(mData, null, mFiles, mPackageName, mBackupFilePath, clickListener(), requireActivity());
             }
 
             private void getData(File path) {

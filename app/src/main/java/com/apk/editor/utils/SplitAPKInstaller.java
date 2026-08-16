@@ -8,7 +8,7 @@ import android.content.Intent;
 import com.apk.editor.R;
 import com.apk.editor.activities.InstallerActivity;
 import com.apk.editor.services.InstallerService;
-import com.apk.editor.utils.SerializableItems.APKPickerItems;
+import com.apk.editor.utils.Serializables.APKPickerItems;
 import com.apk.editor.utils.dialogs.BundleInstallDialog;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 

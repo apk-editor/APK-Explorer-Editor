@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.AppData;
-import com.apk.editor.utils.SerializableItems.QuickEditsItems;
+import com.apk.editor.utils.Serializables.QuickEditsItems;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;

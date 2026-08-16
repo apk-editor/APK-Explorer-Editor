@@ -49,17 +49,18 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
 
     private final Activity activity;
     private final ActivityResultLauncher<Intent> activityResultLauncher;
-    private static ClickListener clickListener;
     private final List<File> files;
     private final List<String> data;
+    private final OnItemClickListener clickListener;
     private final String backupFilePath, packageName;
 
-    public APKExplorerAdapter(List<String> data, ActivityResultLauncher<Intent> activityResultLauncher, List<File> files, String packageName, String backupFilePath, Activity activity) {
+    public APKExplorerAdapter(List<String> data, ActivityResultLauncher<Intent> activityResultLauncher, List<File> files, String packageName, String backupFilePath, OnItemClickListener clickListener, Activity activity) {
         this.data = data;
         this.activityResultLauncher = activityResultLauncher;
         this.files = files;
         this.packageName = packageName;
         this.backupFilePath = backupFilePath;
+        this.clickListener = clickListener;
         this.activity = activity;
 
     }
@@ -294,11 +295,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
         }
     }
 
-    public void setOnItemClickListener(ClickListener clickListener) {
-        APKExplorerAdapter.clickListener = clickListener;
-    }
-
-    public interface ClickListener {
+    public interface OnItemClickListener {
         void onItemClick(String filePath);
     }
 

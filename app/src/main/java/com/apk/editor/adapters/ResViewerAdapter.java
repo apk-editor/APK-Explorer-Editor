@@ -4,8 +4,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,17 +34,16 @@ import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
  */
 public class ResViewerAdapter extends RecyclerView.Adapter<ResViewerAdapter.ViewHolder> {
 
-    private final Activity activity;
     private final boolean clickable;
+    private final OnItemClickListener clickListener;
     private final List<ResEntry> data;
     private final String rootPath;
-    private static ClickListener clickListener;
 
-    public ResViewerAdapter(List<ResEntry> data, String rootPath, boolean clickable, Activity activity) {
+    public ResViewerAdapter(List<ResEntry> data, String rootPath, boolean clickable, OnItemClickListener clickListener) {
         this.data = data;
         this.rootPath = rootPath;
         this.clickable = clickable;
-        this.activity = activity;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -107,25 +104,21 @@ public class ResViewerAdapter extends RecyclerView.Adapter<ResViewerAdapter.View
             this.mValue = view.findViewById(R.id.value);
         }
 
-        @SuppressLint("StringFormatInvalid")
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onClick(View view) {
             int position = getBindingAdapterPosition();
             if (clickable) {
-                clickListener.onItemClick(data.get(getBindingAdapterPosition()).getValue(), view);
+                clickListener.onItemClick(data.get(getBindingAdapterPosition()).getValue());
             } else if (data.get(position).getValue() != null && data.get(position).getValue().startsWith("res/")) {
-                PopupMenu popupMenu = new PopupMenu(view.getContext(), mMenu);
+                PopupMenu popupMenu = new PopupMenu(view.getContext(), this.mMenu);
                 Menu menu = popupMenu.getMenu();
                 menu.add(Menu.NONE, 0, Menu.NONE, view.getContext().getString(R.string.export_storage)).setIcon(R.drawable.ic_export);
                 popupMenu.setForceShowIcon(true);
                 popupMenu.setOnMenuItemClickListener(item -> {
                     if (item.getItemId() == 0) {
                         if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, view.getContext())) {
-                            sPermissionUtils.requestPermission(
-                                    new String[] {
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                    }, activity);
+                            clickListener.onItemClick(data.get(position).getValue());
                         } else {
                             new ExportToStorage(new File(rootPath, Objects.requireNonNull(data.get(position).getValue())), null, new File(rootPath).getName(), view.getContext()).execute();
                         }
@@ -137,12 +130,8 @@ public class ResViewerAdapter extends RecyclerView.Adapter<ResViewerAdapter.View
         }
     }
 
-    public void setOnItemClickListener(ClickListener clickListener) {
-        ResViewerAdapter.clickListener = clickListener;
-    }
-
-    public interface ClickListener {
-        void onItemClick(String newValue, View v);
+    public interface OnItemClickListener {
+        void onItemClick(String newValue);
     }
 
 }

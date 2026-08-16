@@ -3,7 +3,6 @@ package com.apk.editor.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -28,7 +27,7 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 import navView.NavView;
-import navView.serializableItems.NavViewEntry;
+import navView.serializables.NavViewEntry;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -45,7 +44,6 @@ public class APKExploreActivity extends BaseActivity {
         AppCompatImageButton mBuild = findViewById(R.id.build);
         AppCompatImageView mApplicationIcon = findViewById(R.id.app_image);
         NavView mNavView = findViewById(R.id.nav_view);
-        FrameLayout mFragmentContainer = findViewById(R.id.fragment_container);
         MaterialTextView mApplicationName = findViewById(R.id.app_title);
         MaterialTextView mPackageName = findViewById(R.id.package_id);
 
@@ -111,8 +109,6 @@ public class APKExploreActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     ExploredInfoFragment.newInstance(mBackupFilePath)).commit();
         }
-
-        mNavView.post(() -> mFragmentContainer.setPadding(0, 0, 0, mNavView.getHeight()));
     }
 
 }

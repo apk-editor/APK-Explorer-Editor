@@ -21,7 +21,7 @@ import com.apk.editor.activities.ImageViewActivity;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
-import com.apk.editor.utils.SerializableItems.PackageItems;
+import com.apk.editor.utils.Serializables.PackageItems;
 import com.apk.editor.utils.menu.ExploreOptionsMenu;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;

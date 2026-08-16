@@ -12,7 +12,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
-import com.apk.editor.utils.SerializableItems.ExploreOptionsItems;
+import com.apk.editor.utils.Serializables.ExploreOptionsItems;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textview.MaterialTextView;
 

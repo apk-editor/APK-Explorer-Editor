@@ -8,13 +8,13 @@ import android.view.ViewGroup;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.adapters.ExploredInfoAdapter;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.tasks.DeleteFile;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -33,7 +33,7 @@ import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on Sept. 25, 2025
  */
-public class ExploredInfoFragment extends Fragment {
+public class ExploredInfoFragment extends BaseFragment {
 
     private String mBackupPath;
 
@@ -67,18 +67,14 @@ public class ExploredInfoFragment extends Fragment {
         File rootFile = new File(mBackupPath.replace("/.aeeBackup/appData", ""));
         
         new sExecutor() {
-            private ExploredInfoAdapter mAdapter;
+            private List<HashMap<String, String>> data = new ArrayList<>();
             @Override
             public void onPreExecute() {
             }
 
             @Override
             public void doInBackground() {
-                mAdapter = new ExploredInfoAdapter(getData());
-            }
-
-            private List<HashMap<String, String>> getData() {
-                List<HashMap<String, String>> data = new ArrayList<>();
+                data = new ArrayList<>();
                 try {
                     JSONObject jsonObject = APKExplorer.getAppData(mBackupPath);
                     data.add(new HashMap<>() {{
@@ -102,21 +98,22 @@ public class ExploredInfoFragment extends Fragment {
                              }}
                     );
                 } catch (JSONException | NullPointerException ignored) {}
-                return data;
             }
 
             @Override
             public void onPostExecute() {
-                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.setAdapter(new ExploredInfoAdapter(data));
             }
         }.execute();
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+        AppSettings.applyMargin(mRecyclerView, requireActivity());
+
+        onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 retainDialog(rootFile);
             }
-        });
+        };
 
         return mRootView;
     }

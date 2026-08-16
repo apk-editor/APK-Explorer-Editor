@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.AppSettings;
-import com.apk.editor.utils.SerializableItems.APKPickerItems;
+import com.apk.editor.utils.Serializables.APKPickerItems;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textview.MaterialTextView;
 
