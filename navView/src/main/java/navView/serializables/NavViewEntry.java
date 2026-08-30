@@ -5,8 +5,6 @@ import static com.google.android.material.button.MaterialButton.ICON_GRAVITY_TEX
 import static com.google.android.material.button.MaterialButton.ICON_GRAVITY_TOP;
 
 import android.content.res.ColorStateList;
-import android.graphics.Typeface;
-import android.util.TypedValue;
 
 import androidx.fragment.app.Fragment;
 
@@ -29,31 +27,16 @@ public class NavViewEntry implements Serializable {
     private final int drawableRes;
     private final String titles;
 
-    /*
-     * NavView with an icon on the left and a title on its bottom
-     */
     public NavViewEntry(FragmentSupplier supplier, int drawableRes, String titles) {
         this.supplier = supplier;
         this.drawableRes = drawableRes;
         this.titles = titles;
     }
 
-    /*
-     * NavView with only an icon
-     */
     public NavViewEntry(FragmentSupplier supplier, int drawableRes) {
         this.supplier = supplier;
         this.drawableRes = drawableRes;
         this.titles = null;
-    }
-
-    /*
-     * NavView with only a title
-     */
-    public NavViewEntry(FragmentSupplier supplier, String titles) {
-        this.supplier = supplier;
-        this.drawableRes = Integer.MIN_VALUE;
-        this.titles = titles;
     }
 
     public FragmentSupplier getSupplier() {
@@ -61,18 +44,13 @@ public class NavViewEntry implements Serializable {
     }
 
     public void load(MaterialButton button, boolean isSelected) {
-        if (this.drawableRes != Integer.MIN_VALUE) {
-            button.setIconResource(this.drawableRes);
-            button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
-            button.setTypeface(Typeface.DEFAULT);
-        } else {
-            button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            button.setTypeface(Typeface.DEFAULT, Typeface.BOLD_ITALIC);
-        }
+        button.setIconResource(this.drawableRes);
         if (this.titles != null) {
+            button.setIconSize(NavViewUtils.getButtonSize(24, button.getContext()));
             button.setIconGravity(ICON_GRAVITY_TOP);
             button.setText(this.titles);
         } else {
+            button.setIconSize(NavViewUtils.getButtonSize(30, button.getContext()));
             button.setIconGravity(ICON_GRAVITY_TEXT_START);
         }
         int activeColor = NavViewUtils.getMaterialColorActive(button.getContext());

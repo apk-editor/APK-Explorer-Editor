@@ -15,8 +15,8 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.ExploredInfoAdapter;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppSettings;
+import com.apk.editor.utils.dialogs.ProjectExitDialog;
 import com.apk.editor.utils.tasks.DeleteFile;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -120,13 +120,17 @@ public class ExploredInfoFragment extends BaseFragment {
 
     private void retainDialog(File rootFile) {
         if (sCommonUtils.getString("projectAction", null, requireActivity()) == null) {
-            new MaterialAlertDialogBuilder(requireActivity())
-                    .setIcon(R.mipmap.ic_launcher)
-                    .setTitle(R.string.save_projects_question)
-                    .setNeutralButton(getString(R.string.cancel), (dialog, id) -> {
-                    })
-                    .setNegativeButton(getString(R.string.discard), (dialog, id) -> new DeleteFile(rootFile, requireActivity(), true).execute())
-                    .setPositiveButton(getString(R.string.save), (dialog, id) -> requireActivity().finish()).show();
+            new ProjectExitDialog(APKExplorer.getAppIcon(mBackupPath), requireActivity()) {
+                @Override
+                public void onDiscard() {
+                    new DeleteFile(rootFile, requireActivity(), true).execute();
+                }
+
+                @Override
+                public void onSave() {
+                    requireActivity().finish();
+                }
+            };
         } else if (sCommonUtils.getString("projectAction", null, requireActivity()).equals(getString(R.string.delete))) {
             new DeleteFile(rootFile, requireActivity(), true).execute();
         } else {

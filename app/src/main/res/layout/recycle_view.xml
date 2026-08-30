@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -62,6 +61,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:focusable="false"
+                                            android:textStyle="bold"
                                             android:textSize="17sp" />
 
                                         <com.google.android.material.textview.MaterialTextView
@@ -98,6 +98,7 @@
                                     android:layout_gravity="start"
                                     android:layout="@+id/size"
                                     android:textStyle="bold"
+                                    android:ellipsize="end"
                                     android:maxLines="1" />
 
                                 <com.google.android.material.textview.MaterialTextView
@@ -108,6 +109,7 @@
                                     app:layout_constraintBottom_toBottomOf="@+id/constraint_layout"
                                     app:layout_constraintStart_toEndOf="@+id/version"
                                     android:layout_gravity="end"
+                                    android:ellipsize="end"
                                     android:gravity="end"
                                     android:maxLines="1" />
                         </androidx.constraintlayout.widget.ConstraintLayout>

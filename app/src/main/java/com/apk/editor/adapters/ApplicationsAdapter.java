@@ -4,7 +4,6 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.BuildConfig;
@@ -22,30 +22,30 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Common;
 import com.apk.editor.utils.Serializables.PackageItems;
-import com.apk.editor.utils.menu.ExploreOptionsMenu;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
+import java.util.Objects;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
  */
 public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapter.ViewHolder> {
 
-    private final Activity activity;
     private final List<PackageItems> data;
     private final List<String> packageNames;
     private final MaterialButton batchButton;
+    private final OnItemClickListener clickListener;
     private final String searchWord;
 
-    public ApplicationsAdapter(List<PackageItems> data, List<String> packageNames, MaterialButton batchButton, String searchWord, Activity activity) {
+    public ApplicationsAdapter(List<PackageItems> data, List<String> packageNames, MaterialButton batchButton, String searchWord, OnItemClickListener clickListener) {
         this.data = data;
         this.packageNames = packageNames;
         this.batchButton = batchButton;
         this.searchWord = searchWord;
-        this.activity = activity;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -131,7 +131,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
             holder.mSize.setVisibility(VISIBLE);
             holder.mVersion.setVisibility(VISIBLE);
 
-            AppSettings.setSlideInAnimation(holder.itemView, position);
+            AppSettings.setSlideInAnimation(holder.mAppIcon, position);
         } catch (NullPointerException | IndexOutOfBoundsException ignored) {}
     }
 
@@ -140,6 +140,48 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
             batchButton.setVisibility(View.GONE);
         } else {
             batchButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void updateData(@NonNull List<PackageItems> newData) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return data.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newData.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                PackageItems oldItem = data.get(oldItemPosition);
+                PackageItems newItem = newData.get(newItemPosition);
+
+                return Objects.equals(oldItem.getPackageName(), newItem.getPackageName());
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                PackageItems oldItem = data.get(oldItemPosition);
+                PackageItems newItem = newData.get(newItemPosition);
+
+                return Objects.equals(oldItem.getPackageName(), newItem.getPackageName())
+                        && Objects.equals(oldItem.getUpdatedTime(), newItem.getUpdatedTime());
+            }
+        });
+
+        this.data.clear();
+        this.data.addAll(newData);
+
+        diffResult.dispatchUpdatesTo(this);
+    }
+
+    public void refreshData() {
+        if (!this.data.isEmpty()) {
+            notifyItemRangeChanged(0, getItemCount());
         }
     }
 
@@ -181,8 +223,12 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                 return;
             }
 
-            ExploreOptionsMenu.getMenu(packageItems.getPackageName(), null, null, false, activity);
+            clickListener.onItemClick(packageItems.getPackageName());
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(String packageName);
     }
 
 }

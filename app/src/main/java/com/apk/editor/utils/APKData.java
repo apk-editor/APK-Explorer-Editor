@@ -27,10 +27,10 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
  */
 public class APKData {
 
-    public static List<File> getData(String searchWord, Context context) {
+    public static List<File> getData(String searchWord, int tabPosition, Context context) {
         List<File> mData = new CopyOnWriteArrayList<>();
         for (File mFile : getAPKList(context)) {
-            if (sCommonUtils.getString("apkTypes", "apks", context).equals("bundles")) {
+            if (tabPosition == 1) {
                 if (mFile.isDirectory() && !mFile.getName().equals("APK") && isValidBundle(mFile, context)) {
                     if (searchWord == null) {
                         mData.add(mFile);
@@ -47,6 +47,8 @@ public class APKData {
                     }
                 }
             }
+
+            sCommonUtils.saveInt("showApkType", tabPosition, context);
         }
         Collections.sort(mData, (lhs, rhs) -> String.CASE_INSENSITIVE_ORDER.compare(lhs.getName(), rhs.getName()));
         if (!sCommonUtils.getBoolean("az_order", true, context)) {

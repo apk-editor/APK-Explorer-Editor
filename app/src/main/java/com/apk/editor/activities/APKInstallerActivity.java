@@ -149,15 +149,13 @@ public class APKInstallerActivity extends BaseActivity {
         try {
             if (sPackageUtils.isPackageInstalled(mAPKParser.getPackageName(), this)) {
                 mAppName.setText(sPackageUtils.getAppName(mAPKParser.getPackageName(), this));
-                mPackageID.setText(mAPKParser.getPackageName());
                 mAppIcon.setImageDrawable(sPackageUtils.getAppIcon(mAPKParser.getPackageName(), this));
-                mPackageID.setVisibility(View.VISIBLE);
             } else {
-                mAppName.setText(mFile.getName().replace(".apk", ""));
-                mPackageID.setText(mAPKParser.getPackageName());
+                mAppName.setText(mAPKParser.getAppName());
                 mAppIcon.setImageDrawable(mAPKParser.getAppIcon());
-                mPackageID.setVisibility(View.VISIBLE);
             }
+            mPackageID.setText(mAPKParser.getPackageName());
+            mPackageID.setVisibility(View.VISIBLE);
 
             adapter.addFragment(new APKDetailsFragment(), getString(R.string.details));
             if (mAPKParser.getPermissions() != null) {

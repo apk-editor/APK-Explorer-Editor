@@ -13,10 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
@@ -27,19 +27,21 @@ import com.apk.editor.activities.XMLEditorActivity;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppSettings;
-import com.apk.editor.utils.Common;
+import com.apk.editor.utils.Serializables.MenuItems;
+import com.apk.editor.utils.dialogs.BottomMenuDialog;
 import com.apk.editor.utils.dialogs.ResViewerDialog;
+import com.apk.editor.utils.dialogs.UnsupportedFileDialog;
 import com.apk.editor.utils.tasks.DeleteFiles;
 import com.apk.editor.utils.tasks.ExportToStorage;
 import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
-import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
 import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 
 /*
@@ -48,15 +50,13 @@ import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.ViewHolder> {
 
     private final Activity activity;
-    private final ActivityResultLauncher<Intent> activityResultLauncher;
     private final List<File> files;
     private final List<String> data;
     private final OnItemClickListener clickListener;
     private final String backupFilePath, packageName;
 
-    public APKExplorerAdapter(List<String> data, ActivityResultLauncher<Intent> activityResultLauncher, List<File> files, String packageName, String backupFilePath, OnItemClickListener clickListener, Activity activity) {
+    public APKExplorerAdapter(List<String> data, List<File> files, String packageName, String backupFilePath, OnItemClickListener clickListener, Activity activity) {
         this.data = data;
-        this.activityResultLauncher = activityResultLauncher;
         this.files = files;
         this.packageName = packageName;
         this.backupFilePath = backupFilePath;
@@ -82,24 +82,12 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
             holder.mDescription.setVisibility(GONE);
             holder.mIcon.setClickable(false);
         } else {
-            if (APKExplorer.isImageFile(explorerItem)) {
-                if (APKExplorer.getIconFromPath(explorerItem) != null) {
-                    holder.mIcon.setImageURI(APKExplorer.getIconFromPath(explorerItem));
-                } else {
-                    APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_file), holder.mIcon.getContext());
-                }
-            } else if (explorerItem.endsWith(".apk")) {
+            if (APKExplorer.isImageFile(explorerItem) && APKExplorer.getIconFromPath(explorerItem) != null) {
+                holder.mIcon.setImageURI(APKExplorer.getIconFromPath(explorerItem));
+            } else if (explorerItem.endsWith(".apk") && sAPKUtils.getAPKIcon(explorerItem, holder.mIcon.getContext()) != null) {
                 holder.mIcon.setImageDrawable(sAPKUtils.getAPKIcon(explorerItem, holder.mIcon.getContext()));
-            } else if (explorerItem.contains("classes") && explorerItem.endsWith(".dex")) {
-                APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_classes), holder.mIcon.getContext());
-            } else if (explorerItem.endsWith(".arsc")) {
-                APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_res), holder.mIcon.getContext());
             } else {
-                if (explorerItem.endsWith(".xml")) {
-                    APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), explorerItem.endsWith("AndroidManifest.xml") ? R.drawable.ic_manifest : R.drawable.ic_xml), holder.mIcon.getContext());
-                } else {
-                    APKExplorer.setIcon(holder.mIcon, ContextCompat.getDrawable(holder.mIcon.getContext(), R.drawable.ic_file), holder.mIcon.getContext());
-                }
+                holder.mIcon.setImageResource(APKExplorer.getIconResource(explorerItem));
             }
             holder.mDescription.setVisibility(VISIBLE);
             holder.mIcon.setClickable(true);
@@ -133,61 +121,41 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
 
         holder.mTitle.setText(new File(explorerItem).getName());
         holder.mDescription.setText(APKExplorer.getFormattedFileSize(new File(explorerItem), holder.mDescription.getContext()));
-        AppSettings.setSlideInAnimation(holder.itemView, position);
+        AppSettings.setSlideInAnimation(holder.mIcon, position);
     }
 
-    private sSingleItemDialog longClickDialog(int position, Context context) {
-        return new sSingleItemDialog(0, null, new String[]{
-                context.getString(R.string.delete),
-                context.getString(R.string.export),
-                context.getString(R.string.replace)
-        }, context) {
-
-            @SuppressLint("StringFormatInvalid")
+    public void updateData(List<String> newData) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
-            public void onItemSelected(int itemPosition) {
-                if (itemPosition == 0) {
-                    new MaterialAlertDialogBuilder(context)
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(R.string.app_name)
-                            .setMessage(context.getString(R.string.delete_question, new File(data.get(position)).getName()))
-                            .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                            })
-                            .setPositiveButton(R.string.delete, (dialog, id) -> new DeleteFiles(new File(data.get(position)), null, backupFilePath, context) {
-                                @Override
-                                public void onPostExecute() {
-                                    data.remove(position);
-                                    files.remove(new File(data.get(position)));
-                                    notifyItemRemoved(position);
-                                    notifyItemRangeChanged(position, data.size());
-                                }
-                            }.execute()
-                            ).show();
-                } else if (itemPosition == 1) {
-                    new MaterialAlertDialogBuilder(context)
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(R.string.app_name)
-                            .setMessage(R.string.export_question)
-                            .setNegativeButton(context.getString(R.string.cancel), (dialog, id) -> {
-                            })
-                            .setPositiveButton(context.getString(R.string.export), (dialog, id) -> {
-                                if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
-                                    sPermissionUtils.requestPermission(
-                                            new String[]{
-                                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                            }, activity);
-                                } else {
-                                    new ExportToStorage(new File(data.get(position)), null, packageName, context).execute();
-                                }
-                            }).show();
-                } else {
-                    Common.setFileToReplace(data.get(position));
-                    Intent replace = new Intent(Intent.ACTION_GET_CONTENT);
-                    replace.setType("*/*");
-                    activityResultLauncher.launch(replace);
-                }
+            public int getOldListSize() {
+                return data.size();
             }
-        };
+
+            @Override
+            public int getNewListSize() {
+                return newData != null ? newData.size() : 0;
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return Objects.equals(data.get(oldItemPosition), newData.get(newItemPosition));
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                String oldItem = data.get(oldItemPosition);
+                String newItem = newData.get(newItemPosition);
+
+                return Objects.equals(oldItem, newItem);
+            }
+        });
+
+        this.data.clear();
+        if (newData != null) {
+            this.data.addAll(newData);
+        }
+
+        diffResult.dispatchUpdatesTo(this);
     }
 
     @Override
@@ -212,7 +180,7 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
                 if (new File(data.get(getBindingAdapterPosition())).isDirectory() || !APKEditorUtils.isFullVersion(view.getContext())) {
                     return false;
                 }
-                longClickDialog(getBindingAdapterPosition(), v.getContext()).show();
+                longClickDialog(getBindingAdapterPosition(), v.getContext());
                 return true;
             });
         }
@@ -224,79 +192,117 @@ public class APKExplorerAdapter extends RecyclerView.Adapter<APKExplorerAdapter.
             String filePath = data.get(currentPos);
             if (currentPos == RecyclerView.NO_POSITION) return;
 
-            if (new File(filePath).isDirectory() || new File(filePath).isFile() && filePath.endsWith(".dex")) {
-                clickListener.onItemClick(data.get(currentPos));
-            } else {
-                if (files.contains(new File(filePath))) {
-                    view.post(() -> {
-                        files.remove(new File(filePath));
-                        notifyItemChanged(currentPos);
-                    });
-                    return;
-                }
-                if (APKExplorer.isTextFile(filePath)) {
-                    Intent intent;
-                    if (APKEditorUtils.isFullVersion(view.getContext())) {
-                        intent = new Intent(view.getContext(), TextEditorActivity.class);
-                        intent.putExtra(TextEditorActivity.PATH_INTENT, filePath);
-                        intent.putExtra(TextEditorActivity.BACKUP_PATH_INTENT, backupFilePath);
-                    } else {
-                        intent = new Intent(view.getContext(), TextViewActivity.class);
-                        intent.putExtra(TextViewActivity.PATH_INTENT, filePath);
-                    }
-                    view.getContext().startActivity(intent);
-                } else if (APKExplorer.isImageFile(filePath)) {
-                    Intent imageView = new Intent(view.getContext(), ImageViewActivity.class);
-                    imageView.putExtra(ImageViewActivity.PATH_INTENT, filePath);
-                    imageView.putExtra(ImageViewActivity.PACKAGE_NAME_INTENT, packageName);
-                    view.getContext().startActivity(imageView);
-                } else if (filePath.endsWith(".xml")) {
-                    Intent xmlEditor = new Intent(view.getContext(), XMLEditorActivity.class);
-                    xmlEditor.putExtra(XMLEditorActivity.PATH_INTENT, filePath);
-                    xmlEditor.putExtra(XMLEditorActivity.RESOURCE_PATH_INTENT, backupFilePath.replace("/.aeeBackup/appData", "/resources.arsc"));
-                    view.getContext().startActivity(xmlEditor);
-                } else if (filePath.endsWith(".RSA")) {
-                    Intent rsaCertificate = new Intent(view.getContext(), TextViewActivity.class);
-                    rsaCertificate.putExtra(TextViewActivity.PATH_INTENT, filePath);
-                    view.getContext().startActivity(rsaCertificate);
-                } else if (filePath.endsWith("resources.arsc")) {
-                    new ResViewerDialog(filePath, activity);
-                } else {
-                    new MaterialAlertDialogBuilder(view.getContext())
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(R.string.app_name)
-                            .setMessage(view.getContext().getString(R.string.unknown_file_message, new File(filePath).getName()))
-                            .setNeutralButton(R.string.cancel, (dialog, id) -> {
-                            })
-                            .setNegativeButton(view.getContext().getString(R.string.export), (dialog, id) -> {
-                                if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, view.getContext())) {
-                                    sPermissionUtils.requestPermission(
-                                            new String[] {
-                                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                            }, activity);
-                                } else {
-                                    new ExportToStorage(new File(filePath), null, packageName, view.getContext()).execute();
-                                }
-                            })
-                            .setPositiveButton(view.getContext().getString(R.string.open_as_text), (dialog1, id1) -> {
-                                Intent intent;
-                                if (APKEditorUtils.isFullVersion(view.getContext())) {
-                                    intent = new Intent(view.getContext(), TextEditorActivity.class);
-                                    intent.putExtra(TextEditorActivity.PATH_INTENT, filePath);
-                                    intent.putExtra(TextEditorActivity.BACKUP_PATH_INTENT, backupFilePath);
-                                } else {
-                                    intent = new Intent(view.getContext(), TextViewActivity.class);
-                                    intent.putExtra(TextViewActivity.PATH_INTENT, filePath);
-                                }
-                                view.getContext().startActivity(intent);
-                            }).show();
-                }
+            if (files.contains(new File(filePath))) {
+                view.post(() -> {
+                    files.remove(new File(filePath));
+                    notifyItemChanged(currentPos);
+                });
+                return;
             }
+
+            if (new File(filePath).isDirectory() || new File(filePath).isFile() && filePath.endsWith(".dex")) {
+                clickListener.onItemClick(data.get(currentPos), false);
+            } else if (APKExplorer.isTextFile(filePath)) {
+                Intent intent;
+                if (APKEditorUtils.isFullVersion(view.getContext())) {
+                    intent = new Intent(view.getContext(), TextEditorActivity.class);
+                    intent.putExtra(TextEditorActivity.PATH_INTENT, filePath);
+                    intent.putExtra(TextEditorActivity.BACKUP_PATH_INTENT, backupFilePath);
+                } else {
+                    intent = new Intent(view.getContext(), TextViewActivity.class);
+                    intent.putExtra(TextViewActivity.PATH_INTENT, filePath);
+                }
+                view.getContext().startActivity(intent);
+            } else if (APKExplorer.isImageFile(filePath)) {
+                Intent imageView = new Intent(view.getContext(), ImageViewActivity.class);
+                imageView.putExtra(ImageViewActivity.PATH_INTENT, filePath);
+                imageView.putExtra(ImageViewActivity.PACKAGE_NAME_INTENT, packageName);
+                view.getContext().startActivity(imageView);
+            } else if (filePath.endsWith(".xml")) {
+                Intent xmlEditor = new Intent(view.getContext(), XMLEditorActivity.class);
+                xmlEditor.putExtra(XMLEditorActivity.PATH_INTENT, filePath);
+                xmlEditor.putExtra(XMLEditorActivity.RESOURCE_PATH_INTENT, backupFilePath.replace("/.aeeBackup/appData", "/resources.arsc"));
+                view.getContext().startActivity(xmlEditor);
+            } else if (filePath.endsWith(".RSA")) {
+                Intent rsaCertificate = new Intent(view.getContext(), TextViewActivity.class);
+                rsaCertificate.putExtra(TextViewActivity.PATH_INTENT, filePath);
+                view.getContext().startActivity(rsaCertificate);
+            } else if (filePath.endsWith("resources.arsc")) {
+                new ResViewerDialog(filePath, activity);
+            } else {
+                new UnsupportedFileDialog(this.mIcon.getDrawable(), new File(filePath).getName(), view.getContext().getString(R.string.unknown_file_message, new File(filePath).getName()), view.getContext()) {
+                    @Override
+                    public void onNegativeAction() {
+                        Intent intent;
+                        if (APKEditorUtils.isFullVersion(view.getContext())) {
+                            intent = new Intent(view.getContext(), TextEditorActivity.class);
+                            intent.putExtra(TextEditorActivity.PATH_INTENT, filePath);
+                            intent.putExtra(TextEditorActivity.BACKUP_PATH_INTENT, backupFilePath);
+                        } else {
+                            intent = new Intent(view.getContext(), TextViewActivity.class);
+                            intent.putExtra(TextViewActivity.PATH_INTENT, filePath);
+                        }
+                        view.getContext().startActivity(intent);
+                    }
+
+                    @Override
+                    public void onPositiveAction() {
+                        if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, view.getContext())) {
+                            sPermissionUtils.requestPermission(
+                                    new String[] {
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                    }, activity);
+                        } else {
+                            new ExportToStorage(new File(filePath), null, packageName, view.getContext()).execute();
+                        }
+                    }
+                };
+            }
+        }
+
+        private void longClickDialog(int position, Context context) {
+            List<MenuItems> menuItem = new CopyOnWriteArrayList<>();
+            menuItem.add(new MenuItems(R.drawable.ic_delete, context.getString(R.string.delete), 0));
+            menuItem.add(new MenuItems(R.drawable.ic_export, context.getString(R.string.export), 1));
+            menuItem.add(new MenuItems(R.drawable.ic_reset, context.getString(R.string.replace), 2));
+
+            new BottomMenuDialog(menuItem, APKExplorer.drawableToBitmap(this.mIcon.getDrawable()), this.mTitle.getText().toString().trim(), context) {
+                @SuppressLint("StringFormatInvalid")
+                @Override
+                public void onMenuItemClicked(int id) {
+                    switch (id) {
+                        case 0:
+                            new DeleteFiles(new File(data.get(position)), null, backupFilePath, context) {
+                                @Override
+                                public void onPostExecute() {
+                                    data.remove(position);
+                                    files.remove(new File(data.get(position)));
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, data.size());
+                                }
+                            }.execute();
+                            break;
+                        case 1:
+                            if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE, context)) {
+                                sPermissionUtils.requestPermission(
+                                        new String[]{
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                        }, activity);
+                            } else {
+                                new ExportToStorage(new File(data.get(position)), null, packageName, context).execute();
+                            }
+                            break;
+                        case 2:
+                            clickListener.onItemClick(data.get(position), true);
+                            break;
+                    }
+                }
+            };
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(String filePath);
+        void onItemClick(String filePath, boolean replace);
     }
 
 }

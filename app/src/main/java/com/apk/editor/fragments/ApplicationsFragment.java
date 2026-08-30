@@ -1,5 +1,7 @@
 package com.apk.editor.fragments;
 
+import static android.view.View.GONE;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.core.widget.ContentLoadingProgressBar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,14 +23,13 @@ import com.apk.editor.adapters.ApplicationsAdapter;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Serializables.PackageItems;
-import com.apk.editor.utils.dialogs.ExportOptionsDialog;
-import com.apk.editor.utils.dialogs.SortOptionsDialog;
+import com.apk.editor.utils.dialogs.BatchOptionsDialog;
+import com.apk.editor.utils.menu.ExploreOptionsMenu;
+import com.apk.editor.viewModels.FragmentViewModel;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
@@ -40,74 +42,51 @@ public class ApplicationsFragment extends BaseFragment {
 
     private ApplicationsAdapter mRecycleViewAdapter;
     private boolean mExit = false, mSelectAll = false;
+    private int mTabPosition = 2;
     private final List<String> mPackageNames = new CopyOnWriteArrayList<>();
     private ContentLoadingProgressBar mProgress;
+    private MaterialAutoCompleteTextView mSearchWord;
     private MaterialButton mBatchButton;
-    private RecyclerView mRecyclerView;
     private String mSearchText = null;
+
+    public ApplicationsFragment() {
+    }
+
+    public static ApplicationsFragment newInstance(int position) {
+        ApplicationsFragment fragment = new ApplicationsFragment();
+
+        Bundle args = new Bundle();
+        args.putInt("tabPosition", position);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            mTabPosition = getArguments().getInt("tabPosition");
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mRootView = inflater.inflate(R.layout.fragment_applications, container, false);
 
-        MaterialAutoCompleteTextView mSearchWord = mRootView.findViewById(R.id.search_word);
+        mSearchWord = mRootView.findViewById(R.id.search_word);
         mBatchButton = mRootView.findViewById(R.id.batch_options);
         mProgress = mRootView.findViewById(R.id.progress);
-        MaterialButton mSearchButton = mRootView.findViewById(R.id.search_button);
-        MaterialButton mMenuButton = mRootView.findViewById(R.id.menu_button);
-        TabLayout mTabLayout = mRootView.findViewById(R.id.tab_layout);
-        mRecyclerView = mRootView.findViewById(R.id.recycler_view);
+        RecyclerView mRecyclerView = mRootView.findViewById(R.id.recycler_view);
+
+        FragmentViewModel viewModel = new ViewModelProvider(requireActivity()).get(FragmentViewModel.class);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        mRecycleViewAdapter = new ApplicationsAdapter(new CopyOnWriteArrayList<>(), mPackageNames, mBatchButton, mSearchText, packageName -> ExploreOptionsMenu.getMenu(packageName, null, null, false, requireActivity()));
+        mRecyclerView.setAdapter(mRecycleViewAdapter);
 
-        mTabLayout.setVisibility(View.VISIBLE);
-
-        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.all)));
-        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.system)));
-        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.user)));
-
-        Objects.requireNonNull(mTabLayout.getTabAt(getTabPosition())).select();
-
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                String mStatus = sCommonUtils.getString("appTypes", "all", requireActivity());
-                switch (tab.getPosition()) {
-                    case 0:
-                        if (!mStatus.equals("all")) {
-                            sCommonUtils.saveString("appTypes", "all", requireActivity());
-                            mSelectAll = false;
-                            loadApps(mSearchText);
-                        }
-                        break;
-                    case 1:
-                        if (!mStatus.equals("system")) {
-                            sCommonUtils.saveString("appTypes", "system", requireActivity());
-                            mSelectAll = false;
-                            loadApps(mSearchText);
-                        }
-                        break;
-                    case 2:
-                        if (!mStatus.equals("user")) {
-                            sCommonUtils.saveString("appTypes", "user", requireActivity());
-                            mSelectAll = false;
-                            loadApps(mSearchText);
-                        }
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
-
-        mBatchButton.setOnClickListener(v -> new ExportOptionsDialog(mPackageNames, mSelectAll, requireActivity()) {
+        mBatchButton.setOnClickListener(v -> new BatchOptionsDialog(mPackageNames, mSelectAll, requireActivity()) {
             @Override
             public void selectAllLister(boolean checked) {
                 if (checked) {
@@ -117,29 +96,14 @@ public class ApplicationsFragment extends BaseFragment {
                     mSelectAll = true;
                 }
                 loadApps(mSearchText);
+                mRecycleViewAdapter.refreshData();
             }
         });
 
-        mSearchButton.setOnClickListener(v -> {
-            if (mSearchWord.getVisibility() == View.VISIBLE) {
-                mSearchWord.setVisibility(View.GONE);
-                if (mSearchText != null) {
-                    mSearchText = null;
-                    mSearchWord.setText(null);
-                }
-                AppData.toggleKeyboard(0, mSearchWord, requireActivity());
-            } else {
-                mSearchWord.setVisibility(View.VISIBLE);
-                mSearchWord.requestFocus();
-                AppData.toggleKeyboard(1, mSearchWord, requireActivity());
-            }
-        });
-
-        mMenuButton.setOnClickListener(v -> new SortOptionsDialog(requireActivity()) {
-            @Override
-            public void onItemClicked() {
-                loadApps(mSearchText);
-            }
+        mSearchWord.setOnEditorActionListener((v, actionId, event) -> {
+            AppData.toggleKeyboard(0, mSearchWord, requireActivity());
+            mSearchWord.clearFocus();
+            return true;
         });
 
         mSearchWord.addTextChangedListener(new TextWatcher() {
@@ -157,6 +121,21 @@ public class ApplicationsFragment extends BaseFragment {
             }
         });
 
+        viewModel.getSearchTrigger().observe(getViewLifecycleOwner(), isVisible -> {
+            if (isVisible) {
+                mSearchWord.setVisibility(View.VISIBLE);
+                if (!mSearchWord.hasFocus()) {
+                    mSearchWord.requestFocus();
+                    AppData.toggleKeyboard(1, mSearchWord, requireActivity());
+                }
+            } else {
+                mSearchWord.setVisibility(GONE);
+                AppData.toggleKeyboard(0, mSearchWord, requireActivity());
+            }
+        });
+
+        viewModel.getSortTrigger().observe(getViewLifecycleOwner(), timestamp -> loadApps(mSearchText));
+
         loadApps(mSearchText);
 
         AppSettings.applyMargin(mRecyclerView, requireActivity());
@@ -172,7 +151,7 @@ public class ApplicationsFragment extends BaseFragment {
                         mSearchText = null;
                         mSearchWord.setText(null);
                     }
-                    mSearchWord.setVisibility(View.GONE);
+                    mSearchWord.setVisibility(GONE);
                     return;
                 }
                 if (mBatchButton.getVisibility() == View.VISIBLE) {
@@ -195,34 +174,21 @@ public class ApplicationsFragment extends BaseFragment {
         return mRootView;
     }
 
-    private int getTabPosition() {
-        String mStatus = sCommonUtils.getString("appTypes", "all", requireActivity());
-        if (mStatus.equals("user")) {
-            return 2;
-        } else if (mStatus.equals("system")) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
     private void loadApps(String searchWord) {
         new sExecutor() {
+            private List<PackageItems> data;
 
             @Override
             public void onPreExecute() {
-                mRecyclerView.setVisibility(View.GONE);
                 mProgress.setVisibility(View.VISIBLE);
-                mRecyclerView.removeAllViews();
             }
 
             @Override
             public void doInBackground() {
-                List<PackageItems> mData = AppData.getData(searchWord, requireActivity());
-                mRecycleViewAdapter = new ApplicationsAdapter(mData, mPackageNames, mBatchButton, searchWord, requireActivity());
+                data = AppData.getData(searchWord, mTabPosition, requireActivity());
                 if (mSelectAll) {
                     mPackageNames.clear();
-                    for (PackageItems items : mData) {
+                    for (PackageItems items : data) {
                         mPackageNames.add(items.getPackageName());
                     }
                 }
@@ -230,13 +196,27 @@ public class ApplicationsFragment extends BaseFragment {
 
             @Override
             public void onPostExecute() {
-                mSearchText = searchWord;
-                mRecyclerView.setAdapter(mRecycleViewAdapter);
+                if (!isAdded()) {
+                    return;
+                }
 
-                mRecyclerView.setVisibility(View.VISIBLE);
                 mProgress.setVisibility(View.GONE);
+                mSearchText = searchWord;
+                mRecycleViewAdapter.updateData(data);
             }
         }.execute();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (mSearchText != null) {
+            mSearchWord.setText(null);
+            mSearchWord.setVisibility(GONE);
+        }
+
+        mPackageNames.clear();
     }
     
 }

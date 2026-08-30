@@ -12,7 +12,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
-import com.apk.editor.utils.Serializables.ExploreOptionsItems;
+import com.apk.editor.utils.Serializables.MenuItems;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -21,12 +21,12 @@ import java.util.List;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on July 26, 2026
  */
-public class ExploreOptionsAdapter extends RecyclerView.Adapter<ExploreOptionsAdapter.ViewHolder> {
+public class BottomMenuAdapter extends RecyclerView.Adapter<BottomMenuAdapter.ViewHolder> {
 
-    private final List<ExploreOptionsItems> data;
+    private final List<MenuItems> data;
     private final OnItemClickListener listener;
 
-    public ExploreOptionsAdapter(List<ExploreOptionsItems> items, OnItemClickListener listener) {
+    public BottomMenuAdapter(List<MenuItems> items, OnItemClickListener listener) {
         this.data = items;
         this.listener = listener;
     }
@@ -34,13 +34,13 @@ public class ExploreOptionsAdapter extends RecyclerView.Adapter<ExploreOptionsAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_exploreoptions, parent, false);
+        View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_bottom_menu, parent, false);
         return new ViewHolder(rowItem);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ExploreOptionsItems item = this.data.get(position);
+        MenuItems item = this.data.get(position);
         holder.title.setText(item.getTitle());
 
         if (this.data.get(position).getIconRes() != Integer.MIN_VALUE) {

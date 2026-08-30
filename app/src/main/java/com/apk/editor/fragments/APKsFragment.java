@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,9 +18,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.documentfile.provider.DocumentFile;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,9 +34,9 @@ import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.apk.editor.utils.menu.ExploreOptionsMenu;
+import com.apk.editor.viewModels.FragmentViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 import java.io.File;
@@ -59,63 +58,50 @@ import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
 public class APKsFragment extends BaseFragment {
 
     private APKsAdapter mRecycleViewAdapter;
+    private int mTabPosition = 0;
     private ContentLoadingProgressBar mProgress;
+    private MaterialAutoCompleteTextView mSearchWord;
     private MaterialButton mBatchButton;
-    private RecyclerView mRecyclerView;
     private String mSearchText = null;
     private final List<String> mAPKPaths = new CopyOnWriteArrayList<>();
+
+    public APKsFragment() {
+    }
+
+    public static APKsFragment newInstance(int position) {
+        APKsFragment fragment = new APKsFragment();
+
+        Bundle args = new Bundle();
+        args.putInt("tabPosition", position);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            mTabPosition = getArguments().getInt("tabPosition");
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mRootView = inflater.inflate(R.layout.fragment_apks, container, false);
 
-        MaterialAutoCompleteTextView mSearchWord = mRootView.findViewById(R.id.search_word);
+        mSearchWord = mRootView.findViewById(R.id.search_word);
         mBatchButton = mRootView.findViewById(R.id.batch_options);
-        MaterialButton mSearchButton = mRootView.findViewById(R.id.search_button);
-        MaterialButton mSortButton = mRootView.findViewById(R.id.sort_button);
         MaterialButton mAddButton = mRootView.findViewById(R.id.add_button);
         mProgress = mRootView.findViewById(R.id.progress);
-        TabLayout mTabLayout = mRootView.findViewById(R.id.tab_layout);
-        mRecyclerView = mRootView.findViewById(R.id.recycler_view);
+        RecyclerView mRecyclerView = mRootView.findViewById(R.id.recycler_view);
+
+        FragmentViewModel viewModel = new ViewModelProvider(requireActivity()).get(FragmentViewModel.class);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-
-        mTabLayout.setVisibility(View.VISIBLE);
-
-        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.apks)));
-        mTabLayout.addTab(mTabLayout.newTab().setText(getString(R.string.bundles)));
-
-        Objects.requireNonNull(mTabLayout.getTabAt(getTabPosition(requireActivity()))).select();
-
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                String mStatus = sCommonUtils.getString("apkTypes", "apks", requireActivity());
-                switch (tab.getPosition()) {
-                    case 0:
-                        if (!mStatus.equals("apks")) {
-                            sCommonUtils.saveString("apkTypes", "apks", requireActivity());
-                            loadAPKs(mSearchText, requireActivity());
-                        }
-                        break;
-                    case 1:
-                        if (!mStatus.equals("bundles")) {
-                            sCommonUtils.saveString("apkTypes", "bundles", requireActivity());
-                            loadAPKs(mSearchText, requireActivity());
-                        }
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
+        mRecycleViewAdapter = new APKsAdapter(new CopyOnWriteArrayList<>(), mAPKPaths, mBatchButton, requireActivity());
+        mRecyclerView.setAdapter(mRecycleViewAdapter);
 
         mBatchButton.setOnClickListener(v -> new sExecutor() {
                     private ProgressDialog mProgressDialog;
@@ -145,43 +131,27 @@ public class APKsFragment extends BaseFragment {
                         }
                         mAPKPaths.clear();
                         mBatchButton.setVisibility(GONE);
-                        loadAPKs(mSearchText, requireActivity());
+                        loadAPKs(mSearchText);
                     }
                 }.execute()
         );
 
-        mSearchButton.setOnClickListener(v -> {
-            if (mSearchWord.getVisibility() == View.VISIBLE) {
-                mSearchWord.setVisibility(View.GONE);
-                if (mSearchText != null) {
-                    mSearchText = null;
-                    mSearchWord.setText(null);
-                }
-                AppData.toggleKeyboard(0, mSearchWord, requireActivity());
-            } else {
+        viewModel.getSearchTrigger().observe(getViewLifecycleOwner(), isVisible -> {
+            if (isVisible) {
                 mSearchWord.setVisibility(View.VISIBLE);
-                mSearchWord.requestFocus();
-                AppData.toggleKeyboard(1, mSearchWord, requireActivity());
+                if (!mSearchWord.hasFocus()) {
+                    mSearchWord.requestFocus();
+                    AppData.toggleKeyboard(1, mSearchWord, requireActivity());
+                }
+            } else {
+                mSearchWord.setVisibility(GONE);
+                AppData.toggleKeyboard(0, mSearchWord, requireActivity());
             }
         });
 
-        mSortButton.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(requireActivity(), mSortButton);
-            Menu menu = popupMenu.getMenu();
-            menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.sort_order)).setIcon(R.drawable.ic_sort_az).setCheckable(true)
-                    .setChecked(sCommonUtils.getBoolean("az_order", true, requireActivity()));
-            popupMenu.setForceShowIcon(true);
-            popupMenu.setOnMenuItemClickListener(item -> {
-                if (item.getItemId() == 0) {
-                    sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
-                    loadAPKs(mSearchText, requireActivity());
-                }
-                return false;
-            });
-            popupMenu.show();
-        });
+        viewModel.getSortTrigger().observe(getViewLifecycleOwner(), timestamp -> loadAPKs(mSearchText));
 
-        loadAPKs(mSearchText, requireActivity());
+        loadAPKs(mSearchText);
 
         mSearchWord.addTextChangedListener(new TextWatcher() {
             @Override
@@ -194,7 +164,7 @@ public class APKsFragment extends BaseFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loadAPKs(s.toString().trim().toLowerCase(), requireActivity());
+                loadAPKs(s.toString().trim().toLowerCase());
             }
         });
 
@@ -219,7 +189,7 @@ public class APKsFragment extends BaseFragment {
                 if (mBatchButton.getVisibility() == View.VISIBLE) {
                     mAPKPaths.clear();
                     mBatchButton.setVisibility(GONE);
-                    loadAPKs(mSearchText, requireActivity());
+                    loadAPKs(mSearchText);
                     return;
                 }
 
@@ -228,15 +198,6 @@ public class APKsFragment extends BaseFragment {
         };
 
         return mRootView;
-    }
-
-    private int getTabPosition(Activity activity) {
-        String mStatus = sCommonUtils.getString("apkTypes", "apks", activity);
-        if (mStatus.equals("bundles")) {
-            return 1;
-        } else {
-            return 0;
-        }
     }
 
     private void launchInstallerFilePicker() {
@@ -284,27 +245,30 @@ public class APKsFragment extends BaseFragment {
         return installer;
     }
 
-    private void loadAPKs(String searchWord, Activity activity) {
+    private void loadAPKs(String searchWord) {
         new sExecutor() {
+
+            private List<File> data;
 
             @Override
             public void onPreExecute() {
-                mRecyclerView.setVisibility(View.GONE);
                 mProgress.setVisibility(View.VISIBLE);
-                mRecyclerView.removeAllViews();
             }
 
             @Override
             public void doInBackground() {
-                mRecycleViewAdapter = new APKsAdapter(APKData.getData(searchWord, activity), mAPKPaths, mBatchButton, activity);
+                data = APKData.getData(mSearchText, mTabPosition, requireActivity());
             }
 
             @Override
             public void onPostExecute() {
-                mSearchText = searchWord;
-                mRecyclerView.setAdapter(mRecycleViewAdapter);
-                mRecyclerView.setVisibility(View.VISIBLE);
+                if (!isAdded()) {
+                    return;
+                }
+
                 mProgress.setVisibility(View.GONE);
+                mSearchText = searchWord;
+                mRecycleViewAdapter.updateData(data);
             }
         }.execute();
     }
@@ -358,7 +322,7 @@ public class APKsFragment extends BaseFragment {
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     APKExplorer.setSuccessIntent(false, requireActivity());
-                    loadAPKs(mSearchText, requireActivity());
+                    loadAPKs(mSearchText);
                 }
             }
     );
@@ -392,5 +356,17 @@ public class APKsFragment extends BaseFragment {
                 }
             }
     );
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (mSearchText != null) {
+            mSearchWord.setText(null);
+            mSearchWord.setVisibility(GONE);
+        }
+
+        mAPKPaths.clear();
+    }
     
 }

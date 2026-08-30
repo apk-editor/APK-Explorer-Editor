@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.apk.axml.serializableItems.ResEntry;
-import com.apk.axml.serializableItems.XMLEntry;
+import com.apk.axml.serializables.ResEntry;
+import com.apk.axml.serializables.XMLEntry;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.AppSettings;

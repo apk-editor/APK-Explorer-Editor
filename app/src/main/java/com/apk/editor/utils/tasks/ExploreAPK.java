@@ -125,8 +125,8 @@ public class ExploreAPK extends sExecutor {
                 byte[] byteArray = byteArrayOutputStream.toByteArray();
                 mJSONObject.put("app_icon", Base64.encodeToString(byteArray, Base64.DEFAULT));
             }
-            mJSONObject.put("app_name", mAPKFile != null ? mAPKFile.getName().replace(".apk", "") : sPackageUtils.getAppName(mPackageName, mContext));
-            mJSONObject.put("package_name", mPackageName);
+            mJSONObject.put("app_name", mAPKParser.getAppName());
+            mJSONObject.put("package_name", mAPKParser.getPackageName() != null ? mAPKParser.getPackageName() : mPackageName);
             mJSONObject.put("version_info", mContext.getString(R.string.version, mAPKParser.getVersionName() + " (" + mAPKParser.getVersionCode() + ")"));
             if (mAPKParser.getMinSDKVersion() != null) {
                 try {
@@ -142,7 +142,9 @@ public class ExploreAPK extends sExecutor {
                     mJSONObject.put("sdk_minimum", mContext.getString(R.string.sdk_compile, mAPKParser.getCompiledSDKVersion()));
                 }
             }
-            mJSONObject.put("certificate_info", mAPKParser.getCertificate().trim());
+            if (mAPKParser.getCertificate() != null && !mAPKParser.getCertificate().trim().isEmpty()) {
+                mJSONObject.put("certificate_info", mAPKParser.getCertificate().trim());
+            }
             mJSONObject.put("smali_edited", false);
             sFileUtils.create(mJSONObject.toString(), mAPKDetailsFile);
         } catch (JSONException ignored) {

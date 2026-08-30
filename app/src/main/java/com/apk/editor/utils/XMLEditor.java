@@ -3,8 +3,8 @@ package com.apk.editor.utils;
 import android.app.Activity;
 
 import com.apk.axml.aXMLEncoder;
-import com.apk.axml.serializableItems.ResEntry;
-import com.apk.axml.serializableItems.XMLEntry;
+import com.apk.axml.serializables.ResEntry;
+import com.apk.axml.serializables.XMLEntry;
 import com.apk.editor.R;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 

@@ -5,13 +5,13 @@ import java.io.Serializable;
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on July 26, 2026
  */
-public class ExploreOptionsItems implements Serializable {
+public class MenuItems implements Serializable {
 
     private final boolean checkable, checked;
     private final int id, iconRes;
     private final String title;
 
-    public ExploreOptionsItems(int iconRes, String title, boolean checkable, boolean checked, int id) {
+    public MenuItems(int iconRes, String title, boolean checkable, boolean checked, int id) {
         this.iconRes = iconRes;
         this.title = title;
         this.checkable = checkable;
@@ -19,7 +19,7 @@ public class ExploreOptionsItems implements Serializable {
         this.id = id;
     }
 
-    public ExploreOptionsItems(int iconRes, String title, int id) {
+    public MenuItems(int iconRes, String title, int id) {
         this.iconRes = iconRes;
         this.title = title;
         this.checkable = false;

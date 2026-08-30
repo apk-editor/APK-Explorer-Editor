@@ -1,9 +1,5 @@
 package com.apk.editor.adapters;
 
-import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.AppSettings;
+import com.apk.editor.utils.Serializables.BatchItems;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on January 23, 2025
  */
 public class BatchOptionsAdapter extends RecyclerView.Adapter<BatchOptionsAdapter.ViewHolder> {
 
-    private final List<String> data;
+    private final List<BatchItems> data;
 
-    public BatchOptionsAdapter(List<String> data) {
+    public BatchOptionsAdapter(List<BatchItems> data) {
         this.data = data;
     }
 
@@ -40,24 +34,10 @@ public class BatchOptionsAdapter extends RecyclerView.Adapter<BatchOptionsAdapte
         return new ViewHolder(rowItem);
     }
 
-    @SuppressLint({"StringFormatInvalid", "StringFormatMatches"})
     @Override
     public void onBindViewHolder(@NonNull BatchOptionsAdapter.ViewHolder holder, int position) {
-        loadAppIcon(data.get(position), holder.mAppIcon);
-        holder.mAppID.setText(data.get(position));
-        holder.mAppName.setText(sPackageUtils.getAppName(data.get(position), holder.mAppName.getContext()));
-        AppSettings.setSlideInAnimation(holder.mAppID, position);
-    }
-
-    private void loadAppIcon(String packageName, AppCompatImageButton view) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
-
-        executor.execute(() -> {
-            Drawable drawable = sPackageUtils.getAppIcon(packageName, view.getContext());
-
-            handler.post(() -> view.setImageDrawable(drawable));
-        });
+        data.get(position).load(holder.mAppIcon, holder.mAppName, holder.mAppID, holder.mCheckBox);
+        AppSettings.setSlideInAnimation(holder.mAppIcon, position);
     }
 
     @Override
@@ -65,16 +45,24 @@ public class BatchOptionsAdapter extends RecyclerView.Adapter<BatchOptionsAdapte
         return data.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final AppCompatImageButton mAppIcon;
+        private final MaterialCheckBox mCheckBox;
         private final MaterialTextView mAppID, mAppName;
 
         public ViewHolder(View view) {
             super(view);
             this.mAppIcon = view.findViewById(R.id.icon);
+            this.mCheckBox = view.findViewById(R.id.checkbox);
             this.mAppName = view.findViewById(R.id.title);
             this.mAppID = view.findViewById(R.id.description);
+
+            view.setOnClickListener(v -> {
+                BatchItems batchItems = data.get(getBindingAdapterPosition());
+                batchItems.setSelected(!batchItems.isSelected());
+                notifyItemChanged(getBindingAdapterPosition());
+            });
         }
     }
 

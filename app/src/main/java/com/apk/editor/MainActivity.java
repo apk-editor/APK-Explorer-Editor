@@ -6,9 +6,9 @@ import android.os.Bundle;
 import com.apk.editor.activities.BaseActivity;
 import com.apk.editor.activities.SettingsActivity;
 import com.apk.editor.activities.StartActivity;
-import com.apk.editor.fragments.APKsFragment;
 import com.apk.editor.fragments.AboutFragment;
-import com.apk.editor.fragments.ApplicationsFragment;
+import com.apk.editor.fragments.ExportedAppsFragment;
+import com.apk.editor.fragments.InstalledAppsFragment;
 import com.apk.editor.fragments.ProjectsFragment;
 import com.apk.editor.utils.AppSettings;
 
@@ -48,9 +48,9 @@ public class MainActivity extends BaseActivity {
         }
 
         List<NavViewEntry> data = new CopyOnWriteArrayList<>();
-        data.add(new NavViewEntry(ApplicationsFragment::new, R.drawable.ic_apps, getString(R.string.apps)));
+        data.add(new NavViewEntry(InstalledAppsFragment::new, R.drawable.ic_apps, getString(R.string.apps)));
         data.add(new NavViewEntry(ProjectsFragment::new, R.drawable.ic_projects, getString(R.string.projects)));
-        data.add(new NavViewEntry(APKsFragment::new, R.drawable.ic_android_app, getString(R.string.apks)));
+        data.add(new NavViewEntry(ExportedAppsFragment::new, R.drawable.ic_android_app, getString(R.string.apks)));
         data.add(new NavViewEntry(AboutFragment::new, R.drawable.ic_about, getString(R.string.about)));
 
         mNavView.setNavigationItems(data);
@@ -68,7 +68,7 @@ public class MainActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new ApplicationsFragment()).commit();
+                    new InstalledAppsFragment()).commit();
         }
     }
 

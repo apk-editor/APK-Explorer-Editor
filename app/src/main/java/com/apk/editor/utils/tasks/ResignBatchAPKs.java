@@ -6,6 +6,7 @@ import android.view.WindowManager;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
+import com.apk.editor.utils.Serializables.BatchItems;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -21,11 +22,12 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
  */
 public class ResignBatchAPKs extends sExecutor {
 
+    private boolean isEmpty = true;
     private final Activity mActivity;
-    private final List<String> mPackageNames;
+    private final List<BatchItems> mPackageNames;
     private ProgressDialog mProgressDialog;
 
-    public ResignBatchAPKs(List<String> packageNames, Activity activity) {
+    public ResignBatchAPKs(List<BatchItems> packageNames, Activity activity) {
         mPackageNames = packageNames;
         mActivity = activity;
     }
@@ -44,20 +46,24 @@ public class ResignBatchAPKs extends sExecutor {
 
     @Override
     public void doInBackground() {
-        for (String packageName : mPackageNames) {
-            if (APKData.isAppBundle(sPackageUtils.getSourceDir(packageName, mActivity))) {
-                File mParent = new File(APKData.getExportPath(mActivity) , packageName + "_aee-signed");
-                if (mParent.exists()) {
-                    sFileUtils.delete(mParent);
-                }
-                sFileUtils.mkdir(mParent);
-                for (String mSplits : APKData.splitApks(sPackageUtils.getSourceDir(packageName, mActivity))) {
-                    if (mSplits.endsWith(".apk")) {
-                        APKData.signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), mActivity);
+        for (BatchItems batchItems : mPackageNames) {
+            if (batchItems.isSelected()) {
+                if (isEmpty) isEmpty = false;
+                String packageName = batchItems.getPackageName();
+                if (APKData.isAppBundle(sPackageUtils.getSourceDir(packageName, mActivity))) {
+                    File mParent = new File(APKData.getExportPath(mActivity), packageName + "_aee-signed");
+                    if (mParent.exists()) {
+                        sFileUtils.delete(mParent);
                     }
+                    sFileUtils.mkdir(mParent);
+                    for (String mSplits : APKData.splitApks(sPackageUtils.getSourceDir(packageName, mActivity))) {
+                        if (mSplits.endsWith(".apk")) {
+                            APKData.signApks(new File(mSplits), new File(mParent, new File(mSplits).getName()), mActivity);
+                        }
+                    }
+                } else {
+                    APKData.signApks(new File(sPackageUtils.getSourceDir(packageName, mActivity)), new File(APKData.getExportPath(mActivity), packageName + "_aee-signed.apk"), mActivity);
                 }
-            } else {
-                APKData.signApks(new File(sPackageUtils.getSourceDir(packageName, mActivity)), new File(APKData.getExportPath(mActivity) , packageName + "_aee-signed.apk"), mActivity);
             }
         }
     }
@@ -69,6 +75,7 @@ public class ResignBatchAPKs extends sExecutor {
             mProgressDialog.dismiss();
         } catch (IllegalArgumentException ignored) {
         }
+        if (isEmpty) return;
         new MaterialAlertDialogBuilder(mActivity)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.app_name)

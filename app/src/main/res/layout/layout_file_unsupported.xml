@@ -5,49 +5,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:gravity="center" >
-
-    <View
-        android:layout_width="32dp"
-        android:layout_height="4dp"
-        android:layout_gravity="center_horizontal"
-        android:background="?android:attr/colorControlNormal"
-        android:layout_marginVertical="10dp"
-        android:alpha="0.2" />
+    android:layout_margin="10sp"
+    android:gravity="center"
+    android:padding="10dp" >
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/select_all_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|end"
         android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
         android:orientation="horizontal"
+        android:layout_gravity="center"
         android:gravity="center" >
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            style="?attr/materialIconButtonFilledTonalStyle"
-            android:layout_marginHorizontal="10dp"
-            android:text="@string/select_all"
-            app:icon="@drawable/ic_select_all"
-            app:iconTint="?attr/colorPrimary"
-            android:textAlignment="textStart"
-            android:textStyle="bold|italic"
-            android:clickable="false"
-            android:textSize="17sp" />
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:scaleType="fitCenter"
+            android:background="@null" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/checkbox"
-            android:layout_width="35dp"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|center"
-            android:background="@null"
-            android:clickable="false" />
+            android:textColor="?attr/colorPrimary"
+            android:layout_marginHorizontal="10dp"
+            android:textStyle="bold"
+            android:textSize="20sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <include layout="@layout/layout_recyclerview" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        android:lineSpacingExtra="10dp"
+        android:textStyle="bold|italic"
+        android:textSize="15sp" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -59,10 +55,12 @@
         android:gravity="center" >
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_left"
+            android:id="@+id/open"
             style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/open_as_text"
+            app:icon="@drawable/ic_open"
             android:alpha="0.9" />
 
         <View
@@ -71,9 +69,11 @@
             android:layout_weight="1" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_right"
+            android:id="@+id/export"
             style="@style/Widget.Material3.Button.TonalButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_export"
+            android:text="@string/export" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.appcompat.widget.LinearLayoutCompat>

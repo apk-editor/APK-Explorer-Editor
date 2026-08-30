@@ -6,8 +6,8 @@ import android.view.View;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.apk.axml.serializableItems.ResEntry;
-import com.apk.axml.serializableItems.XMLEntry;
+import com.apk.axml.serializables.ResEntry;
+import com.apk.axml.serializables.XMLEntry;
 import com.apk.editor.R;
 import com.apk.editor.adapters.ResViewerAdapter;
 import com.apk.editor.utils.XMLEditor;

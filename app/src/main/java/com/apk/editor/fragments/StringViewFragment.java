@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.axml.ResourceTableParser;
-import com.apk.axml.serializableItems.ResEntry;
+import com.apk.axml.serializables.ResEntry;
 import com.apk.editor.R;
 import com.apk.editor.adapters.StringViewAdapter;
 import com.apk.editor.utils.AppSettings;

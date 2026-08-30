@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
+import com.apk.editor.utils.Serializables.BatchItems;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -20,11 +21,12 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
  */
 public class ExportApp extends sExecutor {
 
+    private boolean isEmpty = true;
     private final Context mContext;
     private ProgressDialog mProgressDialog;
-    private final List<String> mPackageNames;
+    private final List<BatchItems> mPackageNames;
 
-    public ExportApp(List<String> packageNames, Context context) {
+    public ExportApp(List<BatchItems> packageNames, Context context) {
         mPackageNames = packageNames;
         mContext = context;
     }
@@ -44,30 +46,36 @@ public class ExportApp extends sExecutor {
 
     @Override
     public void doInBackground() {
-        for (String packageName : mPackageNames) {
-            if (APKData.isAppBundle(sPackageUtils.getSourceDir(packageName, mContext))) {
-                File mParent = new File(APKData.getExportPath(mContext) , packageName);
-                if (mParent.exists()) {
-                    sFileUtils.delete(mParent);
-                }
-                sFileUtils.mkdir(mParent);
-                for (String mSplits : APKData.splitApks(sPackageUtils.getSourceDir(packageName, mContext))) {
-                    if (mSplits.endsWith(".apk")) {
-                        sFileUtils.copy(new File(mSplits), new File(mParent, new File(mSplits).getName()));
+        for (BatchItems batchItems : mPackageNames) {
+            if (batchItems.isSelected()) {
+                if (isEmpty) isEmpty = false;
+                String packageName = batchItems.getPackageName();
+                if (APKData.isAppBundle(sPackageUtils.getSourceDir(packageName, mContext))) {
+                    File mParent = new File(APKData.getExportPath(mContext), packageName);
+                    if (mParent.exists()) {
+                        sFileUtils.delete(mParent);
                     }
+                    sFileUtils.mkdir(mParent);
+                    for (String mSplits : APKData.splitApks(sPackageUtils.getSourceDir(packageName, mContext))) {
+                        if (mSplits.endsWith(".apk")) {
+                            sFileUtils.copy(new File(mSplits), new File(mParent, new File(mSplits).getName()));
+                        }
+                    }
+                } else {
+                    sFileUtils.copy(new File(sPackageUtils.getSourceDir(packageName, mContext)), new File(APKData.getExportPath(mContext), packageName + ".apk"));
                 }
-            } else {
-                sFileUtils.copy(new File(sPackageUtils.getSourceDir(packageName, mContext)), new File(APKData.getExportPath(mContext),  packageName + ".apk"));
             }
         }
     }
 
+    @SuppressLint("StringFormatInvalid")
     @Override
     public void onPostExecute() {
         try {
             mProgressDialog.dismiss();
         } catch (IllegalArgumentException ignored) {
         }
+        if (isEmpty) return;
         new MaterialAlertDialogBuilder(mContext)
                 .setIcon(R.mipmap.ic_launcher)
                 .setTitle(R.string.app_name)

@@ -4,6 +4,8 @@ import static android.view.View.VISIBLE;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,21 +13,23 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Projects;
+import com.apk.editor.utils.dialogs.FileActionDialog;
 import com.apk.editor.utils.tasks.DeleteFile;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
 import java.text.DateFormat;
 import java.util.List;
+import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
@@ -37,12 +41,12 @@ import in.sunilpaulmathew.sCommon.PermissionUtils.sPermissionUtils;
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
 
     private final Activity activity;
-    private final ClickListener clickListener;
+    private final OnItemClickListener clickListener;
     private final List<String> data;
     private final List<String> selectedProjects;
     private final MaterialButton batchButton;
 
-    public ProjectsAdapter(List<String> data, List<String> selectedProjects, MaterialButton batchButton, ClickListener clickListener, Activity activity) {
+    public ProjectsAdapter(List<String> data, List<String> selectedProjects, MaterialButton batchButton, OnItemClickListener clickListener, Activity activity) {
         this.data = data;
         this.selectedProjects = selectedProjects;
         this.batchButton = batchButton;
@@ -110,26 +114,26 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
                 int currentPos = holder.getBindingAdapterPosition();
                 if (currentPos == RecyclerView.NO_POSITION) return;
 
-                String pathToDelete = data.get(currentPos);
-
-                new MaterialAlertDialogBuilder(v.getContext())
-                        .setIcon(R.mipmap.ic_launcher)
-                        .setTitle(R.string.app_name)
-                        .setMessage(v.getContext().getString(R.string.delete_question, holder.mAppName.getText()))
-                        .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                        })
-                        .setPositiveButton(R.string.delete, (dialog, id) -> v.post(() -> {
-                            new DeleteFile(new File(pathToDelete), activity, false).execute();
-                            selectedProjects.remove(pathToDelete);
-                            data.remove(currentPos);
-                            notifyItemRemoved(currentPos);
-                            notifyItemRangeChanged(currentPos, data.size());
-                            toggleBatchMenu();
-                        })).show();
+                deleteProject(holder.mAppIcon.getDrawable(), currentPos, v.getContext().getString(R.string.delete_question, holder.mAppName
+                        .getText().toString().trim() + " (" + new File(data.get(currentPos)).getName() + ")"), data.get(currentPos), v.getContext());
             });
 
-            AppSettings.setSlideInAnimation(holder.itemView, position);
+            AppSettings.setSlideInAnimation(holder.mAppIcon, position);
         } catch (NullPointerException ignored) {}
+    }
+
+    private void deleteProject(Drawable drawable, int currentPos, String title, String filePathToDelete, Context context) {
+        new FileActionDialog(drawable, title, context) {
+            @Override
+            public void onPositiveAction() {
+                new DeleteFile(new File(filePathToDelete), activity, false).execute();
+                selectedProjects.remove(filePathToDelete);
+                data.remove(currentPos);
+                notifyItemRemoved(currentPos);
+                notifyItemRangeChanged(currentPos, data.size());
+                toggleBatchMenu();
+            }
+        };
     }
 
     private void toggleBatchMenu() {
@@ -138,6 +142,40 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
         } else {
             batchButton.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void updateData(List<String> newData) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return data.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newData != null ? newData.size() : 0;
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return Objects.equals(data.get(oldItemPosition), newData.get(newItemPosition));
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                String oldItem = data.get(oldItemPosition);
+                String newItem = newData.get(newItemPosition);
+
+                return Objects.equals(oldItem, newItem);
+            }
+        });
+
+        this.data.clear();
+        if (newData != null) {
+            this.data.addAll(newData);
+        }
+
+        diffResult.dispatchUpdatesTo(this);
     }
 
     @Override
@@ -163,22 +201,19 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
             this.mSize = view.findViewById(R.id.size);
 
             view.setOnLongClickListener(v -> {
-                new MaterialAlertDialogBuilder(v.getContext())
-                        .setIcon(R.mipmap.ic_launcher)
-                        .setTitle(R.string.app_name)
-                        .setMessage(v.getContext().getString(R.string.export_project_question))
-                        .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                        })
-                        .setPositiveButton(R.string.export, (dialog, id) -> {
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext())) {
-                                sPermissionUtils.requestPermission(
-                                        new String[] {
-                                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        }, activity);
-                            } else {
-                                Projects.exportProject(new File(data.get(getBindingAdapterPosition())), v.getContext());
-                            }
-                        }).show();
+                new FileActionDialog(this.mAppIcon.getDrawable(), v.getContext().getString(R.string.export_project_question), v.getContext()) {
+                    @Override
+                    public void onPositiveAction() {
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, v.getContext())) {
+                            sPermissionUtils.requestPermission(
+                                    new String[] {
+                                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                    }, activity);
+                        } else {
+                            Projects.exportProject(new File(data.get(getBindingAdapterPosition())), v.getContext());
+                        }
+                    }
+                };
                 return false;
             });
         }
@@ -201,7 +236,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
         }
     }
 
-    public interface ClickListener {
+    public interface OnItemClickListener {
         void onItemClick(String backupPath);
     }
 

@@ -30,7 +30,7 @@ public class NavViewAdapter extends RecyclerView.Adapter<NavViewAdapter.ViewHold
     @NonNull
     @Override
     public NavViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_bottomnav, parent, false);
+        View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_navview, parent, false);
         return new NavViewAdapter.ViewHolder(rowItem);
     }
 

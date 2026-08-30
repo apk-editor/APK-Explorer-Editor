@@ -4,17 +4,16 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.text.format.Formatter;
 import android.util.Base64;
-
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.core.content.ContextCompat;
 
 import com.apk.axml.APKParser;
 import com.apk.axml.aXMLDecoder;
@@ -36,7 +35,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
 import in.sunilpaulmathew.sCommon.FileUtils.sFileUtils;
-import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on March 04, 2021
@@ -134,10 +132,24 @@ public class APKExplorer {
         return null;
     }
 
-    public static void setIcon(AppCompatImageButton icon, Drawable drawable, Context context) {
-        icon.setImageDrawable(drawable);
-        icon.setColorFilter(sThemeUtils.isDarkTheme(context) ? ContextCompat.getColor(context, R.color.colorWhite) :
-                ContextCompat.getColor(context, R.color.colorBlack));
+    public static Drawable getImageDrawable(String path, Context context) {
+        return sCommonUtils.getDrawable(getIconResource(path), context);
+    }
+
+    public static int getIconResource(String path) {
+        if (isImageFile(path)) {
+            return R.drawable.ic_image;
+        } else if (path.contains("classes") && path.endsWith(".dex")) {
+            return R.drawable.ic_classes;
+        } else if (path.endsWith(".arsc")) {
+            return R.drawable.ic_res;
+        } else if (path.endsWith(".xml")) {
+            return path.endsWith("AndroidManifest.xml") ? R.drawable.ic_manifest : R.drawable.ic_xml;
+        } else if (path.endsWith(".apk")) {
+            return R.drawable.ic_android_app;
+        } else {
+            return R.drawable.ic_file;
+        }
     }
 
     public static int getSpanCount(Activity activity) {
@@ -151,6 +163,44 @@ public class APKExplorer {
         } catch (JSONException ignored) {
         }
         return null;
+    }
+
+    public static String getFileNameFromUri(Uri uri, Context context) {
+        if (uri == null) return null;
+
+        String fileName = null;
+
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            try (Cursor cursor = context.getContentResolver().query(
+                    uri,
+                    new String[] {
+                            OpenableColumns.DISPLAY_NAME},
+                    null,
+                    null,
+                    null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (nameIndex != -1) {
+                        fileName = cursor.getString(nameIndex);
+                    }
+                }
+            } catch (Exception ignored) {
+            }
+        }
+
+        if (fileName == null) {
+            String path = uri.getPath();
+            if (path != null) {
+                int cut = path.lastIndexOf('/');
+                if (cut != -1) {
+                    fileName = path.substring(cut + 1);
+                } else {
+                    fileName = path;
+                }
+            }
+        }
+
+        return fileName;
     }
 
     public static String getPackageName(String path) {

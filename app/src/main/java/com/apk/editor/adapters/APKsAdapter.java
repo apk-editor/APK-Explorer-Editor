@@ -6,12 +6,14 @@ import static android.view.View.VISIBLE;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
@@ -23,13 +25,13 @@ import com.apk.editor.utils.AppSettings;
 import com.apk.editor.utils.Serializables.APKPickerItems;
 import com.apk.editor.utils.SplitAPKInstaller;
 import com.apk.editor.utils.dialogs.BundleInstallDialog;
+import com.apk.editor.utils.dialogs.FileActionDialog;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.apk.editor.utils.dialogs.SignatureMismatchDialog;
-import com.apk.editor.utils.menus.BundleOptionsMenu;
 import com.apk.editor.utils.tasks.DeleteFile;
+import com.apk.editor.utils.tasks.ShareBundle;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
@@ -106,30 +108,65 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 }
             });
 
-            AppSettings.setSlideInAnimation(holder.itemView, position);
-
             holder.mDelete.setOnClickListener(v -> {
                 int currentPos = holder.getBindingAdapterPosition();
                 if (currentPos == RecyclerView.NO_POSITION) return;
 
-                File fileToDelete = data.get(currentPos);
-                new MaterialAlertDialogBuilder(v.getContext())
-                        .setIcon(R.mipmap.ic_launcher)
-                        .setTitle(R.string.app_name)
-                        .setMessage(v.getContext().getString(R.string.delete_question, fileToDelete.getName()))
-                        .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                        })
-                        .setPositiveButton(R.string.delete, (dialog, id) -> {
-                            new DeleteFile(fileToDelete, activity, false).execute();
-                            selectedAPKs.remove(fileToDelete.getAbsolutePath());
-                            data.remove(currentPos);
-                            notifyItemRemoved(currentPos);
-                            notifyItemRangeChanged(currentPos, data.size());
-                            toggleBatchMenu();
-                        }).show();
+                deleteApp(holder.mAppIcon.getDrawable(), data.get(currentPos), currentPos, v.getContext().getString(R.string.delete_question,
+                        holder.mAppName.getText().toString().trim() + " (" + data.get(currentPos).getName() + ")"), v.getContext());
             });
+
+            AppSettings.setSlideInAnimation(holder.mAppIcon, position);
         } catch (NullPointerException ignored) {
         }
+    }
+
+    private void deleteApp(Drawable drawable, File fileToDelete, int currentPos, String title, Context context) {
+        new FileActionDialog(drawable, title, context) {
+            @Override
+            public void onPositiveAction() {
+                new DeleteFile(fileToDelete, activity, false).execute();
+                selectedAPKs.remove(fileToDelete.getAbsolutePath());
+                data.remove(currentPos);
+                notifyItemRemoved(currentPos);
+                notifyItemRangeChanged(currentPos, data.size());
+                toggleBatchMenu();
+            }
+        };
+    }
+
+    public void updateData(List<File> newData) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return data.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newData != null ? newData.size() : 0;
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return data.get(oldItemPosition) == newData.get(newItemPosition);
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                File oldItem = data.get(oldItemPosition);
+                File newItem = newData.get(newItemPosition);
+
+                return Objects.equals(oldItem, newItem);
+            }
+        });
+
+        this.data.clear();
+        if (newData != null) {
+            this.data.addAll(newData);
+        }
+
+        diffResult.dispatchUpdatesTo(this);
     }
 
     private sExecutor bundleInstaller(File apkFile, Context context) {
@@ -202,7 +239,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
             view.setOnLongClickListener(v -> {
                 if (APKEditorUtils.isFullVersion(v.getContext())) {
                     if (data.get(getBindingAdapterPosition()).isDirectory()) {
-                        new BundleOptionsMenu(data.get(getBindingAdapterPosition()).getPath(), v);
+                        shareApp(this.mAppIcon.getDrawable(), data.get(getBindingAdapterPosition()).getPath(), view.getContext().getString(R.string.share_question, this.mAppName.getText().toString().trim()), v.getContext());
                     } else {
                         APKData.shareFile(data.get(getBindingAdapterPosition()), "application/java-archive", v.getContext());
                     }
@@ -227,7 +264,7 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                 return;
             }
 
-            if (apkItems.getPackageName(view.getContext()) == null) {
+            if (this.mPath.getText() == null || this.mPath.getText().toString().trim().isEmpty()) {
                 sCommonUtils.toast(view.getContext().getString(R.string.apk_corrupted), view.getContext()).show();
                 return;
             }
@@ -239,23 +276,25 @@ public class APKsAdapter extends RecyclerView.Adapter<APKsAdapter.ViewHolder> {
                     if (apkItems.isDirectory()) {
                         bundleInstaller(apkItems, view.getContext()).execute();
                     } else {
-                        new MaterialAlertDialogBuilder(view.getContext())
-                                .setIcon(mAppIcon.getDrawable())
-                                .setTitle(view.getContext().getString(R.string.install_question, apkItems.getName()))
-                                .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                                })
-                                .setPositiveButton(R.string.install, (dialog, id) ->
-                                        SplitAPKInstaller.installAPK(apkItems, activity)
-                                ).show();
+                        SplitAPKInstaller.installAPK(apkItems, activity);
                     }
                 }
             } else {
                 if (apkItems.isDirectory()) {
-                    new BundleOptionsMenu(apkItems.getPath(), view);
+                    shareApp(this.mAppIcon.getDrawable(), apkItems.getPath(), view.getContext().getString(R.string.share_question, this.mAppName.getText().toString().trim()), view.getContext());
                 } else {
                     APKData.shareFile(apkItems, "application/java-archive", view.getContext());
                 }
             }
+        }
+
+        private void shareApp(Drawable drawable, String filePath, String title, Context context) {
+            new FileActionDialog(drawable, title, context) {
+                @Override
+                public void onPositiveAction() {
+                    new ShareBundle(filePath, context).execute();
+                }
+            };
         }
     }
 

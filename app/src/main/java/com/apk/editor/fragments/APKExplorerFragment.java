@@ -28,15 +28,14 @@ import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.AppSettings;
-import com.apk.editor.utils.Common;
 import com.apk.editor.utils.DexToSmali;
-import com.apk.editor.utils.Serializables.ExploreOptionsItems;
-import com.apk.editor.utils.dialogs.ExplorerOptionsDialog;
+import com.apk.editor.utils.Serializables.MenuItems;
+import com.apk.editor.utils.dialogs.BottomMenuDialog;
+import com.apk.editor.utils.dialogs.FileActionDialog;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.apk.editor.utils.tasks.DeleteFiles;
 import com.apk.editor.utils.tasks.ExportToStorage;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -64,11 +63,9 @@ public class APKExplorerFragment extends BaseFragment {
     private ContentLoadingProgressBar mProgressLayout;
     private MaterialAutoCompleteTextView mSearchWord;
     private MaterialTextView mTitle;
-    private RecyclerView mRecyclerView;
     private static File mFile = null, mRootFile = null;
-    private static List<File> mFiles = new ArrayList<>();
-    private static List<String> mData;
-    private static String mBackupFilePath = null, mSearchText = null, mPackageName = null;
+    private static final List<File> mFiles = new ArrayList<>();
+    private static String mBackupFilePath = null, mFileToReplace = null, mPackageName = null, mSearchText = null;
 
     public static APKExplorerFragment newInstance(String backupFilePath, String packageName) {
         APKExplorerFragment fragment = new APKExplorerFragment();
@@ -102,7 +99,10 @@ public class APKExplorerFragment extends BaseFragment {
         mTitle = mRootView.findViewById(R.id.title);
         mSearchWord = mRootView.findViewById(R.id.search_word);
         mProgressLayout = mRootView.findViewById(R.id.progress);
-        mRecyclerView = mRootView.findViewById(R.id.recycler_view);
+        RecyclerView mRecyclerView = mRootView.findViewById(R.id.recycler_view);
+
+        mRecycleViewAdapter = new APKExplorerAdapter(new CopyOnWriteArrayList<>(), mFiles, mPackageName, mBackupFilePath, clickListener(), requireActivity());
+        mRecyclerView.setAdapter(mRecycleViewAdapter);
 
         if (mFile == null || !mBackupFilePath.contains(mRootFile.getName()) || !mFile.exists()) {
             mFile = new File(mBackupFilePath.replace("/.aeeBackup/appData", ""));
@@ -114,7 +114,7 @@ public class APKExplorerFragment extends BaseFragment {
             if (Objects.equals(mFile.getParentFile(), requireActivity().getCacheDir())) {
                 AppSettings.navigateToFragment(requireActivity(), 0);
             } else {
-                mFiles = new ArrayList<>();
+                mFiles.clear();
                 loadUI(mFile.getParentFile());
             }
         });
@@ -143,21 +143,21 @@ public class APKExplorerFragment extends BaseFragment {
         loadUI(mFile);
 
         mMenuButton.setOnClickListener(v -> {
-            List<ExploreOptionsItems> menuItem = new CopyOnWriteArrayList<>();
-            menuItem.add(new ExploreOptionsItems(R.drawable.ic_sort_az, getString(R.string.sort_order), true, sCommonUtils.getBoolean("az_order", true, requireActivity()), 0));
+            List<MenuItems> menuItem = new CopyOnWriteArrayList<>();
+            menuItem.add(new MenuItems(R.drawable.ic_sort_az, getString(R.string.sort_order), true, sCommonUtils.getBoolean("az_order", true, requireActivity()), 0));
             if (mSearchWord.getVisibility() == View.GONE && Objects.requireNonNull(mFile.getParentFile()).getName().equals(requireActivity().getCacheDir().getName())) {
-                menuItem.add(new ExploreOptionsItems(R.drawable.ic_search_folder, getString(R.string.search_files), 1));
+                menuItem.add(new MenuItems(R.drawable.ic_search_folder, getString(R.string.search_files), 1));
             }
             if (mFiles != null && !mFiles.isEmpty()) {
-                menuItem.add(new ExploreOptionsItems(R.drawable.ic_export_file, getString(R.string.export_selected_files), 2));
+                menuItem.add(new MenuItems(R.drawable.ic_export_file, getString(R.string.export_selected_files), 2));
                 if (APKEditorUtils.isFullVersion(requireActivity())) {
-                    menuItem.add(new ExploreOptionsItems(R.drawable.ic_delete_file, getString(R.string.delete_selected_files), 3));
+                    menuItem.add(new MenuItems(R.drawable.ic_delete_file, getString(R.string.delete_selected_files), 3));
                 }
             }
             if (APKEditorUtils.isFullVersion(requireActivity()) && !Objects.requireNonNull(mFile.getParentFile()).getName().equals(requireActivity().getCacheDir().getName())) {
-                menuItem.add(new ExploreOptionsItems(R.drawable.ic_delete_folder, getString(R.string.delete_folder), 4));
+                menuItem.add(new MenuItems(R.drawable.ic_delete_folder, getString(R.string.delete_folder), 4));
             }
-            new ExplorerOptionsDialog(menuItem, requireContext()) {
+            new BottomMenuDialog(menuItem, APKExplorer.getAppIcon(mBackupFilePath), APKExplorer.getAppName(mBackupFilePath), requireContext()) {
                 @Override
                 public void onMenuItemClicked(int id) {
                     switch (id) {
@@ -202,7 +202,9 @@ public class APKExplorerFragment extends BaseFragment {
 
                                 @Override
                                 public void onPostExecute() {
-                                    mFiles = new ArrayList<>();
+                                    if (mFiles != null) {
+                                        mFiles.clear();
+                                    }
                                     loadUI(mFile.getParentFile());
                                 }
                             }.execute();
@@ -228,7 +230,7 @@ public class APKExplorerFragment extends BaseFragment {
                 if (Objects.equals(mFile.getParentFile(), requireActivity().getCacheDir())) {
                     AppSettings.navigateToFragment(requireActivity(), 0);
                 } else {
-                    mFiles = new ArrayList<>();
+                    mFiles.clear();
                     loadUI(mFile.getParentFile());
                 }
             }
@@ -238,12 +240,19 @@ public class APKExplorerFragment extends BaseFragment {
     }
 
     private APKExplorerAdapter.OnItemClickListener clickListener() {
-        return filePath -> {
-            if (new File(filePath).isFile() && filePath.endsWith(".dex")) {
-                decompileDexToSmali(new File(filePath)).execute();
+        return (filePath, replace) -> {
+            if (replace) {
+                mFileToReplace = filePath;
+                Intent replaceLauncher = new Intent(Intent.ACTION_GET_CONTENT);
+                replaceLauncher.setType("*/*");
+                activityResultLauncher.launch(replaceLauncher);
             } else {
-                mFiles = new ArrayList<>();
-                loadUI(new File(filePath));
+                if (new File(filePath).isFile() && filePath.endsWith(".dex")) {
+                    decompileDexToSmali(new File(filePath)).execute();
+                } else {
+                    mFiles.clear();
+                    loadUI(new File(filePath));
+                }
             }
         };
     }
@@ -282,7 +291,7 @@ public class APKExplorerFragment extends BaseFragment {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
                 }
-                mFiles = new ArrayList<>();
+                mFiles.clear();
                 loadUI(new File(mExplorePath, mDexName));
             }
         };
@@ -290,18 +299,17 @@ public class APKExplorerFragment extends BaseFragment {
 
     private void loadUI(File file) {
         new sExecutor() {
+            private List<String> data;
 
             @Override
             public void onPreExecute() {
-                mRecyclerView.setVisibility(View.GONE);
                 mProgressLayout.setVisibility(View.VISIBLE);
-                mData = new CopyOnWriteArrayList<>();
+                mFiles.clear();
             }
 
             @Override
             public void doInBackground() {
-                mData = APKExplorer.getData(file, true, requireActivity());
-                mRecycleViewAdapter = new APKExplorerAdapter(mData, activityResultLauncher, mFiles, mPackageName, mBackupFilePath, clickListener(), requireActivity());
+                data = APKExplorer.getData(file, true, requireActivity());
             }
 
             @Override
@@ -309,45 +317,49 @@ public class APKExplorerFragment extends BaseFragment {
                 if (!isAdded()) {
                     return;
                 }
+                mProgressLayout.setVisibility(View.GONE);
+
+                if (mFileToReplace != null) {
+                    mFileToReplace = null;
+                }
+
                 mFile = file;
                 String name = Objects.requireNonNull(file.getParentFile()).getName();
                 mTitle.setText(Objects.equals(mFile.getParentFile(), requireActivity().getCacheDir()) ? getString(R.string.root) : file.getName());
                 if (!name.equals(requireActivity().getCacheDir().getName())) {
                     mSearchWord.setVisibility(View.GONE);
                 }
-                mRecyclerView.setAdapter(mRecycleViewAdapter);
-                mProgressLayout.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.VISIBLE);
+                mRecycleViewAdapter.updateData(data);
             }
         }.execute();
     }
 
     private void loadUI(String searchText) {
         new sExecutor() {
+            private List<String> data;
+
             @Override
             public void onPreExecute() {
                 mProgressLayout.setVisibility(View.VISIBLE);
-                mRecyclerView.setVisibility(View.GONE);
-                mData = new CopyOnWriteArrayList<>();
+                data = new CopyOnWriteArrayList<>();
             }
 
             @Override
             public void doInBackground() {
                 getData(mRootFile);
-                Collections.sort(mData, String.CASE_INSENSITIVE_ORDER);
+                Collections.sort(data, String.CASE_INSENSITIVE_ORDER);
                 if (!sCommonUtils.getBoolean("az_order", true, requireActivity())) {
-                    Collections.reverse(mData);
+                    Collections.reverse(data);
                 }
-                mRecycleViewAdapter = new APKExplorerAdapter(mData, null, mFiles, mPackageName, mBackupFilePath, clickListener(), requireActivity());
             }
 
             private void getData(File path) {
                 for (File mFile : Objects.requireNonNull(path.listFiles())) {
                     if (mFile.isFile()) {
                         if (searchText == null) {
-                            mData.add(mFile.getAbsolutePath());
+                            data.add(mFile.getAbsolutePath());
                         } else if (mFile.getName().contains(searchText)) {
-                            mData.add(mFile.getAbsolutePath());
+                            data.add(mFile.getAbsolutePath());
                         }
                     } else if (mFile.isDirectory() && !mFile.getName().matches(".aeeBackup|.aeeBuild")) {
                         getData(mFile);
@@ -360,14 +372,14 @@ public class APKExplorerFragment extends BaseFragment {
                 if (!isAdded()) {
                     return;
                 }
+                mProgressLayout.setVisibility(View.GONE);
+
                 if (searchText == null) {
                     AppData.toggleKeyboard(1, mSearchWord, requireActivity());
                 } else {
                     mSearchText = searchText;
                 }
-                mRecyclerView.setAdapter(mRecycleViewAdapter);
-                mProgressLayout.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.VISIBLE);
+                mRecycleViewAdapter.updateData(data);
             }
         }.execute();
     }
@@ -380,24 +392,21 @@ public class APKExplorerFragment extends BaseFragment {
                     Uri uriFile = data.getData();
 
                     if (uriFile != null) {
-                        new MaterialAlertDialogBuilder(requireActivity())
-                                .setIcon(R.mipmap.ic_launcher)
-                                .setTitle(R.string.app_name)
-                                .setMessage(getString(R.string.replace_file_question, new File(Common.getFileToReplace()).getName()))
-                                .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                                })
-                                .setPositiveButton(R.string.replace, (dialog, id) -> {
-                                    sFileUtils.copy(uriFile, new File(Common.getFileToReplace()), requireActivity());
-                                    if (Common.getFileToReplace().endsWith(".smali")) {
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(sFileUtils.read(new File(mBackupFilePath)));
-                                            jsonObject.put("smali_edited", true);
-                                            sFileUtils.create(jsonObject.toString(), new File(mBackupFilePath));
-                                        } catch (JSONException ignored) {
-                                        }
+                        new FileActionDialog(APKExplorer.getImageDrawable(APKExplorer.getFileNameFromUri(uriFile, requireActivity()),requireActivity()), getString(R.string.replace_file_question, new File(mFileToReplace).getName()), requireActivity()) {
+                            @Override
+                            public void onPositiveAction() {
+                                sFileUtils.copy(uriFile, new File(mFileToReplace), requireActivity());
+                                if (mFileToReplace.endsWith(".smali")) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(sFileUtils.read(new File(mBackupFilePath)));
+                                        jsonObject.put("smali_edited", true);
+                                        sFileUtils.create(jsonObject.toString(), new File(mBackupFilePath));
+                                    } catch (JSONException ignored) {
                                     }
-                                    loadUI(mFile);
-                                }).show();
+                                }
+                                loadUI(mFile);
+                            }
+                        };
                     } else {
                         APKExplorer.setSuccessIntent(true, requireActivity());
                     }

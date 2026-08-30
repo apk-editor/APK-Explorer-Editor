@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.apk.editor.R;
 import com.apk.editor.activities.APKSignActivity;
+import com.apk.editor.utils.Serializables.BatchItems;
 import com.apk.editor.utils.tasks.ResignBatchAPKs;
 
 import java.util.List;
@@ -19,9 +20,9 @@ import in.sunilpaulmathew.sCommon.Dialog.sSingleItemDialog;
 public class BatchSigningOptionsDialog extends sSingleItemDialog {
 
     private final Context mContext;
-    private final List<String> mPackageNames;
+    private final List<BatchItems> mPackageNames;
 
-    public BatchSigningOptionsDialog(List<String> packageNames, Context context) {
+    public BatchSigningOptionsDialog(List<BatchItems> packageNames, Context context) {
         super(0, null, new String[] {
                 context.getString(R.string.signing_default),
                 context.getString(R.string.signing_custom)

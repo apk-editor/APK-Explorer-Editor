@@ -20,12 +20,6 @@ import java.util.Objects;
  */
 public class APKEditorUtils {
 
-    public static int getThemeAccentColor(Context context) {
-        TypedValue value = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.colorAccent, value, true);
-        return value.data;
-    }
-
     public static boolean isFullVersion(Context context) {
         return context.getPackageName().equals("com.apk.editor") || context.getPackageName().equals("com.apk.editor.debug");
     }

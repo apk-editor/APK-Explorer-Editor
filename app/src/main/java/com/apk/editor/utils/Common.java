@@ -17,7 +17,6 @@ public class Common {
 
     private static final List<String> mErrorList = new ArrayList<>();
     private static int mError = 0, mSuccess = 0;
-    private static String mFileToReplace = null;
 
     public static boolean isCancelled(Context context) {
         return sCommonUtils.getBoolean("cancelled", false, context);
@@ -48,10 +47,6 @@ public class Common {
         return mErrorList;
     }
 
-    public static String getFileToReplace() {
-        return mFileToReplace;
-    }
-
     public static String getPackageName(Context context) {
         return sCommonUtils.getString("packageName", null, context);
     }
@@ -72,10 +67,6 @@ public class Common {
 
     public static void setError(int i) {
         mError = i;
-    }
-
-    public static void setFileToReplace(String fileToReplace) {
-        mFileToReplace = fileToReplace;
     }
 
     public static void setStatus(String status, Context context) {

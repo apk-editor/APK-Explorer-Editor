@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     android:padding="16dp" >
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/heading"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:paddingHorizontal="15dp"
-            android:gravity="center|start"
-            style="@style/AppTheme.Title" />
-
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/icon"
             android:layout_width="56dp"

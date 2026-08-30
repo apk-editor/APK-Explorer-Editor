@@ -16,6 +16,10 @@ import bottomNavView.R;
  */
 public class NavViewUtils {
 
+    public static int getButtonSize(int sizeInDp, Context context) {
+        return (int) (sizeInDp * context.getResources().getDisplayMetrics().density);
+    }
+
     public static int getMaterialColorActive(Context context) {
         return MaterialColors.getColor(DynamicColors.wrapContextIfAvailable(context,
                         com.google.android.material.R.style.Theme_Material3_DynamicColors_DayNight),

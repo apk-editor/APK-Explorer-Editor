@@ -23,24 +23,27 @@ import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
  */
 public class AppData {
 
-    public static List<PackageItems> getData(Context context) {
-        return getData(null, context);
+    public static List<PackageItems> getData(int tabPosition, Context context) {
+        return getData(null, tabPosition, context);
     }
 
-    public static List<PackageItems> getData(String searchWord, Context context) {
+    public static List<PackageItems> getData(String searchWord, int tabPosition, Context context) {
         List<PackageItems> mData = new CopyOnWriteArrayList<>();
         List<ApplicationInfo> packages = context.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
 
         boolean mAppType;
         for (ApplicationInfo packageInfo: packages) {
             PackageItems packageItem = new PackageItems(packageInfo.packageName, context);
-            if (sCommonUtils.getString("appTypes", "all", context).equals("system")) {
+            if (tabPosition == 1) {
                 mAppType = sPackageUtils.isSystemApp(packageItem.getPackageName(), context);
-            } else if (sCommonUtils.getString("appTypes", "all", context).equals("user")) {
+            } else if (tabPosition == 2) {
                 mAppType = !sPackageUtils.isSystemApp(packageItem.getPackageName(), context);
             } else {
                 mAppType = true;
             }
+
+            sCommonUtils.saveInt("showAppType", tabPosition, context);
+
             if (mAppType) {
                 if (searchWord == null) {
                     mData.add(packageItem);

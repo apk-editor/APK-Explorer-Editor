@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.axml.ResourceTableParser;
-import com.apk.axml.serializableItems.ResEntry;
+import com.apk.axml.serializables.ResEntry;
 import com.apk.editor.R;
 import com.apk.editor.adapters.ResViewerAdapter;
 import com.apk.editor.utils.Serializables.ResViewerOptionsItems;
@@ -19,7 +19,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -88,7 +87,8 @@ public class ResViewerDialog extends BottomSheetDialog {
                 try (FileInputStream fis = new FileInputStream(path)) {
                     ResourceTableParser parser = new ResourceTableParser(fis);
                     return parser.parse();
-                } catch (IOException ignore) {
+                } catch (Exception ignore) {
+                    mSuccess = false;
                     return null;
                 }
             }

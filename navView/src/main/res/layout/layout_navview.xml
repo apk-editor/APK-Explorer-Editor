@@ -23,6 +23,6 @@
             android:orientation="horizontal"
             android:layout_weight="1" />
 
-        <include layout="@layout/recycle_view_bottomnav" />
+        <include layout="@layout/recycle_view_navview" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </com.google.android.material.card.MaterialCardView>

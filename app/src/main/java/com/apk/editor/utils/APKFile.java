@@ -1,9 +1,13 @@
 package com.apk.editor.utils;
 
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -20,7 +24,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import in.sunilpaulmathew.sCommon.APKUtils.sAPKUtils;
-import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on May. 03, 2026
@@ -33,34 +36,6 @@ public class APKFile extends File {
 
     public boolean isDirectory() {
         return getAbsoluteFile().isDirectory();
-    }
-
-    private String getBaseAPKPath(Context context) {
-        if (isDirectory()) {
-            File baseAPK = new File(getAbsoluteFile(), "base.apk");
-            if (baseAPK.exists()) {
-                return baseAPK.getAbsolutePath();
-            }
-
-            File[] files = listFiles();
-            if (files == null) return null;
-
-            for (File file : files) {
-                if (!file.isFile() || !file.getName().toLowerCase().endsWith(".apk")) {
-                    continue;
-                }
-
-                if (sAPKUtils.getPackageName(file.getAbsolutePath(), context) != null) {
-                    return file.getAbsolutePath();
-                }
-            }
-        }
-
-        return getAbsolutePath();
-    }
-
-    public String getPackageName(Context context) {
-        return sAPKUtils.getPackageName(getBaseAPKPath(context), context);
     }
 
     @SuppressLint("StringFormatInvalid")
@@ -78,42 +53,95 @@ public class APKFile extends File {
         return context.getString(R.string.size, Formatter.formatFileSize(context, length));
     }
 
+    private AppMetadata parseApk(PackageManager pm, String apkPath) {
+        PackageInfo pi = pm.getPackageArchiveInfo(apkPath, 0);
+        if (pi == null || pi.applicationInfo == null) {
+            return null;
+        }
+
+        ApplicationInfo ai = pi.applicationInfo;
+        ai.sourceDir = apkPath;
+        ai.publicSourceDir = apkPath;
+
+        AppMetadata data = new AppMetadata();
+        data.packageName = ai.packageName;
+        data.version = pi.versionName;
+
+        try {
+            data.name = pm.getApplicationLabel(ai).toString();
+        } catch (Exception e) {
+            data.name = null;
+        }
+
+        try {
+            data.icon = pm.getApplicationIcon(ai);
+        } catch (Exception e) {
+            data.icon = null;
+        }
+
+        return data;
+    }
+
     public void load(ImageView icon, TextView name, TextView path, TextView size, TextView version) {
-        try (ExecutorService executor = Executors.newSingleThreadExecutor()) {
-            Handler handler = new Handler(Looper.getMainLooper());
+        Context context = icon.getContext().getApplicationContext();
+        PackageManager pm = context.getPackageManager();
 
+        try (ExecutorService executor = Executors.newFixedThreadPool(4)) {
             executor.execute(() -> {
-                CharSequence appName;
-                Drawable appIcon;
-                String appSize, appVersion;
-                String packageName = getPackageName(name.getContext());
+                AppMetadata result = null;
+                String formattedSize = getSize(context);
 
-                if (packageName != null) {
-                    appName = sAPKUtils.getAPKName(getBaseAPKPath(name.getContext()), name.getContext());
-                    appIcon = sAPKUtils.getAPKIcon(getBaseAPKPath(icon.getContext()), icon.getContext());
-                    appSize = getSize(size.getContext());
-                    appVersion = version.getContext().getString(R.string.version, sAPKUtils.getVersionName(getBaseAPKPath(version.getContext()), version.getContext()));
+                if (isDirectory()) {
+                    File baseAPK = new File(getAbsoluteFile(), "base.apk");
+                    if (baseAPK.exists()) {
+                        result = parseApk(pm, baseAPK.getAbsolutePath());
+                    } else {
+                        File[] files = listFiles();
+                        if (files != null) {
+                            for (File file : files) {
+                                if (file.isFile() && file.getName().toLowerCase().endsWith(".apk")) {
+                                    result = parseApk(pm, file.getAbsolutePath());
+                                    if (result != null) break;
+                                }
+                            }
+                        }
+                    }
                 } else {
-                    appName = getName();
-                    appIcon = sCommonUtils.getDrawable(R.drawable.ic_android_app, icon.getContext());
-                    appSize = getSize(size.getContext());
-                    appVersion = version.getContext().getString(R.string.version, "");
+                    result = parseApk(pm, getAbsolutePath());
                 }
 
-                handler.post(() -> {
-                    name.setText(appName);
-                    path.setText(getName());
-                    icon.setImageDrawable(appIcon);
-                    version.setVisibility(VISIBLE);
-                    if (packageName == null) {
-                        name.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                final AppMetadata finalData = result;
+
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    if (finalData != null && finalData.packageName != null) {
+                        name.setText(finalData.name != null ? finalData.name : getName());
+                        name.setPaintFlags(name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                        path.setText(finalData.packageName);
+                        icon.setImageDrawable(finalData.icon);
+                        version.setText(version.getContext().getString(R.string.version, finalData.version));
+                        version.setVisibility(VISIBLE);
+                        size.setText(formattedSize);
+                        path.setVisibility(VISIBLE);
+                        size.setVisibility(VISIBLE);
+                    } else {
+                        path.setText(null);
+                        name.setText(getName());
+                        name.setPaintFlags(name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        icon.setImageResource(R.drawable.ic_android_app);
+                        version.setVisibility(GONE);
+                        path.setVisibility(GONE);
+                        size.setVisibility(GONE);
                     }
-                    version.setText(appVersion);
-                    size.setVisibility(VISIBLE);
-                    size.setText(appSize);
                 });
             });
         }
+    }
+
+    private static class AppMetadata {
+        Drawable icon;
+        String name;
+        String packageName;
+        String version;
     }
 
 }

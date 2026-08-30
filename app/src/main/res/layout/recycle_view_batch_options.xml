@@ -1,37 +1,50 @@
-<androidx.appcompat.widget.LinearLayoutCompat
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_gravity="center"
-    android:gravity="start|center"
-    android:padding="5dp">
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="5dp"
+    android:layout_gravity="center" >
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center|start"
+            android:scaleType="fitCenter"
             android:background="@null"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="10dp"
-            android:scaleType="fitCenter" />
+            android:clickable="false" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="50sp"
+            android:layout_marginEnd="40sp"
             android:orientation="vertical" >
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:focusable="false"
-                    android:textSize="17sp" />
+                    android:textStyle="bold"
+                    android:textSize="17sp"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:focusable="false" />
+                    android:focusable="false"
+                    android:clickable="false" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-</androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:background="@null"
+            android:clickable="false"
+            android:gravity="center" />
+</FrameLayout>

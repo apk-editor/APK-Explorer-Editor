@@ -103,7 +103,6 @@ public class SplitAPKInstaller {
             public void onPreExecute() {
                 sCommonUtils.saveString("installationStatus", "waiting", activity);
                 Intent installIntent = new Intent(activity, InstallerActivity.class);
-                installIntent.putExtra(InstallerActivity.HEADING_INTENT, activity.getString(R.string.split_apk_installer));
                 if (apks != null) {
                     installIntent.putStringArrayListExtra(InstallerActivity.APK_LIST_INTENT, getAPKList());
                 } else if (apkFile != null) {
@@ -169,7 +168,6 @@ public class SplitAPKInstaller {
             public void onPreExecute() {
                 sCommonUtils.saveString("installationStatus", "waiting", activity);
                 Intent installIntent = new Intent(activity, InstallerActivity.class);
-                installIntent.putExtra(InstallerActivity.HEADING_INTENT, activity.getString(R.string.apk_installer));
                 installIntent.putExtra(InstallerActivity.PATH_INTENT, APK.getAbsolutePath());
                 activity.startActivity(installIntent);
             }

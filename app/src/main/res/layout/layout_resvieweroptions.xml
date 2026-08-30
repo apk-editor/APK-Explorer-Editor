@@ -1,4 +1,5 @@
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_marginHorizontal="15dp"
     android:layout_height="wrap_content"
     android:layout_marginVertical="10dp"

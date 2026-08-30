@@ -16,7 +16,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.apk.axml.serializableItems.ResEntry;
+import com.apk.axml.serializables.ResEntry;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.tasks.ExportToStorage;

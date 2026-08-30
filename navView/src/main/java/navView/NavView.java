@@ -38,7 +38,7 @@ public class NavView extends FrameLayout {
         super(context, attrs);
         this.context = context;
 
-        View view = inflate(context, R.layout.layout_bottomnav, this);
+        View view = inflate(context, R.layout.layout_navview, this);
         recyclerView = view.findViewById(R.id.recycler_view);
         extraButton = view.findViewById(R.id.button);
 

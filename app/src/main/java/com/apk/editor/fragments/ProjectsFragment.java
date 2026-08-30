@@ -47,7 +47,6 @@ public class ProjectsFragment extends BaseFragment {
 
     private ContentLoadingProgressBar mProgress;
     private MaterialButton mBatchButton;
-    private RecyclerView mRecyclerView;
     private ProjectsAdapter mRecycleViewAdapter;
     private String mSearchText = null;
     private final List<String> mProjectNames = new CopyOnWriteArrayList<>();
@@ -62,8 +61,17 @@ public class ProjectsFragment extends BaseFragment {
         mBatchButton = mRootView.findViewById(R.id.batch_options);
         MaterialButton mSearchButton = mRootView.findViewById(R.id.search_button);
         MaterialButton mSortButton = mRootView.findViewById(R.id.sort_button);
-        mRecyclerView = mRootView.findViewById(R.id.recycler_view);
+        RecyclerView mRecyclerView = mRootView.findViewById(R.id.recycler_view);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        mRecycleViewAdapter = new ProjectsAdapter(new CopyOnWriteArrayList<>(), mProjectNames, mBatchButton, backupPath -> {
+            Intent explorer = new Intent(requireActivity(), APKExploreActivity.class);
+            if (backupPath != null) {
+                explorer.putExtra(APKExploreActivity.BACKUP_PATH_INTENT, backupPath);
+            }
+            activityResultLauncher.launch(explorer);
+        }, requireActivity());
+        mRecyclerView.setAdapter(mRecycleViewAdapter);
 
         mSearchButton.setOnClickListener(v -> {
             if (mSearchWord.getVisibility() == View.VISIBLE) {
@@ -108,7 +116,7 @@ public class ProjectsFragment extends BaseFragment {
                         }
                         mProjectNames.clear();
                         mBatchButton.setVisibility(GONE);
-                        loadProjects(mSearchText, requireActivity());
+                        loadProjects(mSearchText);
                     }
                 }.execute()
         );
@@ -122,14 +130,14 @@ public class ProjectsFragment extends BaseFragment {
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 0) {
                     sCommonUtils.saveBoolean("az_order", !sCommonUtils.getBoolean("az_order", true, requireActivity()), requireActivity());
-                    loadProjects(mSearchText, requireActivity());
+                    loadProjects(mSearchText);
                 }
                 return false;
             });
             popupMenu.show();
         });
 
-        loadProjects(mSearchText, requireActivity());
+        loadProjects(mSearchText);
 
         AppSettings.applyMargin(mRecyclerView, requireActivity());
 
@@ -144,7 +152,7 @@ public class ProjectsFragment extends BaseFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loadProjects(s.toString().trim().toLowerCase(), requireActivity());
+                loadProjects(s.toString().trim().toLowerCase());
             }
         });
 
@@ -165,7 +173,7 @@ public class ProjectsFragment extends BaseFragment {
                 if (mBatchButton.getVisibility() == View.VISIBLE) {
                     mProjectNames.clear();
                     mBatchButton.setVisibility(GONE);
-                    loadProjects(mSearchText, requireActivity());
+                    loadProjects(mSearchText);
                     return;
                 }
 
@@ -176,38 +184,30 @@ public class ProjectsFragment extends BaseFragment {
         return mRootView;
     }
 
-    private void loadProjects(String searchWord, Activity activity) {
+    private void loadProjects(String searchWord) {
         new sExecutor() {
 
-            private List<String> date;
+            private List<String> data;
 
             @Override
             public void onPreExecute() {
-                mRecyclerView.setVisibility(GONE);
                 mProgress.setVisibility(View.VISIBLE);
-                mRecyclerView.removeAllViews();
             }
 
             @Override
             public void doInBackground() {
-                date = Projects.getData(searchWord, activity);
+                data = Projects.getData(searchWord, requireActivity());
             }
 
             @Override
             public void onPostExecute() {
-                if (!isAdded()) return;
-                mRecycleViewAdapter = new ProjectsAdapter(date, mProjectNames, mBatchButton, backupPath -> {
-                    Intent explorer = new Intent(activity, APKExploreActivity.class);
-                    if (backupPath != null) {
-                        explorer.putExtra(APKExploreActivity.BACKUP_PATH_INTENT, backupPath);
-                    }
-                    activityResultLauncher.launch(explorer);
-                }, activity);
+                if (!isAdded()) {
+                    return;
+                }
 
+                mProgress.setVisibility(View.GONE);
                 mSearchText = searchWord;
-                mRecyclerView.setAdapter(mRecycleViewAdapter);
-                mRecyclerView.setVisibility(View.VISIBLE);
-                mProgress.setVisibility(GONE);
+                mRecycleViewAdapter.updateData(data);
             }
         }.execute();
     }
@@ -216,7 +216,7 @@ public class ProjectsFragment extends BaseFragment {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    loadProjects(mSearchText, requireActivity());
+                    loadProjects(mSearchText);
                 }
             }
     );
