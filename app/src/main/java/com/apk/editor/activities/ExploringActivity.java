@@ -3,6 +3,7 @@ package com.apk.editor.activities;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -20,7 +21,7 @@ import com.google.android.material.textview.MaterialTextView;
  */
 public class ExploringActivity extends BaseActivity {
 
-    private final Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
     private Runnable mRunnable;
 
     @Override

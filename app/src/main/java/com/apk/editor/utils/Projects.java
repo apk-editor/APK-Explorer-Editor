@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.apk.editor.R;
+import com.apk.editor.utils.dialogs.FileActionDialog;
 import com.apk.editor.utils.tasks.ExportProject;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
@@ -72,13 +73,12 @@ public class Projects {
                     }
                     String name = text;
                     if (sFileUtils.exist(new File(APKData.getExportPath(context), text))) {
-                        new MaterialAlertDialogBuilder(context)
-                                .setIcon(R.mipmap.ic_launcher)
-                                .setTitle(context.getString(R.string.export_project_replace, text))
-                                .setNegativeButton(R.string.cancel, (dialog2, ii) -> {
-                                })
-                                .setPositiveButton(R.string.replace, (dialog2, iii) -> new ExportProject(file, name, context).execute())
-                                .show();
+                        new FileActionDialog(sCommonUtils.getDrawable(R.mipmap.ic_launcher, context), context.getString(R.string.export_project_replace, text), context) {
+                            @Override
+                            public void onPositiveAction() {
+                                new ExportProject(file, name, context).execute();
+                            }
+                        };
                     } else {
                         new ExportProject(file, name, context).execute();
                     }

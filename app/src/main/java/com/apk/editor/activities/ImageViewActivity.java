@@ -12,6 +12,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.apk.editor.R;
 import com.apk.editor.utils.APKData;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.dialogs.FileActionDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -51,37 +52,33 @@ public class ImageViewActivity extends BaseActivity {
             mImage.setImageDrawable(sPackageUtils.getAppIcon(packageName, this));
         }
 
-        mMenu.setOnClickListener(v -> new MaterialAlertDialogBuilder(this)
-                .setIcon(R.mipmap.ic_launcher)
-                .setTitle(R.string.export_question)
-                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
-                })
-                .setPositiveButton(getString(R.string.export), (dialog, id) -> {
-                            if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,this)) {
-                                sPermissionUtils.requestPermission(
-                                        new String[] {
-                                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                                        },this);
-                            } else {
-                                File exportPath = new File(APKData.getExportPath(this), Objects.requireNonNull(packageName));
-                                if (!exportPath.exists()) {
-                                    sFileUtils.mkdir(exportPath);
-                                }
-                                if (path != null) {
-                                    APKExplorer.saveImage(BitmapFactory.decodeFile(path), new File(exportPath, new File(path).getName()));
-                                } else {
-                                    APKExplorer.saveImage(APKExplorer.drawableToBitmap(mImage.getDrawable()), new File(exportPath,packageName + "icon.png"));
-                                }
-                                new MaterialAlertDialogBuilder(this)
-                                        .setIcon(R.mipmap.ic_launcher)
-                                        .setTitle(R.string.app_name)
-                                        .setMessage(getString(R.string.export_complete_message, "Download > AEE > " + packageName))
-                                        .setPositiveButton(getString(R.string.cancel), (dialog1, id1) -> {
-                                        }).show();
-                            }
-                        }
-                ).show()
-        );
+        mMenu.setOnClickListener(v -> new FileActionDialog(mImage.getDrawable(), getString(R.string.export_question), this) {
+            @Override
+            public void onPositiveAction() {
+                if (Build.VERSION.SDK_INT < 29 && sPermissionUtils.isPermissionDenied(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,ImageViewActivity.this)) {
+                    sPermissionUtils.requestPermission(
+                            new String[] {
+                                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            },ImageViewActivity.this);
+                } else {
+                    File exportPath = new File(APKData.getExportPath(ImageViewActivity.this), Objects.requireNonNull(packageName));
+                    if (!exportPath.exists()) {
+                        sFileUtils.mkdir(exportPath);
+                    }
+                    if (path != null) {
+                        APKExplorer.saveImage(BitmapFactory.decodeFile(path), new File(exportPath, new File(path).getName()));
+                    } else {
+                        APKExplorer.saveImage(APKExplorer.drawableToBitmap(mImage.getDrawable()), new File(exportPath,packageName + "icon.png"));
+                    }
+                    new MaterialAlertDialogBuilder(ImageViewActivity.this)
+                            .setIcon(R.mipmap.ic_launcher)
+                            .setTitle(R.string.app_name)
+                            .setMessage(getString(R.string.export_complete_message, "Download > AEE > " + packageName))
+                            .setPositiveButton(getString(R.string.cancel), (dialog1, id1) -> {
+                            }).show();
+                }
+            }
+        });
 
         mBack.setOnClickListener(v -> finish());
     }

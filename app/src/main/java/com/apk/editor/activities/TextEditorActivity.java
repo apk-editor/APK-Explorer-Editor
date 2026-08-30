@@ -16,8 +16,8 @@ import com.apk.editor.R;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.AppData;
 import com.apk.editor.utils.XMLEditor;
+import com.apk.editor.utils.dialogs.FileActionDialog;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textview.MaterialTextView;
 
@@ -105,57 +105,55 @@ public class TextEditorActivity extends BaseActivity {
 
         mSave.setOnClickListener(v -> {
             if (mText == null || mText.getText() != null && mText.getText().toString().isEmpty()) return;
-            new MaterialAlertDialogBuilder(this)
-                    .setIcon(R.mipmap.ic_launcher)
-                    .setTitle(R.string.save_question)
-                    .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
-                    })
-                    .setPositiveButton(getString(R.string.save), (dialog, id) ->
-                            new sExecutor() {
-                                private boolean invalid = false;
-                                private final String text = mText.getText().toString().trim();
-                                @Override
-                                public void onPreExecute() {
-                                    mProgressLayout.setVisibility(View.VISIBLE);
-                                }
+            new FileActionDialog(sCommonUtils.getDrawable(R.drawable.ic_file, this), getString(R.string.save_question), this) {
+                @Override
+                public void onPositiveAction() {
+                    new sExecutor() {
+                        private boolean invalid = false;
+                        private final String text = mText.getText().toString().trim();
+                        @Override
+                        public void onPreExecute() {
+                            mProgressLayout.setVisibility(View.VISIBLE);
+                        }
 
-                                @Override
-                                public void doInBackground() {
-                                    if (APKExplorer.isBinaryXML(mPath)) {
-                                        if (XMLEditor.isXMLValid(text)) {
-                                            try (FileOutputStream fos = new FileOutputStream(mPath)) {
-                                                aXMLEncoder aXMLEncoder = new aXMLEncoder();
-                                                byte[] bs = aXMLEncoder.encodeString(text, TextEditorActivity.this);
-                                                fos.write(bs);
-                                            } catch (IOException | XmlPullParserException ignored) {
-                                            }
-                                        } else {
-                                            invalid = true;
-                                        }
-                                    } else {
-                                        sFileUtils.create(text, new File(mPath));
-                                        if (mPath.contains("classes") && mPath.endsWith(".smali")) {
-                                            try {
-                                                File backupFile = new File(Objects.requireNonNull(backupPath));
-                                                JSONObject jsonObject = new JSONObject(sFileUtils.read(backupFile));
-                                                jsonObject.put("smali_edited", true);
-                                                sFileUtils.create(jsonObject.toString(), backupFile);
-                                            } catch (JSONException ignored) {
-                                            }
-                                        }
+                        @Override
+                        public void doInBackground() {
+                            if (APKExplorer.isBinaryXML(mPath)) {
+                                if (XMLEditor.isXMLValid(text)) {
+                                    try (FileOutputStream fos = new FileOutputStream(mPath)) {
+                                        aXMLEncoder aXMLEncoder = new aXMLEncoder();
+                                        byte[] bs = aXMLEncoder.encodeString(text, TextEditorActivity.this);
+                                        fos.write(bs);
+                                    } catch (IOException | XmlPullParserException ignored) {
+                                    }
+                                } else {
+                                    invalid = true;
+                                }
+                            } else {
+                                sFileUtils.create(text, new File(mPath));
+                                if (mPath.contains("classes") && mPath.endsWith(".smali")) {
+                                    try {
+                                        File backupFile = new File(Objects.requireNonNull(backupPath));
+                                        JSONObject jsonObject = new JSONObject(sFileUtils.read(backupFile));
+                                        jsonObject.put("smali_edited", true);
+                                        sFileUtils.create(jsonObject.toString(), backupFile);
+                                    } catch (JSONException ignored) {
                                     }
                                 }
+                            }
+                        }
 
-                                @Override
-                                public void onPostExecute() {
-                                    if (invalid) {
-                                        sCommonUtils.toast(getString(R.string.xml_corrupted), TextEditorActivity.this).show();
-                                    }
-                                    mProgressLayout.setVisibility(View.GONE);
-                                    finish();
-                                }
-                            }.execute()
-                    ).show();
+                        @Override
+                        public void onPostExecute() {
+                            if (invalid) {
+                                sCommonUtils.toast(getString(R.string.xml_corrupted), TextEditorActivity.this).show();
+                            }
+                            mProgressLayout.setVisibility(View.GONE);
+                            finish();
+                        }
+                    }.execute();
+                }
+            };
         });
 
         mBack.setOnClickListener(v -> exit());
@@ -170,13 +168,12 @@ public class TextEditorActivity extends BaseActivity {
 
     private void exit() {
         if (mTextContents != null && mText.getText() != null && !mTextContents.equals(mText.getText().toString())) {
-            new MaterialAlertDialogBuilder(TextEditorActivity.this)
-                    .setIcon(R.mipmap.ic_launcher)
-                    .setTitle(getString(R.string.discard_message))
-                    .setCancelable(false)
-                    .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
-                    })
-                    .setPositiveButton(R.string.discard, (dialogInterface, i) -> finish()).show();
+            new FileActionDialog(sCommonUtils.getDrawable(R.drawable.ic_file, this), getString(R.string.discard_message), this) {
+                @Override
+                public void onPositiveAction() {
+                    finish();
+                }
+            };
             return;
         }
         finish();

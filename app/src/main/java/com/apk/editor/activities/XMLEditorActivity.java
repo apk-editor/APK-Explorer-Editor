@@ -32,6 +32,7 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.XMLEditorAdapter;
 import com.apk.editor.utils.APKExplorer;
 import com.apk.editor.utils.XMLEditor;
+import com.apk.editor.utils.dialogs.FileActionDialog;
 import com.apk.editor.utils.dialogs.ProgressDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -118,13 +119,12 @@ public class XMLEditorActivity extends BaseActivity {
                     return;
                 }
                 if (mSave.getVisibility() == View.VISIBLE) {
-                    new MaterialAlertDialogBuilder(XMLEditorActivity.this)
-                            .setIcon(R.mipmap.ic_launcher)
-                            .setTitle(R.string.discard_message)
-                            .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
-                            })
-                            .setPositiveButton(R.string.discard, (dialogInterface, i) -> finish())
-                            .show();
+                    new FileActionDialog(sCommonUtils.getDrawable(mPath.endsWith("AndroidManifest.xml") ? R.drawable.ic_manifest : R.drawable.ic_xml, XMLEditorActivity.this), getString(R.string.discard_message), XMLEditorActivity.this) {
+                        @Override
+                        public void onPositiveAction() {
+                            finish();
+                        }
+                    };
                     return;
                 }
                 finish();

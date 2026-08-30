@@ -3,9 +3,6 @@ package com.apk.editor.utils;
 import android.content.Context;
 import android.os.Build;
 import android.text.Html;
-import android.util.TypedValue;
-
-import com.apk.editor.R;
 
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.model.ZipParameters;

@@ -14,8 +14,8 @@ import com.apk.editor.fragments.ExploredInfoFragment;
 import com.apk.editor.fragments.StringViewFragment;
 import com.apk.editor.utils.APKEditorUtils;
 import com.apk.editor.utils.APKExplorer;
+import com.apk.editor.utils.dialogs.FileActionDialog;
 import com.apk.editor.utils.tasks.SignAPK;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.File;
@@ -60,35 +60,31 @@ public class APKExploreActivity extends BaseActivity {
             mBuild.setVisibility(View.VISIBLE);
         }
 
-        mBuild.setOnClickListener(v -> new MaterialAlertDialogBuilder(this)
-                .setIcon(R.mipmap.ic_launcher)
-                .setTitle(R.string.app_name)
-                .setMessage(R.string.save_apk_message)
-                .setNegativeButton(getString(R.string.cancel), (dialog, id) -> {
-                })
-                .setPositiveButton(getString(R.string.build), (dialog, id) -> {
-                    if (!sCommonUtils.getBoolean("firstSigning", false, this)) {
-                        new sSingleItemDialog(0, null, new String[] {
-                                getString(R.string.signing_default),
-                                getString(R.string.signing_custom)
-                        }, this) {
+        mBuild.setOnClickListener(v -> new FileActionDialog(mApplicationIcon.getDrawable(), getString(R.string.save_apk_message), this) {
+            @Override
+            public void onPositiveAction() {
+                if (!sCommonUtils.getBoolean("firstSigning", false, APKExploreActivity.this)) {
+                    new sSingleItemDialog(0, null, new String[] {
+                            getString(R.string.signing_default),
+                            getString(R.string.signing_custom)
+                    }, APKExploreActivity.this) {
 
-                            @Override
-                            public void onItemSelected(int itemPosition) {
-                                sCommonUtils.saveBoolean("firstSigning", true, APKExploreActivity.this);
-                                if (itemPosition == 0) {
-                                    new SignAPK(mRootFile, APKExploreActivity.this).execute();
-                                } else {
-                                    Intent signing = new Intent(APKExploreActivity.this, APKSignActivity.class);
-                                    startActivity(signing);
-                                }
+                        @Override
+                        public void onItemSelected(int itemPosition) {
+                            sCommonUtils.saveBoolean("firstSigning", true, APKExploreActivity.this);
+                            if (itemPosition == 0) {
+                                new SignAPK(mRootFile, APKExploreActivity.this).execute();
+                            } else {
+                                Intent signing = new Intent(APKExploreActivity.this, APKSignActivity.class);
+                                startActivity(signing);
                             }
-                        }.show();
-                    } else {
-                        new SignAPK(mRootFile, this).execute();
-                    }
-                }).show()
-        );
+                        }
+                    }.show();
+                } else {
+                    new SignAPK(mRootFile, APKExploreActivity.this).execute();
+                }
+            }
+        });
 
         List<NavViewEntry> data = new CopyOnWriteArrayList<>();
         data.add(new NavViewEntry(() -> ExploredInfoFragment.newInstance(mBackupFilePath), R.drawable.ic_info));
