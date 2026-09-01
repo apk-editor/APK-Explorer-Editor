@@ -220,8 +220,11 @@ public class QuickEditsActivity extends BaseActivity {
 
                     if (mOutFile.exists()) {
                         mSuccess = mOutFile.isFile() || mOutFile.isDirectory() && APKData.findPackageName(APKData.splitApks(mOutFile), mActivity) != null;
-                    } else {
+                    }
+
+                    if (!mSuccess) {
                         sFileUtils.delete(mOutFile);
+                        return;
                     }
 
                     if (mOutFile.isDirectory()) {
