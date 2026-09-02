@@ -1,11 +1,11 @@
 [versions]
-apksigVersion = "9.3.2"
-aXMLVersion = "ac33e569c03f6e34a246fcc70cde703156b5afb1"
+apksigVersion = "9.4.0"
+aXMLVersion = "7a89a0c43c6284a01d16fff18d6a3184fa9b0885"
 baksmaliVersion = "2.5.2"
 crashreporterVersion = "01df38c1bbd59cd3d30b58f4065e59f85db8027f"
 documentfileVersion = "1.1.0"
 sCommonVersion = "d532608ca4b15c4935ca33b66d7770f632febed4"
-agpVersion = "9.3.2"
+agpVersion = "9.4.0"
 materialVersion = "1.14.0"
 zip4jVersion = "2.11.6"
 
