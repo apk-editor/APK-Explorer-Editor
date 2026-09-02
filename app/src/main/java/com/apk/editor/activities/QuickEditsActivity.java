@@ -102,21 +102,38 @@ public class QuickEditsActivity extends BaseActivity {
                     }
                 }
 
+                private void updatePackageName(XMLEntry items) {
+                    String name = items.getTag().trim();
+                    String value = items.getValue().trim();
+                    String packageNameNew = mData.get(1).getValue();
+                    if (name.equals("package")) {
+                        items.setValue(packageNameNew);
+                    } else if (name.equals("android:authorities")) {
+                        if (value.contains(mPackageName)) {
+                            items.setValue(value.replace(mPackageName, packageNameNew));
+                        } else {
+                            items.setValue(value.replace("android:authorities=\"", "android:authorities=\"aee_"));
+                        }
+                    } else if (name.equals("android:name") && value.contains("_PERMISSION")) {
+                        if (value.contains(mPackageName)) {
+                            items.setValue(value.replace(mPackageName, packageNameNew));
+                        } else {
+                            items.setValue(value.replace("_PERMISSION\"", "_PERMISSION_aee\""));
+                        }
+                    } else if (name.equals("android:host") && value.contains(mPackageName)) {
+                        items.setValue(value.replace(mPackageName, packageNameNew));
+                    } else if (name.equals("android:value") && value.startsWith("content://") && value.contains(mPackageName)) {
+                        items.setValue(value.replace(mPackageName, packageNameNew));
+                    }
+                }
+
                 private void update(List<XMLEntry> xmlItems) {
                     for (XMLEntry items : xmlItems) {
                         if (!mAppNameChanged && !Objects.equals(mAppName, mData.get(0).getValue()) && items.getTag().trim().equals("android:label")) {
                             items.setValue(mData.get(0).getValue());
                             mAppNameChanged = true;
-                        } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && items.getTag().trim().equals("package")) {
-                            items.setValue(mData.get(1).getValue());
-                        } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && items.getTag().trim().startsWith("android:name") && items.getValue().trim().contains("_PERMISSION") && items.getValue().trim().contains(mPackageName)) {
-                            items.setValue(items.getValue().replace(mPackageName, mData.get(1).getValue()));
-                        } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && items.getTag().trim().startsWith("android:name") && items.getValue().trim().contains("_PERMISSION") && !items.getValue().trim().contains(mPackageName)) {
-                            items.setValue(items.getValue().replace("_PERMISSION\"", "_PERMISSION_aee\""));
-                        } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && items.getTag().trim().trim().startsWith("android:authorities") && items.getValue().trim().contains(mPackageName)) {
-                            items.setValue(items.getValue().replace(mPackageName, mData.get(1).getValue()));
-                        } else if (!Objects.equals(mPackageName, mData.get(1).getValue()) && items.getTag().trim().trim().startsWith("android:authorities") && !items.getValue().trim().contains(mPackageName)) {
-                            items.setValue(items.getValue().replace("android:authorities=\"", "android:authorities=\"aee_"));
+                        } else if (isPackageNameChanged()) {
+                            updatePackageName(items);
                         } else if (!Objects.equals(mVersionName, mData.get(2).getValue()) && items.getTag().trim().contains("android:versionName")) {
                             items.setValue(mData.get(2).getValue());
                         } else if (!Objects.equals(mVersionCode, mData.get(3).getValue()) && items.getTag().trim().contains("android:versionCode")) {
@@ -125,6 +142,10 @@ public class QuickEditsActivity extends BaseActivity {
                             items.setValue(mData.get(4).getValue());
                         }
                     }
+                }
+
+                private boolean isPackageNameChanged() {
+                    return !Objects.equals(mPackageName, mData.get(1).getValue());
                 }
 
                 private boolean isResFileExists(ZipFile zipFile) throws ZipException {
