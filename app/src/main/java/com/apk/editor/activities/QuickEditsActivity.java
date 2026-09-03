@@ -102,44 +102,53 @@ public class QuickEditsActivity extends BaseActivity {
                     }
                 }
 
-                private void updatePackageName(XMLEntry items) {
-                    String name = items.getTag().trim();
-                    String value = items.getValue().trim();
-                    String packageNameNew = mData.get(1).getValue();
-                    if (name.equals("package")) {
-                        items.setValue(packageNameNew);
-                    } else if (name.equals("android:authorities")) {
-                        if (value.contains(mPackageName)) {
-                            items.setValue(value.replace(mPackageName, packageNameNew));
-                        } else {
-                            items.setValue(value.replace("android:authorities=\"", "android:authorities=\"aee_"));
-                        }
-                    } else if (name.equals("android:name") && value.contains("_PERMISSION")) {
-                        if (value.contains(mPackageName)) {
-                            items.setValue(value.replace(mPackageName, packageNameNew));
-                        } else {
-                            items.setValue(value.replace("_PERMISSION\"", "_PERMISSION_aee\""));
-                        }
-                    } else if (name.equals("android:host") && value.contains(mPackageName)) {
-                        items.setValue(value.replace(mPackageName, packageNameNew));
-                    } else if (name.equals("android:value") && value.startsWith("content://") && value.contains(mPackageName)) {
-                        items.setValue(value.replace(mPackageName, packageNameNew));
-                    }
-                }
-
                 private void update(List<XMLEntry> xmlItems) {
                     for (XMLEntry items : xmlItems) {
-                        if (!mAppNameChanged && !Objects.equals(mAppName, mData.get(0).getValue()) && items.getTag().trim().equals("android:label")) {
-                            items.setValue(mData.get(0).getValue());
+                        String name = items.getTag().trim();
+                        String value = items.getValue().trim();
+                        String appName = mData.get(0).getValue().trim();
+                        String appVersionName = mData.get(2).getValue().trim();
+                        String appVersionCode = mData.get(3).getValue().trim();
+                        String minSDKVersion = mData.get(4).getValue().trim();
+                        String packageName = mData.get(1).getValue().trim();
+
+                        if (!mAppNameChanged && !Objects.equals(mAppName, appName) && items.getTag().trim().equals("android:label")) {
+                            items.setValue(appName);
                             mAppNameChanged = true;
-                        } else if (isPackageNameChanged()) {
-                            updatePackageName(items);
-                        } else if (!Objects.equals(mVersionName, mData.get(2).getValue()) && items.getTag().trim().contains("android:versionName")) {
-                            items.setValue(mData.get(2).getValue());
-                        } else if (!Objects.equals(mVersionCode, mData.get(3).getValue()) && items.getTag().trim().contains("android:versionCode")) {
-                            items.setValue(mData.get(3).getValue());
-                        } else if (!Objects.equals(mMinSDK, mData.get(4).getValue()) && items.getTag().trim().contains("android:minSdkVersion")) {
-                            items.setValue(mData.get(4).getValue());
+                        }
+
+                        if (isPackageNameChanged()) {
+                            if (name.equals("package")) {
+                                items.setValue(packageName);
+                            } else if (name.equals("android:authorities")) {
+                                if (value.contains(mPackageName)) {
+                                    items.setValue(value.replace(mPackageName, packageName));
+                                } else {
+                                    items.setValue(value.replace("android:authorities=\"", "android:authorities=\"aee_"));
+                                }
+                            } else if (name.equals("android:name") && value.contains("_PERMISSION")) {
+                                if (value.contains(mPackageName)) {
+                                    items.setValue(value.replace(mPackageName, packageName));
+                                } else {
+                                    items.setValue(value.replace("_PERMISSION\"", "_PERMISSION_aee\""));
+                                }
+                            } else if (name.equals("android:host") && value.contains(mPackageName)) {
+                                items.setValue(value.replace(mPackageName, packageName));
+                            } else if (name.equals("android:value") && value.startsWith("content://") && value.contains(mPackageName)) {
+                                items.setValue(value.replace(mPackageName, packageName));
+                            }
+                        }
+
+                        if (!Objects.equals(mVersionName, appVersionName) && items.getTag().trim().contains("android:versionName")) {
+                            items.setValue(appVersionName);
+                        }
+
+                        if (!Objects.equals(mVersionCode, appVersionCode) && items.getTag().trim().contains("android:versionCode")) {
+                            items.setValue(appVersionCode);
+                        }
+
+                        if (!Objects.equals(mMinSDK, minSDKVersion) && items.getTag().trim().contains("android:minSdkVersion")) {
+                            items.setValue(minSDKVersion);
                         }
                     }
                 }
@@ -205,7 +214,7 @@ public class QuickEditsActivity extends BaseActivity {
                                 source.close();
                             }
 
-                            mProgressDialog.updateProgress(1);
+                            mActivity.runOnUiThread(() -> mProgressDialog.updateProgress(1));
                         }
 
                         outZip.close();
@@ -254,7 +263,7 @@ public class QuickEditsActivity extends BaseActivity {
                             if (files.isFile() && files.getName().endsWith("apk")) {
                                 mAPKs.add(new APKPickerItems(files, APKPicker.isSelectedAPK(files, mActivity)));
                             }
-                            mProgressDialog.updateProgress(1);
+                            mActivity.runOnUiThread(() -> mProgressDialog.updateProgress(1));
                         }
                     }
                 }
