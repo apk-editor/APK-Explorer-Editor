@@ -23,12 +23,10 @@ import com.google.android.material.textview.MaterialTextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Objects;
 
 import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
@@ -122,9 +120,9 @@ public class TextEditorActivity extends BaseActivity {
                                 if (XMLEditor.isXMLValid(text)) {
                                     try (FileOutputStream fos = new FileOutputStream(mPath)) {
                                         aXMLEncoder aXMLEncoder = new aXMLEncoder();
-                                        byte[] bs = aXMLEncoder.encodeString(text, TextEditorActivity.this);
+                                        byte[] bs = aXMLEncoder.encode(text);
                                         fos.write(bs);
-                                    } catch (IOException | XmlPullParserException ignored) {
+                                    } catch (Exception ignored) {
                                     }
                                 } else {
                                     invalid = true;

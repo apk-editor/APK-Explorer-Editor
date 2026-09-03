@@ -10,7 +10,6 @@ import com.apk.editor.utils.dialogs.ProgressDialog;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -88,14 +87,13 @@ public class XMLEditor {
                     invalid = false;
                     try (FileOutputStream fos = new FileOutputStream(filePath)) {
                         aXMLEncoder aXMLEncoder = new aXMLEncoder();
-                        byte[] bs = aXMLEncoder.encodeString(xmlString, activity);
+                        byte[] bs = aXMLEncoder.encode(xmlString);
                         fos.write(bs);
-                    } catch (IOException | XmlPullParserException ignored) {
+                    } catch (Exception ignored) {
                     }
                 } else {
                     invalid = true;
                 }
-
             }
 
             @Override

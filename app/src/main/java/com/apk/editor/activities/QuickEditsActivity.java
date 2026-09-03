@@ -188,8 +188,8 @@ public class QuickEditsActivity extends BaseActivity {
                                 update(xmlEntries);
 
                                 byte[] encodedData = (resEntries != null && !resEntries.isEmpty())
-                                        ? new aXMLEncoder().encodeString(XMLEditor.xmlEntriesToXML(xmlEntries, resEntries), mActivity)
-                                        : new aXMLEncoder().encodeString(XMLEditor.xmlEntriesToXML(xmlEntries, null), mActivity);
+                                        ? new aXMLEncoder().encode(XMLEditor.xmlEntriesToXML(xmlEntries, resEntries))
+                                        : new aXMLEncoder().encode(XMLEditor.xmlEntriesToXML(xmlEntries, null));
 
                                 source = new ByteArrayInputStream(encodedData);
                                 outZip.addStream(source, new ZipParameters() {{
@@ -227,7 +227,7 @@ public class QuickEditsActivity extends BaseActivity {
 
                         sFileUtils.delete(tmpFile);
 
-                    } catch (IOException | XmlPullParserException ignored) {
+                    } catch (Exception ignored) {
                     }
                 }
 

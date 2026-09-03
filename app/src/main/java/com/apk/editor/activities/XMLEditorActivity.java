@@ -319,9 +319,9 @@ public class XMLEditorActivity extends BaseActivity {
                                                 private void encodeXML(String xml, String path) {
                                                     try (FileOutputStream fos = new FileOutputStream(path)) {
                                                         aXMLEncoder aXMLEncoder = new aXMLEncoder();
-                                                        byte[] bs = aXMLEncoder.encodeString(xml, activity);
+                                                        byte[] bs = aXMLEncoder.encode(xml);
                                                         fos.write(bs);
-                                                    } catch (IOException | XmlPullParserException ignored) {
+                                                    } catch (Exception ignored) {
                                                     }
                                                 }
 
