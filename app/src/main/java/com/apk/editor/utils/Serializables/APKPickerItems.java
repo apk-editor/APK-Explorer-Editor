@@ -36,6 +36,10 @@ public class APKPickerItems implements Serializable {
         }
     }
 
+    public File getApkFile() {
+        return apkFile;
+    }
+
     public String getAPKName() {
         return apkFile.getName();
     }

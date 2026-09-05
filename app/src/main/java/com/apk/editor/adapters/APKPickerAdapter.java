@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apk.editor.R;
@@ -18,6 +19,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
+import java.util.Objects;
 
 /*
  * Created by APK Explorer & Editor <apkeditor@protonmail.com> on Sept. 22, 2025
@@ -54,9 +56,47 @@ public class APKPickerAdapter extends RecyclerView.Adapter<APKPickerAdapter.View
         AppSettings.setSlideInAnimation(holder.mCheckBox, position);
     }
 
+    public void updateData(List<APKPickerItems> newData) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return data.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newData != null ? newData.size() : 0;
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return data.get(oldItemPosition) == newData.get(newItemPosition);
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                APKPickerItems oldItem = data.get(oldItemPosition);
+                APKPickerItems newItem = newData.get(newItemPosition);
+
+                return Objects.equals(oldItem.isSelected(), newItem.isSelected());
+            }
+        });
+
+        this.data.clear();
+        if (newData != null) {
+            this.data.addAll(newData);
+        }
+
+        diffResult.dispatchUpdatesTo(this);
+    }
+
     @Override
     public int getItemCount() {
         return this.data.size();
+    }
+
+    public List<APKPickerItems> getData() {
+        return data;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
