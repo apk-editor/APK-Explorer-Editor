@@ -259,14 +259,15 @@ public class APKExplorerFragment extends BaseFragment {
 
     private sExecutor decompileDexToSmali(File inputFile) {
         return new sExecutor() {
-            private ProgressDialog mProgressDialog;
+            private final Activity activity = requireActivity();
             private File mBackUpPath, mExplorePath;
+            private ProgressDialog mProgressDialog;
             private String mDexName = null;
 
             @SuppressLint("StringFormatInvalid")
             @Override
             public void onPreExecute() {
-                mProgressDialog = new ProgressDialog(requireActivity());
+                mProgressDialog = new ProgressDialog(activity);
                 mProgressDialog.setTitle(getString(R.string.decompiling, inputFile.getName()));
                 mProgressDialog.setIcon(R.mipmap.ic_launcher);
                 mProgressDialog.setIndeterminate(true);
@@ -287,6 +288,10 @@ public class APKExplorerFragment extends BaseFragment {
 
             @Override
             public void onPostExecute() {
+                if (!isAdded() || activity.isFinishing() || activity.isDestroyed()) {
+                    return;
+                }
+
                 try {
                     mProgressDialog.dismiss();
                 } catch (IllegalArgumentException ignored) {
@@ -299,6 +304,7 @@ public class APKExplorerFragment extends BaseFragment {
 
     private void loadUI(File file) {
         new sExecutor() {
+            private final Activity activity = requireActivity();
             private List<String> data;
 
             @Override
@@ -309,14 +315,15 @@ public class APKExplorerFragment extends BaseFragment {
 
             @Override
             public void doInBackground() {
-                data = APKExplorer.getData(file, true, requireActivity());
+                data = APKExplorer.getData(file, true, activity);
             }
 
             @Override
             public void onPostExecute() {
-                if (!isAdded()) {
+                if (!isAdded() || activity.isFinishing() || activity.isDestroyed()) {
                     return;
                 }
+
                 mProgressLayout.setVisibility(View.GONE);
 
                 if (mFileToReplace != null) {
@@ -325,8 +332,8 @@ public class APKExplorerFragment extends BaseFragment {
 
                 mFile = file;
                 String name = Objects.requireNonNull(file.getParentFile()).getName();
-                mTitle.setText(Objects.equals(mFile.getParentFile(), requireActivity().getCacheDir()) ? getString(R.string.root) : file.getName());
-                if (!name.equals(requireActivity().getCacheDir().getName())) {
+                mTitle.setText(Objects.equals(mFile.getParentFile(), activity.getCacheDir()) ? getString(R.string.root) : file.getName());
+                if (!name.equals(activity.getCacheDir().getName())) {
                     mSearchWord.setVisibility(View.GONE);
                 }
                 mRecycleViewAdapter.updateData(data);
@@ -336,6 +343,7 @@ public class APKExplorerFragment extends BaseFragment {
 
     private void loadUI(String searchText) {
         new sExecutor() {
+            private final Activity activity = requireActivity();
             private List<String> data;
 
             @Override
@@ -348,7 +356,7 @@ public class APKExplorerFragment extends BaseFragment {
             public void doInBackground() {
                 getData(mRootFile);
                 Collections.sort(data, String.CASE_INSENSITIVE_ORDER);
-                if (!sCommonUtils.getBoolean("az_order", true, requireActivity())) {
+                if (!sCommonUtils.getBoolean("az_order", true, activity)) {
                     Collections.reverse(data);
                 }
             }
@@ -369,13 +377,14 @@ public class APKExplorerFragment extends BaseFragment {
 
             @Override
             public void onPostExecute() {
-                if (!isAdded()) {
+                if (!isAdded() || activity.isFinishing() || activity.isDestroyed()) {
                     return;
                 }
+
                 mProgressLayout.setVisibility(View.GONE);
 
                 if (searchText == null) {
-                    AppData.toggleKeyboard(1, mSearchWord, requireActivity());
+                    AppData.toggleKeyboard(1, mSearchWord, activity);
                 } else {
                     mSearchText = searchText;
                 }

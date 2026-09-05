@@ -104,12 +104,13 @@ public class APKsFragment extends BaseFragment {
         mRecyclerView.setAdapter(mRecycleViewAdapter);
 
         mBatchButton.setOnClickListener(v -> new sExecutor() {
+                    private final Activity activity = requireActivity();
                     private ProgressDialog mProgressDialog;
 
                     @SuppressLint("StringFormatInvalid")
                     @Override
                     public void onPreExecute() {
-                        mProgressDialog = new ProgressDialog(requireActivity());
+                        mProgressDialog = new ProgressDialog(activity);
                         mProgressDialog.setTitle(getString(R.string.deleting, getString(R.string.apks)));
                         mProgressDialog.setIcon(R.mipmap.ic_launcher);
                         mProgressDialog.setIndeterminate(true);
@@ -125,6 +126,9 @@ public class APKsFragment extends BaseFragment {
 
                     @Override
                     public void onPostExecute() {
+                        if (!isAdded() || activity.isFinishing() || activity.isDestroyed()) {
+                            return;
+                        }
                         try {
                             mProgressDialog.dismiss();
                         } catch (IllegalArgumentException ignored) {
@@ -247,6 +251,7 @@ public class APKsFragment extends BaseFragment {
 
     private void loadAPKs(String searchWord) {
         new sExecutor() {
+            private final Activity activity = requireActivity();
 
             private List<File> data;
 
@@ -257,12 +262,12 @@ public class APKsFragment extends BaseFragment {
 
             @Override
             public void doInBackground() {
-                data = APKData.getData(mSearchText, mTabPosition, requireActivity());
+                data = APKData.getData(mSearchText, mTabPosition, activity);
             }
 
             @Override
             public void onPostExecute() {
-                if (!isAdded()) {
+                if (!isAdded() || activity.isFinishing() || activity.isDestroyed()) {
                     return;
                 }
 
@@ -311,6 +316,9 @@ public class APKsFragment extends BaseFragment {
 
             @Override
             public void onPostExecute() {
+                if (!isAdded() || activity.isFinishing() || activity.isDestroyed()) {
+                    return;
+                }
                 APKExplorer.handleAPKs(false, mAPKList, activity);
                 mProgress.setVisibility(View.GONE);
             }

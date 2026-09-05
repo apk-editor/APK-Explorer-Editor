@@ -1,5 +1,6 @@
 package com.apk.editor.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ public class APKDetailsFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         
         new sExecutor() {
+            private final Activity activity = requireActivity();
             private APKDetailsAdapter mAdapter;
             @Override
             public void onPreExecute() {
@@ -37,13 +39,16 @@ public class APKDetailsFragment extends Fragment {
 
             @Override
             public void doInBackground() {
-                mAdapter = new APKDetailsAdapter(ExternalAPKData.getData(requireActivity()));
+                mAdapter = new APKDetailsAdapter(ExternalAPKData.getData(activity));
             }
 
             @Override
             public void onPostExecute() {
-                mRecyclerView.setAdapter(mAdapter);
+                if (!isAdded() || activity.isFinishing() || activity.isDestroyed()) {
+                    return;
+                }
 
+                mRecyclerView.setAdapter(mAdapter);
             }
         }.execute();
 

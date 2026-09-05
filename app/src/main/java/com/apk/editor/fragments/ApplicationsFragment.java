@@ -2,6 +2,7 @@ package com.apk.editor.fragments;
 
 import static android.view.View.GONE;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -176,6 +177,7 @@ public class ApplicationsFragment extends BaseFragment {
 
     private void loadApps(String searchWord) {
         new sExecutor() {
+            private final Activity activity = requireActivity();
             private List<PackageItems> data;
 
             @Override
@@ -185,7 +187,7 @@ public class ApplicationsFragment extends BaseFragment {
 
             @Override
             public void doInBackground() {
-                data = AppData.getData(searchWord, mTabPosition, requireActivity());
+                data = AppData.getData(searchWord, mTabPosition, activity);
                 if (mSelectAll) {
                     mPackageNames.clear();
                     for (PackageItems items : data) {
@@ -196,7 +198,7 @@ public class ApplicationsFragment extends BaseFragment {
 
             @Override
             public void onPostExecute() {
-                if (!isAdded()) {
+                if (!isAdded() || activity.isFinishing() || activity.isDestroyed()) {
                     return;
                 }
 

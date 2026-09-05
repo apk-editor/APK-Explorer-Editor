@@ -89,6 +89,7 @@ public class ProjectsFragment extends BaseFragment {
         });
 
         mBatchButton.setOnClickListener(v -> new sExecutor() {
+                    private final Activity activity = requireActivity();
                     private ProgressDialog mProgressDialog;
 
                     @SuppressLint("StringFormatInvalid")
@@ -110,6 +111,10 @@ public class ProjectsFragment extends BaseFragment {
 
                     @Override
                     public void onPostExecute() {
+                        if (!isAdded() || activity.isFinishing() || activity.isDestroyed()) {
+                            return;
+                        }
+
                         try {
                             mProgressDialog.dismiss();
                         } catch (IllegalArgumentException ignored) {
@@ -186,7 +191,7 @@ public class ProjectsFragment extends BaseFragment {
 
     private void loadProjects(String searchWord) {
         new sExecutor() {
-
+            private final Activity activity = requireActivity();
             private List<String> data;
 
             @Override
@@ -196,12 +201,12 @@ public class ProjectsFragment extends BaseFragment {
 
             @Override
             public void doInBackground() {
-                data = Projects.getData(searchWord, requireActivity());
+                data = Projects.getData(searchWord, activity);
             }
 
             @Override
             public void onPostExecute() {
-                if (!isAdded()) {
+                if (!isAdded() || activity.isFinishing() || activity.isDestroyed()) {
                     return;
                 }
 
