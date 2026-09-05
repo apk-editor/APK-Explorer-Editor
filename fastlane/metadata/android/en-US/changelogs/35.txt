@@ -1,4 +1,0 @@
-* Completely rewrote the appSigning logic for better security.
-* Updated layout buttons to improve consistency and provide a better user experience.
-* Applied a slight horizontal padding to the Settings & About layouts for better visual spacing.
-* Miscellaneous changes.

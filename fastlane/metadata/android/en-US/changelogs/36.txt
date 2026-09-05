@@ -1,0 +1,7 @@
+- Modernized navigation view with smoother layouts and swipe gestures across
+- Redesigned Bundle Install into a bottom sheet with a new "Select All" option
+- Upgraded popup menus to modern bottom dialogs
+- Improved APK Permissions screens for cleaner user experience
+- Unified icon sizes, button labels, and custom dialogues across all screens
+- Improved package name editing
+- Updated Ukrainian and Vietnamese localizations
