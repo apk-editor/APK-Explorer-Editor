@@ -161,4 +161,63 @@
     <string name="sdk_compile">"SDK biên dịch: %s"</string>
     <string name="sdk_minimum">"SDK tối thiểu: %s"</string>
     <string name="signing_select_question">"Sử dụng tệp đã chọn làm %s mới?"</string>
+    <string name="cancelling">"Đang huỷ"</string>
+    <string name="replace_file_question">"Thay %s với tệp được chọn?"</string>
+    <string name="update">"Cập nhật"</string>
+    <string name="clearing_cache_message">"Xoá bộ nhớ đệm"</string>
+    <string name="root">"Tệp gốc"</string>
+    <string name="xml_corrupted">"Chuỗi XML bị lỗi. Đang huỷ…"</string>
+    <string name="xml_decode_failed">"Giải mã %s thất bại"</string>
+    <string name="zip_aligning">"Đang đóng gói"</string>
+    <string name="delete_folder">"Xoá thư mục"</string>
+    <string name="delete_selected_files">"Xoá tệp được chọn"</string>
+    <string name="export_selected_files">"Xuất tệp được chọn"</string>
+    <string name="explore_options">"Khám phá Ứng dụng"</string>
+    <string name="explore_options_full">"Giải mã toàn bộ (chậm hơn)"</string>
+    <string name="explore_options_simple">"Giải mã đơn giản (nhanh hơn)"</string>
+    <string name="apply">"Áp dụng"</string>
+    <string name="batch_options">"Tuỳ chọn hàng loạt"</string>
+    <string name="choose_new">"Chọn mới"</string>
+    <string name="delete_all">"Xoá tất cả"</string>
+    <string name="export_app_batch_question">"Xuất những apps được chọn?"</string>
+    <string name="export_options_title">"Xuất Tuỳ chỉnh"</string>
+    <string name="exported_apks_path">"Các ứng dụng đã chọn được xuất sang:
+
+        '%s'"</string>
+    <string name="exporting_batch">"Đang xuất các ứng dụng đã chọn…"</string>
+    <string name="explore_options_quick">"Chỉnh sửa nhanh (dễ hơn)"</string>
+    <string name="keypair_mismatch_message">"Cặp khóa không khớp!"</string>
+    <string name="keystore_alias_hint">"Chọn một biệt danh"</string>
+    <string name="keystore_alias_password_hint">"Nhập mật khẩu bí danh"</string>
+    <string name="keystore_alias_unavailable">"Không tìm thấy Keystore nào!"</string>
+    <string name="keystore_loading_failed">"Không thể tải Keystore!"</string>
+    <string name="keystore_password_hint">"Nhập mật khẩu Keystore"</string>
+    <string name="password_invalid">"Mật khẩu không khớp!"</string>
+    <string name="private_key_invalid">"Khóa riêng đã chọn không hợp lệ!"</string>
+    <string name="quick_edits_app_name">"Tên ứng dụng"</string>
+    <string name="quick_edits_sdk_min">"SDK tối thiểu"</string>
+    <string name="quick_edits_package_name">"Tên gói"</string>
+    <string name="quick_edits_progress_message">"Đang thực hiện các thay đổi…"</string>
+    <string name="quick_edits_title">"Chỉnh sửa nhanh"</string>
+    <string name="quick_edits_toast_failed">"Rất tiếc, quá trình tạo tệp APK đã được sửa đổi đã không thành công."</string>
+    <string name="quick_edits_toast_success">"Tệp APK đã được sửa đổi đã được tạo.
+
+        Đường dẫn: '%s'"</string>
+    <string name="quick_edits_version_code">"Phiên bản"</string>
+    <string name="quick_edits_version_name">"Tên phiên bản"</string>
+    <string name="reset">"Cài đặt lại"</string>
+    <string name="res_viewer">"Trình xem tài nguyên"</string>
+    <string name="search_files">"Tìm kiếm tệp"</string>
+    <string name="select_all">"Chọn tất cả"</string>
+    <string name="sort_files">"Sắp xếp tệp"</string>
+    <string name="sort_time">"Cũ tới mới"</string>
+    <string name="x509_certificate_invalid">"Chứng chỉ X509 không hợp lệ!"</string>
+    <string name="x509_certificate_requirement_message">"Để có thể kí APK với mã khoá tuỳ chọn, AEE cũng yêu cầu chứng chỉ X509 được xuất từ chung mã khoá riêng pk8. Vui lòng tới trang Tài liệu để biết thêm thông tin."</string>
+    <string name="res_add_new">"Thêm giá trị mới"</string>
+    <string name="res_choose_new">"Chọn giá trị mới cho \"%s\""</string>
+    <string name="xml_editor_res_title">"Tuỳ chỉnh tài nguyên này:"</string>
+    <string name="xml_editor_res">"từ thư mục Tài nguyên"</string>
+    <string name="xml_editor_storage">"từ Thiết bị lưu trữ"</string>
+    <string name="xml_editor_text">"bằng cách Mã hoá cứng"</string>
+    <string name="xml_modify_title">"Tuỳ chỉnh giá trị này thành"</string>
 </resources>

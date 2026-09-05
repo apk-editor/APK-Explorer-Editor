@@ -2,7 +2,7 @@
 
     <string name="about">"Про додаток"</string>
     <string name="all">"Усі"</string>
-    <string name="apks">"Додатки"</string>
+    <string name="apks">"APK"</string>
     <string name="apps">"Додатки"</string>
     <string name="apps_exported">"Експортовані додатки"</string>
     <string name="apps_installed">"Встановленні додатки"</string>
@@ -53,8 +53,20 @@
     <string name="system">"Системні"</string>
     <string name="unknown_file_message">"AEE не обробляє \"%s\" на даний момент.  Якщо вам відомий цей формат файлу, ви можете експортувати його в пам’ять пристрою та спробувати відредагувати за допомогою підтримуваної сторонньої програми. Спробувати відкрити його як текстовий файл?"</string>
     <string name="unsupported_file">"Непідтримуваний файл"</string>
-    <string name="unsupported_file_arsc">"Ви вибрали «resources.arsc», який, на жаль, AEE не може прочитати. Що таке resources.arsc? resources.arsc — це двійковий файл ресурсів, що містить специфічні для конфігурації значення програми, такі як цілі числа, логічні значення та рядки, а також посилання на більш складні ресурси, як-от макети інтерфейсу користувача.  Як читати resources.arsc?  Такі інструменти, як Apktool або Android Asset Packaging Tool (AAPT), слід використовувати для друку вмісту resources.arsc у зручному для читання форматі."</string>
-    <string name="unsupported_file_dex">"Ви обрали файл \"DEX\" (.dex), який, на жаль, AEE не може прочитати.  Що таке файл DEX? Файл Dex містить код, який остаточно виконує Android Runtime. Кожний файл .apk повинен мати файл «classes.dex», який містить посилання на будь-які класи або методи, що використовуються в програмі. По суті, будь-які дії, об’єкти чи фрагменти, що використовуються в базі коду, будуть перетворені на байти у файлі Dex, який можна запускати як додаток для Android.  Як прочитати файл DEX? Файл DEX має бути перетворений у формат «jar», а потім у файл «Java» за допомогою таких інструментів, як «dex2jar» і «JD-GUI»."</string>
+    <string name="unsupported_file_arsc">"Ви вибрали «resources.arsc», який, на жаль, AEE не може прочитати.
+
+        Що таке resources.arsc?
+        resources.arsc — це двійковий файл ресурсів, що містить специфічні для конфігурації значення програми, такі як цілі числа, логічні значення та рядки, а також посилання на більш складні ресурси, як-от макети інтерфейсу користувача.
+
+        Як читати resources.arsc?
+        Такі інструменти, як Apktool або Android Asset Packaging Tool (AAPT), слід використовувати для друку вмісту resources.arsc у зручному для читання форматі."</string>
+    <string name="unsupported_file_dex">"Ви обрали файл \"DEX\" (.dex), який, на жаль, AEE не може прочитати.
+
+        Що таке файл DEX?
+        Файл Dex містить код, який остаточно виконує Android Runtime. Кожний файл .apk повинен мати файл «classes.dex», який містить посилання на будь-які класи або методи, що використовуються в програмі. По суті, будь-які дії, об’єкти чи фрагменти, що використовуються в базі коду, будуть перетворені на байти у файлі Dex, який можна запускати як додаток для Android.
+
+        Як прочитати файл DEX?
+        Файл DEX має бути перетворений у формат «jar», а потім у файл «Java» за допомогою таких інструментів, як «dex2jar» і «JD-GUI»."</string>
     <string name="user">"Користувача"</string>
     <string name="bundles">"Пакети"</string>
     <string name="preparing_bundle">"Підготовка набору програм для спільного використання…"</string>
@@ -120,7 +132,8 @@
     <string name="deleting">"Видалення '%s'…"</string>
     <string name="grant">"Надати"</string>
     <string name="important">"Важливо"</string>
-    <string name="assembling">"Складання \"%s\""</string>
+    <string name="assembling">"Складання
+        '%s'"</string>
     <string name="build">"Створити"</string>
     <string name="building">"Створення \"%s\"…"</string>
     <string name="copying">"Копіювання '%s'…"</string>
@@ -154,7 +167,7 @@
     <string name="clearing_cache_message">"Очищення Кеша…"</string>
     <string name="root">"Root"</string>
     <string name="xml_corrupted">"Рядок XML пошкоджено.  Переривання"</string>
-    <string name="xml_decode_failed">"Не вдалося декодувати XML"</string>
+    <string name="xml_decode_failed">"Не вдалося декодувати %s"</string>
     <string name="zip_aligning">"Zip вирівнювання…"</string>
     <string name="delete_folder">"Видалити теку"</string>
     <string name="delete_selected_files">"Видалити обрані файли"</string>
@@ -165,6 +178,7 @@
     <string name="apply">"Застосувати"</string>
     <string name="batch_options">"Пакетні опції"</string>
     <string name="choose_new">"Обрати нове"</string>
+    <string name="copyright_text">"2025–2026, APK Explorer &amp; Editor"</string>
     <string name="delete_all">"Видалити все"</string>
     <string name="export_app_batch_question">"Експортувати наступні додатки?"</string>
     <string name="export_options_title">"Опції експорту"</string>
@@ -200,4 +214,11 @@
     <string name="sort_time">"Від старих до нових"</string>
     <string name="x509_certificate_invalid">"Обраний X509Certificate неправильний!"</string>
     <string name="x509_certificate_requirement_message">"Щоб підписати APK-файли власним ключем, AEE також потребує X509Certificate, експортований з відповідного приватного ключа pk8. Будь ласка, зверніться до сторінки документації за додатковою інформацією."</string>
+    <string name="res_add_new">"Додати нове значення"</string>
+    <string name="res_choose_new">"Виберіть нове значення \"%s\""</string>
+    <string name="xml_editor_res_title">"Змінити ресурс:"</string>
+    <string name="xml_editor_res">"з папки ресурсів"</string>
+    <string name="xml_editor_storage">"зі сховища пристрою"</string>
+    <string name="xml_editor_text">"жорстким кодуванням"</string>
+    <string name="xml_modify_title">"Змініть це значення на"</string>
 </resources>
