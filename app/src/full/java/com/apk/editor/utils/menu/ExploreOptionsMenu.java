@@ -32,7 +32,7 @@ public class ExploreOptionsMenu {
     }
 
     public static void getMenu(String packageName, File apkFile, Uri uri, boolean exit, Activity activity) {
-        if (sFileUtils.exist(new File(activity.getCacheDir().getPath(), uri != null ? new File(Objects.requireNonNull(uri.getPath())).getName() : packageName != null ? packageName : apkFile.getName()))) {
+        if (sFileUtils.exist(new File(activity.getCacheDir().getPath(), uri != null ? new File(Objects.requireNonNull(uri.getPath())).getName() : apkFile != null ? packageName + "_" + apkFile.getName().replace(".apk", "") : packageName))) {
             new ExploreAPK(packageName, apkFile, uri, -1, activity).execute();
         } else if (sCommonUtils.getString("decompileSetting", null, activity) == null) {
             new sSingleItemDialog(0, null, new String[] {
@@ -54,7 +54,7 @@ public class ExploreOptionsMenu {
                 }
             }.show();
         } else if (sCommonUtils.getString("decompileSetting", null, activity).equals(activity.getString(R.string.explore_options_quick))) {
-            launchQuickEditActivity(packageName, apkFile.getAbsolutePath(), uri, activity);
+            launchQuickEditActivity(packageName, apkFile != null ? apkFile.getAbsolutePath() : null, uri, activity);
         } else if (sCommonUtils.getString("decompileSetting", null, activity).equals(activity.getString(R.string.explore_options_full))) {
             new ExploreAPK(packageName, apkFile, uri, 1, activity).execute();
         } else {
@@ -66,10 +66,10 @@ public class ExploreOptionsMenu {
         Intent intent = new Intent(activity, QuickEditsActivity.class);
         if (uri != null) {
             intent.putExtra(QuickEditsActivity.URI_INTENT, uri);
-        } else if (packageName != null && sPackageUtils.isPackageInstalled(packageName, activity)) {
-            intent.putExtra(QuickEditsActivity.PACKAGE_NAME_INTENT, packageName);
         } else if (apkPath != null && sFileUtils.exist(apkPath)) {
             intent.putExtra(QuickEditsActivity.APK_PATH_INTENT, apkPath);
+        } else if (packageName != null && sPackageUtils.isPackageInstalled(packageName, activity)) {
+            intent.putExtra(QuickEditsActivity.PACKAGE_NAME_INTENT, packageName);
         }
         activity.startActivity(intent);
     }

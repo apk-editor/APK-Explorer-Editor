@@ -233,7 +233,7 @@ public class QuickEditsActivity extends BaseActivity {
 
                 @Override
                 public void doInBackground() {
-                    if (sPackageUtils.isPackageInstalled(mPackageName, mActivity) && APKData.isAppBundle(sPackageUtils
+                    if (getIntent().hasExtra(PACKAGE_NAME_INTENT) && sPackageUtils.isPackageInstalled(mPackageName, mActivity) && APKData.isAppBundle(sPackageUtils
                             .getSourceDir(mPackageName, mActivity))) {
                         mOutFile = new File(APKData.getExportPath(mActivity), (!Objects.equals(mPackageName,
                                 mData.get(1).getValue()) ? mData.get(1).getValue() : mPackageName));

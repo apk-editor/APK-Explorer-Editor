@@ -147,13 +147,8 @@ public class APKInstallerActivity extends BaseActivity {
     private void loadAPKDetails() {
         sPagerAdapter adapter = new sPagerAdapter(this);
         try {
-            if (sPackageUtils.isPackageInstalled(mAPKParser.getPackageName(), this)) {
-                mAppName.setText(sPackageUtils.getAppName(mAPKParser.getPackageName(), this));
-                mAppIcon.setImageDrawable(sPackageUtils.getAppIcon(mAPKParser.getPackageName(), this));
-            } else {
-                mAppName.setText(mAPKParser.getAppName());
-                mAppIcon.setImageDrawable(mAPKParser.getAppIcon());
-            }
+            mAppName.setText(mAPKParser.getAppName());
+            mAppIcon.setImageDrawable(mAPKParser.getAppIcon());
             mPackageID.setText(mAPKParser.getPackageName());
             mPackageID.setVisibility(View.VISIBLE);
 
