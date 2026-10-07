@@ -1,11 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="about">"Hakkında"</string>
-    <string name="all">"Tüm"</string>
+    <string name="all">"Tümü"</string>
     <string name="apks">"APK'ler"</string>
-    <string name="apps">"App'lar"</string>
+    <string name="apps">"Uygulamalar"</string>
     <string name="apps_exported">"Dışa Aktarılan APK'lar"</string>
-    <string name="apps_installed">"Kurulu Uygulamalar"</string>
+    <string name="apps_installed">"Yüklü Uygulamalar"</string>
     <string name="cancel">"İptal"</string>
     <string name="delete">"Sil"</string>
     <string name="delete_question">"%s silinsin mi?"</string>
@@ -16,11 +16,11 @@
     <string name="export">"Dışa Aktar"</string>
     <string name="export_question">"Cihaz depolamasına dışa aktarılsın mı?"</string>
     <string name="export_complete_message">"Seçilmiş kaynak başarıyla '%s' dizinine çıkarıldı"</string>
-    <string name="exploring">"%s inceleniyor"</string>
-    <string name="explore_error_status">"%s incelenemedi!"</string>
-    <string name="install">"Kur"</string>
-    <string name="install_question">"%s kurulsun mu?"</string>
-    <string name="installing">"%s kuruluyor"</string>
+    <string name="exploring">"%s taranıyor…"</string>
+    <string name="explore_error_status">"%s taranamadı…"</string>
+    <string name="install">"Yükle"</string>
+    <string name="install_question">"%s yüklensin mi?"</string>
+    <string name="installing">"%s yükleniyor"</string>
     <string name="invite_friends">"Arkadaşlarınızı Davet Edin"</string>
     <string name="invite_friends_Summary">"AEE'yi denemek üzere arkadaşlarınızı davet edin"</string>
     <string name="last_modified">"Son Değişiklik: %s"</string>
@@ -39,15 +39,15 @@
     <string name="save_projects_question">"İleride kullanım için bu proje kaydedilsin mi?"</string>
     <string name="save_question">"Dosyada yapılan değişiklikler kaydedilsin mi?"</string>
     <string name="save_apk_message">"Mevcut değişikliklerle imzalı bir APK hazırlamak istiyor musunuz?"</string>
-    <string name="sdcard">"Dahili Bellek"</string>
+    <string name="sdcard">"Dahili Depolama"</string>
     <string name="search">"Arama…"</string>
     <string name="share">"Paylaş"</string>
-    <string name="share_with">"Paylaş"</string>
+    <string name="share_with">"Şununla Paylaş:"</string>
     <string name="signing">"%s imzalanıyor"</string>
     <string name="size">"Boyut: %s"</string>
     <string name="source_code">"Kaynak Kodu"</string>
-    <string name="source_code_summary">"AEE kaynak kodunu indir"</string>
-    <string name="split_apk_installer">"AEE Çoklu APK Kurucusu"</string>
+    <string name="source_code_summary">"AEE kaynak kodunu gör"</string>
+    <string name="split_apk_installer">"AEE Çoklu APK Yükleyici"</string>
     <string name="support_group">"Destek Grubu"</string>
     <string name="support_group_summary">"AEE destek grubuna katıl"</string>
     <string name="system">"Sistem"</string>
@@ -63,7 +63,7 @@
     <string name="unsupported_file_dex">"Bir 'DEX' (.dex) dosyası seçtiniz. AEE ne yazık ki bunu okuyamıyor.
 
         DEX dosyası nedir?
-        Dex dosyası Android Runtime tarafından illetilen kodu içerir. Her APK'nin, app'ta kullanılan klas ve metotları gösteren bir 'classes.dex' dosyası vardır. Esasen, kodda kullanılan her türlü aktivite, object veya fragment, bir Dex dosyası içine baytlar haline getirilir, ve bu bir Android app gibi işletilebilir.
+        Dex dosyası Android Runtime tarafından illetilen kodu içerir. Her APK'nin, uygulamada kullanılan klas ve metotları gösteren bir 'classes.dex' dosyası vardır. Esasen, kodda kullanılan her türlü aktivite, object veya fragment, bir Dex dosyası içine baytlar haline getirilir, ve bu bir Android uygulaması gibi işletilebilir.
 
         DEX dosyası nasıl okunur?
         Bir DEX dosyası, 'dex2jar' ve 'JD-GUI' gibi bazı araçlarla, önce 'jar' formatına, sonra da 'Java' dosyasına çevirilmelidir"</string>
@@ -76,10 +76,10 @@
     <string name="private_key_summary">"Özel bir gizli anahtar seç"</string>
     <string name="select">"Seç"</string>
     <string name="signing_custom">"Özel Anahtarı Yapılandır"</string>
-    <string name="signing_default">"Varsayılan Anahtar ile giriş yap"</string>
+    <string name="signing_default">"Varsayılan Anahtar ile imzala"</string>
     <string name="signing_question">"'%s'i yeni olarak kullan"</string>
     <string name="signing_title">"APK İmzalama"</string>
-    <string name="apk_installer">"AEE APK Kurucusu"</string>
+    <string name="apk_installer">"AEE APK Yükleyici"</string>
     <string name="bundle_install_question">"'%s' uygulama paketini yüklemek istediğinizden emin misiniz?"</string>
     <string name="export_project_question">"Bu proje dosyasını bellekte bir kopyasını almak istiyor musunuz?"</string>
     <string name="export_project_replace">"'%s' zaten var! Üstüne yazılsın mı?"</string>
@@ -87,39 +87,39 @@
     <string name="export_storage">"Depolamaya Aktar"</string>
     <string name="exporting">"%s Dışa aktarılıyor"</string>
     <string name="got_it">"Anladım"</string>
-    <string name="install_storage">"Bellekten kur"</string>
+    <string name="install_storage">"Depolamadan yükle"</string>
     <string name="installer_message">"AEE Bölünmüş APK yükleyicisi, normal APK'leri, bölünmüş APK'leri ve ayrıca \"xapk\", \"apks\" ve \"apkm\" Uygulama paketlerini işleyecektir. Bir kurulumu başlatmak için, bir sonraki ekrandan kurulum dosyasını/dosyalarını seçin ve ekrandaki talimatları izleyin."</string>
-    <string name="installation_cancel_message">"Kurulum iptal edilsin mi?"</string>
-    <string name="name_empty">"İsim boş bırakılamaz! Çıkılıyor"</string>
+    <string name="installation_cancel_message">"Yükleme işlemi iptal edilsin mi?"</string>
+    <string name="name_empty">"İsim boş bırakılamaz! İptal ediliyor…"</string>
     <string name="ok">"Tamam"</string>
-    <string name="preparing_bundle_install">"Kurulum için '%s' hazırlanıyor"</string>
+    <string name="preparing_bundle_install">"Yükleme işlemi için '%s' hazırlanıyor…"</string>
     <string name="select_apk">"Çoklu APK'leri seç"</string>
     <string name="signature_warning">"İmza uyuşmazlığı nedeniyle yükleme hatasını önlemek için, AEE imzalı bir APK/Uygulama paketi yüklemeden önce uygulamanın eski sürümünü (varsa) kaldırmak önemlidir."</string>
     <string name="wrong_extension">"Lütfen %s uzantılı bir dosya seçin"</string>
     <string name="yes">"Evet"</string>
-    <string name="apk_corrupted">"APK dosyası(ları) bozuk! Çıkılıyor."</string>
-    <string name="install_resign">"Yeniden imzala &amp; Kur"</string>
+    <string name="apk_corrupted">"APK dosyası(ları) bozuldu. İptal ediliyor…"</string>
+    <string name="install_resign">"Yeniden imzala &amp; Yükle"</string>
     <string name="resign_only">"Sadece Yeniden İmzala"</string>
-    <string name="resigned_apks_path">"Yeniden imzalı APK dosyası(ları) oluşturuldu!
+    <string name="resigned_apks_path">"Yeniden imzalı APK dosyası oluşturuldu!
 
         Yol: '%s'"</string>
-    <string name="resigning_apks">"Seçilen APK'leri yeniden imzalıyor"</string>
+    <string name="resigning_apks">"Seçilen APK'lar yeniden imzalıyor"</string>
     <string name="select_storage">"Kayıtlardan seçin"</string>
-    <string name="sort_by">"App'ları sıraya diz"</string>
+    <string name="sort_by">"Uygulamaları sıraya diz"</string>
     <string name="sort_by_name">"İsim"</string>
-    <string name="sort_by_id">"Package ID"</string>
+    <string name="sort_by_id">"Paket adı"</string>
     <string name="sort_order">"A-Z"</string>
-    <string name="clear_cache">"Önbellek temizle"</string>
+    <string name="clear_cache">"Önbelleği temizle"</string>
     <string name="clear_cache_summary">"AEE'nin iç ayarlarını sil"</string>
     <string name="export_options">"Dışa Aktarmada (APK'lar)"</string>
-    <string name="installer_action">"APK Kurulumunda"</string>
+    <string name="installer_action">"APK yüklenirken"</string>
     <string name="project_exist_action">"Projeden Çıkldığında"</string>
-    <string name="prompt">"Çabuk"</string>
+    <string name="prompt">"Her zaman sor"</string>
     <string name="settings">"Ayarlar"</string>
     <string name="settings_general">"Genel"</string>
     <string name="settings_misc">"Çeşitli"</string>
     <string name="sign_apk_custom">"Özel Anahtar"</string>
-    <string name="sign_apk_default">"Varsayilan Key"</string>
+    <string name="sign_apk_default">"Varsayılan anahtar"</string>
     <string name="sign_apk_with">"APK'lar'ı ile imzala"</string>
     <string name="file_path_error">"Harici Dosya Yöneticisinden dosya yolu alınamadı"</string>
     <string name="text_editor">"AEE Metin Düzenleyici"</string>
@@ -144,7 +144,7 @@
         %s"</string>
     <string name="open">"Aç"</string>
     <string name="preparing_source">"APK oluşturma için kaynak hazırlanıyor…"</string>
-    <string name="resigned_apks_error">"'Smali' dosyalarının birleştirilmesindeki hatalar nedeniyle bina iptal edildi. Daha fazlasını öğrenmek için Ayrıntılar'ı kontrol edin."</string>
+    <string name="resigned_apks_error">"'Smali' dosyalarının birleştirilmesindeki hatalar nedeniyle geliştirme iptal edildi. Daha fazlasını öğrenmek için Ayrıntılar'ı kontrol edin."</string>
     <string name="success">"Başarılı"</string>
     <string name="sort_by_installed">"Yükleme Zamanı"</string>
     <string name="sort_by_size">"Boyut"</string>
@@ -161,7 +161,63 @@
     <string name="sdk_compile">"SDKyı Derle: %s"</string>
     <string name="sdk_minimum">"Minimum SDK: %s"</string>
     <string name="signing_select_question">"Seçilen dosya yeni %s olarak kullanılsın mı?"</string>
-    <string name="cancelling">"Iptal ediliyor…"</string>
+    <string name="cancelling">"İptal ediliyor…"</string>
     <string name="replace_file_question">"%s seçili dosyayla değiştirilsin mi?"</string>
     <string name="update">"Güncelle"</string>
+    <string name="clearing_cache_message">"Önbellek temizleniyor…"</string>
+    <string name="root">"Kök"</string>
+    <string name="xml_corrupted">"XML dizesi bozuldu. İşlem iptal ediliyor…"</string>
+    <string name="xml_decode_failed">"%s dosyasının kod çözme işlemi başarısız oldu."</string>
+    <string name="zip_aligning">".zip imzalanıyor…"</string>
+    <string name="delete_folder">"Klasörü sil"</string>
+    <string name="delete_selected_files">"Seçili dosyaları sil"</string>
+    <string name="export_selected_files">"Seçilen dosyaları dışa aktar"</string>
+    <string name="explore_options">"Bir uygulamayı keşfederken"</string>
+    <string name="explore_options_full">"Tam derleme (yavaş)"</string>
+    <string name="explore_options_simple">"Basit derleme (hızlı)"</string>
+    <string name="apply">"Uygula"</string>
+    <string name="batch_options">"Toplu işlem seçenekleri"</string>
+    <string name="choose_new">"Yeni seç"</string>
+    <string name="delete_all">"Hepsini sil"</string>
+    <string name="export_app_batch_question">"Aşağıdaki uygulamaları dışa aktarmak istiyor musunuz?"</string>
+    <string name="export_options_title">"Dışa aktarma seçenekleri"</string>
+    <string name="exported_apks_path">"Seçili uygulamalar dışa aktarılacak:
+
+        %s"</string>
+    <string name="exporting_batch">"Seçilen uygulamalar dışa aktarılıyor…"</string>
+    <string name="explore_options_quick">"Hızlı düzenleme (kolay)"</string>
+    <string name="keypair_mismatch_message">"Eşleşmeyen anahtar çifti"</string>
+    <string name="keystore_alias_hint">"Alias seçin"</string>
+    <string name="keystore_alias_password_hint">"Alias şifresini gir"</string>
+    <string name="keystore_alias_unavailable">"Anahtar deposu alias bulunamadı."</string>
+    <string name="keystore_loading_failed">"Anahtar deposu yüklenemedi…"</string>
+    <string name="keystore_password_hint">"Anahtar deposu şifresini gir"</string>
+    <string name="password_invalid">"Şifreler eşleşmiyor."</string>
+    <string name="private_key_invalid">"Özel gizli anahtar geçerli değil"</string>
+    <string name="quick_edits_app_name">"Uygulama adı"</string>
+    <string name="quick_edits_sdk_min">"Minimum SDK"</string>
+    <string name="quick_edits_package_name">"Paket adı"</string>
+    <string name="quick_edits_progress_message">"Değişiklikler uygulanıyor…"</string>
+    <string name="quick_edits_title">"Hızlı düzenleme"</string>
+    <string name="quick_edits_toast_failed">"Maalesef modifiye edilmiş APK oluşturulamadı."</string>
+    <string name="quick_edits_toast_success">"Modifiye edilmiş APK oluşturuldu.
+
+        Yol: %s"</string>
+    <string name="quick_edits_version_code">"Sürüm kodu"</string>
+    <string name="quick_edits_version_name">"Sürüm adı"</string>
+    <string name="reset">"Sıfırla"</string>
+    <string name="res_viewer">"Kaynak görüntüleyici"</string>
+    <string name="search_files">"Dosyalar araştır"</string>
+    <string name="select_all">"Tümünü seç"</string>
+    <string name="sort_files">"Dosyaları sırala"</string>
+    <string name="sort_time">"Eskiden yeniye"</string>
+    <string name="x509_certificate_invalid">"Seçilen X509Certificate geçerli değil."</string>
+    <string name="x509_certificate_requirement_message">"APK dosyalarını özel bir anahtarla imzalamak için AEE, aynı pk8 özel anahtarından dışa aktarılan X509 Sertifikasına da ihtiyaç duyar. Daha fazla bilgi için lütfen Belgeleme sayfasına bakın."</string>
+    <string name="res_add_new">"Yeni değer ekle"</string>
+    <string name="res_choose_new">"%s için yeni değer seçin"</string>
+    <string name="xml_editor_res_title">"Bu kaynağı değiştirin:"</string>
+    <string name="xml_editor_res">"Kaynak klasöründen"</string>
+    <string name="xml_editor_storage">"Depolama alanından"</string>
+    <string name="xml_editor_text">"Manuel olarak yazarak"</string>
+    <string name="xml_modify_title">"Değeri şununla değiştir"</string>
 </resources>
