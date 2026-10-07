@@ -66,9 +66,9 @@ public class BuildingActivity extends BaseActivity {
         mOutputPath.setText(getString(R.string.resigned_apks_path, "Download > AEE"));
 
         mInstall.setOnClickListener(v -> {
-            if (sPackageUtils.isPackageInstalled(Common.getPackageName(this), this) && APKData.isAppBundle(sPackageUtils
-                    .getSourceDir(Common.getPackageName(this), this))) {
-                SplitAPKInstaller.installSplitAPKs(new File(APKData.getExportPath(this), mPackageNameOriginal + "_aee-signed").getAbsolutePath(), this);
+            File bundleDir = new File(APKData.getExportPath(this), mPackageNameOriginal + "_aee-signed");
+            if (bundleDir.exists() && bundleDir.isDirectory()) {
+                SplitAPKInstaller.installSplitAPKs(bundleDir.getAbsolutePath(), this);
             } else {
                 SplitAPKInstaller.installAPK(new File(APKData.getExportPath(this), mPackageNameOriginal + "_aee-signed.apk"), this);
             }

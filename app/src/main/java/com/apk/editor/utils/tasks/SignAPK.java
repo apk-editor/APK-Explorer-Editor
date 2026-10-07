@@ -102,7 +102,7 @@ public class SignAPK extends sExecutor {
         String packageName = getPackageNameOriginal();
 
         File mParent;
-        if (sPackageUtils.isPackageInstalled(packageName, mActivity) && APKData.isAppBundle(sPackageUtils.getSourceDir(packageName, mActivity))) {
+        if (mRoot.getName().equals(packageName) && sPackageUtils.isPackageInstalled(packageName, mActivity) && APKData.isAppBundle(sPackageUtils.getSourceDir(packageName, mActivity))) {
             String sourceDirPath = sPackageUtils.getSourceDir(packageName, mActivity);
             mParent = new File(APKData.getExportPath(mActivity), Objects.requireNonNull(packageName).replace(".apk", "") + "_aee-signed");
             if (mParent.exists()) {

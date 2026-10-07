@@ -75,7 +75,12 @@ public class QuickEditsAdapter extends RecyclerView.Adapter<QuickEditsAdapter.Vi
     }
 
     private String getAppName(Context context) {
-        return data.get(0).isEdited() ? data.get(0).getValue() : sPackageUtils.isPackageInstalled(data.get(1).getValue(), context) ? sPackageUtils.getAppName(data.get(1).getValue(), context).toString() : data.get(0).getValue();
+        if (data.get(0).isEdited() || (data.get(0).getValue() != null && !data.get(0).getValue().trim().isEmpty())) {
+            return data.get(0).getValue();
+        } else if (sPackageUtils.isPackageInstalled(data.get(1).getValue(), context)) {
+            return sPackageUtils.getAppName(data.get(1).getValue(), context).toString();
+        }
+        return data.get(0).getValue();
     }
 
     private TextWatcher getTextWatcher(int position, MaterialButton materialButton) {
