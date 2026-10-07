@@ -15,6 +15,8 @@ import com.apk.editor.R;
 import com.apk.editor.adapters.APKDetailsAdapter;
 import com.apk.editor.utils.ExternalAPKData;
 
+import java.util.List;
+
 import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
 
 /*
@@ -32,14 +34,15 @@ public class APKDetailsFragment extends Fragment {
         
         new sExecutor() {
             private final Activity activity = requireActivity();
-            private APKDetailsAdapter mAdapter;
+            private List<String> data;
+
             @Override
             public void onPreExecute() {
             }
 
             @Override
             public void doInBackground() {
-                mAdapter = new APKDetailsAdapter(ExternalAPKData.getData(activity));
+                data = ExternalAPKData.getData(activity);
             }
 
             @Override
@@ -48,7 +51,7 @@ public class APKDetailsFragment extends Fragment {
                     return;
                 }
 
-                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.setAdapter(new APKDetailsAdapter(data));
             }
         }.execute();
 
