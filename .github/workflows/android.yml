@@ -8,21 +8,17 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      # Set Current Date As Env Variable
-      - name: Set current date as env variable
-        run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      - name: Set environment variables
+        run: |
+          echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+          echo "repository_name=AEE" >> $GITHUB_ENV
 
-      # Set App Name As Env Variable
-      - name: Set repository name as env variable
-        run: echo "repository_name=AEE" >> $GITHUB_ENV
-
-      - name: set up JDK 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
@@ -32,21 +28,36 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      # Run Tests Build
-      - name: Run gradle tests
+      - name: Run unit tests
         run: ./gradlew test
 
-      # Run Build Project
-      - name: Build gradle project
-        run: ./gradlew build
+      - name: Decode signing keystore
+        if: github.event_name == 'push'
+        env:
+          KEYSTORE_BASE64: ${{ secrets.SIGNING_CERT_P12 }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 --decode > app/signing_cert.p12
+          else
+            echo "Error: SIGNING_CERT_P12 secret is empty!"
+            exit 1
+          fi
 
-      # Create APK Release
-      - name: Build apk release project (APK) - ${{ env.main_project_module }} module
-        run: ./gradlew assemble
+      - name: Build signed release APK
+        if: github.event_name == 'push'
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.SIGNING_CERT_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.SIGNING_CERT_PASSWORD }}
+        run: ./gradlew assembleRelease
 
-      # Upload Artifact Build
+      - name: Clean up signing keystore
+        if: always()
+        run: rm -f app/signing_cert.p12
+
       - name: Upload APK Release - ${{ env.repository_name }}
+        if: github.event_name == 'push'
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.repository_name }} - ${{ env.date_today }} - APK release generated
-          path: app/build/outputs/apk/full/release/
+          name: ${{ env.repository_name }}-${{ env.date_today }}-release
+          path: app/build/outputs/apk/**/release/*.apk

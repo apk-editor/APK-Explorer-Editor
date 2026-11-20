@@ -3,10 +3,21 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            def keystoreFile = file("signing_cert.p12")
+            if (keystoreFile.exists() && System.getenv("KEYSTORE_PASSWORD") != null) {
+                storeFile keystoreFile
+                storeType "PKCS12"
+                storePassword System.getenv("KEYSTORE_PASSWORD")
+                keyAlias System.getenv("KEY_ALIAS")
+                keyPassword System.getenv("KEY_PASSWORD")
+            }
+        }
+    }
+
     dependenciesInfo {
-        // Disables dependency metadata when building APKs.
         includeInApk = false
-        // Disables dependency metadata when building Android App Bundles.
         includeInBundle = false
     }
 
@@ -34,6 +45,9 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (file("signing_cert.p12").exists() && System.getenv("KEYSTORE_PASSWORD") != null) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 
